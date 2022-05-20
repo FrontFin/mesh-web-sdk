@@ -10,7 +10,7 @@ export const App: FunctionComponent = () => {
   const getAuthLink = async () => {
     setAuthLink(null);
     const response = await fetch(
-      "https://api.front.org/api/b2b/cataloglink?userId=some-user-id",
+      "https://integration-api.getfront.com/api/v1/cataloglink?userId=7652B44F-9CDB-4519-AC82-4FA5500F7455",
       {
         headers,
       }
@@ -33,6 +33,10 @@ export const App: FunctionComponent = () => {
             <b>Broker:</b> {payload.accessToken?.brokerName}
             <br />
             <b>Token:</b> {payload.accessToken?.accountTokens[0].accessToken}
+            <br />
+            <b>Refresh Token:</b> {payload.accessToken?.accountTokens[0].refreshToken}
+            <br />
+            <b>Token expires in seconds:</b> {payload.accessToken?.expiresInSeconds}
             <br />
             <b>ID:</b> {payload.accessToken?.accountTokens[0].account.accountId}
             <br />

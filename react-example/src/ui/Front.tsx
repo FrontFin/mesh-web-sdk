@@ -14,6 +14,7 @@ export const FrontComponent: FunctionComponent<{
       createFrontConnection({
         authLink,
         onBrokerConnected: (authData) => {
+          console.log(authData);
           onSuccess(authData);
         },
         onExit: (error?: string) => {
