@@ -1,0 +1,11 @@
+const clientId = process.env.REACT_APP_CLIENT_ID as string
+const clientSecret = process.env.REACT_APP_CLIENT_SECRET as string
+
+export const headers = {
+    Accept: "*/*",
+    Connection: "keep-alive",
+    "Content-Type": "application/json",
+    "Accept-Encoding": "gzip, deflate, br",
+    "X-Client-Id": clientId,
+    "X-Client-Secret": clientSecret
+};
