@@ -48,7 +48,6 @@ export const createFrontConnection = (
 
     if(options.authLink == ""){
       options?.onExit && options.onExit("Invalid link!") 
-      dispose()
       return
     }
 
@@ -68,26 +67,26 @@ export const createFrontConnection = (
     iframe.src = options.authLink
     document.body.appendChild(iframe);
 
-    const span = document.createElement('span')
-    span.id = 'front-link-close'
-    span.style.position = 'absolute'
-    span.style.display = 'flex'
-    span.style.justifyContent = 'end'
-    span.style.alignItems = 'center'
-    span.style.width = '100%'
-    span.style.height = '20px'
-    span.style.padding = '0'
-    span.style.margin = '0' 
-    span.style.top = '20px'
-    document.body.appendChild(span);
+    const container = document.createElement('div')
+    container.id = 'front-link-close'
+    container.style.position = 'absolute'
+    container.style.display = 'flex'
+    container.style.justifyContent = 'end'
+    container.style.alignItems = 'center'
+    container.style.width = '100%'
+    container.style.height = '20px'
+    container.style.padding = '0'
+    container.style.margin = '0' 
+    container.style.top = '20px'
+    document.body.appendChild(container);
 
-    const div = document.createElement('div')
-    div.id = 'front-link-close-button'
-    div.style.position = 'relative'
-    div.style.width = '24px'
-    div.style.height = '24px'
-    div.style.paddingRight = '20px'
-    div.innerHTML = `
+    const divButton = document.createElement('div')
+    divButton.id = 'front-link-close-button'
+    divButton.style.position = 'relative'
+    divButton.style.width = '24px'
+    divButton.style.height = '24px'
+    divButton.style.paddingRight = '20px'
+    divButton.innerHTML = `
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
       <circle cx="12" cy="12" r="12" fill="#272836"/>
       <path d="M14.3719 8.28152C14.744 7.90942 15.3473 7.90942 15.7195 8.28152C16.0577 8.6198 16.0885 9.14915 15.8117 9.52216L15.7195 9.62903L9.63147 15.717C9.25937 16.0891 8.65607 16.0891 8.28396 15.717C7.94568 15.3787 7.91493 14.8494 8.1917 14.4764L8.28396 14.3695L14.3719 8.28152Z" fill="white"/>
@@ -95,11 +94,11 @@ export const createFrontConnection = (
       </svg>
     `;
     
-    div.onclick = () => {
+    divButton.onclick = () => {
       options?.onExit && options.onExit() 
       dispose()
     }
-    span.appendChild(div);
+    container.appendChild(divButton);
   }
 
   const dispose = () => {
