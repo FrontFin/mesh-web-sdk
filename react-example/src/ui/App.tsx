@@ -63,10 +63,7 @@ export const App: FunctionComponent = () => {
 
       {authLink && (
         <FrontComponent
-          authLink={
-            "http://localhost:3000/broker-connect?auth_code=" +
-            authLink.split("auth_code=")[1]
-          }
+          authLink={authLink}
           onSuccess={(authData: FrontPayload) => {
             setPayload(authData);
             setAuthLink(null);
