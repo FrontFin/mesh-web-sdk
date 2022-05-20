@@ -2,7 +2,7 @@
 
 JS library for integrating with Front Finance
 
-### Generating connection methods
+### Generating connection method
 
 ```tsx
 import { createFrontConnection } from 'front-b2b';
@@ -44,11 +44,11 @@ useEffect(() => {
     setFrontConnection(
       createFrontConnection(options)
     );
-  }, []);
+}, []);
 
-  useEffect(() => {
-    frontConnection?.open();
-  }, [frontConnection]);
+useEffect(() => {
+  frontConnection?.open();
+}, [frontConnection]);
 
 return <></>;
 ```
@@ -70,7 +70,7 @@ useEffect(() => {
     setFrontConnection(
       createFrontConnection(options)
     );
-  }, []);
+}, []);
   
 return (
     <button onClick={() => {
