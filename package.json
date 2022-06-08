@@ -1,6 +1,6 @@
 {
   "name": "front-broker-connection",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Front Finance brokerage connection client lib",
   "main": "./dist/cjs/index.js",
   "module": "./dist/index.js",
