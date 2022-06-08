@@ -1,16 +1,30 @@
-# front-b2b-link
+# front-broker-connection
 
 JS library for integrating with Front Finance
+
+### Install
+
+With `npm`:
+
+```
+npm install --save front-broker-connection
+```
+
+With `yarn`
+
+```
+yarn add front-broker-connection
+```
 
 ### Generating connection method
 
 ```tsx
-import { createFrontConnection } from 'front-b2b';
+import { createFrontConnection } from 'front-broker-connection';
 
 // ...
 
 const frontConnection = createFrontConnection({
-  authLink: '<GENERATED_AUTH_LINK>',
+  clientId: '<Your Front Finance Client Id>',
   onBrokerConnected: (brokerData: FrontPayload) => {
     // use broker account data
   },
@@ -24,84 +38,65 @@ const frontConnection = createFrontConnection({
 
 ```
 
-### Immediate connection
+### Using connection to open auth link
 
-Front connection to open immediately when your page or component renders.
-This is useful for scenarios without any user input (such as clicking a button)
+To open authentication link rpovided by Front Finance Integration API you need to call `openLink` method:
+
+```tsx
+frontConnection.openLink(authLink)
+```
 
 ℹ️ See full source code example at [react-example/src/ui/Front.tsx](https://github.com/FrontFin/front-b2b-link/tree/main/react-example/src/ui/Front.tsx)
 
 ```tsx
-import { createFrontConnection } from 'front-b2b';
-import { FrontPayload } from 'front-b2b/esm/types';
-import { Front } from 'front-b2b/esm/FrontLink';
+import { createFrontConnection } from 'front-broker-connection'
+import {
+  FrontConnection,
+  FrontPayload
+} from 'front-broker-connection/dist/utils/types'
 
 // ...
 
-const [frontConnection, setFrontConnection] = useState<Front | null>(null);
+const [frontConnection, setFrontConnection] = useState<FrontConnection | null>(
+  null
+)
 
 useEffect(() => {
-    setFrontConnection(
-      createFrontConnection(options)
-    );
-}, []);
+  setFrontConnection(createFrontConnection(options))
+}, [])
 
 useEffect(() => {
-  frontConnection?.open();
-}, [frontConnection]);
+  if (authLink) {
+    frontConnection?.openLink(authLink)
+  }
+}, [frontConnection, authLink])
 
-return <></>;
+return <></>
 ```
 
-### Event fired connection
+### Getting tokens
 
-Await event to fire before starting Front connection.
-
-```tsx
-import { createFrontConnection } from 'front-b2b';
-import { FrontPayload } from 'front-b2b/esm/types';
-import { Front } from 'front-b2b/esm/FrontLink';
-
-// ...
-
-const [frontConnection, setFrontConnection] = useState<Front | null>(null);
-
-useEffect(() => {
-    setFrontConnection(
-      createFrontConnection(options)
-    );
-}, []);
-  
-return (
-    <button onClick={() => {
-        frontConnection?.open();
-      }}
-    >
-      Connect
-    </button>
-  );
-```
+After successfull authentication on Front Finance user will be redirected back to provided callback URL.
+`FrontConnection` instance will check if URL contains query parameters, load broker tokens and fire the events.
 
 ### Available Connection configuration options
 
-ℹ️ See [src/types/index.ts](https://github.com/FrontFin/front-b2b-link/tree/main/src/types/index.ts) for exported types.
+ℹ️ See [src/types/index.ts](https://github.com/FrontFin/front-b2b-link/tree/main/src/utils/types.ts) for exported types.
 
 #### `createFrontConnection` arguments
 
-| key                   | type                                                                                      |
-| --------------------- | ----------------------------------------------------------------------------------------- |
-| `authLink`            | `string`                                                                                  |
-| `onBrokerConnected`   | `(payload: FrontPayload) => void`                                                         |
-| `onExit`              | `((error?: string \| undefined) => void) \| undefined`                                    |
+| key                 | type                                                   |
+| ------------------- | ------------------------------------------------------ |
+| `clientId`          | `string`                                               |
+| `onBrokerConnected` | `(payload: FrontPayload) => void`                      |
+| `onExit`            | `((error?: string \| undefined) => void) \| undefined` |
 
 #### `createFrontConnection` return value
 
-| key       | type                                                            |
-| --------- | --------------------------------------------------------------- |
-| `open`    | `() => void`                                                    |
-| `dispose` | `() => void`                                                    |
-
+| key        | type                  |
+| ---------- | --------------------- |
+| `openLink` | `() => Promise<void>` |
 
 ## Typescript support
 
-TypeScript definitions for `front-b2b-link` are built into the npm package.
+TypeScript definitions for `front-broker-connection` are built into the npm package.

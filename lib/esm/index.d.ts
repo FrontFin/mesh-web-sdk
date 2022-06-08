@@ -1,1 +1,0 @@
-export { createFrontConnection } from './FrontConnection';

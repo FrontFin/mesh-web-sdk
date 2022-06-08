@@ -1,42 +1,44 @@
-import { FrontPayload } from "front-b2b/esm/types";
-import { FunctionComponent, useState } from "react";
-import { headers } from "../utility/config";
-import { FrontComponent } from "./Front";
+import React, { FunctionComponent, useState } from 'react'
+import { frontApiUrl, headers } from '../utility/config'
+import { FrontComponent } from './Front'
+import { FrontPayload } from 'front-broker-connection/dist/utils/types'
 
 export const App: FunctionComponent = () => {
-  const [authLink, setAuthLink] = useState<string | null>(null);
-  const [payload, setPayload] = useState<FrontPayload | null>(null);
+  const [authLink, setAuthLink] = useState<string | null>(null)
+  const [payload, setPayload] = useState<FrontPayload | null>(null)
 
   const getAuthLink = async () => {
-    setAuthLink(null);
+    setAuthLink(null)
     const response = await fetch(
-      "https://integration-api.getfront.com/api/v1/cataloglink?userId=7652B44F-9CDB-4519-AC82-4FA5500F7455",
+      `${frontApiUrl}/api/v1/cataloglink?userId=7652B44F-9CDB-4519-AC82-4FA5500F7455&callbackUrl=http://localhost:3006`,
       {
-        headers,
+        headers
       }
-    );
-    const data = await response.json();
+    )
+    const data = await response.json()
     if (!response.ok) {
-      const error = (data && data.message) || response.statusText;
-      console.error("Error!", error);
+      const error = (data && data.message) || response.statusText
+      console.error('Error!', error)
     } else {
-      setAuthLink(data.content.url);
+      setAuthLink(data.content.url)
     }
-  };
+  }
 
   return (
-    <div style={{ padding: "15px" }}>
+    <div style={{ padding: '15px' }}>
       {(payload && (
-        <div style={{ wordWrap: "break-word" }}>
+        <div style={{ wordWrap: 'break-word' }}>
           <h1>Connected!</h1>
           <p>
             <b>Broker:</b> {payload.accessToken?.brokerName}
             <br />
             <b>Token:</b> {payload.accessToken?.accountTokens[0].accessToken}
             <br />
-            <b>Refresh Token:</b> {payload.accessToken?.accountTokens[0].refreshToken}
+            <b>Refresh Token:</b>{' '}
+            {payload.accessToken?.accountTokens[0].refreshToken}
             <br />
-            <b>Token expires in seconds:</b> {payload.accessToken?.expiresInSeconds}
+            <b>Token expires in seconds:</b>{' '}
+            {payload.accessToken?.expiresInSeconds}
             <br />
             <b>ID:</b> {payload.accessToken?.accountTokens[0].account.accountId}
             <br />
@@ -54,28 +56,26 @@ export const App: FunctionComponent = () => {
         </p>
       )}
 
-      <div style={{ width: "100%", display: "flex", justifyContent: "center" }}>
+      <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
         <button
-          style={{ width: "50%" }}
+          style={{ width: '50%' }}
           onClick={() => {
-            getAuthLink();
+            getAuthLink()
           }}
         >
           Front Broker Connection
         </button>
       </div>
 
-      {authLink && (
-        <FrontComponent
-          authLink={authLink}
-          onSuccess={(authData: FrontPayload) => {
-            setPayload(authData);
-            setAuthLink(null);
-          }}
-        />
-      )}
+      <FrontComponent
+        authLink={authLink}
+        onSuccess={(authData: FrontPayload) => {
+          setPayload(authData)
+          setAuthLink(null)
+        }}
+      />
     </div>
-  );
-};
+  )
+}
 
-export default App;
+export default App

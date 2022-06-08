@@ -1,0 +1,23 @@
+{
+    "typescript.tsdk": "./node_modules/typescript/lib",
+    "eslint.validate": [
+      "typescript",
+      "typescriptreact"
+    ],
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    },
+    "files.trimTrailingWhitespace": true,
+    "prettier.jsxSingleQuote": true,
+    "editor.formatOnSave": true,
+    "files.eol": "\n",
+    "appService.zipIgnorePattern": [
+      "node_modules{,/**}",
+      ".vscode{,/**}"
+    ],
+    "editor.tabSize": 2,
+    "files.exclude": {
+      "**/node_modules": true
+    }
+  }
+  
