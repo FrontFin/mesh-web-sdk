@@ -60,6 +60,11 @@ export enum BrokerType {
   BinanceInternational = 'binanceInternational',
   Bitstamp = 'bitstamp',
   GateIo = 'gateIo',
+  Celsius = 'celsius',
+  Acorns = 'acorns',
+  Okx = 'okx',
+  Coinlist = 'coinlist',
+  BitFlyer = 'bitFlyer',
 
   Plaid = 'plaid'
 }
