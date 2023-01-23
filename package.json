@@ -23,7 +23,8 @@
     "build:cjs": "tsc --module commonjs --outDir dist/cjs",
     "typecheck": "tsc --noEmit",
     "lint": "eslint **/*.ts",
-    "copy": "node ./tools/copy"
+    "copy": "node ./tools/copy",
+    "start:demo": "cd react-example && yarn start"
   },
   "files": [
     "/dist"
