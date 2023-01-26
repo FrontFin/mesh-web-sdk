@@ -1,9 +1,6 @@
 import React, { FunctionComponent, useEffect, useState } from 'react'
 import { createFrontConnection } from 'front-broker-connection'
-import {
-  FrontConnection,
-  FrontPayload
-} from 'front-broker-connection/dist/utils/types'
+import { FrontConnection, FrontPayload } from 'front-broker-connection'
 import { clientId } from '../utility/config'
 
 export const FrontComponent: FunctionComponent<{

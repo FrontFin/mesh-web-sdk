@@ -1,7 +1,7 @@
 import React, { FunctionComponent, useState } from 'react'
 import { frontApiUrl, headers } from '../utility/config'
 import { FrontComponent } from './Front'
-import { FrontPayload } from 'front-broker-connection/dist/utils/types'
+import { FrontPayload } from 'front-broker-connection'
 
 export const App: FunctionComponent = () => {
   const [authLink, setAuthLink] = useState<string | null>(null)

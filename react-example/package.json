@@ -6,14 +6,19 @@
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
     "axios": "^0.27.2",
-    "front-broker-connection": "^1.0.0",
+    "front-broker-connection": "*",
     "react": "^18.1.0",
+    "react-app-rewired": "^2.2.1",
     "react-dom": "^18.1.0",
     "react-scripts": "4.0.3",
-    "typescript": "^4.6.4"
+    "localforage": "^1.10.0"
   },
+  "workspaces": [
+    "/",
+    "../"
+  ],
   "scripts": {
-    "start": "react-scripts start"
+    "start": "react-app-rewired start"
   },
   "browserslist": {
     "production": [
@@ -36,6 +41,7 @@
     "eslint-plugin-prettier": "^3.4.0",
     "eslint-plugin-react": "^7.23.1",
     "eslint-plugin-react-hooks": "^4.2.0",
-    "prettier": "^2.2.1"
+    "prettier": "^2.2.1",
+    "typescript": "^4.6.4"
   }
 }
