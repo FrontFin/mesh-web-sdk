@@ -5,7 +5,7 @@ module.exports = function override(config, env) {
 
   rulesOneOf.splice(rulesOneOf.length - 1, 0, {
     ...rulesOneOf[2],
-    include: path.join(__dirname, "..", "src"),
+    include: path.join(__dirname, "../../packages/"),
   });
 
   return config;

@@ -1,24 +1,21 @@
 {
-  "name": "my-app",
+  "name": "@front/react-exmaple",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@front/broker-connection": "1.0.0",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
     "axios": "^0.27.2",
-    "front-broker-connection": "*",
     "react": "^18.1.0",
     "react-app-rewired": "^2.2.1",
     "react-dom": "^18.1.0",
     "react-scripts": "4.0.3",
     "localforage": "^1.10.0"
   },
-  "workspaces": [
-    "/",
-    "../"
-  ],
   "scripts": {
-    "start": "react-app-rewired start"
+    "start": "react-app-rewired start",
+    "typecheck": "tsc --noEmit"
   },
   "browserslist": {
     "production": [

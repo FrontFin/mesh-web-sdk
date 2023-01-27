@@ -1,0 +1,32 @@
+{
+  "name": "@front/broker-connection",
+  "version": "1.0.0",
+  "description": "Front Finance brokerage connection client lib",
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
+  "type": "module",
+  "license": "MIT",
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.21.0",
+    "@typescript-eslint/parser": "^4.21.0",
+    "eslint": "^7.23.0",
+    "eslint-config-prettier": "^8.1.0",
+    "eslint-plugin-import": "^2.22.1",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.2.1",
+    "typescript": "^4.6.4"
+  },
+  "scripts": {
+    "build": "rimraf dist && yarn build:esm && yarn build:cjs && yarn copy",
+    "build:esm": "tsc --outDir dist",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint **/*.ts",
+    "copy": "node ./tools/copy",
+    "publish:npm": "yarn build && cd dist && yarn publish --access public"
+  },
+  "dependencies": {
+    "localforage": "^1.10.0"
+  }
+}

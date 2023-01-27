@@ -1,9 +1,12 @@
-import React, { FunctionComponent, useEffect, useState } from 'react'
-import { createFrontConnection } from 'front-broker-connection'
-import { FrontConnection, FrontPayload } from 'front-broker-connection'
+import React, { useEffect, useState } from 'react'
+import {
+  FrontConnection,
+  FrontPayload,
+  createFrontConnection
+} from '@front/broker-connection'
 import { clientId } from '../utility/config'
 
-export const FrontComponent: FunctionComponent<{
+export const FrontComponent: React.FC<{
   authLink?: string | null
   onSuccess: (authData: FrontPayload) => void
 }> = ({ authLink, onSuccess }) => {

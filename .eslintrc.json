@@ -34,5 +34,5 @@
     "plugin:import/typescript",
     "prettier"
   ],
-  "ignorePatterns": ["**/*.test.ts", "**/*.test.tsx", "/dist/**"]
+  "ignorePatterns": ["**/*.test.ts", "**/*.test.tsx", "**/dist/**"]
 }

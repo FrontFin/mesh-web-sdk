@@ -1,9 +1,9 @@
-import React, { FunctionComponent, useState } from 'react'
+import React, { useState } from 'react'
 import { frontApiUrl, headers } from '../utility/config'
 import { FrontComponent } from './Front'
-import { FrontPayload } from 'front-broker-connection'
+import { FrontPayload } from '@front/broker-connection'
 
-export const App: FunctionComponent = () => {
+export const App: React.FC = () => {
   const [authLink, setAuthLink] = useState<string | null>(null)
   const [payload, setPayload] = useState<FrontPayload | null>(null)
 
