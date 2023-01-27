@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
-import { frontApiUrl, headers } from '../utility/config'
+import { frontApiUrl, clientId, clientSecret } from '../utility/config'
 import { FrontComponent } from './Front'
 import { FrontPayload } from '@front/broker-connection'
+import { IntegrationsApi } from '@front/api'
 
 export const App: React.FC = () => {
   const [authLink, setAuthLink] = useState<string | null>(null)
@@ -9,18 +10,20 @@ export const App: React.FC = () => {
 
   const getAuthLink = async () => {
     setAuthLink(null)
-    const response = await fetch(
-      `${frontApiUrl}/api/v1/cataloglink?userId=7652B44F-9CDB-4519-AC82-4FA5500F7455&callbackUrl=http://localhost:3006`,
-      {
-        headers
-      }
-    )
-    const data = await response.json()
-    if (!response.ok) {
+    const integrationsApi = new IntegrationsApi(undefined, frontApiUrl)
+    const response = await integrationsApi.apiV1CataloglinkGet({
+      xClientId: clientId,
+      xClientSecret: clientSecret,
+      userId: '7652B44F-9CDB-4519-AC82-4FA5500F7455',
+      callbackUrl: 'http://localhost:3006'
+    })
+
+    const data = response.data
+    if (response.status !== 200 || !data?.content) {
       const error = (data && data.message) || response.statusText
       console.error('Error!', error)
     } else {
-      setAuthLink(data.content.url)
+      setAuthLink(data.content.url!)
     }
   }
 

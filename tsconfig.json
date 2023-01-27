@@ -16,8 +16,5 @@
     "suppressImplicitAnyIndexErrors": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "react-jsx",
-  },
-  "include": [
-    "packages",
-  ]
+  }
 }

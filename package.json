@@ -29,6 +29,7 @@
     "test": "lerna run test",
     "lint:fix": "lerna run lint -- --fix",
     "start:demo": "cd examples/react-example && yarn start",
+    "updateApi": "cd packages/api && yarn updateApi",
     "publish:npm": "lerna run publish:npm"
   }
 }

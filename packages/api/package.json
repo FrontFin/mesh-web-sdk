@@ -1,0 +1,26 @@
+{
+  "name": "@front/api",
+  "version": "1.0.0",
+  "description": "Front Finance API lib",
+  "main": "./src/index.ts",
+  "module": "./src/index.ts",
+  "types": "./src/index.ts",
+  "type": "module",
+  "license": "MIT",
+  "devDependencies": {
+    "typescript": "^4.6.4"
+  },
+  "scripts": {
+    "build": "rimraf dist && yarn build:esm && yarn build:cjs && yarn copy",
+    "build:esm": "tsc --outDir dist",
+    "build:cjs": "tsc --module commonjs --outDir dist/cjs",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint . --ext ts,js",
+    "copy": "node ./tools/copy",
+    "updateApi": "node ./tools/updateSwagger",
+    "publish:npm": "yarn build && cd dist && yarn publish --access public"
+  },
+  "dependencies": {
+    "axios": "^1.2.5"
+  }
+}
