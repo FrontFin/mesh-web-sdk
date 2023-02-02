@@ -460,7 +460,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/CatalogLinkIApiResult"
                 },
-                "example": {"content":{"url":"https://web.getfront.com/broker-connect?auth_code={authCode}"},"status":"ok","message":""}
+                "example": {"content":{"url":"https://web.getfront.com/broker-connect?auth_code={authCode}","iFrameUrl":"https://web.getfront.com/b2b-iframe/{clientId}/broker-connect?auth_code={authCode}"},"status":"ok","message":""}
               }
             }
           },
@@ -3277,6 +3277,7 @@
               "Limit",
               "StopLoss",
               "StopLimit",
+              "TakeProfit",
               "NetDebit",
               "NetCredit",
               "Exercise"
@@ -3293,7 +3294,8 @@
               "ImmediateOrCancel",
               "FillOrKill",
               "GoodForDay",
-              "PostOnly"
+              "PostOnly",
+              "Unknown"
             ],
             "allOf": [
               {
@@ -4980,6 +4982,7 @@
               "Limit",
               "StopLoss",
               "StopLimit",
+              "TakeProfit",
               "NetDebit",
               "NetCredit",
               "Exercise"
@@ -4996,7 +4999,8 @@
               "ImmediateOrCancel",
               "FillOrKill",
               "GoodForDay",
-              "PostOnly"
+              "PostOnly",
+              "Unknown"
             ],
             "allOf": [
               {
@@ -7321,6 +7325,7 @@
           "Limit",
           "StopLoss",
           "StopLimit",
+          "TakeProfit",
           "NetDebit",
           "NetCredit",
           "Exercise"
@@ -7346,7 +7351,8 @@
           "ImmediateOrCancel",
           "FillOrKill",
           "GoodForDay",
-          "PostOnly"
+          "PostOnly",
+          "Unknown"
         ],
         "type": "string"
       },
@@ -7579,6 +7585,13 @@
           "url": {
             "type": "string",
             "description": "Url to open Front catalog that should be presented to the end user.",
+            "format": "uri",
+            "nullable": true
+          },
+          "iFrameUrl": {
+            "type": "string",
+            "description": "Url to open Front catalog in iFrame that should be presented to the end user.",
+            "format": "uri",
             "nullable": true
           }
         },

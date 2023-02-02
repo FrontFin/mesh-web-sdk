@@ -7,9 +7,10 @@ import {
 import { clientId } from '../utility/config'
 
 export const FrontComponent: React.FC<{
-  authLink?: string | null
+  iframeLink?: string | null
   onSuccess: (authData: FrontPayload) => void
-}> = ({ authLink, onSuccess }) => {
+  onExit?: (error?: string) => void
+}> = ({ iframeLink, onSuccess, onExit }) => {
   const [frontConnection, setFrontConnection] =
     useState<FrontConnection | null>(null)
 
@@ -25,16 +26,24 @@ export const FrontComponent: React.FC<{
           if (error) {
             console.error(`[FRONT ERROR] ${error}`)
           }
+
+          onExit?.()
         }
       })
     )
   }, [])
 
   useEffect(() => {
-    if (authLink) {
-      frontConnection?.openLink(authLink)
+    if (iframeLink) {
+      frontConnection?.openPopup(iframeLink)
     }
-  }, [frontConnection, authLink])
+
+    return () => {
+      if (iframeLink) {
+        frontConnection?.closePopup()
+      }
+    }
+  }, [frontConnection, iframeLink])
 
   return <></>
 }

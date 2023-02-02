@@ -7,6 +7,8 @@ export type EventType =
 
 export interface FrontConnection {
   openLink: (authLink: string) => Promise<void>
+  openPopup: (iframeLink: string) => Promise<void>
+  closePopup: () => void
 }
 
 export interface SetTitleEvent {

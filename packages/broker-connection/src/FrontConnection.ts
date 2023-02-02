@@ -8,6 +8,7 @@ import {
 } from './utils/types'
 import { generateAndSaveNonce, validateNonce } from './utils/nonce'
 import localforage from 'localforage'
+import { addPopup, removePopup } from './utils/popup'
 
 const authLinkHostKey = 'front-auth-link-host'
 const hostRegex = /^https?:\/\/[^/]+/i
@@ -31,7 +32,7 @@ function deleteIframe() {
   }
 }
 
-function createIframe(options: FrontOptions, host: string) {
+function createListenerIframe(options: FrontOptions, host: string) {
   const iframe = document.createElement('iframe')
   iframe.id = iframeId
   iframe.title = 'Front'
@@ -87,28 +88,50 @@ async function checkNonceAndCreateIframe(options: FrontOptions): Promise<void> {
   const isNonceValid = await validateNonce(nonce)
   if (isNonceValid) {
     const host = await getAuthLinkHost()
-    createIframe(options, host)
+    createListenerIframe(options, host)
   }
+}
+
+async function addNonceToUrl(link: string): Promise<string> {
+  await saveAuthLinkHost(link)
+  const nonce = await generateAndSaveNonce()
+  const delimiter = link.indexOf('?') > 0 ? '&' : '?'
+  const url = `${link}${delimiter}b2bNonce=${nonce}`
+  return url
 }
 
 export const createFrontConnection = (
   options: FrontOptions
 ): FrontConnection => {
-  const openLink = async (authLink: string) => {
-    if (!authLink) {
+  const openLink = async (link: string) => {
+    if (!link) {
       options?.onExit && options.onExit('Invalid link!')
       return
     }
 
-    await saveAuthLinkHost(authLink)
-    const nonce = await generateAndSaveNonce()
-    const delimiter = authLink.indexOf('?') > 0 ? '&' : '?'
-    const url = `${authLink}${delimiter}b2bNonce=${nonce}`
+    const url = await addNonceToUrl(link)
     window.location.href = url
+    addPopup(url, options)
+  }
+
+  const openPopup = async (iframeUrl: string) => {
+    if (!iframeUrl) {
+      options?.onExit && options.onExit('Invalid link!')
+      return
+    }
+
+    const url = await addNonceToUrl(iframeUrl)
+    addPopup(url, options)
   }
 
   checkNonceAndCreateIframe(options)
+
   return {
-    openLink: openLink
+    openLink: openLink,
+    openPopup: openPopup,
+    closePopup: () => {
+      removePopup()
+      options.onExit?.()
+    }
   }
 }
