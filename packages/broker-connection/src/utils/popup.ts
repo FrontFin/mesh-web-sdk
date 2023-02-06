@@ -111,6 +111,7 @@ function eventsListener(
     type: EventType
     payload?: AccessTokenPayload | DelayedAuthPayload
     message?: string
+    link?: string
   }>
 ) {
   switch (event.data.type) {
@@ -134,6 +135,19 @@ function eventsListener(
     case 'done': {
       currentOptions?.onExit?.(event.data.message)
       removePopup()
+      break
+    }
+    case 'oauthLinkOpen': {
+      if (event.data.link) {
+        window
+          .open(
+            event.data.link,
+            '_blank',
+            'popup,noopener,noreferrer,resizable,scrollbars'
+          )
+          ?.focus()
+      }
+
       break
     }
   }

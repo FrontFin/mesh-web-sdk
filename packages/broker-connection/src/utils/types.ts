@@ -4,6 +4,7 @@ export type EventType =
   | 'close'
   | 'done'
   | 'loaded'
+  | 'oauthLinkOpen'
 
 export interface FrontConnection {
   openLink: (authLink: string) => Promise<void>

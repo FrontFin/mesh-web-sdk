@@ -26,8 +26,10 @@ export const App: React.FC = () => {
       const error = (data && data.message) || response.statusText
       console.error('Error!', error)
       setError(error)
+    } else if (!data.content.iFrameUrl) {
+      setError('Iframe url is empty')
     } else {
-      setIframeLink(data.content.iFrameUrl!)
+      setIframeLink(data.content.iFrameUrl)
     }
   }, [])
 
