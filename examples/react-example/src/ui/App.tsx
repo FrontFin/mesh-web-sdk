@@ -2,7 +2,7 @@ import React, { useState, useCallback } from 'react'
 import { frontApiUrl, clientId, clientSecret } from '../utility/config'
 import { FrontComponent } from './Front'
 import { FrontPayload } from '@front/broker-connection'
-import { IntegrationsApi } from '@front/api'
+import { FrontApi } from '@front/api'
 
 export const App: React.FC = () => {
   const [iframeLink, setIframeLink] = useState<string | null>(null)
@@ -12,11 +12,16 @@ export const App: React.FC = () => {
   const getAuthLink = useCallback(async () => {
     setError(null)
     setIframeLink(null)
-    const integrationsApi = new IntegrationsApi(undefined, frontApiUrl)
+    const api = new FrontApi({
+      baseURL: frontApiUrl,
+      headers: {
+        'x-client-id': clientId, // insert your client id here
+        'x-client-secret': clientSecret // do not use your clientSecret on the FE
+      }
+    })
+
     // this request should be performed from the backend side
-    const response = await integrationsApi.apiV1CataloglinkGet({
-      xClientId: clientId, // insert your client id here
-      xClientSecret: clientSecret, // do not use your clientSecret on the FE
+    const response = await api.integrations.v1CataloglinkList({
       userId: '7652B44F-9CDB-4519-AC82-4FA5500F7455', // insert your unique user identifier here
       callbackUrl: 'http://localhost:3006' // insert your callback URL here
     })

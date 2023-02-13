@@ -1,3 +1,5 @@
+import type { BrokerType } from '@front/api'
+
 export type EventType =
   | 'brokerageAccountAccessToken'
   | 'delayedAuthentication'
@@ -37,47 +39,6 @@ export interface BrokerBrandInfo {
   brokerPrimaryColor?: string
 }
 
-export enum BrokerType {
-  Robinhood = 'robinhood',
-  Coinbase = 'coinbase',
-  ETrade = 'eTrade',
-  TdAmeritrade = 'tdAmeritrade',
-  Alpaca = 'alpaca',
-  WeBull = 'weBull',
-  Stash = 'stash',
-  InteractiveBrokers = 'interactiveBrokers',
-  Public = 'public',
-  Kraken = 'kraken',
-  CoinbasePro = 'coinbasePro',
-  CryptoCom = 'cryptoCom',
-  BinanceUs = 'binanceUs',
-  EToro = 'etoro',
-  FtxUs = 'ftxUs',
-  Gemini = 'gemini',
-  Uphold = 'uphold',
-  OkCoin = 'okCoin',
-  Bittrex = 'bittrex',
-  KuCoin = 'kuCoin',
-  OpenSea = 'openSea',
-  CexIo = 'cexIo',
-  BinanceInternational = 'binanceInternational',
-  Bitstamp = 'bitstamp',
-  GateIo = 'gateIo',
-  Celsius = 'celsius',
-  Acorns = 'acorns',
-  Okx = 'okx',
-  Coinlist = 'coinlist',
-  BitFlyer = 'bitFlyer',
-
-  Plaid = 'plaid'
-}
-
-export type AllBrokerTypes =
-  | BrokerType
-  | 'cryptocurrencyAddress'
-  | 'cryptocurrencyWallet'
-  | 'custom'
-
 export interface FrontPayload {
   accessToken?: AccessTokenPayload
   delayedAuth?: DelayedAuthPayload
@@ -88,7 +49,7 @@ export interface AccessTokenPayload {
   brokerBrandInfo: BrokerBrandInfo
   expiresInSeconds?: number
   refreshTokenExpiresInSeconds?: number
-  brokerType: AllBrokerTypes
+  brokerType: BrokerType
   brokerName: string
 }
 
