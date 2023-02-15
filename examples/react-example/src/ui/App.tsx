@@ -1,8 +1,8 @@
 import React, { useState, useCallback } from 'react'
 import { frontApiUrl, clientId, clientSecret } from '../utility/config'
 import { FrontComponent } from './Front'
-import { FrontPayload } from '@front/broker-connection'
-import { FrontApi } from '@front/api'
+import { FrontPayload } from '@front-finance/link'
+import { FrontApi } from '@front-finance/api'
 
 export const App: React.FC = () => {
   const [iframeLink, setIframeLink] = useState<string | null>(null)

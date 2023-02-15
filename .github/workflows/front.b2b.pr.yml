@@ -1,0 +1,38 @@
+name: B2B Web SDK - Build and Test
+on:
+  workflow_dispatch:
+    inputs:
+      logLevel:
+        description: 'Log level'
+        required: false
+        default: 'warning'
+      tags:
+        description: 'Test run'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/**'
+      - 'packages/**'
+      - 'examples/**'
+      - 'packages.json'
+      - 'yarn.lock'
+jobs:
+  build-and-test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v2
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v2.4.0
+        with:
+          node-version: 16.x
+      - name: Install dependencies
+        run: yarn
+      - name: Checking for type errors
+        run: yarn typecheck
+      - name: Checking for linting errors
+        run: yarn lint
+      - name: Yarn build
+        run: yarn build
+      - name: Yarn test
+        run: yarn test

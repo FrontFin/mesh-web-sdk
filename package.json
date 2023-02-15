@@ -1,5 +1,5 @@
 {
-  "name": "@front/front-b2b-sdk",
+  "name": "@front-finance/front-b2b-sdk",
   "version": "1.0.0",
   "description": "Front Finance B2B SDK",
   "private": true,

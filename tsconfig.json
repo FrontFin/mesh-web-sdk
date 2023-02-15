@@ -16,5 +16,6 @@
     "suppressImplicitAnyIndexErrors": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "react-jsx",
-  }
+  },
+  "exclude": ["**/dist/**"]
 }

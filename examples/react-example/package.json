@@ -1,10 +1,10 @@
 {
-  "name": "@front/react-exmaple",
+  "name": "@front-finance/react-exmaple",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@front/api": "*",
-    "@front/broker-connection": "*",
+    "@front-finance/api": "*",
+    "@front-finance/link": "*",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
     "axios": "^0.27.2",

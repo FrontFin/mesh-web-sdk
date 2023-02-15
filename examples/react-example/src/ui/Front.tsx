@@ -3,7 +3,7 @@ import {
   FrontConnection,
   FrontPayload,
   createFrontConnection
-} from '@front/broker-connection'
+} from '@front-finance/link'
 import { clientId } from '../utility/config'
 
 export const FrontComponent: React.FC<{

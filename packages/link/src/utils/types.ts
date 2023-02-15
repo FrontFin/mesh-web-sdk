@@ -1,4 +1,4 @@
-import type { BrokerType } from '@front/api'
+import type { BrokerType } from '@front-finance/api'
 
 export type EventType =
   | 'brokerageAccountAccessToken'

@@ -1,4 +1,4 @@
-# front-broker-connection
+# @front-finance/api
 
 JS library for integrating with Front Finance API
 
@@ -7,15 +7,15 @@ JS library for integrating with Front Finance API
 With `npm`:
 
 ```
-npm install --save @front/api
+npm install --save @front-finance/api
 ```
 
 With `yarn`
 
 ```
-yarn add @front/api
+yarn add @front-finance/api
 ```
 
 ## Typescript support
 
-TypeScript definitions for `@front/api` are built into the npm package.
+TypeScript definitions for `@front-finance/api` are built into the npm package.
