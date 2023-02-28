@@ -1,12 +1,14 @@
 {
   "name": "@front-finance/api",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Front Finance API lib",
   "main": "./src/index.ts",
   "module": "./src/index.ts",
   "types": "./src/index.ts",
   "type": "module",
   "license": "MIT",
+  "repository": "https://github.com/FrontFin/front-b2b-link.git",
+  "homepage": "https://github.com/FrontFin/front-b2b-link",
   "devDependencies": {
     "typescript": "^4.6.4",
     "swagger-typescript-api": "^12.0.3"

@@ -16,6 +16,23 @@ With `yarn`
 yarn add @front-finance/link
 ```
 
+### Getting connection link
+
+Connection link should be obtained from the GET `/api/v1/cataloglink` endpoint. Api reference for this request is available [here](https://integration-api.getfront.com/apireference#tag/Integrations/paths/~1api~1v1~1cataloglink/get). Request must be preformed from the server side because it requires the client secret. You will get the response in the following format:
+
+```json
+{
+  "content": {
+    "url": "https://web.getfront.com/broker-connect?auth_code={authCode}",
+    "iFrameUrl": "https://web.getfront.com/b2b-iframe/{clientId}/broker-connect?auth_code={authCode}"
+  },
+  "status": "ok",
+  "message": ""
+}
+```
+
+You can use `iFrameUrl` from this response to open the popup window with `openPopup` method. `url` field is used to open link in the same tab by `openLink` method.
+
 ### Generating connection method
 
 ```tsx
@@ -98,6 +115,10 @@ After successfull authentication on Front Finance user will be redirected back t
 | `openLink`   | `(link: string) => Promise<void>`      | Opens url in same tab. |
 | `openPopup`  | `(iframeUrl: string) => Promise<void>` | Opens url in popup     |
 | `closePopup` | `() => Promise<void>`                  | Closes popup window    |
+
+### Using tokens
+
+You can use broker tokens to perform requests to get current balance, assets and execute transactions. Full API reference can be found [here](https://integration-api.getfront.com/apireference).
 
 ## Typescript support
 

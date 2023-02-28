@@ -1,12 +1,14 @@
 {
   "name": "@front-finance/link",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Front Finance accounts connection client lib",
   "main": "./src/index.ts",
   "module": "./src/index.ts",
   "types": "./src/index.ts",
   "type": "module",
   "license": "MIT",
+  "repository": "https://github.com/FrontFin/front-b2b-link.git",
+  "homepage": "https://github.com/FrontFin/front-b2b-link",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^4.21.0",
     "@typescript-eslint/parser": "^4.21.0",

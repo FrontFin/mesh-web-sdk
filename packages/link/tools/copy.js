@@ -7,6 +7,10 @@ delete packageModel.module
 delete packageModel.types
 delete packageModel.scripts
 
+packageModel.main = 'cjs/index.js'
+packageModel.module = 'index.js'
+packageModel.types = 'index.d.ts'
+
 const data = JSON.stringify(packageModel, null, 2)
 fs.writeFileSync('dist/package.json', data)
 console.log('package.json.dist was copied to ./dist folder')
