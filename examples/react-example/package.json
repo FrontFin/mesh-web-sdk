@@ -15,7 +15,8 @@
     "localforage": "^1.10.0"
   },
   "scripts": {
-    "start": "react-app-rewired start",
+    "start": "react-app-rewired --openssl-legacy-provider start",
+    "build": "react-app-rewired --openssl-legacy-provider build",
     "typecheck": "tsc --noEmit"
   },
   "browserslist": {

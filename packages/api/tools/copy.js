@@ -6,6 +6,7 @@ delete packageModel.main
 delete packageModel.module
 delete packageModel.types
 delete packageModel.scripts
+delete packageModel.type
 
 packageModel.main = 'cjs/index.js'
 packageModel.module = 'index.js'

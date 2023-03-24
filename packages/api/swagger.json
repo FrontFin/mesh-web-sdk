@@ -11,6 +11,106 @@
     }
   ],
   "paths": {
+    "/api/v1/assets/{assetType}": {
+      "get": {
+        "tags": [
+          "Assets"
+        ],
+        "parameters": [
+          {
+            "name": "assetType",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "enum": [
+                "equity",
+                "cryptocurrency"
+              ],
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/AssetType"
+                }
+              ]
+            }
+          },
+          {
+            "name": "Search",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Count",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "X-Client-Id",
+            "in": "header",
+            "description": "Id of the client",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Client-Secret",
+            "in": "header",
+            "description": "Client secret, should be stored safely and never shared",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AssetPaginationResponseIApiResult"
+                },
+                "example": {"content":{"items":[{"symbol":"AAPL","name":"Apple Inc","type":"equity"},{"symbol":"MSFT","name":"Microsoft Inc","type":"equity"}],"total":5},"status":"ok","message":""}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResult"
+                },
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/balance/get": {
       "post": {
         "tags": [
@@ -50,10 +150,7 @@
                   }
                 ]
               },
-              "example": {
-                "authToken": "Secret authentication token",
-                "type": "robinhood"
-              }
+              "example": {"authToken":"Secret authentication token","type":"robinhood"}
             }
           }
         },
@@ -65,20 +162,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerAccountBalanceModelIApiResult"
                 },
-                "example": {
-                  "content": {
-                    "balances": [
-                      {
-                        "cash": 158.5,
-                        "buyingPower": 258.5,
-                        "currencyCode": "USD"
-                      },
-                      { "cash": 10, "buyingPower": 10, "currencyCode": "EUR" }
-                    ]
-                  },
-                  "status": "ok",
-                  "message": ""
-                }
+                "example": {"content":{"balances":[{"cash":158.5,"buyingPower":258.5,"currencyCode":"USD"},{"cash":10,"buyingPower":10,"currencyCode":"EUR"}]},"status":"ok","message":""}
               }
             }
           },
@@ -89,11 +173,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {
-                  "status": "badRequest",
-                  "message": "Error message",
-                  "displayMessage": "Optional display message"
-                }
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
               }
             }
           },
@@ -101,7 +181,7 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           }
@@ -110,7 +190,9 @@
     },
     "/api/v1/balance/portfolio": {
       "get": {
-        "tags": ["Balance"],
+        "tags": [
+          "Balance"
+        ],
         "summary": "Get aggregated portfolio fiat balances",
         "description": "Get cached aggregated fiat balances from all connected integrations.",
         "parameters": [
@@ -151,20 +233,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BPortfolioModelIApiResult"
                 },
-                "example": {
-                  "content": {
-                    "fiatBalances": [
-                      { "symbol": "USD", "cash": 3.099, "buyingPower": 3.099 },
-                      {
-                        "symbol": "EUR",
-                        "cash": -102.88,
-                        "buyingPower": 1293.596
-                      }
-                    ]
-                  },
-                  "status": "ok",
-                  "message": ""
-                }
+                "example": {"content":{"fiatBalances":[{"symbol":"USD","cash":3.099,"buyingPower":3.099},{"symbol":"EUR","cash":-102.880,"buyingPower":1293.596}]},"status":"ok","message":""}
               }
             }
           },
@@ -175,11 +244,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {
-                  "status": "badRequest",
-                  "message": "Error message",
-                  "displayMessage": "Optional display message"
-                }
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
               }
             }
           },
@@ -187,332 +252,7 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/frontscore/get": {
-      "get": {
-        "tags": ["FrontScore"],
-        "summary": "Get portfolio Front Score",
-        "description": "Get portfolio health measurement.",
-        "parameters": [
-          {
-            "name": "UserId",
-            "in": "query",
-            "description": "Id of the end user to get the Front Score of the aggregated portfolio for.",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Id",
-            "in": "header",
-            "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Front Score calculated.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/B2BPortfolioFiscoIApiResult"
-                },
-                "example": {
-                  "content": {
-                    "frontScore": 608,
-                    "totalScore": "fair",
-                    "maxFrontScore": 850,
-                    "minFrontScore": 300,
-                    "financialScore": "good",
-                    "performanceScore": "good",
-                    "newsScore": "good",
-                    "predictionScore": "poor",
-                    "residualReturnScore": "poor",
-                    "diversificationScore": "fair",
-                    "esgScore": "exceptional",
-                    "isEsgScoreApplied": true,
-                    "isFinancialScoreApplied": true,
-                    "isPerformanceScoreApplied": true,
-                    "isNewsScoreApplied": true,
-                    "isPredictionScoreApplied": true,
-                    "isResidualReturnScoreApplied": true,
-                    "isDiversificationScoreApplied": true
-                  },
-                  "status": "ok",
-                  "message": ""
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiResult"
-                },
-                "example": { "status": "ok" }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized: Client Id or Client Secret are not correct or missing.",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/frontscore/cryptocurrency": {
-      "get": {
-        "tags": ["FrontScore"],
-        "summary": "Get cryptocurrency Front Score",
-        "description": "Get cryptocurrency health measurement.",
-        "parameters": [
-          {
-            "name": "Symbols",
-            "in": "query",
-            "description": "List of cryptocurrency symbols to get Front Score for",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          {
-            "name": "UserId",
-            "in": "query",
-            "description": "Optional end user id for compatibility score",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Id",
-            "in": "header",
-            "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Front Score calculated.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/B2BCryptocurrencyFiscoIReadOnlyCollectionIApiResult"
-                },
-                "example": {
-                  "content": [
-                    {
-                      "symbol": "BTC",
-                      "frontScore": {
-                        "frontScore": 608,
-                        "totalScore": "fair",
-                        "isCompatibilityScoreApplied": false
-                      }
-                    },
-                    {
-                      "symbol": "ETH",
-                      "frontScore": {
-                        "frontScore": 618,
-                        "totalScore": "fair",
-                        "isCompatibilityScoreApplied": false
-                      }
-                    }
-                  ],
-                  "status": "ok",
-                  "message": ""
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiResult"
-                },
-                "example": { "status": "ok" }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized: Client Id or Client Secret are not correct or missing.",
-            "content": {
-              "application/json": {
-                "schema": {}
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/frontscore/equity": {
-      "get": {
-        "tags": ["FrontScore"],
-        "summary": "Get stock Front Score",
-        "description": "Get equity health measurement.",
-        "parameters": [
-          {
-            "name": "Symbols",
-            "in": "query",
-            "description": "List of equity symbols to get Front Score for",
-            "schema": {
-              "type": "array",
-              "items": {
-                "type": "string"
-              }
-            }
-          },
-          {
-            "name": "UserId",
-            "in": "query",
-            "description": "Optional end user id for compatibility score",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Id",
-            "in": "header",
-            "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "Front Score calculated.",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/B2BStockFiscoIReadOnlyCollectionIApiResult"
-                },
-                "example": {
-                  "content": [
-                    {
-                      "symbol": "AAPL",
-                      "frontScore": {
-                        "frontScore": 608,
-                        "totalScore": "fair",
-                        "maxFrontScore": 850,
-                        "minFrontScore": 300,
-                        "financialScore": "good",
-                        "performanceScore": "good",
-                        "newsScore": "good",
-                        "predictionScore": "poor",
-                        "residualReturnScore": "poor",
-                        "esgScore": "exceptional",
-                        "isCompatibilityScoreApplied": false,
-                        "isEsgScoreApplied": true,
-                        "isFinancialScoreApplied": true,
-                        "isPerformanceScoreApplied": true,
-                        "isNewsScoreApplied": true,
-                        "isPredictionScoreApplied": true,
-                        "isResidualReturnScoreApplied": true,
-                        "isDiversificationScoreApplied": false
-                      }
-                    },
-                    {
-                      "symbol": "ETH",
-                      "frontScore": {
-                        "frontScore": 608,
-                        "totalScore": "fair",
-                        "maxFrontScore": 850,
-                        "minFrontScore": 300,
-                        "financialScore": "good",
-                        "performanceScore": "good",
-                        "newsScore": "good",
-                        "predictionScore": "poor",
-                        "residualReturnScore": "poor",
-                        "esgScore": "exceptional",
-                        "isCompatibilityScoreApplied": false,
-                        "isEsgScoreApplied": true,
-                        "isFinancialScoreApplied": true,
-                        "isPerformanceScoreApplied": true,
-                        "isNewsScoreApplied": true,
-                        "isPredictionScoreApplied": true,
-                        "isResidualReturnScoreApplied": true,
-                        "isDiversificationScoreApplied": false
-                      }
-                    }
-                  ],
-                  "status": "ok",
-                  "message": ""
-                }
-              }
-            }
-          },
-          "400": {
-            "description": "Bad Request",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/ApiResult"
-                },
-                "example": { "status": "ok" }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized: Client Id or Client Secret are not correct or missing.",
-            "content": {
-              "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           }
@@ -521,7 +261,9 @@
     },
     "/api/v1/cataloglink": {
       "get": {
-        "tags": ["Integrations"],
+        "tags": [
+          "Managed Account Authentication"
+        ],
         "summary": "Get catalog link",
         "description": "Get personalized catalog link for client",
         "parameters": [
@@ -582,14 +324,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/CatalogLinkIApiResult"
                 },
-                "example": {
-                  "content": {
-                    "url": "https://web.getfront.com/broker-connect?auth_code={authCode}",
-                    "iFrameUrl": "https://web.getfront.com/b2b-iframe/{clientId}/broker-connect?auth_code={authCode}"
-                  },
-                  "status": "ok",
-                  "message": ""
-                }
+                "example": {"content":{"url":"https://web.getfront.com/broker-connect?auth_code={authCode}","iFrameUrl":"https://web.getfront.com/b2b-iframe/{clientId}/broker-connect?auth_code={authCode}"},"status":"ok","message":""}
               }
             }
           },
@@ -600,11 +335,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {
-                  "status": "notFound",
-                  "message": "Error message",
-                  "displayMessage": "Optional display message"
-                }
+                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message"}
               }
             }
           },
@@ -615,11 +346,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {
-                  "status": "badRequest",
-                  "message": "Error message",
-                  "displayMessage": "Optional display message"
-                }
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
               }
             }
           },
@@ -627,7 +354,7 @@
             "description": "Unauthorized: Client Id or Client Secret are not correct or missing.",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           }
@@ -636,7 +363,9 @@
     },
     "/api/v1/token/refresh": {
       "post": {
-        "tags": ["Integrations"],
+        "tags": [
+          "Managed Account Authentication"
+        ],
         "summary": "Refresh auth token",
         "description": "Refresh auth token of the connected institution.\r\nSome institutions do not require tokens to be refreshed.\r\n            \r\nThe following institutions require custom flows:\r\n            \r\nWeBull: AuthToken should be provided along with the RefreshToken\r\n            \r\nTdAmeritrade: refresh token should also be refreshed.\r\nCreateNewRefreshToken parameter should be set to true in order\r\nto refresh the refresh token for TdAmeritrade.",
         "parameters": [
@@ -671,10 +400,7 @@
                   }
                 ]
               },
-              "example": {
-                "refreshToken": "Secret refresh token",
-                "type": "coinbase"
-              }
+              "example": {"refreshToken":"Secret refresh token","type":"coinbase"}
             }
           }
         },
@@ -686,16 +412,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerRefreshTokenResponseIApiResult"
                 },
-                "example": {
-                  "content": {
-                    "status": "succeeded",
-                    "accessToken": "New secret token",
-                    "refreshToken": "New secret refresh token",
-                    "expiresInSeconds": 86400
-                  },
-                  "status": "ok",
-                  "message": ""
-                }
+                "example": {"content":{"status":"succeeded","accessToken":"New secret token","refreshToken":"New secret refresh token","expiresInSeconds":86400},"status":"ok","message":""}
               }
             }
           },
@@ -706,11 +423,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {
-                  "status": "badRequest",
-                  "message": "Unauthorized token",
-                  "displayMessage": "Could not refresh the authentication token. The provided data is not correct"
-                }
+                "example": {"status":"badRequest","message":"Unauthorized token","displayMessage":"Could not refresh the authentication token. The provided data is not correct"}
               }
             }
           },
@@ -718,7 +431,7 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           }
@@ -727,7 +440,9 @@
     },
     "/api/v1/account": {
       "delete": {
-        "tags": ["Integrations"],
+        "tags": [
+          "Managed Account Authentication"
+        ],
         "summary": "Remove connection",
         "description": "Remove connection to the financial institution and erase all related data completely.",
         "parameters": [
@@ -762,10 +477,7 @@
                   }
                 ]
               },
-              "example": {
-                "authToken": "Secret authentication token",
-                "type": "robinhood"
-              }
+              "example": {"authToken":"Secret authentication token","type":"robinhood"}
             },
             "text/json": {
               "schema": {
@@ -775,10 +487,7 @@
                   }
                 ]
               },
-              "example": {
-                "authToken": "Secret authentication token",
-                "type": "robinhood"
-              }
+              "example": {"authToken":"Secret authentication token","type":"robinhood"}
             },
             "application/*+json": {
               "schema": {
@@ -788,10 +497,7 @@
                   }
                 ]
               },
-              "example": {
-                "authToken": "Secret authentication token",
-                "type": "robinhood"
-              }
+              "example": {"authToken":"Secret authentication token","type":"robinhood"}
             }
           }
         },
@@ -803,7 +509,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/IApiResult"
                 },
-                "example": { "status": "ok" }
+                "example": {"status":"ok"}
               }
             }
           },
@@ -814,11 +520,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {
-                  "status": "badRequest",
-                  "message": "Error message",
-                  "displayMessage": "Optional display message"
-                }
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
               }
             }
           },
@@ -826,7 +528,7 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           }
@@ -835,7 +537,9 @@
     },
     "/api/v1/status": {
       "get": {
-        "tags": ["Integrations"],
+        "tags": [
+          "Managed Account Authentication"
+        ],
         "summary": "Get health status",
         "description": "Get the list of supported institutions and their health statuses.",
         "parameters": [
@@ -868,35 +572,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokersHealthStatusListIApiResult"
                 },
-                "example": {
-                  "content": [
-                    {
-                      "type": "robinhood",
-                      "isUp": true,
-                      "supportedProducts": [
-                        "balance",
-                        "holdings",
-                        "identity",
-                        "orders",
-                        "transfers"
-                      ]
-                    },
-                    {
-                      "type": "celsius",
-                      "isUp": false,
-                      "description": "Temporarily disabled",
-                      "downTimeStart": 1655891444,
-                      "supportedProducts": [
-                        "balance",
-                        "orders",
-                        "transfers",
-                        "holdings"
-                      ]
-                    }
-                  ],
-                  "status": "ok",
-                  "message": ""
-                }
+                "example": {"content":[{"type":"robinhood","isUp":true,"supportedProducts":["balance","holdings","identity","orders","transfers"]},{"type":"celsius","isUp":false,"description":"Temporarily disabled","downTimeStart":1655891444,"supportedProducts":["balance","orders","transfers","holdings"]}],"status":"ok","message":""}
               }
             }
           },
@@ -904,7 +580,7 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           }
@@ -913,7 +589,9 @@
     },
     "/api/v1/authenticationSchemes": {
       "get": {
-        "tags": ["Integrations"],
+        "tags": [
+          "Self Managed Account Authentication"
+        ],
         "summary": "Get authentication schemes",
         "description": "Get authentication schemes of available integrations to perform authentication programmatically (not using\r\nthe Web Catalog UI).",
         "parameters": [
@@ -943,7 +621,7 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           },
@@ -954,26 +632,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/BrokerAuthenticationSchemeIReadOnlyCollectionIApiResult"
                 },
-                "example": {
-                  "content": [
-                    {
-                      "brokerType": "coinbasePro",
-                      "authenticationSchemeType": "apiKey",
-                      "initialAuthenticationModel": {
-                        "fields": [
-                          { "name": "Username", "description": "API key" },
-                          { "name": "Password", "description": "Secret key" },
-                          { "name": "AuthToken", "description": "Passphrase" },
-                          { "name": "Type", "description": "CoinbasePro" }
-                        ]
-                      },
-                      "mfaSchemes": [],
-                      "instructionsUrl": "https://help.coinbase.com/en/pro/other-topics/api/how-do-i-create-an-api-key-for-coinbase-pro"
-                    }
-                  ],
-                  "status": "ok",
-                  "message": ""
-                }
+                "example": {"content":[{"brokerType":"coinbasePro","authenticationSchemeType":"apiKey","initialAuthenticationModel":{"fields":[{"name":"Username","description":"API key"},{"name":"Password","description":"Secret key"},{"name":"AuthToken","description":"Passphrase"},{"name":"Type","description":"CoinbasePro"}]},"mfaSchemes":[],"instructionsUrl":"https://help.coinbase.com/en/pro/other-topics/api/how-do-i-create-an-api-key-for-coinbase-pro"}],"status":"ok","message":""}
               }
             }
           }
@@ -982,7 +641,9 @@
     },
     "/api/v1/cryptocurrencyWallets": {
       "get": {
-        "tags": ["Integrations"],
+        "tags": [
+          "Self Managed Account Authentication"
+        ],
         "summary": "Get supported wallets",
         "description": "Get supported cryptocurrency wallets and cryptocurrency addresses to perform authentication programmatically (not using\r\nthe Web Catalog UI).",
         "parameters": [
@@ -1022,7 +683,7 @@
             "description": "Unauthorized",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           }
@@ -1031,7 +692,9 @@
     },
     "/api/v1/authenticate": {
       "post": {
-        "tags": ["Integrations"],
+        "tags": [
+          "Self Managed Account Authentication"
+        ],
         "summary": "Authenticate user's account",
         "description": "Authenticate user's brokerage/exchange account programmatically (not using the Web Catalog UI)",
         "parameters": [
@@ -1066,6 +729,7 @@
           }
         ],
         "requestBody": {
+          "description": "Authentication request.",
           "content": {
             "application/json": {
               "schema": {
@@ -1075,12 +739,7 @@
                   }
                 ]
               },
-              "example": {
-                "username": "username",
-                "password": "password",
-                "mfaCode": "000000",
-                "type": "robinhood"
-              }
+              "example": {"username":"username","password":"password","mfaCode":"000000","type":"robinhood"}
             }
           }
         },
@@ -1092,20 +751,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerAuthResponseIApiResult"
                 },
-                "example": {
-                  "content": {
-                    "status": "succeeded",
-                    "accessToken": "Access token, allowing access to the integration",
-                    "refreshToken": "Optional refresh token, allowing to refresh the access token",
-                    "expiresInSeconds": 7200,
-                    "account": {
-                      "accountId": "Id of the account",
-                      "accountName": "Name of the account"
-                    }
-                  },
-                  "status": "ok",
-                  "message": ""
-                }
+                "example": {"content":{"status":"succeeded","accessToken":"Access token, allowing access to the integration","refreshToken":"Optional refresh token, allowing to refresh the access token","expiresInSeconds":7200,"account":{"accountId":"Id of the account","accountName":"Name of the account"}},"status":"ok","message":""}
               }
             }
           },
@@ -1130,7 +776,9 @@
     },
     "/api/v1/authenticate/{brokerType}": {
       "get": {
-        "tags": ["Integrations"],
+        "tags": [
+          "Self Managed Account Authentication"
+        ],
         "summary": "Get OAuth authentication link",
         "description": "Get OAuth link for the integrations with `OAuth` AuthenticationSchemeType",
         "parameters": [
@@ -1172,7 +820,8 @@
                 "bitFlyer",
                 "coinlist",
                 "huobi",
-                "bitfinex"
+                "bitfinex",
+                "deFiWallet"
               ],
               "allOf": [
                 {
@@ -1219,15 +868,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerAuthPromptResponseIApiResult"
                 },
-                "example": {
-                  "content": {
-                    "status": "redirect",
-                    "redirectLink": "https://front.org/",
-                    "linkToken": "Link to the integration's site"
-                  },
-                  "status": "ok",
-                  "message": ""
-                }
+                "example": {"content":{"status":"redirect","redirectLink":"https://front.org/","linkToken":"Link to the integration's site"},"status":"ok","message":""}
               }
             }
           },
@@ -1246,7 +887,9 @@
     },
     "/api/v1/news/stock": {
       "get": {
-        "tags": ["News"],
+        "tags": [
+          "News"
+        ],
         "summary": "Retrieve news related to the symbol in the request",
         "description": "Retrieve news related to the symbol in the request.",
         "parameters": [
@@ -1299,7 +942,10 @@
             "in": "query",
             "description": "Specifies the sorting criteria of the news. By default the most relevant news will be returned first.",
             "schema": {
-              "enum": ["rank", "timestamp"],
+              "enum": [
+                "rank",
+                "timestamp"
+              ],
               "allOf": [
                 {
                   "$ref": "#/components/schemas/B2BSymbolNewsOrder"
@@ -1312,7 +958,10 @@
             "in": "query",
             "description": "Specifies the soring direction of the result set.",
             "schema": {
-              "enum": ["ascending", "descending"],
+              "enum": [
+                "ascending",
+                "descending"
+              ],
               "allOf": [
                 {
                   "$ref": "#/components/schemas/B2BSymbolNewsSortingDirection"
@@ -1349,27 +998,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BSymbolNewsResponseIApiResult"
                 },
-                "example": {
-                  "content": {
-                    "news": [
-                      {
-                        "id": "2ddff79f-5861-467a-a1f7-3f19ad4c1bba",
-                        "title": "Freshpet, Inc. (NASDAQ:FRPT) Shares Sold by Asset Management One Co. Ltd. - Armenian Reporter",
-                        "content": "Freshpet, Inc. (NASDAQ:FRPT) Shares Sold by Asset Management One Co. Ltd. - Armenian Reporter",
-                        "imageUrl": "https://www.americanbankingnews.com/wp-content/timthumb/timthumb.php?src=https://www.marketbeat.com/logos/freshpet-inc-logo.png&w=240&h=240&zc=2",
-                        "source": "AmericanBankingNews",
-                        "sourceUrl": "https://www.americanbankingnews.com",
-                        "createdTimestamp": 1665568346,
-                        "url": "https://reporter.am/2022/10/24/freshpet-inc-nasdaqfrpt-shares-sold-by-asset-management-one-co-ltd.html",
-                        "rank": 0,
-                        "symbols": ["FRPT"]
-                      }
-                    ],
-                    "count": 0
-                  },
-                  "status": "ok",
-                  "message": ""
-                }
+                "example": {"content":{"news":[{"id":"2ddff79f-5861-467a-a1f7-3f19ad4c1bba","title":"Freshpet, Inc. (NASDAQ:FRPT) Shares Sold by Asset Management One Co. Ltd. - Armenian Reporter","content":"Freshpet, Inc. (NASDAQ:FRPT) Shares Sold by Asset Management One Co. Ltd. - Armenian Reporter","imageUrl":"https://www.americanbankingnews.com/wp-content/timthumb/timthumb.php?src=https://www.marketbeat.com/logos/freshpet-inc-logo.png&w=240&h=240&zc=2","source":"AmericanBankingNews","sourceUrl":"https://www.americanbankingnews.com","createdTimestamp":1665568346,"url":"https://reporter.am/2022/10/24/freshpet-inc-nasdaqfrpt-shares-sold-by-asset-management-one-co-ltd.html","rank":0,"symbols":["FRPT"]}],"count":0},"status":"ok","message":""}
               }
             }
           },
@@ -1380,7 +1009,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": { "status": "ok" }
+                "example": {"status":"ok"}
               }
             }
           },
@@ -1388,7 +1017,7 @@
             "description": "Unauthorized: Client Id or Client Secret are not correct or missing.",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           }
@@ -1397,7 +1026,9 @@
     },
     "/api/v1/news/cryptocurrency": {
       "get": {
-        "tags": ["News"],
+        "tags": [
+          "News"
+        ],
         "summary": "Retrieve news related to the cryptocurrency symbol in the request",
         "description": "Retrieve news related to the symbol in the request.",
         "parameters": [
@@ -1450,7 +1081,10 @@
             "in": "query",
             "description": "Specifies the sorting criteria of the news. By default the most relevant news will be returned first.",
             "schema": {
-              "enum": ["rank", "timestamp"],
+              "enum": [
+                "rank",
+                "timestamp"
+              ],
               "allOf": [
                 {
                   "$ref": "#/components/schemas/B2BSymbolNewsOrder"
@@ -1463,7 +1097,10 @@
             "in": "query",
             "description": "Specifies the soring direction of the result set.",
             "schema": {
-              "enum": ["ascending", "descending"],
+              "enum": [
+                "ascending",
+                "descending"
+              ],
               "allOf": [
                 {
                   "$ref": "#/components/schemas/B2BSymbolNewsSortingDirection"
@@ -1500,27 +1137,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BSymbolNewsResponseIApiResult"
                 },
-                "example": {
-                  "content": {
-                    "news": [
-                      {
-                        "id": "2ddff79f-5861-467a-a1f7-3f19ad4c1bba",
-                        "title": "Freshpet, Inc. (NASDAQ:FRPT) Shares Sold by Asset Management One Co. Ltd. - Armenian Reporter",
-                        "content": "Freshpet, Inc. (NASDAQ:FRPT) Shares Sold by Asset Management One Co. Ltd. - Armenian Reporter",
-                        "imageUrl": "https://www.americanbankingnews.com/wp-content/timthumb/timthumb.php?src=https://www.marketbeat.com/logos/freshpet-inc-logo.png&w=240&h=240&zc=2",
-                        "source": "AmericanBankingNews",
-                        "sourceUrl": "https://www.americanbankingnews.com",
-                        "createdTimestamp": 1665568346,
-                        "url": "https://reporter.am/2022/10/24/freshpet-inc-nasdaqfrpt-shares-sold-by-asset-management-one-co-ltd.html",
-                        "rank": 0,
-                        "symbols": ["FRPT"]
-                      }
-                    ],
-                    "count": 0
-                  },
-                  "status": "ok",
-                  "message": ""
-                }
+                "example": {"content":{"news":[{"id":"2ddff79f-5861-467a-a1f7-3f19ad4c1bba","title":"Freshpet, Inc. (NASDAQ:FRPT) Shares Sold by Asset Management One Co. Ltd. - Armenian Reporter","content":"Freshpet, Inc. (NASDAQ:FRPT) Shares Sold by Asset Management One Co. Ltd. - Armenian Reporter","imageUrl":"https://www.americanbankingnews.com/wp-content/timthumb/timthumb.php?src=https://www.marketbeat.com/logos/freshpet-inc-logo.png&w=240&h=240&zc=2","source":"AmericanBankingNews","sourceUrl":"https://www.americanbankingnews.com","createdTimestamp":1665568346,"url":"https://reporter.am/2022/10/24/freshpet-inc-nasdaqfrpt-shares-sold-by-asset-management-one-co-ltd.html","rank":0,"symbols":["FRPT"]}],"count":0},"status":"ok","message":""}
               }
             }
           },
@@ -1531,7 +1148,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": { "status": "ok" }
+                "example": {"status":"ok"}
               }
             }
           },
@@ -1539,7 +1156,7 @@
             "description": "Unauthorized: Client Id or Client Secret are not correct or missing.",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           }
@@ -1548,7 +1165,9 @@
     },
     "/api/v1/holdings/get": {
       "post": {
-        "tags": ["Portfolio"],
+        "tags": [
+          "Portfolio"
+        ],
         "summary": "Get holdings",
         "description": "Obtain assets from the connected investment account. Performs realtime API call to the underlying integration.",
         "parameters": [
@@ -1583,10 +1202,7 @@
                   }
                 ]
               },
-              "example": {
-                "authToken": "Secret authentication token",
-                "type": "robinhood"
-              }
+              "example": {"authToken":"Secret authentication token","type":"robinhood"}
             }
           }
         },
@@ -1598,35 +1214,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerPortfolioModelIApiResult"
                 },
-                "example": {
-                  "content": {
-                    "status": "succeeded",
-                    "equityPositions": [
-                      { "symbol": "AAPL", "amount": 3, "costBasis": 109 },
-                      { "symbol": "F", "amount": 27, "costBasis": 7.05791 }
-                    ],
-                    "notSupportedEquityPositions": [
-                      { "symbol": "CUSIP38259P508", "amount": 1 }
-                    ],
-                    "notSupportedCryptocurrencyPositions": [],
-                    "cryptocurrencyPositions": [
-                      { "symbol": "DOGE", "amount": 1503, "costBasis": 0.033 },
-                      {
-                        "symbol": "BTC",
-                        "amount": 3.0001672,
-                        "costBasis": 18000
-                      }
-                    ],
-                    "nftPositions": [],
-                    "optionPositions": [],
-                    "type": "robinhood",
-                    "accountId": "5FUVPB0",
-                    "institutionName": "Robinhood",
-                    "accountName": "Margin account"
-                  },
-                  "status": "ok",
-                  "message": ""
-                }
+                "example": {"content":{"status":"succeeded","equityPositions":[{"symbol":"AAPL","amount":3,"costBasis":109},{"symbol":"F","amount":27,"costBasis":7.05791}],"notSupportedEquityPositions":[{"symbol":"CUSIP38259P508","amount":1}],"notSupportedCryptocurrencyPositions":[],"cryptocurrencyPositions":[{"symbol":"DOGE","amount":1503,"costBasis":0.033},{"symbol":"BTC","amount":3.00016720,"costBasis":18000}],"nftPositions":[],"optionPositions":[],"type":"robinhood","accountId":"5FUVPB0","institutionName":"Robinhood","accountName":"Margin account"},"status":"ok","message":""}
               }
             }
           },
@@ -1637,11 +1225,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {
-                  "status": "badRequest",
-                  "message": "Error message",
-                  "displayMessage": "Optional display message"
-                }
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
               }
             }
           },
@@ -1649,7 +1233,7 @@
             "description": "Unauthorized: Client Id or Client Secret are not correct or missing.",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           }
@@ -1658,7 +1242,9 @@
     },
     "/api/v1/holdings/optimize": {
       "get": {
-        "tags": ["Portfolio"],
+        "tags": [
+          "Portfolio"
+        ],
         "summary": "Get optimized portfolio",
         "description": "Get suggested portfolio optimizations based on different annualized standard deviations and performance.",
         "parameters": [
@@ -1699,73 +1285,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BPortfolioOptimizationModelIApiResult"
                 },
-                "example": {
-                  "content": {
-                    "originalPortfolio": {
-                      "startingValue": 185.02,
-                      "annualizedStandardDeviation": 0.5,
-                      "performance": -0.58,
-                      "assetWeights": [
-                        { "symbol": "DOGE", "weight": 0.073, "isCrypto": true },
-                        { "symbol": "BTC", "weight": 0.214, "isCrypto": true }
-                      ],
-                      "value": 82.005,
-                      "chartItems": [
-                        { "value": 1, "date": "2022-04-12" },
-                        { "value": 1.0237, "date": "2022-04-13" },
-                        { "value": 0.995, "date": "2022-04-14" }
-                      ]
-                    },
-                    "optimizedPortfolios": [
-                      {
-                        "annualizedStandardDeviation": 0.2032,
-                        "performance": -0.1921,
-                        "assetWeights": [
-                          {
-                            "symbol": "DOGE",
-                            "weight": 0.0938,
-                            "isCrypto": true
-                          },
-                          {
-                            "symbol": "BTC",
-                            "weight": 0.0114,
-                            "isCrypto": true
-                          }
-                        ],
-                        "value": 149.4827,
-                        "chartItems": [
-                          { "value": 1, "date": "2022-04-12" },
-                          { "value": 1.0075, "date": "2022-04-13" },
-                          { "value": 1.0044, "date": "2022-04-14" }
-                        ]
-                      },
-                      {
-                        "annualizedStandardDeviation": 0.2565,
-                        "performance": -0.2629,
-                        "assetWeights": [
-                          {
-                            "symbol": "DOGE",
-                            "weight": 0.0648,
-                            "isCrypto": true
-                          },
-                          {
-                            "symbol": "BTC",
-                            "weight": 0.0748,
-                            "isCrypto": true
-                          }
-                        ],
-                        "value": 136.3782,
-                        "chartItems": [
-                          { "value": 1, "date": "2022-04-12" },
-                          { "value": 1.0098, "date": "2022-04-13" },
-                          { "value": 1.0006, "date": "2022-04-14" }
-                        ]
-                      }
-                    ]
-                  },
-                  "status": "ok",
-                  "message": ""
-                }
+                "example": {"content":{"originalPortfolio":{"startingValue":185.02,"annualizedStandardDeviation":0.5,"performance":-0.58,"assetWeights":[{"symbol":"DOGE","weight":0.073,"isCrypto":true},{"symbol":"BTC","weight":0.214,"isCrypto":true}],"value":82.005,"chartItems":[{"value":1,"date":"2022-04-12"},{"value":1.0237,"date":"2022-04-13"},{"value":0.995,"date":"2022-04-14"}]},"optimizedPortfolios":[{"annualizedStandardDeviation":0.2032,"performance":-0.1921,"assetWeights":[{"symbol":"DOGE","weight":0.0938,"isCrypto":true},{"symbol":"BTC","weight":0.0114,"isCrypto":true}],"value":149.4827,"chartItems":[{"value":1,"date":"2022-04-12"},{"value":1.0075,"date":"2022-04-13"},{"value":1.0044,"date":"2022-04-14"}]},{"annualizedStandardDeviation":0.2565,"performance":-0.2629,"assetWeights":[{"symbol":"DOGE","weight":0.0648,"isCrypto":true},{"symbol":"BTC","weight":0.0748,"isCrypto":true}],"value":136.3782,"chartItems":[{"value":1,"date":"2022-04-12"},{"value":1.0098,"date":"2022-04-13"},{"value":1.0006,"date":"2022-04-14"}]}]},"status":"ok","message":""}
               }
             }
           },
@@ -1776,11 +1296,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {
-                  "status": "badRequest",
-                  "message": "Error message",
-                  "displayMessage": "Optional display message"
-                }
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
               }
             }
           },
@@ -1788,7 +1304,7 @@
             "description": "Unauthorized: Client Id or Client Secret are not correct or missing.",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           }
@@ -1797,7 +1313,9 @@
     },
     "/api/v1/holdings/portfolio": {
       "get": {
-        "tags": ["Portfolio"],
+        "tags": [
+          "Portfolio"
+        ],
         "summary": "Get aggregated portfolio",
         "description": "Get the aggregated portfolio of the user containing market values.",
         "parameters": [
@@ -1847,74 +1365,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BPortfolioModelIApiResult"
                 },
-                "example": {
-                  "content": {
-                    "portfolioCostBasis": 1793.71,
-                    "actualPortfolioPerformance": 6.9,
-                    "equitiesValue": 1918.03,
-                    "cryptocurrenciesValue": 1164.44,
-                    "nftsValue": 0,
-                    "equityPositions": [
-                      {
-                        "marketValue": 13.69,
-                        "portfolioPercentage": 0.44,
-                        "totalReturn": -1.3,
-                        "returnPercentage": -8.67,
-                        "lastPrice": 214.44,
-                        "companyName": "Tesla",
-                        "totalDailyReturn": 0.45,
-                        "dailyReturnPercentage": 3.45,
-                        "symbol": "TSLA",
-                        "amount": 0.063,
-                        "costBasis": 234.8
-                      },
-                      {
-                        "marketValue": 1201.67,
-                        "portfolioPercentage": 38.98,
-                        "totalReturn": 144.97,
-                        "returnPercentage": 13.71,
-                        "lastPrice": 147.27,
-                        "companyName": "Apple",
-                        "totalDailyReturn": 31.65,
-                        "dailyReturnPercentage": 2.7,
-                        "symbol": "AAPL",
-                        "amount": 8.15,
-                        "costBasis": 129.5
-                      }
-                    ],
-                    "cryptocurrencyPositions": [
-                      {
-                        "marketValue": 351.457,
-                        "portfolioPercentage": 11.4018,
-                        "totalReturn": -592.6533,
-                        "returnPercentage": -62.7737,
-                        "lastPrice": 1350.07,
-                        "companyName": "Ethereum",
-                        "totalDailyReturn": -3.6081,
-                        "dailyReturnPercentage": -1.0162,
-                        "symbol": "ETH",
-                        "amount": 0.260325,
-                        "costBasis": 3626.66
-                      },
-                      {
-                        "marketValue": 240.5754,
-                        "portfolioPercentage": 7.8,
-                        "totalReturn": -85.45,
-                        "returnPercentage": -26.2,
-                        "lastPrice": 0.05977,
-                        "companyName": "Dogecoin",
-                        "totalDailyReturn": -2.45,
-                        "dailyReturnPercentage": -1.0103,
-                        "symbol": "DOGE",
-                        "amount": 4025.02,
-                        "costBasis": 0.081
-                      }
-                    ],
-                    "nftPositions": []
-                  },
-                  "status": "ok",
-                  "message": ""
-                }
+                "example": {"content":{"portfolioCostBasis":1793.71,"actualPortfolioPerformance":6.9,"equitiesValue":1918.03,"cryptocurrenciesValue":1164.44,"nftsValue":0,"equityPositions":[{"marketValue":13.69,"portfolioPercentage":0.44,"totalReturn":-1.30,"returnPercentage":-8.67,"lastPrice":214.44,"companyName":"Tesla","totalDailyReturn":0.45,"dailyReturnPercentage":3.45,"symbol":"TSLA","amount":0.063,"costBasis":234.80},{"marketValue":1201.67,"portfolioPercentage":38.98,"totalReturn":144.97,"returnPercentage":13.71,"lastPrice":147.27,"companyName":"Apple","totalDailyReturn":31.65,"dailyReturnPercentage":2.70,"symbol":"AAPL","amount":8.15,"costBasis":129.50}],"cryptocurrencyPositions":[{"marketValue":351.4570,"portfolioPercentage":11.4018,"totalReturn":-592.6533,"returnPercentage":-62.7737,"lastPrice":1350.07,"companyName":"Ethereum","totalDailyReturn":-3.6081,"dailyReturnPercentage":-1.0162,"symbol":"ETH","amount":0.260325000,"costBasis":3626.660},{"marketValue":240.5754,"portfolioPercentage":7.80,"totalReturn":-85.45,"returnPercentage":-26.20,"lastPrice":0.05977,"companyName":"Dogecoin","totalDailyReturn":-2.45,"dailyReturnPercentage":-1.0103,"symbol":"DOGE","amount":4025.02,"costBasis":0.081}],"nftPositions":[]},"status":"ok","message":""}
               }
             }
           },
@@ -1925,7 +1376,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": { "status": "ok" }
+                "example": {"status":"ok"}
               }
             }
           },
@@ -1933,7 +1384,7 @@
             "description": "Unauthorized: Client Id or Client Secret are not correct or missing.",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           }
@@ -1942,7 +1393,9 @@
     },
     "/api/v1/transactions/list": {
       "post": {
-        "tags": ["Transactions"],
+        "tags": [
+          "Transactions"
+        ],
         "summary": "Get transactions",
         "description": "Get transactions on the account - the paginated history of the executed orders along with the pending orders.",
         "parameters": [
@@ -1977,12 +1430,7 @@
                   }
                 ]
               },
-              "example": {
-                "count": 20,
-                "statuses": ["success"],
-                "authToken": "Secret authentication token",
-                "type": "robinhood"
-              }
+              "example": {"count":20,"statuses":["success"],"authToken":"Secret authentication token","type":"robinhood"}
             }
           }
         },
@@ -1994,81 +1442,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerOrderListResponseIApiResult"
                 },
-                "example": {
-                  "content": {
-                    "transactions": [
-                      {
-                        "id": "17EC1243-D91A-48B6-B0CE-ECFDB134F8A0",
-                        "side": "buy",
-                        "symbol": "AAPL",
-                        "name": "APPLE INC",
-                        "assetType": "option",
-                        "paymentSymbol": "USD",
-                        "paymentType": "fiat",
-                        "amount": 1,
-                        "price": 120,
-                        "value": 120,
-                        "createdTimestamp": 1653215676,
-                        "updatedTimestamp": 1653215697,
-                        "status": "success",
-                        "orderType": "market",
-                        "timeInForce": "goodForDay",
-                        "brokerType": "robinhood",
-                        "transactionType": "order",
-                        "optionDetails": {
-                          "optionType": "call",
-                          "direction": "buyToOpen",
-                          "strikePrice": 200,
-                          "expirationTimestamp": 1673215697,
-                          "numberOfSharesInContract": 100,
-                          "complexOrderStrategyType": "NONE"
-                        }
-                      },
-                      {
-                        "id": "F9E932AE-A780-42F3-B887-82D888D594E5",
-                        "side": "sell",
-                        "symbol": "AAPL",
-                        "name": "APPLE INC",
-                        "assetType": "equity",
-                        "paymentSymbol": "USD",
-                        "paymentType": "fiat",
-                        "amount": 2,
-                        "price": 130,
-                        "value": 260,
-                        "createdTimestamp": 1651739676,
-                        "updatedTimestamp": 1651739781,
-                        "status": "success",
-                        "orderType": "market",
-                        "timeInForce": "goodTillCanceled",
-                        "brokerType": "robinhood",
-                        "transactionType": "order"
-                      },
-                      {
-                        "id": "9B5827E4-7D08-4A71-B4C0-B1B4E5562592",
-                        "side": "buy",
-                        "symbol": "BTC",
-                        "name": "Bitcoin",
-                        "assetType": "cryptocurrency",
-                        "paymentSymbol": "ETH",
-                        "paymentType": "cryptocurrency",
-                        "amount": 0.3,
-                        "price": 18604.8197,
-                        "value": 5581.44591,
-                        "createdTimestamp": 1651739676,
-                        "updatedTimestamp": 1651739781,
-                        "status": "success",
-                        "orderType": "limit",
-                        "timeInForce": "goodTillCanceled",
-                        "brokerType": "robinhood",
-                        "transactionType": "order"
-                      }
-                    ],
-                    "cursor": "N2VkZDI0MDMtNmRhYy01NThhLTk5NDUDYzI12M3GQ3ZmQ2",
-                    "total": 3
-                  },
-                  "status": "ok",
-                  "message": ""
-                }
+                "example": {"content":{"transactions":[{"id":"17EC1243-D91A-48B6-B0CE-ECFDB134F8A0","side":"buy","symbol":"AAPL","name":"APPLE INC","assetType":"option","paymentSymbol":"USD","paymentType":"fiat","amount":1,"price":120,"value":120,"createdTimestamp":1653215676,"updatedTimestamp":1653215697,"status":"success","orderType":"market","timeInForce":"goodForDay","brokerType":"robinhood","transactionType":"order","optionDetails":{"optionType":"call","direction":"buyToOpen","strikePrice":200,"expirationTimestamp":1673215697,"numberOfSharesInContract":100,"complexOrderStrategyType":"NONE"}},{"id":"F9E932AE-A780-42F3-B887-82D888D594E5","side":"sell","symbol":"AAPL","name":"APPLE INC","assetType":"equity","paymentSymbol":"USD","paymentType":"fiat","amount":2,"price":130,"value":260,"createdTimestamp":1651739676,"updatedTimestamp":1651739781,"status":"success","orderType":"market","timeInForce":"goodTillCanceled","brokerType":"robinhood","transactionType":"order"},{"id":"9B5827E4-7D08-4A71-B4C0-B1B4E5562592","side":"buy","symbol":"BTC","name":"Bitcoin","assetType":"cryptocurrency","paymentSymbol":"ETH","paymentType":"cryptocurrency","amount":0.3,"price":18604.8197,"value":5581.44591,"createdTimestamp":1651739676,"updatedTimestamp":1651739781,"status":"success","orderType":"limit","timeInForce":"goodTillCanceled","brokerType":"robinhood","transactionType":"order"}],"cursor":"N2VkZDI0MDMtNmRhYy01NThhLTk5NDUDYzI12M3GQ3ZmQ2","total":3},"status":"ok","message":""}
               }
             }
           },
@@ -2076,7 +1450,7 @@
             "description": "Unauthorized: Client Id or Client Secret are not correct or provided integration token is not correct.",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           }
@@ -2085,7 +1459,9 @@
     },
     "/api/v1/transactions/details": {
       "post": {
-        "tags": ["Transactions"],
+        "tags": [
+          "Transactions"
+        ],
         "summary": "Get transaction details",
         "description": "Get details of an executed order. Typically used to poll the status of the previously executed order.",
         "parameters": [
@@ -2120,12 +1496,7 @@
                   }
                 ]
               },
-              "example": {
-                "id": "17EC1243-D91A-48B6-B0CE-ECFDB134F8A0",
-                "isCryptocurrency": true,
-                "authToken": "Secret authentication token",
-                "type": "robinhood"
-              }
+              "example": {"id":"17EC1243-D91A-48B6-B0CE-ECFDB134F8A0","isCryptocurrency":true,"authToken":"Secret authentication token","type":"robinhood"}
             }
           }
         },
@@ -2137,22 +1508,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerOrderIApiResult"
                 },
-                "example": {
-                  "id": "17EC1243-D91A-48B6-B0CE-ECFDB134F8A0",
-                  "side": "buy",
-                  "symbol": "AAPL",
-                  "assetType": "equity",
-                  "paymentType": "fiat",
-                  "amount": 1,
-                  "price": 120,
-                  "value": 120,
-                  "createdTimestamp": 1653215676,
-                  "updatedTimestamp": 1653215697,
-                  "status": "success",
-                  "statusDetails": "",
-                  "brokerType": "robinhood",
-                  "transactionType": "order"
-                }
+                "example": {"id":"17EC1243-D91A-48B6-B0CE-ECFDB134F8A0","side":"buy","symbol":"AAPL","assetType":"equity","paymentType":"fiat","amount":1,"price":120,"value":120,"createdTimestamp":1653215676,"updatedTimestamp":1653215697,"status":"success","statusDetails":"","brokerType":"robinhood","transactionType":"order"}
               }
             }
           },
@@ -2170,7 +1526,7 @@
             "description": "Unauthorized: Client Id or Client Secret are not correct or provided integration token is not correct.",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           },
@@ -2189,7 +1545,9 @@
     },
     "/api/v1/transactions/featureList": {
       "post": {
-        "tags": ["Transactions"],
+        "tags": [
+          "Transactions"
+        ],
         "summary": "Get supported order features for institution",
         "description": "Get supported features for trading for a particular financial institution. Different institutions support different\r\nfeatures (e.g. different `OrderType` or different sets of `TimeInForce` values), so this endpoint is used to\r\ndescribe such features for provided financial institution.",
         "parameters": [
@@ -2224,10 +1582,7 @@
                   }
                 ]
               },
-              "example": {
-                "authToken": "Secret authentication token",
-                "type": "robinhood"
-              }
+              "example": {"authToken":"Secret authentication token","type":"robinhood"}
             }
           }
         },
@@ -2239,123 +1594,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerTradingFeatureInfoIApiResult"
                 },
-                "example": {
-                  "content": {
-                    "brokerType": "robinhood",
-                    "accountId": "5K9N3VO1",
-                    "cryptocurrencyOrders": {
-                      "supported": true,
-                      "supportsFiatCurrencyPayment": true,
-                      "supportsCryptocurrencyPayment": false,
-                      "supportsMarginOrders": true,
-                      "supportedCryptocurrencySymbols": [
-                        "BTC",
-                        "ETH",
-                        "SOL",
-                        "DOGE"
-                      ],
-                      "supportedFiatCurrencies": ["USD"],
-                      "marketType": {
-                        "supported": true,
-                        "supportsFractionalShares": true,
-                        "supportsExtendedMarketHours": true,
-                        "supportsPlacingBuyOrdersInFiatAmount": true,
-                        "supportsPlacingSellOrdersInFiatAmount": true,
-                        "supportedTimeInForceList": [
-                          "fillOrKill",
-                          "goodForDay",
-                          "goodTillCanceled",
-                          "immediateOrCancel"
-                        ]
-                      },
-                      "limitType": {
-                        "supported": true,
-                        "supportsFractionalShares": true,
-                        "supportsExtendedMarketHours": true,
-                        "supportsPlacingBuyOrdersInFiatAmount": true,
-                        "supportsPlacingSellOrdersInFiatAmount": true,
-                        "supportedTimeInForceList": [
-                          "goodForDay",
-                          "goodTillCanceled",
-                          "immediateOrCancel"
-                        ]
-                      },
-                      "stopLossType": {
-                        "supported": true,
-                        "supportsFractionalShares": true,
-                        "supportsExtendedMarketHours": true,
-                        "supportsPlacingBuyOrdersInFiatAmount": true,
-                        "supportsPlacingSellOrdersInFiatAmount": true,
-                        "supportedTimeInForceList": [
-                          "fillOrKill",
-                          "goodForDay",
-                          "goodTillCanceled",
-                          "immediateOrCancel"
-                        ]
-                      }
-                    },
-                    "stockOrders": {
-                      "supported": true,
-                      "supportsFiatCurrencyPayment": true,
-                      "supportsCryptocurrencyPayment": false,
-                      "supportsMarginOrders": true,
-                      "supportedFiatCurrencies": ["USD"],
-                      "marketType": {
-                        "supported": true,
-                        "supportsFractionalShares": true,
-                        "supportsExtendedMarketHours": true,
-                        "supportsPlacingBuyOrdersInFiatAmount": true,
-                        "supportsPlacingSellOrdersInFiatAmount": true,
-                        "supportedTimeInForceList": [
-                          "fillOrKill",
-                          "goodForDay",
-                          "goodTillCanceled",
-                          "immediateOrCancel"
-                        ]
-                      },
-                      "limitType": {
-                        "supported": true,
-                        "supportsFractionalShares": true,
-                        "supportsExtendedMarketHours": true,
-                        "supportsPlacingBuyOrdersInFiatAmount": true,
-                        "supportsPlacingSellOrdersInFiatAmount": true,
-                        "supportedTimeInForceList": [
-                          "goodForDay",
-                          "goodTillCanceled",
-                          "immediateOrCancel"
-                        ]
-                      },
-                      "stopLossType": {
-                        "supported": true,
-                        "supportsFractionalShares": true,
-                        "supportsExtendedMarketHours": true,
-                        "supportsPlacingBuyOrdersInFiatAmount": true,
-                        "supportsPlacingSellOrdersInFiatAmount": true,
-                        "supportedTimeInForceList": [
-                          "fillOrKill",
-                          "goodForDay",
-                          "goodTillCanceled",
-                          "immediateOrCancel"
-                        ]
-                      }
-                    },
-                    "status": "succeeded",
-                    "supportsOrderPreview": true,
-                    "supportsOrderCancellation": true,
-                    "isIntegrationUp": true,
-                    "isTradingSupported": true,
-                    "fiatBalances": [
-                      {
-                        "cash": 1355,
-                        "buyingPower": 1355,
-                        "cryptocurrencyBuyingPower": 1355,
-                        "currencyCode": "USD"
-                      }
-                    ]
-                  },
-                  "status": "ok",
-                  "message": ""
-                }
+                "example": {"content":{"brokerType":"robinhood","accountId":"5K9N3VO1","cryptocurrencyOrders":{"supported":true,"supportsFiatCurrencyPayment":true,"supportsCryptocurrencyPayment":false,"supportsMarginOrders":true,"supportedCryptocurrencySymbols":["BTC","ETH","SOL","DOGE"],"supportedFiatCurrencies":["USD"],"marketType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":true,"supportsPlacingSellOrdersInFiatAmount":true,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":true,"supportsPlacingSellOrdersInBaseSymbolAmount":true},"limitType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":true,"supportsPlacingSellOrdersInFiatAmount":true,"supportedTimeInForceList":["goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":true,"supportsPlacingSellOrdersInBaseSymbolAmount":true},"stopLossType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":true,"supportsPlacingSellOrdersInFiatAmount":true,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":true,"supportsPlacingSellOrdersInBaseSymbolAmount":true}},"stockOrders":{"supported":true,"supportsFiatCurrencyPayment":true,"supportsCryptocurrencyPayment":false,"supportsMarginOrders":true,"supportedFiatCurrencies":["USD"],"marketType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":true,"supportsPlacingSellOrdersInFiatAmount":true,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":false,"supportsPlacingSellOrdersInBaseSymbolAmount":false},"limitType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":true,"supportsPlacingSellOrdersInFiatAmount":true,"supportedTimeInForceList":["goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":false,"supportsPlacingSellOrdersInBaseSymbolAmount":false},"stopLossType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":true,"supportsPlacingSellOrdersInFiatAmount":true,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":false,"supportsPlacingSellOrdersInBaseSymbolAmount":false}},"status":"succeeded","supportsOrderPreview":true,"supportsPriceQuotes":false,"supportsOrderCancellation":true,"isIntegrationUp":true,"isTradingSupported":true,"fiatBalances":[{"cash":1355,"buyingPower":1355,"cryptocurrencyBuyingPower":1355,"currencyCode":"USD"}]},"status":"ok","message":""}
               }
             }
           },
@@ -2373,7 +1612,7 @@
             "description": "Unauthorized: Client Id or Client Secret are not correct or provided integration token is not correct.",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           }
@@ -2382,7 +1621,9 @@
     },
     "/api/v1/transactions/preview/{side}": {
       "post": {
-        "tags": ["Transactions"],
+        "tags": [
+          "Transactions"
+        ],
         "summary": "Preview order execution",
         "description": "Validates the order information (such as necessary balance availability), and returns additional information,\r\nsuch as expected order fee.\r\nDoes not execute the order.",
         "parameters": [
@@ -2391,7 +1632,11 @@
             "in": "path",
             "required": true,
             "schema": {
-              "enum": ["unknown", "buy", "sell"],
+              "enum": [
+                "unknown",
+                "buy",
+                "sell"
+              ],
               "allOf": [
                 {
                   "$ref": "#/components/schemas/BrokerOrderType"
@@ -2432,53 +1677,13 @@
               },
               "examples": {
                 "Cryptocurrency Limit example": {
-                  "value": {
-                    "symbol": "ETH",
-                    "paymentSymbol": "USD",
-                    "amount": 1,
-                    "price": 1200,
-                    "isCryptocurrency": true,
-                    "paymentIsCryptocurrency": false,
-                    "amountIsFiat": false,
-                    "extendedHours": false,
-                    "orderType": "limit",
-                    "timeInForce": "goodForDay",
-                    "authToken": "Secret authentication token",
-                    "type": "robinhood"
-                  }
+                  "value": {"symbol":"ETH","paymentSymbol":"USD","amount":1,"price":1200,"isCryptocurrency":true,"paymentIsCryptocurrency":false,"amountIsFiat":false,"amountIsInPaymentSymbol":false,"extendedHours":false,"orderType":"limit","timeInForce":"goodForDay","authToken":"Secret authentication token","type":"robinhood"}
                 },
                 "Stock Market example": {
-                  "value": {
-                    "symbol": "AAPL",
-                    "paymentSymbol": "USD",
-                    "amount": 1,
-                    "price": 0,
-                    "isCryptocurrency": false,
-                    "paymentIsCryptocurrency": false,
-                    "amountIsFiat": false,
-                    "extendedHours": false,
-                    "orderType": "market",
-                    "timeInForce": "goodTillCanceled",
-                    "authToken": "Secret authentication token",
-                    "type": "robinhood"
-                  }
+                  "value": {"symbol":"AAPL","paymentSymbol":"USD","amount":1,"price":0,"isCryptocurrency":false,"paymentIsCryptocurrency":false,"amountIsFiat":false,"amountIsInPaymentSymbol":false,"extendedHours":false,"orderType":"market","timeInForce":"goodTillCanceled","authToken":"Secret authentication token","type":"robinhood"}
                 },
-                "Stock Fiat amount example ('buy TSLA for $10')": {
-                  "value": {
-                    "symbol": "TSLA",
-                    "paymentSymbol": "USD",
-                    "amount": 0,
-                    "price": 0,
-                    "isCryptocurrency": false,
-                    "paymentIsCryptocurrency": false,
-                    "amountIsFiat": true,
-                    "amountInFiat": 10,
-                    "extendedHours": false,
-                    "orderType": "market",
-                    "timeInForce": "goodTillCanceled",
-                    "authToken": "Secret authentication token",
-                    "type": "robinhood"
-                  }
+                "Stock Payment/Quote amount example ('buy TSLA for $10')": {
+                  "value": {"symbol":"TSLA","paymentSymbol":"USD","amount":0,"price":0,"isCryptocurrency":false,"paymentIsCryptocurrency":false,"amountIsFiat":false,"amountIsInPaymentSymbol":true,"amountInPaymentSymbol":10,"extendedHours":false,"orderType":"market","timeInForce":"goodTillCanceled","authToken":"Secret authentication token","type":"robinhood"}
                 }
               }
             }
@@ -2492,21 +1697,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerPreviewOrderResultIApiResult"
                 },
-                "example": {
-                  "content": {
-                    "brokerType": "robinhood",
-                    "fee": 1.99,
-                    "feeText": "",
-                    "amount": 1,
-                    "side": "buy",
-                    "status": "success",
-                    "paymentSymbol": "USD",
-                    "paymentIsCryptocurrency": false,
-                    "estimatedUnitPrice": 1200
-                  },
-                  "status": "ok",
-                  "message": ""
-                }
+                "example": {"content":{"brokerType":"robinhood","fee":1.99,"feeText":"","amount":1,"side":"buy","status":"success","paymentSymbol":"USD","paymentIsCryptocurrency":false,"estimatedUnitPrice":1200},"status":"ok","message":""}
               }
             }
           },
@@ -2524,7 +1715,7 @@
             "description": "Unauthorized: Client Id or Client Secret are not correct or provided integration token is not correct.",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           }
@@ -2533,7 +1724,9 @@
     },
     "/api/v1/transactions/{side}": {
       "post": {
-        "tags": ["Transactions"],
+        "tags": [
+          "Transactions"
+        ],
         "summary": "Execute order",
         "description": "Validates the order information and then calls institution's API to execute an order.\r\nIt's recommended to call this endpoint after calling the `preview` endpoint to make sure that the\r\norder execution request is correct.",
         "parameters": [
@@ -2542,7 +1735,11 @@
             "in": "path",
             "required": true,
             "schema": {
-              "enum": ["unknown", "buy", "sell"],
+              "enum": [
+                "unknown",
+                "buy",
+                "sell"
+              ],
               "allOf": [
                 {
                   "$ref": "#/components/schemas/BrokerOrderType"
@@ -2583,53 +1780,13 @@
               },
               "examples": {
                 "Cryptocurrency Limit example": {
-                  "value": {
-                    "symbol": "ETH",
-                    "paymentSymbol": "USD",
-                    "amount": 1,
-                    "price": 1200,
-                    "isCryptocurrency": true,
-                    "paymentIsCryptocurrency": false,
-                    "amountIsFiat": false,
-                    "extendedHours": false,
-                    "orderType": "limit",
-                    "timeInForce": "goodForDay",
-                    "authToken": "Secret authentication token",
-                    "type": "robinhood"
-                  }
+                  "value": {"symbol":"ETH","paymentSymbol":"USD","amount":1,"price":1200,"isCryptocurrency":true,"paymentIsCryptocurrency":false,"amountIsFiat":false,"amountIsInPaymentSymbol":false,"extendedHours":false,"orderType":"limit","timeInForce":"goodForDay","authToken":"Secret authentication token","type":"robinhood"}
                 },
                 "Stock Market example": {
-                  "value": {
-                    "symbol": "AAPL",
-                    "paymentSymbol": "USD",
-                    "amount": 1,
-                    "price": 0,
-                    "isCryptocurrency": false,
-                    "paymentIsCryptocurrency": false,
-                    "amountIsFiat": false,
-                    "extendedHours": false,
-                    "orderType": "market",
-                    "timeInForce": "goodTillCanceled",
-                    "authToken": "Secret authentication token",
-                    "type": "robinhood"
-                  }
+                  "value": {"symbol":"AAPL","paymentSymbol":"USD","amount":1,"price":0,"isCryptocurrency":false,"paymentIsCryptocurrency":false,"amountIsFiat":false,"amountIsInPaymentSymbol":false,"extendedHours":false,"orderType":"market","timeInForce":"goodTillCanceled","authToken":"Secret authentication token","type":"robinhood"}
                 },
-                "Stock Fiat amount example ('buy TSLA for $10')": {
-                  "value": {
-                    "symbol": "TSLA",
-                    "paymentSymbol": "USD",
-                    "amount": 0,
-                    "price": 0,
-                    "isCryptocurrency": false,
-                    "paymentIsCryptocurrency": false,
-                    "amountIsFiat": true,
-                    "amountInFiat": 10,
-                    "extendedHours": false,
-                    "orderType": "market",
-                    "timeInForce": "goodTillCanceled",
-                    "authToken": "Secret authentication token",
-                    "type": "robinhood"
-                  }
+                "Stock Payment/Quote amount example ('buy TSLA for $10')": {
+                  "value": {"symbol":"TSLA","paymentSymbol":"USD","amount":0,"price":0,"isCryptocurrency":false,"paymentIsCryptocurrency":false,"amountIsFiat":false,"amountIsInPaymentSymbol":true,"amountInPaymentSymbol":10,"extendedHours":false,"orderType":"market","timeInForce":"goodTillCanceled","authToken":"Secret authentication token","type":"robinhood"}
                 }
               }
             }
@@ -2643,23 +1800,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerCreateOrderResultIApiResult"
                 },
-                "example": {
-                  "content": {
-                    "orderId": "6713DCDC-3D2E-46BC-ACB6-CF5FDE431CE2",
-                    "brokerType": "robinhood",
-                    "side": "buy",
-                    "amount": 1,
-                    "price": 1200,
-                    "value": 1200,
-                    "fee": 1.99,
-                    "timestamp": 1661904014,
-                    "status": "success",
-                    "statusDetails": "Executed successfully",
-                    "timeInForce": "goodTillCanceled"
-                  },
-                  "status": "ok",
-                  "message": ""
-                }
+                "example": {"content":{"orderId":"6713DCDC-3D2E-46BC-ACB6-CF5FDE431CE2","brokerType":"robinhood","side":"buy","amount":1,"price":1200,"value":1200,"fee":1.99,"timestamp":1661904014,"status":"success","statusDetails":"Executed successfully","timeInForce":"goodTillCanceled"},"status":"ok","message":""}
               }
             }
           },
@@ -2677,7 +1818,7 @@
             "description": "Unauthorized: Client Id or Client Secret are not correct or provided integration token is not correct.",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           }
@@ -2686,7 +1827,9 @@
     },
     "/api/v1/transactions/cancel": {
       "post": {
-        "tags": ["Transactions"],
+        "tags": [
+          "Transactions"
+        ],
         "summary": "Cancel order execution",
         "description": "Cancels a pending order (an order with `InProgress` status).\r\n`SymbolPair` is required to be provided for `Binance`, `BinanceInternational`, `Okx` and `BitFlyer` institutions.\r\nThis value",
         "parameters": [
@@ -2721,12 +1864,7 @@
                   }
                 ]
               },
-              "example": {
-                "id": "17EC1243-D91A-48B6-B0CE-ECFDB134F8A0",
-                "isCryptocurrency": true,
-                "authToken": "Secret authentication token",
-                "type": "robinhood"
-              }
+              "example": {"id":"17EC1243-D91A-48B6-B0CE-ECFDB134F8A0","isCryptocurrency":true,"authToken":"Secret authentication token","type":"robinhood"}
             }
           }
         },
@@ -2755,7 +1893,7 @@
             "description": "Unauthorized: Client Id or Client Secret are not correct or provided integration token is not correct.",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           },
@@ -2774,7 +1912,9 @@
     },
     "/api/v1/transactions/symbolinfo": {
       "post": {
-        "tags": ["Transactions"],
+        "tags": [
+          "Transactions"
+        ],
         "summary": "Get symbol information",
         "description": "Returns information on trading allowance for a provided symbol.\r\nFor example - some institutions allow fractional trading for some symbols, but do not allow it\r\nfor others. So before placing an order the API client can check if the required symbol can be traded fractionally\r\nwith the provided institution.",
         "parameters": [
@@ -2809,19 +1949,7 @@
                   }
                 ]
               },
-              "example": {
-                "side": "buy",
-                "symbol": "BTC",
-                "amount": 0,
-                "price": 0,
-                "isCryptocurrency": false,
-                "paymentIsCryptocurrency": false,
-                "amountIsFiat": false,
-                "extendedHours": false,
-                "orderType": "unknown",
-                "timeInForce": "goodTillCanceled",
-                "type": "robinhood"
-              }
+              "example": {"side":"buy","symbol":"BTC","amount":0,"price":0,"isCryptocurrency":false,"paymentIsCryptocurrency":false,"amountIsFiat":false,"amountIsInPaymentSymbol":false,"extendedHours":false,"orderType":"unknown","timeInForce":"goodTillCanceled","type":"robinhood"}
             }
           }
         },
@@ -2833,15 +1961,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerOrderSymbolInfoIApiResult"
                 },
-                "example": {
-                  "content": {
-                    "fractionalTradingAllowance": "fractionalTradingAllowed",
-                    "minimumOrderValue": 0.001,
-                    "precisionScale": 6
-                  },
-                  "status": "ok",
-                  "message": ""
-                }
+                "example": {"content":{"fractionalTradingAllowance":"fractionalTradingAllowed","minimumOrderValue":0.001,"precisionScale":6},"status":"ok","message":""}
               }
             }
           },
@@ -2859,7 +1979,7 @@
             "description": "Unauthorized: Client Id or Client Secret are not correct.",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           }
@@ -2868,7 +1988,9 @@
     },
     "/api/v1/transfers/list": {
       "post": {
-        "tags": ["Transfers"],
+        "tags": [
+          "Transfers"
+        ],
         "summary": "List transfers",
         "description": "Get cryptocurrency transfers, such as transfers on a cryptocurrency wallet, or\r\ndeposit/withdrawal transfers on an cryptocurrency exchange account.",
         "parameters": [
@@ -2915,53 +2037,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerTransactionsListModelIApiResult"
                 },
-                "example": {
-                  "content": {
-                    "transfers": [
-                      {
-                        "id": "8E25ACB5-A9E2-4D00-8772-A255F010A2A9",
-                        "status": "succeeded",
-                        "type": "deposit",
-                        "fromAddress": "D5PumQwt...",
-                        "targetAddress": "D641Fmzx...",
-                        "symbol": "DOGE",
-                        "hash": "3310c6202aaeb44754a118ce11f255382d012060ade0d6d9f...",
-                        "amount": 15,
-                        "transactionAmount": 10,
-                        "createdTimestamp": 1653215600,
-                        "updatedTimestamp": 1653215600,
-                        "networkTransactionFee": {
-                          "amount": 5,
-                          "symbol": "DOGE"
-                        },
-                        "confirmations": 17,
-                        "blockchainMethod": "transfer"
-                      },
-                      {
-                        "id": "70E6E3CF-5ACF-49C5-A4E1-5FB85A567F26",
-                        "status": "succeeded",
-                        "type": "withdrawal",
-                        "fromAddress": "0x7BDE8361Fe587daD0e35448E754...",
-                        "targetAddress": "0x83C8F28c26bF6aaca652Df1DbBE...",
-                        "symbol": "ETH",
-                        "hash": "0x77f3a280aa5cfe956a5759c24cf774325504070b32b4159...",
-                        "amount": 0.1,
-                        "transactionAmount": 0.099,
-                        "createdTimestamp": 1653211113,
-                        "updatedTimestamp": 1653211113,
-                        "networkTransactionFee": {
-                          "amount": 0.001,
-                          "symbol": "ETH"
-                        },
-                        "confirmations": 18,
-                        "blockchainMethod": "transfer"
-                      }
-                    ],
-                    "total": 0
-                  },
-                  "status": "ok",
-                  "message": ""
-                }
+                "example": {"content":{"transfers":[{"id":"8E25ACB5-A9E2-4D00-8772-A255F010A2A9","status":"succeeded","type":"deposit","fromAddress":"D5PumQwt...","targetAddress":"D641Fmzx...","symbol":"DOGE","hash":"3310c6202aaeb44754a118ce11f255382d012060ade0d6d9f...","amount":15,"transactionAmount":10,"createdTimestamp":1653215600,"updatedTimestamp":1653215600,"networkTransactionFee":{"amount":5,"symbol":"DOGE"},"confirmations":17,"blockchainMethod":"transfer"},{"id":"70E6E3CF-5ACF-49C5-A4E1-5FB85A567F26","status":"succeeded","type":"withdrawal","fromAddress":"0x7BDE8361Fe587daD0e35448E754...","targetAddress":"0x83C8F28c26bF6aaca652Df1DbBE...","symbol":"ETH","hash":"0x77f3a280aa5cfe956a5759c24cf774325504070b32b4159...","amount":0.1,"transactionAmount":0.099,"createdTimestamp":1653211113,"updatedTimestamp":1653211113,"networkTransactionFee":{"amount":0.001,"symbol":"ETH"},"confirmations":18,"blockchainMethod":"transfer"}],"total":0},"status":"ok","message":""}
               }
             }
           },
@@ -2972,11 +2048,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {
-                  "status": "badRequest",
-                  "message": "Error message",
-                  "displayMessage": "Optional display message"
-                }
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
               }
             }
           },
@@ -2984,7 +2056,7 @@
             "description": "Unauthorized: Client Id or Client Secret are not correct or missing.",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           }
@@ -2993,7 +2065,9 @@
     },
     "/api/v1/transfers/details": {
       "post": {
-        "tags": ["Transfers"],
+        "tags": [
+          "Transfers"
+        ],
         "summary": "Get transfer",
         "description": "Get details of a cryptocurrency transfer.",
         "parameters": [
@@ -3028,11 +2102,7 @@
                   }
                 ]
               },
-              "example": {
-                "transactionId": "63F1A6B6-BF45-4E51-A624-EC52B5680D48",
-                "authToken": "Secret authentication token",
-                "type": "robinhood"
-              }
+              "example": {"transactionId":"63F1A6B6-BF45-4E51-A624-EC52B5680D48","authToken":"Secret authentication token","type":"robinhood"}
             }
           }
         },
@@ -3044,26 +2114,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerCryptocurrencyTransactionIApiResult"
                 },
-                "example": {
-                  "content": {
-                    "id": "8E25ACB5-A9E2-4D00-8772-A255F010A2A9",
-                    "status": "succeeded",
-                    "type": "deposit",
-                    "fromAddress": "D5PumQwt...",
-                    "targetAddress": "D641Fmzx...",
-                    "symbol": "DOGE",
-                    "hash": "3310c6202aaeb44754a118ce11f255382d012060ade0d6d9f...",
-                    "amount": 15,
-                    "transactionAmount": 10,
-                    "createdTimestamp": 1653215600,
-                    "updatedTimestamp": 1653215600,
-                    "networkTransactionFee": { "amount": 5, "symbol": "DOGE" },
-                    "confirmations": 17,
-                    "blockchainMethod": "transfer"
-                  },
-                  "status": "ok",
-                  "message": ""
-                }
+                "example": {"content":{"id":"8E25ACB5-A9E2-4D00-8772-A255F010A2A9","status":"succeeded","type":"deposit","fromAddress":"D5PumQwt...","targetAddress":"D641Fmzx...","symbol":"DOGE","hash":"3310c6202aaeb44754a118ce11f255382d012060ade0d6d9f...","amount":15,"transactionAmount":10,"createdTimestamp":1653215600,"updatedTimestamp":1653215600,"networkTransactionFee":{"amount":5,"symbol":"DOGE"},"confirmations":17,"blockchainMethod":"transfer"},"status":"ok","message":""}
               }
             }
           },
@@ -3074,11 +2125,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {
-                  "status": "badRequest",
-                  "message": "Error message",
-                  "displayMessage": "Optional display message"
-                }
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
               }
             }
           },
@@ -3086,7 +2133,7 @@
             "description": "Unauthorized: Client Id or Client Secret are not correct or missing.",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           },
@@ -3097,11 +2144,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {
-                  "status": "notFound",
-                  "message": "Error message",
-                  "displayMessage": "Optional display message"
-                }
+                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message"}
               }
             }
           }
@@ -3110,7 +2153,9 @@
     },
     "/api/v1/transfers": {
       "post": {
-        "tags": ["Transfers"],
+        "tags": [
+          "Transfers"
+        ],
         "summary": "Initiate a transfer",
         "description": "Initiate a new cryptocurrency transfer on a blockchain, cryptocurrency broker or cryptocurrency exchange.",
         "parameters": [
@@ -3147,30 +2192,10 @@
               },
               "examples": {
                 "Transfer using AddressType (DOGE over DOGE chain)": {
-                  "value": {
-                    "data": "Some memo",
-                    "targetAddress": "D641Fmzx...",
-                    "amount": 100,
-                    "fee": 5,
-                    "addressType": "dogeAddress",
-                    "mfaCode": "000000",
-                    "password": "$sb7u26",
-                    "authToken": "Secret authentication token",
-                    "type": "coinbase"
-                  }
+                  "value": {"data":"Some memo","targetAddress":"D641Fmzx...","amount":100,"fee":5,"addressType":"dogeAddress","mfaCode":"000000","password":"$sb7u26","authToken":"Secret authentication token","type":"coinbase"}
                 },
                 "Transfer using symbol and chain (USDT as ERC-20 over Ethereum chain)": {
-                  "value": {
-                    "data": "Some memo",
-                    "targetAddress": "0x4Df61A3CcfB...",
-                    "amount": 100,
-                    "fee": 0,
-                    "mfaCode": "000000",
-                    "chain": "ETH",
-                    "symbol": "USDT",
-                    "authToken": "Secret authentication token",
-                    "type": "coinbase"
-                  }
+                  "value": {"data":"Some memo","targetAddress":"0x4Df61A3CcfB...","amount":100,"fee":0,"mfaCode":"000000","chain":"ETH","symbol":"USDT","authToken":"Secret authentication token","type":"coinbase"}
                 }
               }
             }
@@ -3184,34 +2209,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerCreateCryptocurrencyTransactionResponseIApiResult"
                 },
-                "example": {
-                  "content": {
-                    "failed": false,
-                    "status": "pending",
-                    "statusDetails": "Accepted",
-                    "transaction": {
-                      "id": "8E25ACB5-A9E2-4D00-8772-A255F010A2A9",
-                      "status": "pending",
-                      "type": "withdrawal",
-                      "fromAddress": "D5PumQwt...",
-                      "targetAddress": "D641Fmzx...",
-                      "symbol": "DOGE",
-                      "hash": "3310c6202aaeb44754a118ce11f255382d012060ade0d6d9f...",
-                      "amount": 105,
-                      "transactionAmount": 100,
-                      "createdTimestamp": 1653215600,
-                      "updatedTimestamp": 1653215600,
-                      "networkTransactionFee": {
-                        "amount": 5,
-                        "symbol": "DOGE"
-                      },
-                      "confirmations": 3,
-                      "blockchainMethod": "transfer"
-                    }
-                  },
-                  "status": "ok",
-                  "message": ""
-                }
+                "example": {"content":{"failed":false,"status":"pending","statusDetails":"Accepted","transaction":{"id":"8E25ACB5-A9E2-4D00-8772-A255F010A2A9","status":"pending","type":"withdrawal","fromAddress":"D5PumQwt...","targetAddress":"D641Fmzx...","symbol":"DOGE","hash":"3310c6202aaeb44754a118ce11f255382d012060ade0d6d9f...","amount":105,"transactionAmount":100,"createdTimestamp":1653215600,"updatedTimestamp":1653215600,"networkTransactionFee":{"amount":5,"symbol":"DOGE"},"confirmations":3,"blockchainMethod":"transfer"}},"status":"ok","message":""}
               }
             }
           },
@@ -3222,11 +2220,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {
-                  "status": "badRequest",
-                  "message": "Error message",
-                  "displayMessage": "Optional display message"
-                }
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
               }
             }
           },
@@ -3234,7 +2228,7 @@
             "description": "Unauthorized: Client Id or Client Secret are not correct or missing.",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           }
@@ -3243,7 +2237,9 @@
     },
     "/api/v1/transfers/address/get": {
       "post": {
-        "tags": ["Transfers"],
+        "tags": [
+          "Transfers"
+        ],
         "summary": "Get deposit address",
         "description": "Get or generate a cryptocurrency deposit address that can be used to transfer assets to the financial institution",
         "parameters": [
@@ -3278,12 +2274,7 @@
                   }
                 ]
               },
-              "example": {
-                "symbol": "DOGE",
-                "chain": "DOGE",
-                "authToken": "Secret authentication token",
-                "type": "robinhood"
-              }
+              "example": {"symbol":"DOGE","chain":"DOGE","authToken":"Secret authentication token","type":"robinhood"}
             }
           }
         },
@@ -3295,15 +2286,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerCryptocurrencyDepositAddressResponseIApiResult"
                 },
-                "example": {
-                  "content": {
-                    "symbol": "DOGE",
-                    "address": "D641Fmzx...",
-                    "chain": "DOGE"
-                  },
-                  "status": "ok",
-                  "message": ""
-                }
+                "example": {"content":{"symbol":"DOGE","address":"D641Fmzx...","chain":"DOGE"},"status":"ok","message":""}
               }
             }
           },
@@ -3314,11 +2297,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {
-                  "status": "badRequest",
-                  "message": "Error message",
-                  "displayMessage": "Optional display message"
-                }
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
               }
             }
           },
@@ -3329,11 +2308,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {
-                  "status": "notFound",
-                  "message": "Error message",
-                  "displayMessage": "Optional display message"
-                }
+                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message"}
               }
             }
           },
@@ -3341,7 +2316,7 @@
             "description": "Unauthorized: Client Id or Client Secret are not correct or missing.",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           }
@@ -3350,7 +2325,9 @@
     },
     "/api/v1/transfers/symbol/details": {
       "post": {
-        "tags": ["Transfers"],
+        "tags": [
+          "Transfers"
+        ],
         "summary": "Get details of asset",
         "description": "Get details of the asset for deposit or withdrawal. For example, several exchanges support same tokens over multiple\r\nblockchains, and thus require the name of chain to be supplied for transfers. This endpoint allows getting such details.",
         "parameters": [
@@ -3385,12 +2362,7 @@
                   }
                 ]
               },
-              "example": {
-                "symbol": "DOGE",
-                "chain": "DOGE",
-                "authToken": "Secret authentication token",
-                "type": "robinhood"
-              }
+              "example": {"symbol":"DOGE","chain":"DOGE","authToken":"Secret authentication token","type":"robinhood"}
             }
           }
         },
@@ -3402,15 +2374,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerCryptocurrencyDepositAddressResponseIApiResult"
                 },
-                "example": {
-                  "content": {
-                    "symbol": "ETH",
-                    "addressTypes": ["ethAddress"],
-                    "chains": [{ "chain": "Ethereum", "fee": 0.00001 }]
-                  },
-                  "status": "ok",
-                  "message": ""
-                }
+                "example": {"content":{"symbol":"ETH","addressTypes":["ethAddress"],"chains":[{"chain":"Ethereum","fee":0.00001}]},"status":"ok","message":""}
               }
             }
           },
@@ -3421,11 +2385,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {
-                  "status": "badRequest",
-                  "message": "Error message",
-                  "displayMessage": "Optional display message"
-                }
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
               }
             }
           },
@@ -3436,11 +2396,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {
-                  "status": "notFound",
-                  "message": "Error message",
-                  "displayMessage": "Optional display message"
-                }
+                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message"}
               }
             }
           },
@@ -3448,7 +2404,7 @@
             "description": "Unauthorized: Client Id or Client Secret are not correct or missing.",
             "content": {
               "application/json": {
-                "schema": {}
+                "schema": { }
               }
             }
           }
@@ -3469,7 +2425,8 @@
               "badRequest",
               "notFound",
               "conflict",
-              "tooManyRequest"
+              "tooManyRequest",
+              "locked"
             ],
             "allOf": [
               {
@@ -3481,14 +2438,12 @@
           "message": {
             "type": "string",
             "description": "A message generated by the API",
-            "nullable": true,
-            "readOnly": true
+            "nullable": true
           },
           "displayMessage": {
             "type": "string",
             "description": "User-friendly display message that can be presented to the end user",
-            "nullable": true,
-            "readOnly": true
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3501,7 +2456,102 @@
           "badRequest",
           "notFound",
           "conflict",
-          "tooManyRequest"
+          "tooManyRequest",
+          "locked"
+        ],
+        "type": "string"
+      },
+      "Asset": {
+        "type": "object",
+        "properties": {
+          "symbol": {
+            "type": "string",
+            "nullable": true
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "enum": [
+              "equity",
+              "cryptocurrency"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AssetType"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
+      "AssetPaginationResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/Asset"
+            },
+            "description": "list of items",
+            "nullable": true
+          },
+          "total": {
+            "type": "integer",
+            "description": "Total number of items",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "AssetPaginationResponseIApiResult": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/AssetPaginationResponse"
+              }
+            ],
+            "nullable": true,
+            "readOnly": true
+          },
+          "status": {
+            "enum": [
+              "ok",
+              "serverFailure",
+              "permissionDenied",
+              "badRequest",
+              "notFound",
+              "conflict",
+              "tooManyRequest",
+              "locked"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiResultStatus"
+              }
+            ],
+            "readOnly": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "displayMessage": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "AssetType": {
+        "enum": [
+          "equity",
+          "cryptocurrency"
         ],
         "type": "string"
       },
@@ -3561,11 +2611,21 @@
         "additionalProperties": false
       },
       "AuthenticationSchemeType": {
-        "enum": ["usernamePassword", "oAuth", "apiKey", "blockchainAddress"],
+        "enum": [
+          "usernamePassword",
+          "oAuth",
+          "apiKey",
+          "blockchainAddress"
+        ],
         "type": "string"
       },
       "B2BAssetType": {
-        "enum": ["equity", "cryptocurrency", "option", "nft"],
+        "enum": [
+          "equity",
+          "cryptocurrency",
+          "option",
+          "nft"
+        ],
         "type": "string"
       },
       "B2BBrokerAccountBalance": {
@@ -3630,7 +2690,8 @@
               "badRequest",
               "notFound",
               "conflict",
-              "tooManyRequest"
+              "tooManyRequest",
+              "locked"
             ],
             "allOf": [
               {
@@ -3656,7 +2717,11 @@
         "type": "object",
         "properties": {
           "status": {
-            "enum": ["failed", "redirect", "openInBrokerModule"],
+            "enum": [
+              "failed",
+              "redirect",
+              "openInBrokerModule"
+            ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerAuthPromptStatus"
@@ -3706,7 +2771,8 @@
               "badRequest",
               "notFound",
               "conflict",
-              "tooManyRequest"
+              "tooManyRequest",
+              "locked"
             ],
             "allOf": [
               {
@@ -3729,7 +2795,9 @@
         "additionalProperties": false
       },
       "B2BBrokerAuthRequest": {
-        "required": ["type"],
+        "required": [
+          "type"
+        ],
         "type": "object",
         "properties": {
           "type": {
@@ -3765,7 +2833,8 @@
               "bitFlyer",
               "coinlist",
               "huobi",
-              "bitfinex"
+              "bitfinex",
+              "deFiWallet"
             ],
             "allOf": [
               {
@@ -3936,7 +3005,8 @@
               "badRequest",
               "notFound",
               "conflict",
-              "tooManyRequest"
+              "tooManyRequest",
+              "locked"
             ],
             "allOf": [
               {
@@ -3959,7 +3029,10 @@
         "additionalProperties": false
       },
       "B2BBrokerAuthStatus": {
-        "enum": ["failed", "succeeded"],
+        "enum": [
+          "failed",
+          "succeeded"
+        ],
         "type": "string"
       },
       "B2BBrokerCreateCryptocurrencyTransactionResponse": {
@@ -4035,7 +3108,8 @@
               "badRequest",
               "notFound",
               "conflict",
-              "tooManyRequest"
+              "tooManyRequest",
+              "locked"
             ],
             "allOf": [
               {
@@ -4061,6 +3135,7 @@
         "required": [
           "amount",
           "amountIsFiat",
+          "amountIsInPaymentSymbol",
           "authToken",
           "isCryptocurrency",
           "orderType",
@@ -4110,7 +3185,8 @@
               "bitFlyer",
               "coinlist",
               "huobi",
-              "bitfinex"
+              "bitfinex",
+              "deFiWallet"
             ],
             "allOf": [
               {
@@ -4149,11 +3225,21 @@
           },
           "amountIsFiat": {
             "type": "boolean",
-            "description": "This value indicates if the order should be executed in fiat amount (e.g. purchase ETH for $10). This can be\r\nperformed only if the current institution supports such orders (`SupportsPlacingSellOrdersInFiatAmount` and\r\n`SupportsPlacingBuyOrdersInFiatAmount` fields in `get supported order features for institution`) and `AmountInFiat`\r\nvalue is passed."
+            "deprecated": true
           },
           "amountInFiat": {
             "type": "number",
-            "description": "Specifies the target amount in fiat currency. For example setting this to `10` when the `AmountIsFiat` = `true`\r\nand `PaymentSymbol` = `USD` will instruct the API to place an order to buy/sell the asset worth $10.",
+            "format": "double",
+            "nullable": true,
+            "deprecated": true
+          },
+          "amountIsInPaymentSymbol": {
+            "type": "boolean",
+            "description": "This value indicates if the order should be executed in payment/quote currency amount (e.g. purchase ETH for $10). This can be\r\nperformed only if the current institution supports such orders (`SupportsPlacingSellOrdersInPaymentSymbolAmount` and\r\n`SupportsPlacingSellOrdersInPaymentSymbolAmount` fields in `get supported order features for institution`) and `AmountInPaymentSymbol`\r\nvalue is passed."
+          },
+          "amountInPaymentSymbol": {
+            "type": "number",
+            "description": "Specifies the target amount in the payment/quote currency. For example, setting this to `10` when the `AmountInPaymentSymbol` = `true`\r\nand `PaymentSymbol` = `USD` will instruct the API to place an order to buy/sell the asset worth $10.",
             "format": "double",
             "nullable": true
           },
@@ -4238,7 +3324,8 @@
               "bitFlyer",
               "coinlist",
               "huobi",
-              "bitfinex"
+              "bitfinex",
+              "deFiWallet"
             ],
             "allOf": [
               {
@@ -4248,7 +3335,11 @@
             "description": "Type of the institution."
           },
           "side": {
-            "enum": ["unknown", "buy", "sell"],
+            "enum": [
+              "unknown",
+              "buy",
+              "sell"
+            ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerOrderType"
@@ -4293,7 +3384,9 @@
               "failed",
               "success",
               "partiallyFilled",
-              "expired"
+              "expired",
+              "active",
+              "filled"
             ],
             "allOf": [
               {
@@ -4367,7 +3460,8 @@
               "badRequest",
               "notFound",
               "conflict",
-              "tooManyRequest"
+              "tooManyRequest",
+              "locked"
             ],
             "allOf": [
               {
@@ -4435,7 +3529,8 @@
               "badRequest",
               "notFound",
               "conflict",
-              "tooManyRequest"
+              "tooManyRequest",
+              "locked"
             ],
             "allOf": [
               {
@@ -4496,7 +3591,11 @@
             "nullable": true
           },
           "type": {
-            "enum": ["unknown", "deposit", "withdrawal"],
+            "enum": [
+              "unknown",
+              "deposit",
+              "withdrawal"
+            ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerCryptocurrencyTransactionType"
@@ -4633,7 +3732,8 @@
               "badRequest",
               "notFound",
               "conflict",
-              "tooManyRequest"
+              "tooManyRequest",
+              "locked"
             ],
             "allOf": [
               {
@@ -4688,7 +3788,11 @@
         "type": "object",
         "properties": {
           "optionType": {
-            "enum": ["unknown", "call", "put"],
+            "enum": [
+              "unknown",
+              "call",
+              "put"
+            ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerOptionType"
@@ -4745,7 +3849,11 @@
             "nullable": true
           },
           "side": {
-            "enum": ["unknown", "buy", "sell"],
+            "enum": [
+              "unknown",
+              "buy",
+              "sell"
+            ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerOrderType"
@@ -4764,7 +3872,12 @@
             "nullable": true
           },
           "assetType": {
-            "enum": ["equity", "cryptocurrency", "option", "nft"],
+            "enum": [
+              "equity",
+              "cryptocurrency",
+              "option",
+              "nft"
+            ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/B2BAssetType"
@@ -4778,7 +3891,10 @@
             "nullable": true
           },
           "paymentType": {
-            "enum": ["fiat", "cryptocurrency"],
+            "enum": [
+              "fiat",
+              "cryptocurrency"
+            ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/B2BBrokerOrderPaymentSymbolType"
@@ -4829,7 +3945,9 @@
               "failed",
               "success",
               "partiallyFilled",
-              "expired"
+              "expired",
+              "active",
+              "filled"
             ],
             "allOf": [
               {
@@ -4894,7 +4012,8 @@
               "bitFlyer",
               "coinlist",
               "huobi",
-              "bitfinex"
+              "bitfinex",
+              "deFiWallet"
             ],
             "allOf": [
               {
@@ -4962,7 +4081,8 @@
               "badRequest",
               "notFound",
               "conflict",
-              "tooManyRequest"
+              "tooManyRequest",
+              "locked"
             ],
             "allOf": [
               {
@@ -4985,7 +4105,10 @@
         "additionalProperties": false
       },
       "B2BBrokerOrderListRequest": {
-        "required": ["authToken", "type"],
+        "required": [
+          "authToken",
+          "type"
+        ],
         "type": "object",
         "properties": {
           "authToken": {
@@ -5026,7 +4149,8 @@
               "bitFlyer",
               "coinlist",
               "huobi",
-              "bitfinex"
+              "bitfinex",
+              "deFiWallet"
             ],
             "allOf": [
               {
@@ -5051,6 +4175,12 @@
               "$ref": "#/components/schemas/BrokerOrderStatus"
             },
             "description": "Return orders of this statuses only. If this field is not provided, orders with all available statuses will be returned.",
+            "nullable": true
+          },
+          "from": {
+            "type": "integer",
+            "description": "Return orders created after this timestamp.\r\nIf this field is not provided, orders with any creation timestamp will be returned.",
+            "format": "int64",
             "nullable": true
           }
         },
@@ -5100,7 +4230,8 @@
               "badRequest",
               "notFound",
               "conflict",
-              "tooManyRequest"
+              "tooManyRequest",
+              "locked"
             ],
             "allOf": [
               {
@@ -5123,11 +4254,19 @@
         "additionalProperties": false
       },
       "B2BBrokerOrderPaymentSymbolType": {
-        "enum": ["fiat", "cryptocurrency"],
+        "enum": [
+          "fiat",
+          "cryptocurrency"
+        ],
         "type": "string"
       },
       "B2BBrokerOrderRequest": {
-        "required": ["authToken", "id", "isCryptocurrency", "type"],
+        "required": [
+          "authToken",
+          "id",
+          "isCryptocurrency",
+          "type"
+        ],
         "type": "object",
         "properties": {
           "authToken": {
@@ -5168,7 +4307,8 @@
               "bitFlyer",
               "coinlist",
               "huobi",
-              "bitfinex"
+              "bitfinex",
+              "deFiWallet"
             ],
             "allOf": [
               {
@@ -5253,7 +4393,8 @@
               "badRequest",
               "notFound",
               "conflict",
-              "tooManyRequest"
+              "tooManyRequest",
+              "locked"
             ],
             "allOf": [
               {
@@ -5303,7 +4444,12 @@
             "nullable": true
           },
           "orderCategory": {
-            "enum": ["order", "trade", "ledger", "historyAction"],
+            "enum": [
+              "order",
+              "trade",
+              "ledger",
+              "historyAction"
+            ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerOrderCategory"
@@ -5317,7 +4463,11 @@
         "type": "object",
         "properties": {
           "status": {
-            "enum": ["succeeded", "failed", "notAuthorized"],
+            "enum": [
+              "succeeded",
+              "failed",
+              "notAuthorized"
+            ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerRequestStatus"
@@ -5416,7 +4566,8 @@
               "bitFlyer",
               "coinlist",
               "huobi",
-              "bitfinex"
+              "bitfinex",
+              "deFiWallet"
             ],
             "allOf": [
               {
@@ -5463,7 +4614,8 @@
               "badRequest",
               "notFound",
               "conflict",
-              "tooManyRequest"
+              "tooManyRequest",
+              "locked"
             ],
             "allOf": [
               {
@@ -5521,7 +4673,8 @@
               "bitFlyer",
               "coinlist",
               "huobi",
-              "bitfinex"
+              "bitfinex",
+              "deFiWallet"
             ],
             "allOf": [
               {
@@ -5543,7 +4696,11 @@
             "format": "double"
           },
           "side": {
-            "enum": ["unknown", "buy", "sell"],
+            "enum": [
+              "unknown",
+              "buy",
+              "sell"
+            ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerOrderType"
@@ -5551,7 +4708,10 @@
             ]
           },
           "status": {
-            "enum": ["success", "failed"],
+            "enum": [
+              "success",
+              "failed"
+            ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerOrderValidationStatus"
@@ -5597,7 +4757,8 @@
               "badRequest",
               "notFound",
               "conflict",
-              "tooManyRequest"
+              "tooManyRequest",
+              "locked"
             ],
             "allOf": [
               {
@@ -5623,7 +4784,10 @@
         "type": "object",
         "properties": {
           "status": {
-            "enum": ["failed", "succeeded"],
+            "enum": [
+              "failed",
+              "succeeded"
+            ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/B2BBrokerAuthStatus"
@@ -5686,7 +4850,8 @@
               "badRequest",
               "notFound",
               "conflict",
-              "tooManyRequest"
+              "tooManyRequest",
+              "locked"
             ],
             "allOf": [
               {
@@ -5712,6 +4877,7 @@
         "required": [
           "amount",
           "amountIsFiat",
+          "amountIsInPaymentSymbol",
           "authToken",
           "isCryptocurrency",
           "orderType",
@@ -5761,7 +4927,8 @@
               "bitFlyer",
               "coinlist",
               "huobi",
-              "bitfinex"
+              "bitfinex",
+              "deFiWallet"
             ],
             "allOf": [
               {
@@ -5800,11 +4967,21 @@
           },
           "amountIsFiat": {
             "type": "boolean",
-            "description": "This value indicates if the order should be executed in fiat amount (e.g. purchase ETH for $10). This can be\r\nperformed only if the current institution supports such orders (`SupportsPlacingSellOrdersInFiatAmount` and\r\n`SupportsPlacingBuyOrdersInFiatAmount` fields in `get supported order features for institution`) and `AmountInFiat`\r\nvalue is passed."
+            "deprecated": true
           },
           "amountInFiat": {
             "type": "number",
-            "description": "Specifies the target amount in fiat currency. For example setting this to `10` when the `AmountIsFiat` = `true`\r\nand `PaymentSymbol` = `USD` will instruct the API to place an order to buy/sell the asset worth $10.",
+            "format": "double",
+            "nullable": true,
+            "deprecated": true
+          },
+          "amountIsInPaymentSymbol": {
+            "type": "boolean",
+            "description": "This value indicates if the order should be executed in payment/quote currency amount (e.g. purchase ETH for $10). This can be\r\nperformed only if the current institution supports such orders (`SupportsPlacingSellOrdersInPaymentSymbolAmount` and\r\n`SupportsPlacingSellOrdersInPaymentSymbolAmount` fields in `get supported order features for institution`) and `AmountInPaymentSymbol`\r\nvalue is passed."
+          },
+          "amountInPaymentSymbol": {
+            "type": "number",
+            "description": "Specifies the target amount in the payment/quote currency. For example, setting this to `10` when the `AmountInPaymentSymbol` = `true`\r\nand `PaymentSymbol` = `USD` will instruct the API to place an order to buy/sell the asset worth $10.",
             "format": "double",
             "nullable": true
           },
@@ -5955,7 +5132,8 @@
               "bitFlyer",
               "coinlist",
               "huobi",
-              "bitfinex"
+              "bitfinex",
+              "deFiWallet"
             ],
             "allOf": [
               {
@@ -5988,7 +5166,11 @@
             "nullable": true
           },
           "status": {
-            "enum": ["succeeded", "failed", "notAuthorized"],
+            "enum": [
+              "succeeded",
+              "failed",
+              "notAuthorized"
+            ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerRequestStatus"
@@ -5999,6 +5181,10 @@
           "supportsOrderPreview": {
             "type": "boolean",
             "description": "Indicates if the preview of orders (`preview order execution` endpoint) is provided by the institution.\r\nThis allows to validate the order using the API of the institution. If the order preview is not supported,\r\nFront API validates the order without calling the institution's API."
+          },
+          "supportsPriceQuotes": {
+            "type": "boolean",
+            "description": "Supports getting price information directly from the institution."
           },
           "supportsOrderCancellation": {
             "type": "boolean",
@@ -6043,7 +5229,8 @@
               "badRequest",
               "notFound",
               "conflict",
-              "tooManyRequest"
+              "tooManyRequest",
+              "locked"
             ],
             "allOf": [
               {
@@ -6069,26 +5256,48 @@
         "type": "object",
         "properties": {
           "supported": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Specifies if this order type is supported for this integration."
           },
           "supportsFractionalShares": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Specifies if this order type supports buying or selling in fractional amounts. If this value is `false`, then only whole shares can be traded."
           },
           "supportsExtendedMarketHours": {
-            "type": "boolean"
+            "type": "boolean",
+            "description": "Indicates if pre-market trading or after-hours trading is supported."
           },
           "supportsPlacingBuyOrdersInFiatAmount": {
-            "type": "boolean"
+            "type": "boolean",
+            "deprecated": true
           },
           "supportsPlacingSellOrdersInFiatAmount": {
-            "type": "boolean"
+            "type": "boolean",
+            "deprecated": true
           },
           "supportedTimeInForceList": {
             "type": "array",
             "items": {
               "$ref": "#/components/schemas/BrokerOrderTimeInForceType"
             },
+            "description": "The list of supported Time-in-force instructions for this order type.",
             "nullable": true
+          },
+          "supportsPlacingBuyOrdersInPaymentSymbolAmount": {
+            "type": "boolean",
+            "description": "Specifies if this order type supports placing buy orders in payment/quote symbol amounts. For example,\r\nif payment/quote symbol is USD, and this capability is supported, then the API can be instructed to buy asset for $10 or other dollar amount."
+          },
+          "supportsPlacingSellOrdersInPaymentSymbolAmount": {
+            "type": "boolean",
+            "description": "Specifies if this order type supports placing sell orders in payment/quote symbol amounts. For example,\r\nif payment/quote symbol is USD, and this capability is supported, then the API can be instructed to sell asset for $10 or other dollar amount."
+          },
+          "supportsPlacingBuyOrdersInBaseSymbolAmount": {
+            "type": "boolean",
+            "description": "Specifies if this order type supports placing buy orders in base symbol amounts. For example,\r\nif payment/quote symbol is USD, base symbol is AAPL, and this capability is supported, then the API can be instructed to buy 1 or other amount of AAPL."
+          },
+          "supportsPlacingSellOrdersInBaseSymbolAmount": {
+            "type": "boolean",
+            "description": "Specifies if this order type supports placing sell orders in base symbol amounts. For example,\r\nif payment/quote symbol is USD, base symbol is AAPL, and this capability is supported, then the API can be instructed to sell 1 or other amount of AAPL."
           }
         },
         "additionalProperties": false
@@ -6134,7 +5343,8 @@
               "badRequest",
               "notFound",
               "conflict",
-              "tooManyRequest"
+              "tooManyRequest",
+              "locked"
             ],
             "allOf": [
               {
@@ -6192,7 +5402,8 @@
               "bitFlyer",
               "coinlist",
               "huobi",
-              "bitfinex"
+              "bitfinex",
+              "deFiWallet"
             ],
             "allOf": [
               {
@@ -6252,88 +5463,8 @@
               "badRequest",
               "notFound",
               "conflict",
-              "tooManyRequest"
-            ],
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ApiResultStatus"
-              }
-            ],
-            "readOnly": true
-          },
-          "message": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          },
-          "displayMessage": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "B2BCryptocurrencyFisco": {
-        "type": "object",
-        "properties": {
-          "symbol": {
-            "type": "string",
-            "nullable": true
-          },
-          "frontScore": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/B2BCryptocurrencyFiscoData"
-              }
-            ],
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "B2BCryptocurrencyFiscoData": {
-        "type": "object",
-        "properties": {
-          "frontScore": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalScore": {
-            "enum": ["veryPoor", "poor", "fair", "good", "exceptional"],
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/FiscoIngredientScoreEnum"
-              }
-            ],
-            "readOnly": true
-          },
-          "isCompatibilityScoreApplied": {
-            "type": "boolean"
-          }
-        },
-        "additionalProperties": false
-      },
-      "B2BCryptocurrencyFiscoIReadOnlyCollectionIApiResult": {
-        "type": "object",
-        "properties": {
-          "content": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/B2BCryptocurrencyFisco"
-            },
-            "nullable": true,
-            "readOnly": true
-          },
-          "status": {
-            "enum": [
-              "ok",
-              "serverFailure",
-              "permissionDenied",
-              "badRequest",
-              "notFound",
-              "conflict",
-              "tooManyRequest"
+              "tooManyRequest",
+              "locked"
             ],
             "allOf": [
               {
@@ -6500,7 +5631,11 @@
             "format": "double"
           },
           "optionType": {
-            "enum": ["unknown", "call", "put"],
+            "enum": [
+              "unknown",
+              "call",
+              "put"
+            ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerOptionType"
@@ -6553,160 +5688,6 @@
           "startingValue": {
             "type": "number",
             "format": "double"
-          }
-        },
-        "additionalProperties": false
-      },
-      "B2BPortfolioFisco": {
-        "type": "object",
-        "properties": {
-          "frontScore": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalScore": {
-            "enum": ["veryPoor", "poor", "fair", "good", "exceptional"],
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/FiscoIngredientScoreEnum"
-              }
-            ],
-            "readOnly": true
-          },
-          "maxFrontScore": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "minFrontScore": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "financialScore": {
-            "enum": ["veryPoor", "poor", "fair", "good", "exceptional"],
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/FiscoIngredientScoreEnum"
-              }
-            ],
-            "description": "Front analyzes available financial data to reach a determination on risk associated with an asset based on its underlying financial conditions.\r\nThe Financials Score is a strong metric for investors who seek stocks that are underperforming and ripe for growth."
-          },
-          "performanceScore": {
-            "enum": ["veryPoor", "poor", "fair", "good", "exceptional"],
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/FiscoIngredientScoreEnum"
-              }
-            ],
-            "description": "Front's proprietary algorithm performs advanced statistical analysis.\r\nWe use tools popular among hedge funds to assess historical performance based on different categories and volatility of assets over a short period of time."
-          },
-          "newsScore": {
-            "enum": ["veryPoor", "poor", "fair", "good", "exceptional"],
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/FiscoIngredientScoreEnum"
-              }
-            ],
-            "description": "Front Market Monitor autonomously crawls tens of thousands of websites\r\nat a time and assigns each stock a score based on the news stories"
-          },
-          "predictionScore": {
-            "enum": ["veryPoor", "poor", "fair", "good", "exceptional"],
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/FiscoIngredientScoreEnum"
-              }
-            ]
-          },
-          "residualReturnScore": {
-            "enum": ["veryPoor", "poor", "fair", "good", "exceptional"],
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/FiscoIngredientScoreEnum"
-              }
-            ]
-          },
-          "diversificationScore": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/FiscoIngredientScoreEnum"
-              }
-            ],
-            "description": "Portfolio diversification score",
-            "nullable": true
-          },
-          "esgScore": {
-            "enum": ["veryPoor", "poor", "fair", "good", "exceptional"],
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/FiscoIngredientScoreEnum"
-              }
-            ],
-            "description": "Environmental, Social, Governance\r\nParameters are a set of standards used to evaluate investments.\r\nEnvironmental criteria consider how a company performs as a proponent of nature.\r\nSocial criteria examine how it manages relationships with employees, suppliers, customers,\r\nand the communities where it operates. Governance deals with a company’s leadership, audits, and shareholder rights."
-          },
-          "isEsgScoreApplied": {
-            "type": "boolean"
-          },
-          "isFinancialScoreApplied": {
-            "type": "boolean"
-          },
-          "isPerformanceScoreApplied": {
-            "type": "boolean"
-          },
-          "isNewsScoreApplied": {
-            "type": "boolean"
-          },
-          "isPredictionScoreApplied": {
-            "type": "boolean"
-          },
-          "isResidualReturnScoreApplied": {
-            "type": "boolean"
-          },
-          "isDiversificationScoreApplied": {
-            "type": "boolean",
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "B2BPortfolioFiscoIApiResult": {
-        "type": "object",
-        "properties": {
-          "content": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/B2BPortfolioFisco"
-              }
-            ],
-            "nullable": true,
-            "readOnly": true
-          },
-          "status": {
-            "enum": [
-              "ok",
-              "serverFailure",
-              "permissionDenied",
-              "badRequest",
-              "notFound",
-              "conflict",
-              "tooManyRequest"
-            ],
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ApiResultStatus"
-              }
-            ],
-            "readOnly": true
-          },
-          "message": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          },
-          "displayMessage": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -6788,7 +5769,8 @@
               "badRequest",
               "notFound",
               "conflict",
-              "tooManyRequest"
+              "tooManyRequest",
+              "locked"
             ],
             "allOf": [
               {
@@ -6851,7 +5833,8 @@
               "badRequest",
               "notFound",
               "conflict",
-              "tooManyRequest"
+              "tooManyRequest",
+              "locked"
             ],
             "allOf": [
               {
@@ -6964,180 +5947,6 @@
         },
         "additionalProperties": false
       },
-      "B2BStockFisco": {
-        "type": "object",
-        "properties": {
-          "symbol": {
-            "type": "string",
-            "nullable": true
-          },
-          "frontScore": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/B2BStockFiscoData"
-              }
-            ],
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "B2BStockFiscoData": {
-        "type": "object",
-        "properties": {
-          "frontScore": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "totalScore": {
-            "enum": ["veryPoor", "poor", "fair", "good", "exceptional"],
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/FiscoIngredientScoreEnum"
-              }
-            ],
-            "readOnly": true
-          },
-          "maxFrontScore": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "minFrontScore": {
-            "type": "integer",
-            "format": "int32",
-            "readOnly": true
-          },
-          "financialScore": {
-            "enum": ["veryPoor", "poor", "fair", "good", "exceptional"],
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/FiscoIngredientScoreEnum"
-              }
-            ],
-            "description": "Front analyzes available financial data to reach a determination on risk associated with an asset based on its underlying financial conditions.\r\nThe Financials Score is a strong metric for investors who seek stocks that are underperforming and ripe for growth."
-          },
-          "performanceScore": {
-            "enum": ["veryPoor", "poor", "fair", "good", "exceptional"],
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/FiscoIngredientScoreEnum"
-              }
-            ],
-            "description": "Front's proprietary algorithm performs advanced statistical analysis.\r\nWe use tools popular among hedge funds to assess historical performance based on different categories and volatility of assets over a short period of time."
-          },
-          "newsScore": {
-            "enum": ["veryPoor", "poor", "fair", "good", "exceptional"],
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/FiscoIngredientScoreEnum"
-              }
-            ],
-            "description": "Front Market Monitor autonomously crawls tens of thousands of websites\r\nat a time and assigns each stock a score based on the news stories"
-          },
-          "predictionScore": {
-            "enum": ["veryPoor", "poor", "fair", "good", "exceptional"],
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/FiscoIngredientScoreEnum"
-              }
-            ]
-          },
-          "residualReturnScore": {
-            "enum": ["veryPoor", "poor", "fair", "good", "exceptional"],
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/FiscoIngredientScoreEnum"
-              }
-            ]
-          },
-          "diversificationScore": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/FiscoIngredientScoreEnum"
-              }
-            ],
-            "description": "Portfolio diversification score",
-            "nullable": true
-          },
-          "esgScore": {
-            "enum": ["veryPoor", "poor", "fair", "good", "exceptional"],
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/FiscoIngredientScoreEnum"
-              }
-            ],
-            "description": "Environmental, Social, Governance\r\nParameters are a set of standards used to evaluate investments.\r\nEnvironmental criteria consider how a company performs as a proponent of nature.\r\nSocial criteria examine how it manages relationships with employees, suppliers, customers,\r\nand the communities where it operates. Governance deals with a company’s leadership, audits, and shareholder rights."
-          },
-          "isCompatibilityScoreApplied": {
-            "type": "boolean"
-          },
-          "isEsgScoreApplied": {
-            "type": "boolean"
-          },
-          "isFinancialScoreApplied": {
-            "type": "boolean"
-          },
-          "isPerformanceScoreApplied": {
-            "type": "boolean"
-          },
-          "isNewsScoreApplied": {
-            "type": "boolean"
-          },
-          "isPredictionScoreApplied": {
-            "type": "boolean"
-          },
-          "isResidualReturnScoreApplied": {
-            "type": "boolean"
-          },
-          "isDiversificationScoreApplied": {
-            "type": "boolean",
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "B2BStockFiscoIReadOnlyCollectionIApiResult": {
-        "type": "object",
-        "properties": {
-          "content": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/B2BStockFisco"
-            },
-            "nullable": true,
-            "readOnly": true
-          },
-          "status": {
-            "enum": [
-              "ok",
-              "serverFailure",
-              "permissionDenied",
-              "badRequest",
-              "notFound",
-              "conflict",
-              "tooManyRequest"
-            ],
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ApiResultStatus"
-              }
-            ],
-            "readOnly": true
-          },
-          "message": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          },
-          "displayMessage": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
       "B2BSymbolNewsData": {
         "type": "object",
         "properties": {
@@ -7206,7 +6015,10 @@
         "additionalProperties": false
       },
       "B2BSymbolNewsOrder": {
-        "enum": ["rank", "timestamp"],
+        "enum": [
+          "rank",
+          "timestamp"
+        ],
         "type": "string"
       },
       "B2BSymbolNewsResponse": {
@@ -7248,7 +6060,8 @@
               "badRequest",
               "notFound",
               "conflict",
-              "tooManyRequest"
+              "tooManyRequest",
+              "locked"
             ],
             "allOf": [
               {
@@ -7271,7 +6084,10 @@
         "additionalProperties": false
       },
       "B2BSymbolNewsSortingDirection": {
-        "enum": ["ascending", "descending"],
+        "enum": [
+          "ascending",
+          "descending"
+        ],
         "type": "string"
       },
       "B2BTransactionType": {
@@ -7353,7 +6169,11 @@
         "additionalProperties": false
       },
       "BrokerAuthPromptStatus": {
-        "enum": ["failed", "redirect", "openInBrokerModule"],
+        "enum": [
+          "failed",
+          "redirect",
+          "openInBrokerModule"
+        ],
         "type": "string"
       },
       "BrokerAuthStatus": {
@@ -7404,7 +6224,8 @@
               "bitFlyer",
               "coinlist",
               "huobi",
-              "bitfinex"
+              "bitfinex",
+              "deFiWallet"
             ],
             "allOf": [
               {
@@ -7478,7 +6299,8 @@
               "badRequest",
               "notFound",
               "conflict",
-              "tooManyRequest"
+              "tooManyRequest",
+              "locked"
             ],
             "allOf": [
               {
@@ -7501,7 +6323,10 @@
         "additionalProperties": false
       },
       "BrokerBaseRequest": {
-        "required": ["authToken", "type"],
+        "required": [
+          "authToken",
+          "type"
+        ],
         "type": "object",
         "properties": {
           "authToken": {
@@ -7542,7 +6367,8 @@
               "bitFlyer",
               "coinlist",
               "huobi",
-              "bitfinex"
+              "bitfinex",
+              "deFiWallet"
             ],
             "allOf": [
               {
@@ -7569,7 +6395,11 @@
         "additionalProperties": false
       },
       "BrokerCreateCryptocurrencyTransactionRequest": {
-        "required": ["authToken", "targetAddress", "type"],
+        "required": [
+          "authToken",
+          "targetAddress",
+          "type"
+        ],
         "type": "object",
         "properties": {
           "authToken": {
@@ -7610,7 +6440,8 @@
               "bitFlyer",
               "coinlist",
               "huobi",
-              "bitfinex"
+              "bitfinex",
+              "deFiWallet"
             ],
             "allOf": [
               {
@@ -7677,7 +6508,10 @@
         "additionalProperties": false
       },
       "BrokerCryptocurrencyDepositAddressRequest": {
-        "required": ["authToken", "type"],
+        "required": [
+          "authToken",
+          "type"
+        ],
         "type": "object",
         "properties": {
           "authToken": {
@@ -7718,7 +6552,8 @@
               "bitFlyer",
               "coinlist",
               "huobi",
-              "bitfinex"
+              "bitfinex",
+              "deFiWallet"
             ],
             "allOf": [
               {
@@ -7774,7 +6609,10 @@
         "type": "string"
       },
       "BrokerCryptocurrencyTransactionDetailsRequest": {
-        "required": ["authToken", "type"],
+        "required": [
+          "authToken",
+          "type"
+        ],
         "type": "object",
         "properties": {
           "authToken": {
@@ -7815,7 +6653,8 @@
               "bitFlyer",
               "coinlist",
               "huobi",
-              "bitfinex"
+              "bitfinex",
+              "deFiWallet"
             ],
             "allOf": [
               {
@@ -7897,7 +6736,11 @@
         "type": "string"
       },
       "BrokerCryptocurrencyTransactionType": {
-        "enum": ["unknown", "deposit", "withdrawal"],
+        "enum": [
+          "unknown",
+          "deposit",
+          "withdrawal"
+        ],
         "type": "string"
       },
       "BrokerCryptocurrencyWalletListResponse": {
@@ -7940,7 +6783,8 @@
               "badRequest",
               "notFound",
               "conflict",
-              "tooManyRequest"
+              "tooManyRequest",
+              "locked"
             ],
             "allOf": [
               {
@@ -7963,7 +6807,15 @@
         "additionalProperties": false
       },
       "BrokerFeature": {
-        "enum": ["holdings", "balance", "orders", "transfers", "identity"],
+        "enum": [
+          "holdings",
+          "balance",
+          "orders",
+          "transfers",
+          "identity",
+          "cryptocurrencyDepositAddresses",
+          "accountNumber"
+        ],
         "type": "string"
       },
       "BrokerFiatBalance": {
@@ -8008,11 +6860,20 @@
         "type": "string"
       },
       "BrokerOptionType": {
-        "enum": ["unknown", "call", "put"],
+        "enum": [
+          "unknown",
+          "call",
+          "put"
+        ],
         "type": "string"
       },
       "BrokerOrderCategory": {
-        "enum": ["order", "trade", "ledger", "historyAction"],
+        "enum": [
+          "order",
+          "trade",
+          "ledger",
+          "historyAction"
+        ],
         "type": "string"
       },
       "BrokerOrderPlaceType": {
@@ -8038,7 +6899,9 @@
           "failed",
           "success",
           "partiallyFilled",
-          "expired"
+          "expired",
+          "active",
+          "filled"
         ],
         "type": "string"
       },
@@ -8054,15 +6917,25 @@
         "type": "string"
       },
       "BrokerOrderType": {
-        "enum": ["unknown", "buy", "sell"],
+        "enum": [
+          "unknown",
+          "buy",
+          "sell"
+        ],
         "type": "string"
       },
       "BrokerOrderValidationStatus": {
-        "enum": ["success", "failed"],
+        "enum": [
+          "success",
+          "failed"
+        ],
         "type": "string"
       },
       "BrokerRefreshTokenRequest": {
-        "required": ["refreshToken", "type"],
+        "required": [
+          "refreshToken",
+          "type"
+        ],
         "type": "object",
         "properties": {
           "type": {
@@ -8098,7 +6971,8 @@
               "bitFlyer",
               "coinlist",
               "huobi",
-              "bitfinex"
+              "bitfinex",
+              "deFiWallet"
             ],
             "allOf": [
               {
@@ -8138,11 +7012,18 @@
         "additionalProperties": false
       },
       "BrokerRequestStatus": {
-        "enum": ["succeeded", "failed", "notAuthorized"],
+        "enum": [
+          "succeeded",
+          "failed",
+          "notAuthorized"
+        ],
         "type": "string"
       },
       "BrokerTransactionsListRequest": {
-        "required": ["authToken", "type"],
+        "required": [
+          "authToken",
+          "type"
+        ],
         "type": "object",
         "properties": {
           "authToken": {
@@ -8183,7 +7064,8 @@
               "bitFlyer",
               "coinlist",
               "huobi",
-              "bitfinex"
+              "bitfinex",
+              "deFiWallet"
             ],
             "allOf": [
               {
@@ -8217,6 +7099,12 @@
               }
             ],
             "description": "For cryptocurrency address the type of address is required.",
+            "nullable": true
+          },
+          "from": {
+            "type": "integer",
+            "description": "If this value is provided, result set is filtered to only include transactions created after this timestamp",
+            "format": "int64",
             "nullable": true
           }
         },
@@ -8255,7 +7143,8 @@
           "bitFlyer",
           "coinlist",
           "huobi",
-          "bitfinex"
+          "bitfinex",
+          "deFiWallet"
         ],
         "type": "string"
       },
@@ -8297,7 +7186,8 @@
               "badRequest",
               "notFound",
               "conflict",
-              "tooManyRequest"
+              "tooManyRequest",
+              "locked"
             ],
             "allOf": [
               {
@@ -8408,10 +7298,6 @@
         ],
         "type": "string"
       },
-      "FiscoIngredientScoreEnum": {
-        "enum": ["veryPoor", "poor", "fair", "good", "exceptional"],
-        "type": "string"
-      },
       "IApiResult": {
         "type": "object",
         "properties": {
@@ -8423,7 +7309,8 @@
               "badRequest",
               "notFound",
               "conflict",
-              "tooManyRequest"
+              "tooManyRequest",
+              "locked"
             ],
             "allOf": [
               {
@@ -8446,18 +7333,29 @@
         "additionalProperties": false
       },
       "MfaScheme": {
-        "enum": ["mfaCode", "challenge", "securityQuestion"],
+        "enum": [
+          "mfaCode",
+          "challenge",
+          "securityQuestion"
+        ],
         "type": "string"
       },
       "NftBlockchain": {
-        "enum": ["ethereum", "polygon", "klaytn"],
+        "enum": [
+          "ethereum",
+          "polygon",
+          "klaytn"
+        ],
         "type": "string"
       },
       "NftOrder": {
         "type": "object",
         "properties": {
           "orderSide": {
-            "enum": ["buy", "sell"],
+            "enum": [
+              "buy",
+              "sell"
+            ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/NftOrderSide"
@@ -8499,7 +7397,10 @@
         "additionalProperties": false
       },
       "NftOrderSide": {
-        "enum": ["buy", "sell"],
+        "enum": [
+          "buy",
+          "sell"
+        ],
         "type": "string"
       },
       "NftPositionWithMarketValues": {
@@ -8608,7 +7509,11 @@
             "nullable": true
           },
           "blockchain": {
-            "enum": ["ethereum", "polygon", "klaytn"],
+            "enum": [
+              "ethereum",
+              "polygon",
+              "klaytn"
+            ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/NftBlockchain"
@@ -8663,7 +7568,7 @@
             "nullable": true
           }
         },
-        "additionalProperties": {}
+        "additionalProperties": { }
       },
       "SymbolTradingAllowance": {
         "enum": [
@@ -8686,34 +7591,39 @@
   },
   "security": [
     {
-      "API-keys": []
+      "API-keys": [ ]
     }
   ],
   "tags": [
     {
-      "name": "Integrations"
+      "name": "Managed Account Authentication",
+      "description": "The recommended approach for account authentication. Front manages multiple authentication flows and handles all authentication steps such as MFA codes and OAuth redirect through our web and mobile SDKs."
+    },
+    {
+      "name": "Self Managed Account Authentication",
+      "description": "Not recommended approach. Using this approach, the API client is responsible for handling multiple authentication flows and supporting future updates and changes."
     },
     {
       "name": "Portfolio",
-      "description": "\r\n\r\n### Supported integrations:\r\n```Robinhood```\r\n```ETrade```\r\n```Alpaca```\r\n```TdAmeritrade```\r\n```WeBull```\r\n```Stash```\r\n```InteractiveBrokers```\r\n```Public```\r\n```Coinbase```\r\n```Kraken```\r\n```CoinbasePro```\r\n```CryptoCom```\r\n```OpenSea```\r\n```Binance```\r\n```Gemini```\r\n```CryptocurrencyAddress```\r\n```CryptocurrencyWallet```\r\n```OkCoin```\r\n```Bittrex```\r\n```KuCoin```\r\n```Etoro```\r\n```CexIo```\r\n```BinanceInternational```\r\n```GateIo```\r\n```Celsius```\r\n```Acorns```\r\n```Okx```\r\n```BitFlyer```\r\n```Coinlist```\r\n```Huobi```\r\n```Bitfinex```\r\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```CryptocurrencyAddress```\n```CryptocurrencyWallet```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n"
     },
     {
       "name": "Balance",
-      "description": "\r\n\r\n### Supported integrations:\r\n```Robinhood```\r\n```ETrade```\r\n```Alpaca```\r\n```TdAmeritrade```\r\n```WeBull```\r\n```Stash```\r\n```InteractiveBrokers```\r\n```Public```\r\n```Coinbase```\r\n```Kraken```\r\n```CoinbasePro```\r\n```CryptoCom```\r\n```Binance```\r\n```Gemini```\r\n```OkCoin```\r\n```Bittrex```\r\n```KuCoin```\r\n```Etoro```\r\n```CexIo```\r\n```BinanceInternational```\r\n```GateIo```\r\n```Celsius```\r\n```Acorns```\r\n```Okx```\r\n```BitFlyer```\r\n```Coinlist```\r\n```Huobi```\r\n```Bitfinex```\r\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n"
     },
     {
       "name": "Transactions",
-      "description": "\r\n\r\n### Supported integrations:\r\n```Robinhood```\r\n```ETrade```\r\n```Alpaca```\r\n```TdAmeritrade```\r\n```WeBull```\r\n```Stash```\r\n```InteractiveBrokers```\r\n```Public```\r\n```Coinbase```\r\n```Kraken```\r\n```CoinbasePro```\r\n```CryptoCom```\r\n```Binance```\r\n```Gemini```\r\n```OkCoin```\r\n```Bittrex```\r\n```KuCoin```\r\n```Etoro```\r\n```CexIo```\r\n```GateIo```\r\n```Okx```\r\n```BitFlyer```\r\n```Coinlist```\r\n```Huobi```\r\n```Bitfinex```\r\n\r\n\r\n### Integration-specific notes:\r\n\r\n\r\n#### TdAmeritrade:\r\n\r\n\r\nBecause of limitations of TD Ameritrade API, it is not guaranteed that details of a new order\r\n\r\nwill be returned upon executing it.\r\n\r\n\r\n#### Binance:\r\n\r\n\r\nBecause of limitations of Binance API, initial loading of transaction history in Binance can take long time\r\n\r\ndepending on the size of the portfolio.\r\n\r\n\r\n#### OkCoin:\r\n\r\n\r\nGetting transactions history from OkCoin is not currently supported.\r\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n\n\n### Integration-specific notes:\n\n\n#### TdAmeritrade:\n\n\nBecause of limitations of TD Ameritrade API, it is not guaranteed that details of a new order\n\nwill be returned upon executing it.\n\n\n#### Binance:\n\n\nBecause of limitations of Binance API, initial loading of transaction history in Binance can take long time\n\ndepending on the size of the portfolio.\n\n\n#### OkCoin:\n\n\nGetting transactions history from OkCoin is not currently supported.\n"
     },
     {
       "name": "Transfers",
-      "description": "\r\n\r\n### Supported integrations:\r\n```Robinhood```\r\n```Coinbase```\r\n```Kraken```\r\n```CoinbasePro```\r\n```CryptoCom```\r\n```Binance```\r\n```Gemini```\r\n```CryptocurrencyAddress```\r\n```CryptocurrencyWallet```\r\n```OkCoin```\r\n```Bittrex```\r\n```KuCoin```\r\n```BinanceInternational```\r\n```GateIo```\r\n```Okx```\r\n```Huobi```\r\n```Bitfinex```\r\n\r\n\r\n### Integration-specific notes:\r\n\r\n\r\n#### Robinhood:\r\n\r\n\r\nCryptocurrency transfers should be enabled in Robinhood settings. Transfers are disabled by default, enabling them for end users requires a review from Robinhood.\r\n\r\nPlease note:\r\n * `MfaCode` parameter is required to initiate a transaction in Robinhood.\r\n * The user's security settings should be configured to use an authenticator application.\r\n * Robinhood doesn't allow initiation of transactions if the authenticator application is not configured.\r\n\r\n\r\n#### Coinbase:\r\n\r\n\r\n`MfaCode` parameter should be used to initiate transactions in Coinbase.\r\n * If the end user's Coinbase account is configured to use text messages (SMS) for two factor authentication, the API will return `MfaRequired` status, and a text code will then be sent by Coinbase. The code is expected to be provided in the subsequent call using the `MfaCode` request field\r\n * If the account is configured to use an authenticator application, the API is expecting to get the code in the `MfaCode` request field.\r\n\r\n\r\n#### Kraken:\r\n\r\n\r\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\r\n\r\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\r\n\r\n\r\n#### CoinbasePro:\r\n * CoinbasePro does not provide multiple chains per a symbol, so default chains are used for getting Deposit addresses.\r\n\r\n\r\n#### Binance:\r\n\r\n\r\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance Us.\r\n\r\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\r\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\r\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\r\n\r\n\r\n#### KuCoin:\r\n\r\n\r\nKuCoin requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\r\n\r\n`Fee` parameter should be used to initiate a transaction in KuCoin.\r\n\r\nPlease note:\r\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\r\n * All currencies have their minimum `fee` and `amount` requirements. Please use `symbol/details` endpoint to get this data for a particular symbol.\r\n * KuCoin requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\r\n\r\n\r\n#### BinanceInternational:\r\n\r\n\r\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance International.\r\n\r\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\r\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\r\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\r\n\r\n\r\n#### GateIo:\r\n\r\n\r\nGate.io requires adding IP address to the list of trusted IP addresses to be able to initiate a cryptocurrency transfers.\r\n\r\nWithdrawal address should be already verified or added on the Gate.io UI (in mobile application or on the web site).\r\n * Please reach out to Front to get the static IP address for withdrawals. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\r\n * Only verified withdrawal blockchain addresses are allowed for withdrawal with Gate.io API.\r\n * Gate.io requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\r\n\r\n\r\n#### Huobi:\r\n\r\n\r\nWarning: Huobi does not refund executed deposits that are below the `Minimum Deposit Amount`\r\n * Please check the MinimumDepositAmount in Get Deposit Address response in order to avoid making a deposit below the minimum amount\r\n * Huobi does not allow withdrawals to addresses that are not white-listed, please add the address that you would like to withdraw to the white list of addresses through the UI so that a withrawal can be processed\r\n\r\n\r\n#### Bitfinex:\r\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\r\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\r\n"
-    },
-    {
-      "name": "FrontScore"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```CryptocurrencyAddress```\n```CryptocurrencyWallet```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n\n\n### Integration-specific notes:\n\n\n#### Robinhood:\n\n\nCryptocurrency transfers should be enabled in Robinhood settings. Transfers are disabled by default, enabling them for end users requires a review from Robinhood.\n\nPlease note:\n * `MfaCode` parameter is required to initiate a transaction in Robinhood.\n * The user's security settings should be configured to use an authenticator application.\n * Robinhood doesn't allow initiation of transactions if the authenticator application is not configured.\n\n\n#### Coinbase:\n\n\n`MfaCode` parameter should be used to initiate transactions in Coinbase.\n * If the end user's Coinbase account is configured to use text messages (SMS) for two factor authentication, the API will return `MfaRequired` status, and a text code will then be sent by Coinbase. The code is expected to be provided in the subsequent call using the `MfaCode` request field\n * If the account is configured to use an authenticator application, the API is expecting to get the code in the `MfaCode` request field.\n\n\n#### Kraken:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n\n\n#### CoinbasePro:\n * CoinbasePro does not provide multiple chains per a symbol, so default chains are used for getting Deposit addresses.\n\n\n#### Binance:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance Us.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### KuCoin:\n\n\nKuCoin requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n\n`Fee` parameter should be used to initiate a transaction in KuCoin.\n\nPlease note:\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * All currencies have their minimum `fee` and `amount` requirements. Please use `symbol/details` endpoint to get this data for a particular symbol.\n * KuCoin requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### BinanceInternational:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance International.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### GateIo:\n\n\nGate.io requires adding IP address to the list of trusted IP addresses to be able to initiate a cryptocurrency transfers.\n\nWithdrawal address should be already verified or added on the Gate.io UI (in mobile application or on the web site).\n * Please reach out to Front to get the static IP address for withdrawals. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * Only verified withdrawal blockchain addresses are allowed for withdrawal with Gate.io API.\n * Gate.io requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### Huobi:\n\n\nWarning: Huobi does not refund executed deposits that are below the `Minimum Deposit Amount`\n * Please check the MinimumDepositAmount in Get Deposit Address response in order to avoid making a deposit below the minimum amount\n * Huobi does not allow withdrawals to addresses that are not white-listed, please add the address that you would like to withdraw to the white list of addresses through the UI so that a withrawal can be processed\n\n\n#### Bitfinex:\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\n"
     },
     {
       "name": "News"
+    },
+    {
+      "name": "Assets"
     }
   ]
 }
