@@ -54,7 +54,6 @@ function createListenerIframe(options: FrontOptions, host: string) {
           accessToken: event.data.payload as AccessTokenPayload
         }
         options.onBrokerConnected && options.onBrokerConnected(payload)
-        deleteIframe()
         break
       }
       case 'delayedAuthentication': {
@@ -62,7 +61,6 @@ function createListenerIframe(options: FrontOptions, host: string) {
           delayedAuth: event.data.payload as DelayedAuthPayload
         }
         options.onBrokerConnected && options.onBrokerConnected(payload)
-        deleteIframe()
         break
       }
       case 'close':

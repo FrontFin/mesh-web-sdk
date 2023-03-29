@@ -37,12 +37,6 @@ export const FrontComponent: React.FC<{
     if (iframeLink) {
       frontConnection?.openPopup(iframeLink)
     }
-
-    return () => {
-      if (iframeLink) {
-        frontConnection?.closePopup()
-      }
-    }
   }, [frontConnection, iframeLink])
 
   return <></>

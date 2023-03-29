@@ -15,10 +15,6 @@ const getPopupHtml = (link: string) => `
 <div id="${popupId}">
   <div id="${backdropId}"></div>
   <div id="${popupContentId}">
-    <h3>
-      <span>Front connection</span>
-      <button type="button" id="${closeButtonId}">&#10006;</button>
-    </h3>
     <iframe src="${link}" />
   </div>
 </div>
@@ -42,6 +38,10 @@ const styles = `
     top: 0;
     bottom: 0;
     right: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
   }
 
   #${backdropId} {
@@ -52,43 +52,31 @@ const styles = `
     right: 0;
     z-index: 10000;
     background: black;
-    opacity: 0.3;
+    opacity: 0.6;
   }
 
   #${popupContentId} {
     position: absolute;
-    top: 10%;
-    bottom: 10%;
-    left: 0;
-    right: 0;
-    margin-left: auto;
-    margin-right: auto;
+    height: 80%;
+    max-height: 710px;
+    min-height: 685px;
+    margin: auto;
     z-index: 10001;
-    max-width: 400px;
+    width: 30%;
+    max-width: 430px;
+    min-width: 380px;
     display: flex;
     flex-direction: column;
-
+    border-radius: 24px;
     background: white;
-    padding: 10px;
+    flex-grow: 1;
   }
 
   #${popupContentId} iframe {
     border: none;
     width: 100%;
     flex-grow: 1;
-  }
-
-  #${popupContentId} h3 {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    margin: 0 0 10px 0;
-    height: 30px;
-    box-sizing: border-box;
-  }
-
-  #${popupContentId} h3 span {
-    flex-grow: 1;
+    border-radius: 24px;
   }
 
   #${popupContentId} h3 #${closeButtonId} {
@@ -120,7 +108,6 @@ function eventsListener(
         accessToken: event.data.payload as AccessTokenPayload
       }
       currentOptions?.onBrokerConnected?.(payload)
-      removePopup()
       break
     }
     case 'delayedAuthentication': {
@@ -128,7 +115,6 @@ function eventsListener(
         delayedAuth: event.data.payload as DelayedAuthPayload
       }
       currentOptions?.onBrokerConnected?.(payload)
-      removePopup()
       break
     }
     case 'close':
@@ -139,11 +125,15 @@ function eventsListener(
     }
     case 'oauthLinkOpen': {
       if (event.data.link) {
+        const w = 700
+        const h = 800
+        const left = screen.width / 2 - w / 2
+        const top = screen.height / 2 - h / 2
         window
           .open(
             event.data.link,
             '_blank',
-            'popup,noopener,noreferrer,resizable,scrollbars'
+            `popup,noopener,noreferrer,resizable,scrollbars,width=${w},height=${h},top=${top},left=${left}`
           )
           ?.focus()
       }
