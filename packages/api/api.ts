@@ -213,6 +213,7 @@ export interface B2BBrokerAuthResponse {
     | 'mfaRequired'
     | 'openInBrokerModule'
     | 'delayed'
+    | 'deviceConfirmationRequired'
   /** Id of the challenge, relevant when the status is `ChallengeIssued` */
   challengeId?: string | null
   challengeText?: string | null
@@ -369,7 +370,7 @@ export interface B2BBrokerCreateOrderRequest {
   /**
    * This value indicates if the order should be executed in payment/quote currency amount (e.g. purchase ETH for $10). This can be
    * performed only if the current institution supports such orders (`SupportsPlacingSellOrdersInPaymentSymbolAmount` and
-   * `SupportsPlacingSellOrdersInPaymentSymbolAmount` fields in `get supported order features for institution`) and `AmountInPaymentSymbol`
+   * `SupportsPlacingBuyOrdersInPaymentSymbolAmount` fields in `get supported order features for institution`) and `AmountInPaymentSymbol`
    * value is passed.
    */
   amountIsInPaymentSymbol: boolean
@@ -1237,7 +1238,7 @@ export interface B2BBrokerSymbolInfoForOrderRequest {
   /**
    * This value indicates if the order should be executed in payment/quote currency amount (e.g. purchase ETH for $10). This can be
    * performed only if the current institution supports such orders (`SupportsPlacingSellOrdersInPaymentSymbolAmount` and
-   * `SupportsPlacingSellOrdersInPaymentSymbolAmount` fields in `get supported order features for institution`) and `AmountInPaymentSymbol`
+   * `SupportsPlacingBuyOrdersInPaymentSymbolAmount` fields in `get supported order features for institution`) and `AmountInPaymentSymbol`
    * value is passed.
    */
   amountIsInPaymentSymbol: boolean
@@ -1361,9 +1362,9 @@ export interface B2BBrokerTradingFeatureOrderType {
   /** Indicates if pre-market trading or after-hours trading is supported. */
   supportsExtendedMarketHours?: boolean
   /** @deprecated */
-  supportsPlacingBuyOrdersInFiatAmount?: boolean
+  readonly supportsPlacingBuyOrdersInFiatAmount?: boolean
   /** @deprecated */
-  supportsPlacingSellOrdersInFiatAmount?: boolean
+  readonly supportsPlacingSellOrdersInFiatAmount?: boolean
   /** The list of supported Time-in-force instructions for this order type. */
   supportedTimeInForceList?: BrokerOrderTimeInForceType[] | null
   /**
@@ -1547,8 +1548,11 @@ export interface B2BOptionPosition {
   numberOfSharesInContract?: number
   /** Type of the option, put or call */
   optionType?: 'unknown' | 'call' | 'put'
-  /** The last day that the option contract is valid */
-  expirationDate?: string | null
+  /**
+   * The last day that the option contract is valid
+   * @format int64
+   */
+  expirationTimestamp?: number
   /**
    * The price at which a put or call option can be exercised
    * @format double
@@ -1822,6 +1826,7 @@ export type BrokerAuthStatus =
   | 'mfaRequired'
   | 'openInBrokerModule'
   | 'delayed'
+  | 'deviceConfirmationRequired'
 
 export interface BrokerAuthenticationScheme {
   brokerType?:
@@ -2507,7 +2512,7 @@ export interface IApiResult {
   readonly displayMessage?: string | null
 }
 
-export type MfaScheme = 'mfaCode' | 'challenge' | 'securityQuestion'
+export type MfaScheme = 'mfaCode' | 'challenge' | 'deviceConfirmation' | 'securityQuestion'
 
 export type NftBlockchain = 'ethereum' | 'polygon' | 'klaytn'
 

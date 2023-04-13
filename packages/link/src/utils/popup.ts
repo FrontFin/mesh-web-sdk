@@ -173,7 +173,7 @@ export function addPopup(iframeLink: string, options: FrontOptions): void {
     closeButton.onclick = onClose
   }
 
-  window.parent.addEventListener('message', eventsListener)
+  window.addEventListener('message', eventsListener)
 }
 
 function htmlToElement(html: string): Node {

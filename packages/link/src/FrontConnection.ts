@@ -72,7 +72,7 @@ function createListenerIframe(options: FrontOptions, host: string) {
     }
   }
 
-  window.parent.addEventListener('message', messageListener)
+  window.addEventListener('message', messageListener)
 }
 
 async function checkNonceAndCreateIframe(options: FrontOptions): Promise<void> {

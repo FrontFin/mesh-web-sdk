@@ -1594,7 +1594,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerTradingFeatureInfoIApiResult"
                 },
-                "example": {"content":{"brokerType":"robinhood","accountId":"5K9N3VO1","cryptocurrencyOrders":{"supported":true,"supportsFiatCurrencyPayment":true,"supportsCryptocurrencyPayment":false,"supportsMarginOrders":true,"supportedCryptocurrencySymbols":["BTC","ETH","SOL","DOGE"],"supportedFiatCurrencies":["USD"],"marketType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":true,"supportsPlacingSellOrdersInFiatAmount":true,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":true,"supportsPlacingSellOrdersInBaseSymbolAmount":true},"limitType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":true,"supportsPlacingSellOrdersInFiatAmount":true,"supportedTimeInForceList":["goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":true,"supportsPlacingSellOrdersInBaseSymbolAmount":true},"stopLossType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":true,"supportsPlacingSellOrdersInFiatAmount":true,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":true,"supportsPlacingSellOrdersInBaseSymbolAmount":true}},"stockOrders":{"supported":true,"supportsFiatCurrencyPayment":true,"supportsCryptocurrencyPayment":false,"supportsMarginOrders":true,"supportedFiatCurrencies":["USD"],"marketType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":true,"supportsPlacingSellOrdersInFiatAmount":true,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":false,"supportsPlacingSellOrdersInBaseSymbolAmount":false},"limitType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":true,"supportsPlacingSellOrdersInFiatAmount":true,"supportedTimeInForceList":["goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":false,"supportsPlacingSellOrdersInBaseSymbolAmount":false},"stopLossType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":true,"supportsPlacingSellOrdersInFiatAmount":true,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":false,"supportsPlacingSellOrdersInBaseSymbolAmount":false}},"status":"succeeded","supportsOrderPreview":true,"supportsPriceQuotes":false,"supportsOrderCancellation":true,"isIntegrationUp":true,"isTradingSupported":true,"fiatBalances":[{"cash":1355,"buyingPower":1355,"cryptocurrencyBuyingPower":1355,"currencyCode":"USD"}]},"status":"ok","message":""}
+                "example": {"content":{"brokerType":"robinhood","accountId":"5K9N3VO1","cryptocurrencyOrders":{"supported":true,"supportsFiatCurrencyPayment":true,"supportsCryptocurrencyPayment":false,"supportsMarginOrders":true,"supportedCryptocurrencySymbols":["BTC","ETH","SOL","DOGE"],"supportedFiatCurrencies":["USD"],"marketType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":true,"supportsPlacingSellOrdersInBaseSymbolAmount":true},"limitType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":true,"supportsPlacingSellOrdersInBaseSymbolAmount":true},"stopLossType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":true,"supportsPlacingSellOrdersInBaseSymbolAmount":true}},"stockOrders":{"supported":true,"supportsFiatCurrencyPayment":true,"supportsCryptocurrencyPayment":false,"supportsMarginOrders":true,"supportedFiatCurrencies":["USD"],"marketType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":false,"supportsPlacingSellOrdersInBaseSymbolAmount":false},"limitType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":false,"supportsPlacingSellOrdersInBaseSymbolAmount":false},"stopLossType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":false,"supportsPlacingSellOrdersInBaseSymbolAmount":false}},"status":"succeeded","supportsOrderPreview":true,"supportsPriceQuotes":false,"supportsOrderCancellation":true,"isIntegrationUp":true,"isTradingSupported":true,"fiatBalances":[{"cash":1355,"buyingPower":1355,"cryptocurrencyBuyingPower":1355,"currencyCode":"USD"}]},"status":"ok","message":""}
               }
             }
           },
@@ -2905,7 +2905,8 @@
               "challengeIssued",
               "mfaRequired",
               "openInBrokerModule",
-              "delayed"
+              "delayed",
+              "deviceConfirmationRequired"
             ],
             "allOf": [
               {
@@ -3235,7 +3236,7 @@
           },
           "amountIsInPaymentSymbol": {
             "type": "boolean",
-            "description": "This value indicates if the order should be executed in payment/quote currency amount (e.g. purchase ETH for $10). This can be\r\nperformed only if the current institution supports such orders (`SupportsPlacingSellOrdersInPaymentSymbolAmount` and\r\n`SupportsPlacingSellOrdersInPaymentSymbolAmount` fields in `get supported order features for institution`) and `AmountInPaymentSymbol`\r\nvalue is passed."
+            "description": "This value indicates if the order should be executed in payment/quote currency amount (e.g. purchase ETH for $10). This can be\r\nperformed only if the current institution supports such orders (`SupportsPlacingSellOrdersInPaymentSymbolAmount` and\r\n`SupportsPlacingBuyOrdersInPaymentSymbolAmount` fields in `get supported order features for institution`) and `AmountInPaymentSymbol`\r\nvalue is passed."
           },
           "amountInPaymentSymbol": {
             "type": "number",
@@ -4977,7 +4978,7 @@
           },
           "amountIsInPaymentSymbol": {
             "type": "boolean",
-            "description": "This value indicates if the order should be executed in payment/quote currency amount (e.g. purchase ETH for $10). This can be\r\nperformed only if the current institution supports such orders (`SupportsPlacingSellOrdersInPaymentSymbolAmount` and\r\n`SupportsPlacingSellOrdersInPaymentSymbolAmount` fields in `get supported order features for institution`) and `AmountInPaymentSymbol`\r\nvalue is passed."
+            "description": "This value indicates if the order should be executed in payment/quote currency amount (e.g. purchase ETH for $10). This can be\r\nperformed only if the current institution supports such orders (`SupportsPlacingSellOrdersInPaymentSymbolAmount` and\r\n`SupportsPlacingBuyOrdersInPaymentSymbolAmount` fields in `get supported order features for institution`) and `AmountInPaymentSymbol`\r\nvalue is passed."
           },
           "amountInPaymentSymbol": {
             "type": "number",
@@ -5269,10 +5270,12 @@
           },
           "supportsPlacingBuyOrdersInFiatAmount": {
             "type": "boolean",
+            "readOnly": true,
             "deprecated": true
           },
           "supportsPlacingSellOrdersInFiatAmount": {
             "type": "boolean",
+            "readOnly": true,
             "deprecated": true
           },
           "supportedTimeInForceList": {
@@ -5643,10 +5646,10 @@
             ],
             "description": "Type of the option, put or call"
           },
-          "expirationDate": {
-            "type": "string",
+          "expirationTimestamp": {
+            "type": "integer",
             "description": "The last day that the option contract is valid",
-            "nullable": true
+            "format": "int64"
           },
           "strikePrice": {
             "type": "number",
@@ -6184,7 +6187,8 @@
           "challengeIssued",
           "mfaRequired",
           "openInBrokerModule",
-          "delayed"
+          "delayed",
+          "deviceConfirmationRequired"
         ],
         "type": "string"
       },
@@ -7336,6 +7340,7 @@
         "enum": [
           "mfaCode",
           "challenge",
+          "deviceConfirmation",
           "securityQuestion"
         ],
         "type": "string"
