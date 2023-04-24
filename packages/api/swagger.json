@@ -7,7 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://front-b2b-api-test.azurewebsites.net"
+      "url": "https://integration-api.getfront.com"
     }
   ],
   "paths": {
@@ -84,6 +84,75 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/AssetPaginationResponseIApiResult"
+                },
+                "example": {"content":{"items":[{"symbol":"AAPL","name":"Apple Inc","type":"equity"},{"symbol":"MSFT","name":"Microsoft Inc","type":"equity"}],"total":5},"status":"ok","message":""}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResult"
+                },
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/assets/equity/{symbol}/price": {
+      "get": {
+        "tags": [
+          "Assets"
+        ],
+        "parameters": [
+          {
+            "name": "symbol",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Client-Id",
+            "in": "header",
+            "description": "Id of the client",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Client-Secret",
+            "in": "header",
+            "description": "Client secret, should be stored safely and never shared",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/B2BPriceInfoIApiResult"
                 },
                 "example": {"content":{"items":[{"symbol":"AAPL","name":"Apple Inc","type":"equity"},{"symbol":"MSFT","name":"Microsoft Inc","type":"equity"}],"total":5},"status":"ok","message":""}
               }
@@ -231,7 +300,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/B2BPortfolioModelIApiResult"
+                  "$ref": "#/components/schemas/B2BFiatPortfolioModelIApiResult"
                 },
                 "example": {"content":{"fiatBalances":[{"symbol":"USD","cash":3.099,"buyingPower":3.099},{"symbol":"EUR","cash":-102.880,"buyingPower":1293.596}]},"status":"ok","message":""}
               }
@@ -879,6 +948,463 @@
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/transfers/managed/networks": {
+      "get": {
+        "tags": [
+          "Managed Transfers [coming soon]"
+        ],
+        "summary": "Get networks",
+        "description": "**Get the list of all networks supported by the Front API to perform transfers.**\r\n<br /> \r\n---\r\nReturns the list of all networks supported by the Front API and corresponding supported tokens.\r\nThe IDs of networks should be used to configure and initiate transfers.",
+        "parameters": [
+          {
+            "name": "X-Client-Id",
+            "in": "header",
+            "description": "Id of the client",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Client-Secret",
+            "in": "header",
+            "description": "Client secret, should be stored safely and never shared",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NetworkModelResponseIApiResult"
+                },
+                "example": {"content":{"networks":[{"id":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","name":"Ethereum","chainId":"1","supportedTokens":["ETH","USDC","USDT"],"supportedBrokerTypes":["deFiWallet","robinhood","coinbase","kraken","binanceInternational","binanceUs"]}]},"status":"ok","message":""}
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/transfers/managed/configure": {
+      "post": {
+        "tags": [
+          "Managed Transfers [coming soon]"
+        ],
+        "summary": "Configure transfer",
+        "description": "**Get the list of networks and tokens eligible for a transfer, based on the provided request data.**\r\n<br />\r\n---\r\nTransfers can be configured either from one connected account to another connected account, or\r\nfrom a connected account to any arbitrary address or addresses.\r\n<br />\r\n* **From one connected account to another connected account:**\r\n<br />\r\nThe API client provides `FromAuthToken` that is representing the source account and `ToAuthToken` that is representing the target account. Front API maps networks and tokens supported by both accounts and returns all tokens and networks eligible for a transfer as the result.\r\n<br />\r\n* **From a connected account to any arbitrary address:**\r\n<br />\r\nThe API client provides `FromAuthToken` that is representing the source account and the list of target addresses using the `ToAddresses` field. Front API verifies the addresses and returns the list of tokens, eligible to be transferred as the result of the operation.\r\n<br /><br />\r\nReturns the list of holdings on the account that can be used to perform the transfer. Each holdings item\r\ncontains the list of supported networks that can be used to transfer the corresponding asset.\r\nEach network contains details such as gas fees and the amount eligible to be transferred.",
+        "parameters": [
+          {
+            "name": "X-Client-Id",
+            "in": "header",
+            "description": "Id of the client",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Client-Secret",
+            "in": "header",
+            "description": "Client secret, should be stored safely and never shared",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ConfigureTransferRequest"
+                  }
+                ]
+              },
+              "examples": {
+                "Configure with provided list of addresses": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAddresses":[{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDT","address":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6"},{"networkId":"0291810a-5947-424d-9a59-e88bb33e999d","symbol":"USDT","address":"HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH"},{"networkId":"0880db06-7c7c-4738-898f-cf74efc03c47","symbol":"BTC","address":"3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5"}]}
+                },
+                "Configure transfer between two connected accounts": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAuthToken":"Secret authentication token","toType":"coinbase"}
+                },
+                "Configure with provided list of addresses, symbol and amount": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAddresses":[{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDT","address":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6"},{"networkId":"0291810a-5947-424d-9a59-e88bb33e999d","symbol":"USDT","address":"HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH"},{"networkId":"0880db06-7c7c-4738-898f-cf74efc03c47","symbol":"BTC","address":"3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5"}],"symbol":"USDT","amount":130,"fiatCurrency":"USD"}
+                },
+                "Configure transfer between two connected accounts, symbol, amount in fiat and preferred network": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAuthToken":"Secret authentication token","toType":"coinbase","symbol":"USDT","amountInFiat":130,"fiatCurrency":"USD","networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12"}
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ConfigureTransferRequest"
+                  }
+                ]
+              },
+              "examples": {
+                "Configure with provided list of addresses": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAddresses":[{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDT","address":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6"},{"networkId":"0291810a-5947-424d-9a59-e88bb33e999d","symbol":"USDT","address":"HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH"},{"networkId":"0880db06-7c7c-4738-898f-cf74efc03c47","symbol":"BTC","address":"3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5"}]}
+                },
+                "Configure transfer between two connected accounts": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAuthToken":"Secret authentication token","toType":"coinbase"}
+                },
+                "Configure with provided list of addresses, symbol and amount": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAddresses":[{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDT","address":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6"},{"networkId":"0291810a-5947-424d-9a59-e88bb33e999d","symbol":"USDT","address":"HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH"},{"networkId":"0880db06-7c7c-4738-898f-cf74efc03c47","symbol":"BTC","address":"3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5"}],"symbol":"USDT","amount":130,"fiatCurrency":"USD"}
+                },
+                "Configure transfer between two connected accounts, symbol, amount in fiat and preferred network": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAuthToken":"Secret authentication token","toType":"coinbase","symbol":"USDT","amountInFiat":130,"fiatCurrency":"USD","networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12"}
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ConfigureTransferRequest"
+                  }
+                ]
+              },
+              "examples": {
+                "Configure with provided list of addresses": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAddresses":[{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDT","address":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6"},{"networkId":"0291810a-5947-424d-9a59-e88bb33e999d","symbol":"USDT","address":"HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH"},{"networkId":"0880db06-7c7c-4738-898f-cf74efc03c47","symbol":"BTC","address":"3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5"}]}
+                },
+                "Configure transfer between two connected accounts": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAuthToken":"Secret authentication token","toType":"coinbase"}
+                },
+                "Configure with provided list of addresses, symbol and amount": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAddresses":[{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDT","address":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6"},{"networkId":"0291810a-5947-424d-9a59-e88bb33e999d","symbol":"USDT","address":"HN7cABqLq46Es1jh92dQQisAq662SmxELLLsHHe4YWrH"},{"networkId":"0880db06-7c7c-4738-898f-cf74efc03c47","symbol":"BTC","address":"3FZbgi29cpjq2GjdwV8eyHuJJnkLtktZc5"}],"symbol":"USDT","amount":130,"fiatCurrency":"USD"}
+                },
+                "Configure transfer between two connected accounts, symbol, amount in fiat and preferred network": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAuthToken":"Secret authentication token","toType":"coinbase","symbol":"USDT","amountInFiat":130,"fiatCurrency":"USD","networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ConfigureTransferResponseIApiResult"
+                },
+                "examples": {
+                  "Successful transfer configuration": {
+                    "value": {"content":{"status":"succeeded","holdings":[{"symbol":"USDC","availableBalance":130,"eligibleForTransfer":true,"networks":[{"name":"Ethereum","id":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","minimumAmount":1,"maximumAmount":0,"totalTransferFeeInFiat":1.8,"estimatedNetworkGasFee":{"fee":0.000850608941007,"feeCurrency":"ETH","feeInFiat":1.8},"institutionTransferFee":{"fee":0,"feeCurrency":"ETH","feeInFiat":0}},{"name":"Solana","id":"0291810a-5947-424d-9a59-e88bb33e999d","minimumAmount":1,"maximumAmount":0,"totalTransferFeeInFiat":0.1,"estimatedNetworkGasFee":{"fee":0.00025,"feeCurrency":"SOL","feeInFiat":0.1},"institutionTransferFee":{"fee":0,"feeCurrency":"SOL","feeInFiat":0}}]}]},"status":"ok","message":""}
+                  },
+                  "Transfer configuration with failed validation": {
+                    "value": {"content":{"status":"validationFailed","errorMessage":"Either `ToAddresses` or `ToAuthToken` should be provided."},"status":"ok","message":""}
+                  },
+                  "Transfer configuration with no eligible tokens to transfer": {
+                    "value": {"content":{"status":"succeeded","holdings":[{"symbol":"USDC","availableBalance":1,"eligibleForTransfer":false},{"symbol":"ETH","availableBalance":0.00001,"eligibleForTransfer":false}]},"status":"ok","message":""}
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResult"
+                },
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/transfers/managed/preview": {
+      "post": {
+        "tags": [
+          "Managed Transfers [coming soon]"
+        ],
+        "summary": "Preview transfer",
+        "description": "**Validate and preview the transfer.**\r\n<br />\r\n---\r\nValidates the transfer, calculates the relevant amount in crypto if requested amount was in fiat and updates\r\nthe current network fee values. \r\n<br />\r\nThis endpoint uses the `NetworkId` field to specify which network will be used to perform the transfer. The target `NetworkId`\r\nshould be selected after configuring the transfer using `/configure` endpoint.\r\n<br /><br />\r\nReturns the `PreviewId` value that can be used to commit the transfer.",
+        "parameters": [
+          {
+            "name": "X-Client-Id",
+            "in": "header",
+            "description": "Id of the client",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Client-Secret",
+            "in": "header",
+            "description": "Client secret, should be stored safely and never shared",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PreviewTransferRequest"
+                  }
+                ]
+              },
+              "examples": {
+                "Preview with provided address": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toType":"robinhood","networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amount":10}
+                },
+                "Preview transfer between two connected accounts": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAuthToken":"Secret authentication token","toType":"coinbase","networkId":"00000000-0000-0000-0000-000000000000","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amount":10}
+                },
+                "Preview transfer between two connected accounts, using fiat amount": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAuthToken":"Secret authentication token","toType":"coinbase","networkId":"00000000-0000-0000-0000-000000000000","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amountInFiat":10}
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PreviewTransferRequest"
+                  }
+                ]
+              },
+              "examples": {
+                "Preview with provided address": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toType":"robinhood","networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amount":10}
+                },
+                "Preview transfer between two connected accounts": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAuthToken":"Secret authentication token","toType":"coinbase","networkId":"00000000-0000-0000-0000-000000000000","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amount":10}
+                },
+                "Preview transfer between two connected accounts, using fiat amount": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAuthToken":"Secret authentication token","toType":"coinbase","networkId":"00000000-0000-0000-0000-000000000000","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amountInFiat":10}
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/PreviewTransferRequest"
+                  }
+                ]
+              },
+              "examples": {
+                "Preview with provided address": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toType":"robinhood","networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amount":10}
+                },
+                "Preview transfer between two connected accounts": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAuthToken":"Secret authentication token","toType":"coinbase","networkId":"00000000-0000-0000-0000-000000000000","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amount":10}
+                },
+                "Preview transfer between two connected accounts, using fiat amount": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAuthToken":"Secret authentication token","toType":"coinbase","networkId":"00000000-0000-0000-0000-000000000000","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amountInFiat":10}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/PreviewTransferResponseIApiResult"
+                },
+                "examples": {
+                  "Successful transfer preview": {
+                    "value": {"content":{"status":"succeeded","previewResult":{"previewId":"29b185b1-2305-40fb-a0e2-929d61451568","previewExpiresIn":300,"fromAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","toAddress":"0x326a8825472bb0f4719998e708a1eeeb4473ed1b","symbol":"USDT","amount":10,"amountInFiat":10,"totalEstimatedAmountInFiat":11.1,"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","institutionTransferFee":{"fee":0,"feeCurrency":"USDT","feeInFiat":0},"estimatedNetworkGasFee":{"fee":1.1,"feeCurrency":"USDT","feeInFiat":1.1}}},"status":"ok","message":""}
+                  },
+                  "Failed transfer preview": {
+                    "value": {"content":{"status":"failed","errorMessage":"The\u00A0specified amount is greater than the maximum amount allowed."},"status":"ok","message":""}
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResult"
+                },
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/transfers/managed/execute": {
+      "post": {
+        "tags": [
+          "Managed Transfers [coming soon]"
+        ],
+        "summary": "Execute transfer",
+        "description": "**Commit the previously previewed transfer.**\r\n<br />\r\n---\r\nPreviews the transfer, using the `PreviewId` value.\r\n<br />\r\nHandles multi-factor authentication codes if the account is configured to use them for additional security.\r\n<br /><br />\r\nReturns the status of the transfer and the details of the transfer if it was initiated successfully.",
+        "parameters": [
+          {
+            "name": "X-Client-Id",
+            "in": "header",
+            "description": "Id of the client",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Client-Secret",
+            "in": "header",
+            "description": "Client secret, should be stored safely and never shared",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ExecuteTransferRequest"
+                  }
+                ]
+              },
+              "examples": {
+                "Execute transfer": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","previewId":"29b185b1-2305-40fb-a0e2-929d61451568"}
+                },
+                "Execute transfer providing the MFA code": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","previewId":"29b185b1-2305-40fb-a0e2-929d61451568","mfaCode":"112457"}
+                }
+              }
+            },
+            "text/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ExecuteTransferRequest"
+                  }
+                ]
+              },
+              "examples": {
+                "Execute transfer": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","previewId":"29b185b1-2305-40fb-a0e2-929d61451568"}
+                },
+                "Execute transfer providing the MFA code": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","previewId":"29b185b1-2305-40fb-a0e2-929d61451568","mfaCode":"112457"}
+                }
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/ExecuteTransferRequest"
+                  }
+                ]
+              },
+              "examples": {
+                "Execute transfer": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","previewId":"29b185b1-2305-40fb-a0e2-929d61451568"}
+                },
+                "Execute transfer providing the MFA code": {
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","previewId":"29b185b1-2305-40fb-a0e2-929d61451568","mfaCode":"112457"}
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ExecuteTransferResponseIApiResult"
+                },
+                "examples": {
+                  "Successful transfer preview": {
+                    "value": {"content":{"status":"succeeded","executeTransferResult":{"transferId":"e332336c-de22-11ed-b5ea-0242ac120002","status":"pending","statusDetails":"In progress","fromAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","toAddress":"0x326a8825472bb0f4719998e708a1eeeb4473ed1b","symbol":"USDT","networkName":"Ethereum","networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","hash":"0xdcfd72635a9b16d3bc0e75311f6fe0612970e9714a1e9e93de0ea5acffc6a454","amount":10,"amountInFiat":10,"totalAmountInFiat":11.1,"completedConfirmations":1,"institutionTransferFee":{"fee":0,"feeCurrency":"USDT","feeInFiat":0},"networkGasFee":{"fee":1.1,"feeCurrency":"USDT","feeInFiat":1.1}}},"status":"ok","message":""}
+                  },
+                  "Transfer preview when MFA is required": {
+                    "value": {"content":{"status":"mfaRequired"},"status":"ok","message":""}
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResult"
+                },
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { }
               }
             }
           }
@@ -1683,7 +2209,7 @@
                   "value": {"symbol":"AAPL","paymentSymbol":"USD","amount":1,"price":0,"isCryptocurrency":false,"paymentIsCryptocurrency":false,"amountIsFiat":false,"amountIsInPaymentSymbol":false,"extendedHours":false,"orderType":"market","timeInForce":"goodTillCanceled","authToken":"Secret authentication token","type":"robinhood"}
                 },
                 "Stock Payment/Quote amount example ('buy TSLA for $10')": {
-                  "value": {"symbol":"TSLA","paymentSymbol":"USD","amount":0,"price":0,"isCryptocurrency":false,"paymentIsCryptocurrency":false,"amountIsFiat":false,"amountIsInPaymentSymbol":true,"amountInPaymentSymbol":10,"extendedHours":false,"orderType":"market","timeInForce":"goodTillCanceled","authToken":"Secret authentication token","type":"robinhood"}
+                  "value": {"symbol":"TSLA","paymentSymbol":"USD","amount":0,"price":0,"isCryptocurrency":false,"paymentIsCryptocurrency":false,"amountIsFiat":true,"amountInFiat":10,"amountIsInPaymentSymbol":true,"amountInPaymentSymbol":10,"extendedHours":false,"orderType":"market","timeInForce":"goodTillCanceled","authToken":"Secret authentication token","type":"robinhood"}
                 }
               }
             }
@@ -1786,7 +2312,7 @@
                   "value": {"symbol":"AAPL","paymentSymbol":"USD","amount":1,"price":0,"isCryptocurrency":false,"paymentIsCryptocurrency":false,"amountIsFiat":false,"amountIsInPaymentSymbol":false,"extendedHours":false,"orderType":"market","timeInForce":"goodTillCanceled","authToken":"Secret authentication token","type":"robinhood"}
                 },
                 "Stock Payment/Quote amount example ('buy TSLA for $10')": {
-                  "value": {"symbol":"TSLA","paymentSymbol":"USD","amount":0,"price":0,"isCryptocurrency":false,"paymentIsCryptocurrency":false,"amountIsFiat":false,"amountIsInPaymentSymbol":true,"amountInPaymentSymbol":10,"extendedHours":false,"orderType":"market","timeInForce":"goodTillCanceled","authToken":"Secret authentication token","type":"robinhood"}
+                  "value": {"symbol":"TSLA","paymentSymbol":"USD","amount":0,"price":0,"isCryptocurrency":false,"paymentIsCryptocurrency":false,"amountIsFiat":true,"amountInFiat":10,"amountIsInPaymentSymbol":true,"amountInPaymentSymbol":10,"extendedHours":false,"orderType":"market","timeInForce":"goodTillCanceled","authToken":"Secret authentication token","type":"robinhood"}
                 }
               }
             }
@@ -3135,7 +3661,6 @@
       "B2BBrokerCreateOrderRequest": {
         "required": [
           "amount",
-          "amountIsFiat",
           "amountIsInPaymentSymbol",
           "authToken",
           "isCryptocurrency",
@@ -3226,6 +3751,7 @@
           },
           "amountIsFiat": {
             "type": "boolean",
+            "nullable": true,
             "deprecated": true
           },
           "amountInFiat": {
@@ -4877,7 +5403,6 @@
       "B2BBrokerSymbolInfoForOrderRequest": {
         "required": [
           "amount",
-          "amountIsFiat",
           "amountIsInPaymentSymbol",
           "authToken",
           "isCryptocurrency",
@@ -4968,6 +5493,7 @@
           },
           "amountIsFiat": {
             "type": "boolean",
+            "nullable": true,
             "deprecated": true
           },
           "amountInFiat": {
@@ -5489,6 +6015,63 @@
         },
         "additionalProperties": false
       },
+      "B2BFiatPortfolioModel": {
+        "type": "object",
+        "properties": {
+          "fiatBalances": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/PortfolioFiatBalance"
+            },
+            "description": "List of aggregated fiat balances",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "B2BFiatPortfolioModelIApiResult": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/B2BFiatPortfolioModel"
+              }
+            ],
+            "nullable": true,
+            "readOnly": true
+          },
+          "status": {
+            "enum": [
+              "ok",
+              "serverFailure",
+              "permissionDenied",
+              "badRequest",
+              "notFound",
+              "conflict",
+              "tooManyRequest",
+              "locked"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiResultStatus"
+              }
+            ],
+            "readOnly": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "displayMessage": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
       "B2BNftPosition": {
         "type": "object",
         "properties": {
@@ -5946,6 +6529,63 @@
             "description": "Daily percent of return of investment for this asset. Can be negative.",
             "format": "double",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "B2BPriceInfo": {
+        "type": "object",
+        "properties": {
+          "price": {
+            "type": "number",
+            "format": "double"
+          },
+          "timestamp": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "B2BPriceInfoIApiResult": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/B2BPriceInfo"
+              }
+            ],
+            "nullable": true,
+            "readOnly": true
+          },
+          "status": {
+            "enum": [
+              "ok",
+              "serverFailure",
+              "permissionDenied",
+              "badRequest",
+              "notFound",
+              "conflict",
+              "tooManyRequest",
+              "locked"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiResultStatus"
+              }
+            ],
+            "readOnly": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "displayMessage": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -7227,6 +7867,278 @@
         },
         "additionalProperties": false
       },
+      "ConfigureTransferRequest": {
+        "required": [
+          "fromAuthToken",
+          "fromType"
+        ],
+        "type": "object",
+        "properties": {
+          "fromAuthToken": {
+            "minLength": 1,
+            "type": "string",
+            "description": "The authentication token to send assets from."
+          },
+          "fromType": {
+            "enum": [
+              "robinhood",
+              "eTrade",
+              "alpaca",
+              "tdAmeritrade",
+              "weBull",
+              "stash",
+              "interactiveBrokers",
+              "public",
+              "coinbase",
+              "kraken",
+              "coinbasePro",
+              "cryptoCom",
+              "openSea",
+              "binanceUs",
+              "gemini",
+              "cryptocurrencyAddress",
+              "cryptocurrencyWallet",
+              "okCoin",
+              "bittrex",
+              "kuCoin",
+              "etoro",
+              "cexIo",
+              "binanceInternational",
+              "bitstamp",
+              "gateIo",
+              "celsius",
+              "acorns",
+              "okx",
+              "bitFlyer",
+              "coinlist",
+              "huobi",
+              "bitfinex",
+              "deFiWallet"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerType"
+              }
+            ],
+            "description": "The type of the integration to send assets from."
+          },
+          "toAuthToken": {
+            "type": "string",
+            "description": "The authentication token of the target integration. Can be used alternatively to the list of requested address (`toAddresses`).\r\nIf used, `toType` should also be provided.",
+            "nullable": true
+          },
+          "toType": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerType"
+              }
+            ],
+            "description": "The type of the target integration to send assets to. Used along with the `toAuthToken` alternatively to `toAddresses`.",
+            "nullable": true
+          },
+          "toAddresses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransferToAddress"
+            },
+            "description": "A list of available addresses provided by the API client. The list can contain all supported addresses by the client.\r\nFront API validates the addresses and returns the list of supported tokens and networks as the result of the operation.",
+            "nullable": true
+          },
+          "symbol": {
+            "type": "string",
+            "description": "If provided, Front API returns only networks that support transferring of this symbol.",
+            "nullable": true
+          },
+          "amount": {
+            "type": "number",
+            "description": "If provided, Front API configures the response to only return holdings with enough amount of this crypto for the transfer",
+            "format": "double",
+            "nullable": true
+          },
+          "amountInFiat": {
+            "type": "number",
+            "description": "If provided, Front API configures the response to only contain holdings with enough value (converted to fiat) for the transfer.",
+            "format": "double",
+            "nullable": true
+          },
+          "fiatCurrency": {
+            "type": "string",
+            "description": "Fiat currency that is to get corresponding converted fiat values of transfer and fee amounts. If not provided, defaults to `USD`.",
+            "nullable": true
+          },
+          "networkId": {
+            "type": "string",
+            "description": "If provided, from API configures the response to include the requested network only.",
+            "format": "uuid",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConfigureTransferResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "succeeded",
+              "failed",
+              "validationFailed",
+              "notAuthorizedTo",
+              "notAuthorizedFrom"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ConfigureTransferStatus"
+              }
+            ],
+            "description": "Status of the operation."
+          },
+          "errorMessage": {
+            "type": "string",
+            "description": "Error message, if the operation did not complete successfully.",
+            "nullable": true
+          },
+          "holdings": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConfigureTransferResultHolding"
+            },
+            "description": "List of holdings on the source account.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConfigureTransferResponseIApiResult": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ConfigureTransferResponse"
+              }
+            ],
+            "nullable": true,
+            "readOnly": true
+          },
+          "status": {
+            "enum": [
+              "ok",
+              "serverFailure",
+              "permissionDenied",
+              "badRequest",
+              "notFound",
+              "conflict",
+              "tooManyRequest",
+              "locked"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiResultStatus"
+              }
+            ],
+            "readOnly": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "displayMessage": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConfigureTransferResultHolding": {
+        "type": "object",
+        "properties": {
+          "symbol": {
+            "type": "string",
+            "description": "The symbol of the digital asset on the source account.",
+            "nullable": true
+          },
+          "availableBalance": {
+            "type": "number",
+            "description": "The available balance of the digital asset.",
+            "format": "double"
+          },
+          "eligibleForTransfer": {
+            "type": "boolean",
+            "description": "Specifies if the asset is eligible for a transfer."
+          },
+          "networks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/ConfigureTransferResultNetwork"
+            },
+            "description": "Supported networks.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConfigureTransferResultNetwork": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "description": "The name of the network.",
+            "nullable": true
+          },
+          "id": {
+            "type": "string",
+            "description": "The Id of the network in Front system.",
+            "format": "uuid"
+          },
+          "minimumAmount": {
+            "type": "number",
+            "description": "Then minimum amount that can be withdrawn using this network.",
+            "format": "double"
+          },
+          "maximumAmount": {
+            "type": "number",
+            "description": "The maximum amount that can be withdrawn using this network.",
+            "format": "double"
+          },
+          "totalTransferFeeInFiat": {
+            "type": "number",
+            "description": "Total estimated transfer fee converted to fiat. Can consist of the fee taken by the financial institution and the\r\ngas fee.",
+            "format": "double"
+          },
+          "estimatedNetworkGasFee": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransferFee"
+              }
+            ],
+            "description": "The gas fee that is estimated to be taken by the network. Depending on the integration, the network gas fee might be\r\ncovered by the `InstitutionTransferFee`.",
+            "nullable": true
+          },
+          "institutionTransferFee": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransferFee"
+              }
+            ],
+            "description": "The fee that is taken by the institution. Depending on the institution, can cover the gas fee. Some institutions do not\r\ntake the transfer fee and only network fee is used for the transfer.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ConfigureTransferStatus": {
+        "enum": [
+          "succeeded",
+          "failed",
+          "validationFailed",
+          "notAuthorizedTo",
+          "notAuthorizedFrom"
+        ],
+        "type": "string"
+      },
       "CryptocurrencyAddressType": {
         "enum": [
           "ethAddress",
@@ -7302,6 +8214,271 @@
         ],
         "type": "string"
       },
+      "ExecuteTransferRequest": {
+        "required": [
+          "fromAuthToken",
+          "fromType",
+          "previewId"
+        ],
+        "type": "object",
+        "properties": {
+          "fromAuthToken": {
+            "minLength": 1,
+            "type": "string",
+            "description": "The authentication token to send the asset from."
+          },
+          "fromType": {
+            "enum": [
+              "robinhood",
+              "eTrade",
+              "alpaca",
+              "tdAmeritrade",
+              "weBull",
+              "stash",
+              "interactiveBrokers",
+              "public",
+              "coinbase",
+              "kraken",
+              "coinbasePro",
+              "cryptoCom",
+              "openSea",
+              "binanceUs",
+              "gemini",
+              "cryptocurrencyAddress",
+              "cryptocurrencyWallet",
+              "okCoin",
+              "bittrex",
+              "kuCoin",
+              "etoro",
+              "cexIo",
+              "binanceInternational",
+              "bitstamp",
+              "gateIo",
+              "celsius",
+              "acorns",
+              "okx",
+              "bitFlyer",
+              "coinlist",
+              "huobi",
+              "bitfinex",
+              "deFiWallet"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerType"
+              }
+            ],
+            "description": "The type of the integration to send the asset from."
+          },
+          "previewId": {
+            "type": "string",
+            "description": "Id of the Preview of the transfer.",
+            "format": "uuid"
+          },
+          "mfaCode": {
+            "type": "string",
+            "description": "Multi-factor auth code that should be provided if the status of the transfer was `MfaRequired`.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExecuteTransferResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "succeeded",
+              "failed",
+              "mfaRequired",
+              "emailConfirmationRequired"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExecuteTransferStatus"
+              }
+            ],
+            "description": "The status of the transfer."
+          },
+          "errorMessage": {
+            "type": "string",
+            "description": "Error message, if the operation did not complete successfully.",
+            "nullable": true
+          },
+          "executeTransferResult": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExecuteTransferResultResponse"
+              }
+            ],
+            "description": "Result of the transfer initiation.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExecuteTransferResponseIApiResult": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExecuteTransferResponse"
+              }
+            ],
+            "nullable": true,
+            "readOnly": true
+          },
+          "status": {
+            "enum": [
+              "ok",
+              "serverFailure",
+              "permissionDenied",
+              "badRequest",
+              "notFound",
+              "conflict",
+              "tooManyRequest",
+              "locked"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiResultStatus"
+              }
+            ],
+            "readOnly": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "displayMessage": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExecuteTransferResultResponse": {
+        "type": "object",
+        "properties": {
+          "transferId": {
+            "type": "string",
+            "description": "The Id of the transfer by the integration.",
+            "nullable": true
+          },
+          "status": {
+            "enum": [
+              "unknown",
+              "failed",
+              "frozen",
+              "succeeded",
+              "mfaRequired",
+              "pending",
+              "expired",
+              "canceled",
+              "waitingForSignature",
+              "waitingForClearing",
+              "awaitingApproval",
+              "awaitingConfirmation",
+              "awaitingVerification",
+              "rejected",
+              "pendingCancel"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerCryptocurrencyTransactionStatus"
+              }
+            ],
+            "description": "The current status of the transfer."
+          },
+          "statusDetails": {
+            "type": "string",
+            "description": "Details of the current status of the transfer, as provided by the integration.",
+            "nullable": true
+          },
+          "fromAddress": {
+            "type": "string",
+            "description": "The address of the source account or wallet.",
+            "nullable": true
+          },
+          "toAddress": {
+            "type": "string",
+            "description": "The address of the target account or wallet.",
+            "nullable": true
+          },
+          "symbol": {
+            "type": "string",
+            "description": "Transferred symbol.",
+            "nullable": true
+          },
+          "networkName": {
+            "type": "string",
+            "description": "The name of the used network.",
+            "nullable": true
+          },
+          "networkId": {
+            "type": "string",
+            "description": "The Id of the used network in Front system.",
+            "format": "uuid"
+          },
+          "hash": {
+            "type": "string",
+            "description": "The hash of the blockchain transaction.",
+            "nullable": true
+          },
+          "amount": {
+            "type": "number",
+            "description": "The transferred amount, in the symbol of the transfer.",
+            "format": "double"
+          },
+          "amountInFiat": {
+            "type": "number",
+            "description": "The transferred amount, converted to the fiat currency.",
+            "format": "double"
+          },
+          "totalAmountInFiat": {
+            "type": "number",
+            "description": "Total amount of the transfer including all fees, converted to fiat.",
+            "format": "double"
+          },
+          "completedConfirmations": {
+            "type": "integer",
+            "description": "Current number of network confirmations.",
+            "format": "int64",
+            "nullable": true
+          },
+          "institutionTransferFee": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransferFee"
+              }
+            ],
+            "description": "The fee that was taken by the institution.",
+            "nullable": true
+          },
+          "networkGasFee": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransferFee"
+              }
+            ],
+            "description": "The gas fee that was taken by the network. Depending on the integration, the network gas fee might be\r\ncovered by the `InstitutionTransferFee`.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "ExecuteTransferStatus": {
+        "enum": [
+          "succeeded",
+          "failed",
+          "mfaRequired",
+          "emailConfirmationRequired"
+        ],
+        "type": "string"
+      },
       "IApiResult": {
         "type": "object",
         "properties": {
@@ -7344,6 +8521,99 @@
           "securityQuestion"
         ],
         "type": "string"
+      },
+      "NetworkModelResponse": {
+        "type": "object",
+        "properties": {
+          "networks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NetworkResponse"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NetworkModelResponseIApiResult": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NetworkModelResponse"
+              }
+            ],
+            "nullable": true,
+            "readOnly": true
+          },
+          "status": {
+            "enum": [
+              "ok",
+              "serverFailure",
+              "permissionDenied",
+              "badRequest",
+              "notFound",
+              "conflict",
+              "tooManyRequest",
+              "locked"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiResultStatus"
+              }
+            ],
+            "readOnly": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "displayMessage": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NetworkResponse": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The Id of the network in Front system. Should be used to initiate transfers.",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name if the network.",
+            "nullable": true
+          },
+          "chainId": {
+            "type": "string",
+            "description": "The Inner id of the chain, used for reference. For example, Polygon's (MATIC) chain Id is 137.",
+            "nullable": true
+          },
+          "supportedTokens": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The list of tokens that are currently supported to be transferred using the network.",
+            "nullable": true
+          },
+          "supportedBrokerTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BrokerType"
+            },
+            "description": "The list of types of integrations that are currently supported to perform transfers over the network.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       },
       "NftBlockchain": {
         "enum": [
@@ -7548,6 +8818,318 @@
         },
         "additionalProperties": false
       },
+      "PortfolioFiatBalance": {
+        "type": "object",
+        "properties": {
+          "symbol": {
+            "type": "string",
+            "description": "Balance currency",
+            "nullable": true
+          },
+          "cash": {
+            "type": "number",
+            "description": "Amount of money in a specific currency from all brokers",
+            "format": "double",
+            "nullable": true
+          },
+          "buyingPower": {
+            "type": "number",
+            "description": "BuyingPower from all brokers, it indicates total amount of money the user can spend on buying stock.\r\nAlways includes cash and can also include margin",
+            "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PreviewTransferRequest": {
+        "required": [
+          "fromAuthToken",
+          "fromType"
+        ],
+        "type": "object",
+        "properties": {
+          "fromAuthToken": {
+            "minLength": 1,
+            "type": "string",
+            "description": "The authentication token to send the asset from."
+          },
+          "fromType": {
+            "enum": [
+              "robinhood",
+              "eTrade",
+              "alpaca",
+              "tdAmeritrade",
+              "weBull",
+              "stash",
+              "interactiveBrokers",
+              "public",
+              "coinbase",
+              "kraken",
+              "coinbasePro",
+              "cryptoCom",
+              "openSea",
+              "binanceUs",
+              "gemini",
+              "cryptocurrencyAddress",
+              "cryptocurrencyWallet",
+              "okCoin",
+              "bittrex",
+              "kuCoin",
+              "etoro",
+              "cexIo",
+              "binanceInternational",
+              "bitstamp",
+              "gateIo",
+              "celsius",
+              "acorns",
+              "okx",
+              "bitFlyer",
+              "coinlist",
+              "huobi",
+              "bitfinex",
+              "deFiWallet"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerType"
+              }
+            ],
+            "description": "The type of the integration to send the asset from."
+          },
+          "toAuthToken": {
+            "type": "string",
+            "description": "The authentication token of the target integration. Can be used alternatively to the address in the `ToAddress` field.\r\nIf used, `toType` should also be provided.",
+            "nullable": true
+          },
+          "toType": {
+            "enum": [
+              "robinhood",
+              "eTrade",
+              "alpaca",
+              "tdAmeritrade",
+              "weBull",
+              "stash",
+              "interactiveBrokers",
+              "public",
+              "coinbase",
+              "kraken",
+              "coinbasePro",
+              "cryptoCom",
+              "openSea",
+              "binanceUs",
+              "gemini",
+              "cryptocurrencyAddress",
+              "cryptocurrencyWallet",
+              "okCoin",
+              "bittrex",
+              "kuCoin",
+              "etoro",
+              "cexIo",
+              "binanceInternational",
+              "bitstamp",
+              "gateIo",
+              "celsius",
+              "acorns",
+              "okx",
+              "bitFlyer",
+              "coinlist",
+              "huobi",
+              "bitfinex",
+              "deFiWallet"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerType"
+              }
+            ],
+            "description": "The type of the target integration to send assets to. Used along with the `toAuthToken` alternatively to `ToAddress`."
+          },
+          "networkId": {
+            "type": "string",
+            "description": "The network to send the asset over.",
+            "format": "uuid"
+          },
+          "symbol": {
+            "type": "string",
+            "description": "The symbol of the digital asset to send.",
+            "nullable": true
+          },
+          "toAddress": {
+            "type": "string",
+            "description": "The target address to send the asset to.",
+            "nullable": true
+          },
+          "amount": {
+            "type": "number",
+            "description": "The amount to send, in crypto.",
+            "format": "double",
+            "nullable": true
+          },
+          "amountInFiat": {
+            "type": "number",
+            "description": "The amount to send, in fiat currency. Can be used alternatively to `Amount`.",
+            "format": "double",
+            "nullable": true
+          },
+          "fiatCurrency": {
+            "type": "string",
+            "description": "Fiat currency that is to get corresponding converted fiat values of transfer and fee amounts. If not provided, defaults to `USD`.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PreviewTransferResponse": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "succeeded",
+              "failed"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PreviewTransferStatus"
+              }
+            ],
+            "description": "The status of the operation."
+          },
+          "errorMessage": {
+            "type": "string",
+            "description": "Error message, if the operation did not complete successfully.",
+            "nullable": true
+          },
+          "previewResult": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PreviewTransferResult"
+              }
+            ],
+            "description": "Result of the preview.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PreviewTransferResponseIApiResult": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/PreviewTransferResponse"
+              }
+            ],
+            "nullable": true,
+            "readOnly": true
+          },
+          "status": {
+            "enum": [
+              "ok",
+              "serverFailure",
+              "permissionDenied",
+              "badRequest",
+              "notFound",
+              "conflict",
+              "tooManyRequest",
+              "locked"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiResultStatus"
+              }
+            ],
+            "readOnly": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "displayMessage": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PreviewTransferResult": {
+        "type": "object",
+        "properties": {
+          "previewId": {
+            "type": "string",
+            "description": "The Id of the preview of the transfer. Should be used to commit the transfer using `Execute` endpoint.",
+            "format": "uuid"
+          },
+          "previewExpiresIn": {
+            "type": "integer",
+            "description": "The period of time in seconds during which the transfer can be committed.",
+            "format": "int32"
+          },
+          "fromAddress": {
+            "type": "string",
+            "description": "Obtained address that will be used to send the transfer. Not guaranteed to be returned by some of integrations.",
+            "nullable": true
+          },
+          "toAddress": {
+            "type": "string",
+            "description": "The target address to send the asset to.",
+            "nullable": true
+          },
+          "symbol": {
+            "type": "string",
+            "description": "Symbol of the asset to be sent.",
+            "nullable": true
+          },
+          "amount": {
+            "type": "number",
+            "description": "Amount in symbol. If the transfer was requested using `AmounInFiat` field, this field represents the exact amount\r\nof the asset that will be transferred.",
+            "format": "double"
+          },
+          "amountInFiat": {
+            "type": "number",
+            "description": "Transfer amount in fiat. If the transfer was requested in crypto amount using the `Amount` field,\r\nthis field contains the corresponding converted to fiat value.",
+            "format": "double"
+          },
+          "totalEstimatedAmountInFiat": {
+            "type": "number",
+            "description": "Total estimated amount of the transfer including all fees, converted to fiat.",
+            "format": "double"
+          },
+          "networkId": {
+            "type": "string",
+            "description": "Id of the network in Front system.",
+            "format": "uuid"
+          },
+          "institutionTransferFee": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransferFee"
+              }
+            ],
+            "description": "The fee that is taken by the institution. Depending on the institution, can cover the gas fee. Some institutions do not\r\ntake the transfer fee and only network fee is used for the transfer.",
+            "nullable": true
+          },
+          "estimatedNetworkGasFee": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransferFee"
+              }
+            ],
+            "description": "The gas fee that is estimated to be taken by the network. Depending on the integration, the network gas fee might be\r\ncovered by the `InstitutionTransferFee`.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "PreviewTransferStatus": {
+        "enum": [
+          "succeeded",
+          "failed"
+        ],
+        "type": "string"
+      },
       "ProblemDetails": {
         "type": "object",
         "properties": {
@@ -7583,6 +9165,48 @@
           "fractionalTradingPossiblyAllowed"
         ],
         "type": "string"
+      },
+      "TransferFee": {
+        "type": "object",
+        "properties": {
+          "fee": {
+            "type": "number",
+            "description": "The amount of the fee.",
+            "format": "double"
+          },
+          "feeCurrency": {
+            "type": "string",
+            "description": "The currency of the fee. Does not match the currency of the transfer in some cases.",
+            "nullable": true
+          },
+          "feeInFiat": {
+            "type": "number",
+            "description": "The value of the fee converted to the fiat currency.",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TransferToAddress": {
+        "type": "object",
+        "properties": {
+          "networkId": {
+            "type": "string",
+            "description": "The Id of the network in Front system. The list of all available networks can be obtained by using `GET /networks` endpoint.",
+            "format": "uuid"
+          },
+          "symbol": {
+            "type": "string",
+            "description": "The symbol of the digital asset.",
+            "nullable": true
+          },
+          "address": {
+            "type": "string",
+            "description": "The address to send asset to.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
       }
     },
     "securitySchemes": {
@@ -7610,7 +9234,7 @@
     },
     {
       "name": "Portfolio",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```CryptocurrencyAddress```\n```CryptocurrencyWallet```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```CryptocurrencyAddress```\n```CryptocurrencyWallet```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```DeFiWallet```\n"
     },
     {
       "name": "Balance",
@@ -7629,6 +9253,9 @@
     },
     {
       "name": "Assets"
+    },
+    {
+      "name": "Managed Transfers [coming soon]"
     }
   ]
 }

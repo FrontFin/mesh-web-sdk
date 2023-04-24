@@ -361,7 +361,7 @@ export interface B2BBrokerCreateOrderRequest {
   /** Indicates whether the `PaymentSymbol` is fiat or cryptocurrency */
   paymentIsCryptocurrency: boolean
   /** @deprecated */
-  amountIsFiat: boolean
+  amountIsFiat?: boolean | null
   /**
    * @deprecated
    * @format double
@@ -1229,7 +1229,7 @@ export interface B2BBrokerSymbolInfoForOrderRequest {
   /** Indicates whether the `PaymentSymbol` is fiat or cryptocurrency */
   paymentIsCryptocurrency: boolean
   /** @deprecated */
-  amountIsFiat: boolean
+  amountIsFiat?: boolean | null
   /**
    * @deprecated
    * @format double
@@ -1480,6 +1480,26 @@ export interface B2BBrokersHealthStatusListIApiResult {
   readonly displayMessage?: string | null
 }
 
+export interface B2BFiatPortfolioModel {
+  /** List of aggregated fiat balances */
+  fiatBalances?: PortfolioFiatBalance[] | null
+}
+
+export interface B2BFiatPortfolioModelIApiResult {
+  readonly content?: B2BFiatPortfolioModel | null
+  readonly status?:
+    | 'ok'
+    | 'serverFailure'
+    | 'permissionDenied'
+    | 'badRequest'
+    | 'notFound'
+    | 'conflict'
+    | 'tooManyRequest'
+    | 'locked'
+  readonly message?: string | null
+  readonly displayMessage?: string | null
+}
+
 export interface B2BNftPosition {
   /** @format double */
   amount?: number
@@ -1708,6 +1728,28 @@ export interface B2BPositionWithMarketValues {
    * @format double
    */
   dailyReturnPercentage?: number | null
+}
+
+export interface B2BPriceInfo {
+  /** @format double */
+  price?: number
+  /** @format int64 */
+  timestamp?: number
+}
+
+export interface B2BPriceInfoIApiResult {
+  readonly content?: B2BPriceInfo | null
+  readonly status?:
+    | 'ok'
+    | 'serverFailure'
+    | 'permissionDenied'
+    | 'badRequest'
+    | 'notFound'
+    | 'conflict'
+    | 'tooManyRequest'
+    | 'locked'
+  readonly message?: string | null
+  readonly displayMessage?: string | null
 }
 
 export interface B2BSymbolNewsData {
@@ -2461,6 +2503,161 @@ export interface ChartItem {
   date?: string | null
 }
 
+export interface ConfigureTransferRequest {
+  /**
+   * The authentication token to send assets from.
+   * @minLength 1
+   */
+  fromAuthToken: string
+  /** The type of the integration to send assets from. */
+  fromType:
+    | 'robinhood'
+    | 'eTrade'
+    | 'alpaca'
+    | 'tdAmeritrade'
+    | 'weBull'
+    | 'stash'
+    | 'interactiveBrokers'
+    | 'public'
+    | 'coinbase'
+    | 'kraken'
+    | 'coinbasePro'
+    | 'cryptoCom'
+    | 'openSea'
+    | 'binanceUs'
+    | 'gemini'
+    | 'cryptocurrencyAddress'
+    | 'cryptocurrencyWallet'
+    | 'okCoin'
+    | 'bittrex'
+    | 'kuCoin'
+    | 'etoro'
+    | 'cexIo'
+    | 'binanceInternational'
+    | 'bitstamp'
+    | 'gateIo'
+    | 'celsius'
+    | 'acorns'
+    | 'okx'
+    | 'bitFlyer'
+    | 'coinlist'
+    | 'huobi'
+    | 'bitfinex'
+    | 'deFiWallet'
+  /**
+   * The authentication token of the target integration. Can be used alternatively to the list of requested address (`toAddresses`).
+   * If used, `toType` should also be provided.
+   */
+  toAuthToken?: string | null
+  /** The type of the target integration to send assets to. Used along with the `toAuthToken` alternatively to `toAddresses`. */
+  toType?: BrokerType | null
+  /**
+   * A list of available addresses provided by the API client. The list can contain all supported addresses by the client.
+   * Front API validates the addresses and returns the list of supported tokens and networks as the result of the operation.
+   */
+  toAddresses?: TransferToAddress[] | null
+  /** If provided, Front API returns only networks that support transferring of this symbol. */
+  symbol?: string | null
+  /**
+   * If provided, Front API configures the response to only return holdings with enough amount of this crypto for the transfer
+   * @format double
+   */
+  amount?: number | null
+  /**
+   * If provided, Front API configures the response to only contain holdings with enough value (converted to fiat) for the transfer.
+   * @format double
+   */
+  amountInFiat?: number | null
+  /** Fiat currency that is to get corresponding converted fiat values of transfer and fee amounts. If not provided, defaults to `USD`. */
+  fiatCurrency?: string | null
+  /**
+   * If provided, from API configures the response to include the requested network only.
+   * @format uuid
+   */
+  networkId?: string | null
+}
+
+export interface ConfigureTransferResponse {
+  /** Status of the operation. */
+  status?: 'succeeded' | 'failed' | 'validationFailed' | 'notAuthorizedTo' | 'notAuthorizedFrom'
+  /** Error message, if the operation did not complete successfully. */
+  errorMessage?: string | null
+  /** List of holdings on the source account. */
+  holdings?: ConfigureTransferResultHolding[] | null
+}
+
+export interface ConfigureTransferResponseIApiResult {
+  readonly content?: ConfigureTransferResponse | null
+  readonly status?:
+    | 'ok'
+    | 'serverFailure'
+    | 'permissionDenied'
+    | 'badRequest'
+    | 'notFound'
+    | 'conflict'
+    | 'tooManyRequest'
+    | 'locked'
+  readonly message?: string | null
+  readonly displayMessage?: string | null
+}
+
+export interface ConfigureTransferResultHolding {
+  /** The symbol of the digital asset on the source account. */
+  symbol?: string | null
+  /**
+   * The available balance of the digital asset.
+   * @format double
+   */
+  availableBalance?: number
+  /** Specifies if the asset is eligible for a transfer. */
+  eligibleForTransfer?: boolean
+  /** Supported networks. */
+  networks?: ConfigureTransferResultNetwork[] | null
+}
+
+export interface ConfigureTransferResultNetwork {
+  /** The name of the network. */
+  name?: string | null
+  /**
+   * The Id of the network in Front system.
+   * @format uuid
+   */
+  id?: string
+  /**
+   * Then minimum amount that can be withdrawn using this network.
+   * @format double
+   */
+  minimumAmount?: number
+  /**
+   * The maximum amount that can be withdrawn using this network.
+   * @format double
+   */
+  maximumAmount?: number
+  /**
+   * Total estimated transfer fee converted to fiat. Can consist of the fee taken by the financial institution and the
+   * gas fee.
+   * @format double
+   */
+  totalTransferFeeInFiat?: number
+  /**
+   * The gas fee that is estimated to be taken by the network. Depending on the integration, the network gas fee might be
+   * covered by the `InstitutionTransferFee`.
+   */
+  estimatedNetworkGasFee?: TransferFee | null
+  /**
+   * The fee that is taken by the institution. Depending on the institution, can cover the gas fee. Some institutions do not
+   * take the transfer fee and only network fee is used for the transfer.
+   */
+  institutionTransferFee?: TransferFee | null
+}
+
+export type ConfigureTransferStatus =
+  | 'succeeded'
+  | 'failed'
+  | 'validationFailed'
+  | 'notAuthorizedTo'
+  | 'notAuthorizedFrom'
+
 export type CryptocurrencyAddressType =
   | 'ethAddress'
   | 'btcAddress'
@@ -2498,6 +2695,148 @@ export type CryptocurrencyWalletType =
   | 'alphaWallet'
   | 'atomicWallet'
 
+export interface ExecuteTransferRequest {
+  /**
+   * The authentication token to send the asset from.
+   * @minLength 1
+   */
+  fromAuthToken: string
+  /** The type of the integration to send the asset from. */
+  fromType:
+    | 'robinhood'
+    | 'eTrade'
+    | 'alpaca'
+    | 'tdAmeritrade'
+    | 'weBull'
+    | 'stash'
+    | 'interactiveBrokers'
+    | 'public'
+    | 'coinbase'
+    | 'kraken'
+    | 'coinbasePro'
+    | 'cryptoCom'
+    | 'openSea'
+    | 'binanceUs'
+    | 'gemini'
+    | 'cryptocurrencyAddress'
+    | 'cryptocurrencyWallet'
+    | 'okCoin'
+    | 'bittrex'
+    | 'kuCoin'
+    | 'etoro'
+    | 'cexIo'
+    | 'binanceInternational'
+    | 'bitstamp'
+    | 'gateIo'
+    | 'celsius'
+    | 'acorns'
+    | 'okx'
+    | 'bitFlyer'
+    | 'coinlist'
+    | 'huobi'
+    | 'bitfinex'
+    | 'deFiWallet'
+  /**
+   * Id of the Preview of the transfer.
+   * @format uuid
+   */
+  previewId: string
+  /** Multi-factor auth code that should be provided if the status of the transfer was `MfaRequired`. */
+  mfaCode?: string | null
+}
+
+export interface ExecuteTransferResponse {
+  /** The status of the transfer. */
+  status?: 'succeeded' | 'failed' | 'mfaRequired' | 'emailConfirmationRequired'
+  /** Error message, if the operation did not complete successfully. */
+  errorMessage?: string | null
+  /** Result of the transfer initiation. */
+  executeTransferResult?: ExecuteTransferResultResponse | null
+}
+
+export interface ExecuteTransferResponseIApiResult {
+  readonly content?: ExecuteTransferResponse | null
+  readonly status?:
+    | 'ok'
+    | 'serverFailure'
+    | 'permissionDenied'
+    | 'badRequest'
+    | 'notFound'
+    | 'conflict'
+    | 'tooManyRequest'
+    | 'locked'
+  readonly message?: string | null
+  readonly displayMessage?: string | null
+}
+
+export interface ExecuteTransferResultResponse {
+  /** The Id of the transfer by the integration. */
+  transferId?: string | null
+  /** The current status of the transfer. */
+  status?:
+    | 'unknown'
+    | 'failed'
+    | 'frozen'
+    | 'succeeded'
+    | 'mfaRequired'
+    | 'pending'
+    | 'expired'
+    | 'canceled'
+    | 'waitingForSignature'
+    | 'waitingForClearing'
+    | 'awaitingApproval'
+    | 'awaitingConfirmation'
+    | 'awaitingVerification'
+    | 'rejected'
+    | 'pendingCancel'
+  /** Details of the current status of the transfer, as provided by the integration. */
+  statusDetails?: string | null
+  /** The address of the source account or wallet. */
+  fromAddress?: string | null
+  /** The address of the target account or wallet. */
+  toAddress?: string | null
+  /** Transferred symbol. */
+  symbol?: string | null
+  /** The name of the used network. */
+  networkName?: string | null
+  /**
+   * The Id of the used network in Front system.
+   * @format uuid
+   */
+  networkId?: string
+  /** The hash of the blockchain transaction. */
+  hash?: string | null
+  /**
+   * The transferred amount, in the symbol of the transfer.
+   * @format double
+   */
+  amount?: number
+  /**
+   * The transferred amount, converted to the fiat currency.
+   * @format double
+   */
+  amountInFiat?: number
+  /**
+   * Total amount of the transfer including all fees, converted to fiat.
+   * @format double
+   */
+  totalAmountInFiat?: number
+  /**
+   * Current number of network confirmations.
+   * @format int64
+   */
+  completedConfirmations?: number | null
+  /** The fee that was taken by the institution. */
+  institutionTransferFee?: TransferFee | null
+  /**
+   * The gas fee that was taken by the network. Depending on the integration, the network gas fee might be
+   * covered by the `InstitutionTransferFee`.
+   */
+  networkGasFee?: TransferFee | null
+}
+
+export type ExecuteTransferStatus = 'succeeded' | 'failed' | 'mfaRequired' | 'emailConfirmationRequired'
+
 export interface IApiResult {
   readonly status?:
     | 'ok'
@@ -2513,6 +2852,41 @@ export interface IApiResult {
 }
 
 export type MfaScheme = 'mfaCode' | 'challenge' | 'deviceConfirmation' | 'securityQuestion'
+
+export interface NetworkModelResponse {
+  networks?: NetworkResponse[] | null
+}
+
+export interface NetworkModelResponseIApiResult {
+  readonly content?: NetworkModelResponse | null
+  readonly status?:
+    | 'ok'
+    | 'serverFailure'
+    | 'permissionDenied'
+    | 'badRequest'
+    | 'notFound'
+    | 'conflict'
+    | 'tooManyRequest'
+    | 'locked'
+  readonly message?: string | null
+  readonly displayMessage?: string | null
+}
+
+export interface NetworkResponse {
+  /**
+   * The Id of the network in Front system. Should be used to initiate transfers.
+   * @format uuid
+   */
+  id?: string
+  /** The name if the network. */
+  name?: string | null
+  /** The Inner id of the chain, used for reference. For example, Polygon's (MATIC) chain Id is 137. */
+  chainId?: string | null
+  /** The list of tokens that are currently supported to be transferred using the network. */
+  supportedTokens?: string[] | null
+  /** The list of types of integrations that are currently supported to perform transfers over the network. */
+  supportedBrokerTypes?: BrokerType[] | null
+}
 
 export type NftBlockchain = 'ethereum' | 'polygon' | 'klaytn'
 
@@ -2577,6 +2951,203 @@ export interface NftPositionWithMarketValues {
   portfolioPercentage?: number | null
 }
 
+export interface PortfolioFiatBalance {
+  /** Balance currency */
+  symbol?: string | null
+  /**
+   * Amount of money in a specific currency from all brokers
+   * @format double
+   */
+  cash?: number | null
+  /**
+   * BuyingPower from all brokers, it indicates total amount of money the user can spend on buying stock.
+   * Always includes cash and can also include margin
+   * @format double
+   */
+  buyingPower?: number | null
+}
+
+export interface PreviewTransferRequest {
+  /**
+   * The authentication token to send the asset from.
+   * @minLength 1
+   */
+  fromAuthToken: string
+  /** The type of the integration to send the asset from. */
+  fromType:
+    | 'robinhood'
+    | 'eTrade'
+    | 'alpaca'
+    | 'tdAmeritrade'
+    | 'weBull'
+    | 'stash'
+    | 'interactiveBrokers'
+    | 'public'
+    | 'coinbase'
+    | 'kraken'
+    | 'coinbasePro'
+    | 'cryptoCom'
+    | 'openSea'
+    | 'binanceUs'
+    | 'gemini'
+    | 'cryptocurrencyAddress'
+    | 'cryptocurrencyWallet'
+    | 'okCoin'
+    | 'bittrex'
+    | 'kuCoin'
+    | 'etoro'
+    | 'cexIo'
+    | 'binanceInternational'
+    | 'bitstamp'
+    | 'gateIo'
+    | 'celsius'
+    | 'acorns'
+    | 'okx'
+    | 'bitFlyer'
+    | 'coinlist'
+    | 'huobi'
+    | 'bitfinex'
+    | 'deFiWallet'
+  /**
+   * The authentication token of the target integration. Can be used alternatively to the address in the `ToAddress` field.
+   * If used, `toType` should also be provided.
+   */
+  toAuthToken?: string | null
+  /** The type of the target integration to send assets to. Used along with the `toAuthToken` alternatively to `ToAddress`. */
+  toType?:
+    | 'robinhood'
+    | 'eTrade'
+    | 'alpaca'
+    | 'tdAmeritrade'
+    | 'weBull'
+    | 'stash'
+    | 'interactiveBrokers'
+    | 'public'
+    | 'coinbase'
+    | 'kraken'
+    | 'coinbasePro'
+    | 'cryptoCom'
+    | 'openSea'
+    | 'binanceUs'
+    | 'gemini'
+    | 'cryptocurrencyAddress'
+    | 'cryptocurrencyWallet'
+    | 'okCoin'
+    | 'bittrex'
+    | 'kuCoin'
+    | 'etoro'
+    | 'cexIo'
+    | 'binanceInternational'
+    | 'bitstamp'
+    | 'gateIo'
+    | 'celsius'
+    | 'acorns'
+    | 'okx'
+    | 'bitFlyer'
+    | 'coinlist'
+    | 'huobi'
+    | 'bitfinex'
+    | 'deFiWallet'
+  /**
+   * The network to send the asset over.
+   * @format uuid
+   */
+  networkId?: string
+  /** The symbol of the digital asset to send. */
+  symbol?: string | null
+  /** The target address to send the asset to. */
+  toAddress?: string | null
+  /**
+   * The amount to send, in crypto.
+   * @format double
+   */
+  amount?: number | null
+  /**
+   * The amount to send, in fiat currency. Can be used alternatively to `Amount`.
+   * @format double
+   */
+  amountInFiat?: number | null
+  /** Fiat currency that is to get corresponding converted fiat values of transfer and fee amounts. If not provided, defaults to `USD`. */
+  fiatCurrency?: string | null
+}
+
+export interface PreviewTransferResponse {
+  /** The status of the operation. */
+  status?: 'succeeded' | 'failed'
+  /** Error message, if the operation did not complete successfully. */
+  errorMessage?: string | null
+  /** Result of the preview. */
+  previewResult?: PreviewTransferResult | null
+}
+
+export interface PreviewTransferResponseIApiResult {
+  readonly content?: PreviewTransferResponse | null
+  readonly status?:
+    | 'ok'
+    | 'serverFailure'
+    | 'permissionDenied'
+    | 'badRequest'
+    | 'notFound'
+    | 'conflict'
+    | 'tooManyRequest'
+    | 'locked'
+  readonly message?: string | null
+  readonly displayMessage?: string | null
+}
+
+export interface PreviewTransferResult {
+  /**
+   * The Id of the preview of the transfer. Should be used to commit the transfer using `Execute` endpoint.
+   * @format uuid
+   */
+  previewId?: string
+  /**
+   * The period of time in seconds during which the transfer can be committed.
+   * @format int32
+   */
+  previewExpiresIn?: number
+  /** Obtained address that will be used to send the transfer. Not guaranteed to be returned by some of integrations. */
+  fromAddress?: string | null
+  /** The target address to send the asset to. */
+  toAddress?: string | null
+  /** Symbol of the asset to be sent. */
+  symbol?: string | null
+  /**
+   * Amount in symbol. If the transfer was requested using `AmounInFiat` field, this field represents the exact amount
+   * of the asset that will be transferred.
+   * @format double
+   */
+  amount?: number
+  /**
+   * Transfer amount in fiat. If the transfer was requested in crypto amount using the `Amount` field,
+   * this field contains the corresponding converted to fiat value.
+   * @format double
+   */
+  amountInFiat?: number
+  /**
+   * Total estimated amount of the transfer including all fees, converted to fiat.
+   * @format double
+   */
+  totalEstimatedAmountInFiat?: number
+  /**
+   * Id of the network in Front system.
+   * @format uuid
+   */
+  networkId?: string
+  /**
+   * The fee that is taken by the institution. Depending on the institution, can cover the gas fee. Some institutions do not
+   * take the transfer fee and only network fee is used for the transfer.
+   */
+  institutionTransferFee?: TransferFee | null
+  /**
+   * The gas fee that is estimated to be taken by the network. Depending on the integration, the network gas fee might be
+   * covered by the `InstitutionTransferFee`.
+   */
+  estimatedNetworkGasFee?: TransferFee | null
+}
+
+export type PreviewTransferStatus = 'succeeded' | 'failed'
+
 export interface ProblemDetails {
   type?: string | null
   title?: string | null
@@ -2592,6 +3163,33 @@ export type SymbolTradingAllowance =
   | 'fractionalTradingNotAllowed'
   | 'tradingNotAllowed'
   | 'fractionalTradingPossiblyAllowed'
+
+export interface TransferFee {
+  /**
+   * The amount of the fee.
+   * @format double
+   */
+  fee?: number
+  /** The currency of the fee. Does not match the currency of the transfer in some cases. */
+  feeCurrency?: string | null
+  /**
+   * The value of the fee converted to the fiat currency.
+   * @format double
+   */
+  feeInFiat?: number
+}
+
+export interface TransferToAddress {
+  /**
+   * The Id of the network in Front system. The list of all available networks can be obtained by using `GET /networks` endpoint.
+   * @format uuid
+   */
+  networkId?: string
+  /** The symbol of the digital asset. */
+  symbol?: string | null
+  /** The address to send asset to. */
+  address?: string | null
+}
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from 'axios'
 
@@ -2639,7 +3237,7 @@ export class HttpClient<SecurityDataType = unknown> {
   constructor({ securityWorker, secure, format, ...axiosConfig }: ApiConfig<SecurityDataType> = {}) {
     this.instance = axios.create({
       ...axiosConfig,
-      baseURL: axiosConfig.baseURL || 'https://front-b2b-api-test.azurewebsites.net'
+      baseURL: axiosConfig.baseURL || 'https://integration-api.getfront.com'
     })
     this.secure = secure
     this.format = format
@@ -2729,7 +3327,7 @@ export class HttpClient<SecurityDataType = unknown> {
 /**
  * @title Front Financial Integration Catalog API
  * @version 1.0
- * @baseUrl https://front-b2b-api-test.azurewebsites.net
+ * @baseUrl https://integration-api.getfront.com
  *
  * Front Integration Catalog allows users of client applications to connect accounts of financial institutions. Front Integration Catalog handles credential validation, multi-factor authentication, and error handling for each institution. After the account is connected, Front Integration Catalog allows client applications to get account information, such as holdings, transactions, balances.
  */
@@ -2761,6 +3359,26 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         path: `/api/v1/assets/${assetType}`,
         method: 'GET',
         query: query,
+        secure: true,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Assets
+     * @name V1AssetsEquityPriceDetail
+     * @request GET:/api/v1/assets/equity/{symbol}/price
+     * @secure
+     * @response `200` `B2BPriceInfoIApiResult` Success
+     * @response `400` `ApiResult` Bad Request
+     * @response `401` `any` Unauthorized
+     */
+    v1AssetsEquityPriceDetail: (symbol: string, params: RequestParams = {}) =>
+      this.request<B2BPriceInfoIApiResult, ApiResult>({
+        path: `/api/v1/assets/equity/${symbol}/price`,
+        method: 'GET',
         secure: true,
         format: 'json',
         ...params
@@ -2798,7 +3416,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @summary Get aggregated portfolio fiat balances
      * @request GET:/api/v1/balance/portfolio
      * @secure
-     * @response `200` `B2BPortfolioModelIApiResult` Success
+     * @response `200` `B2BFiatPortfolioModelIApiResult` Success
      * @response `400` `ApiResult` Bad Request
      * @response `401` `any` Unauthorized
      */
@@ -2809,7 +3427,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
       },
       params: RequestParams = {}
     ) =>
-      this.request<B2BPortfolioModelIApiResult, ApiResult>({
+      this.request<B2BFiatPortfolioModelIApiResult, ApiResult>({
         path: `/api/v1/balance/portfolio`,
         method: 'GET',
         query: query,
@@ -3055,6 +3673,96 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         method: 'GET',
         query: query,
         secure: true,
+        format: 'json',
+        ...params
+      })
+  }
+  managedTransfersComingSoon = {
+    /**
+     * @description **Get the list of all networks supported by the Front API to perform transfers.** <br /> --- Returns the list of all networks supported by the Front API and corresponding supported tokens. The IDs of networks should be used to configure and initiate transfers.
+     *
+     * @tags Managed Transfers [coming soon]
+     * @name V1TransfersManagedNetworksList
+     * @summary Get networks
+     * @request GET:/api/v1/transfers/managed/networks
+     * @secure
+     * @response `200` `NetworkModelResponseIApiResult` Success
+     * @response `401` `any` Unauthorized
+     */
+    v1TransfersManagedNetworksList: (params: RequestParams = {}) =>
+      this.request<NetworkModelResponseIApiResult, any>({
+        path: `/api/v1/transfers/managed/networks`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description **Get the list of networks and tokens eligible for a transfer, based on the provided request data.** <br /> --- Transfers can be configured either from one connected account to another connected account, or from a connected account to any arbitrary address or addresses. <br /> * **From one connected account to another connected account:** <br /> The API client provides `FromAuthToken` that is representing the source account and `ToAuthToken` that is representing the target account. Front API maps networks and tokens supported by both accounts and returns all tokens and networks eligible for a transfer as the result. <br /> * **From a connected account to any arbitrary address:** <br /> The API client provides `FromAuthToken` that is representing the source account and the list of target addresses using the `ToAddresses` field. Front API verifies the addresses and returns the list of tokens, eligible to be transferred as the result of the operation. <br /><br /> Returns the list of holdings on the account that can be used to perform the transfer. Each holdings item contains the list of supported networks that can be used to transfer the corresponding asset. Each network contains details such as gas fees and the amount eligible to be transferred.
+     *
+     * @tags Managed Transfers [coming soon]
+     * @name V1TransfersManagedConfigureCreate
+     * @summary Configure transfer
+     * @request POST:/api/v1/transfers/managed/configure
+     * @secure
+     * @response `200` `ConfigureTransferResponseIApiResult` Success
+     * @response `400` `ApiResult` Bad Request
+     * @response `401` `any` Unauthorized
+     */
+    v1TransfersManagedConfigureCreate: (data: ConfigureTransferRequest, params: RequestParams = {}) =>
+      this.request<ConfigureTransferResponseIApiResult, ApiResult>({
+        path: `/api/v1/transfers/managed/configure`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description **Validate and preview the transfer.** <br /> --- Validates the transfer, calculates the relevant amount in crypto if requested amount was in fiat and updates the current network fee values. <br /> This endpoint uses the `NetworkId` field to specify which network will be used to perform the transfer. The target `NetworkId` should be selected after configuring the transfer using `/configure` endpoint. <br /><br /> Returns the `PreviewId` value that can be used to commit the transfer.
+     *
+     * @tags Managed Transfers [coming soon]
+     * @name V1TransfersManagedPreviewCreate
+     * @summary Preview transfer
+     * @request POST:/api/v1/transfers/managed/preview
+     * @secure
+     * @response `200` `PreviewTransferResponseIApiResult` Success
+     * @response `400` `ApiResult` Bad Request
+     * @response `401` `any` Unauthorized
+     */
+    v1TransfersManagedPreviewCreate: (data: PreviewTransferRequest, params: RequestParams = {}) =>
+      this.request<PreviewTransferResponseIApiResult, ApiResult>({
+        path: `/api/v1/transfers/managed/preview`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description **Commit the previously previewed transfer.** <br /> --- Previews the transfer, using the `PreviewId` value. <br /> Handles multi-factor authentication codes if the account is configured to use them for additional security. <br /><br /> Returns the status of the transfer and the details of the transfer if it was initiated successfully.
+     *
+     * @tags Managed Transfers [coming soon]
+     * @name V1TransfersManagedExecuteCreate
+     * @summary Execute transfer
+     * @request POST:/api/v1/transfers/managed/execute
+     * @secure
+     * @response `200` `ExecuteTransferResponseIApiResult` Success
+     * @response `400` `ApiResult` Bad Request
+     * @response `401` `any` Unauthorized
+     */
+    v1TransfersManagedExecuteCreate: (data: ExecuteTransferRequest, params: RequestParams = {}) =>
+      this.request<ExecuteTransferResponseIApiResult, ApiResult>({
+        path: `/api/v1/transfers/managed/execute`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         format: 'json',
         ...params
       })

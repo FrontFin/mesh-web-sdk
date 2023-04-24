@@ -1,6 +1,6 @@
 {
   "name": "@front-finance/link",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Front Finance accounts connection client lib",
   "main": "./src/index.ts",
   "module": "./src/index.ts",

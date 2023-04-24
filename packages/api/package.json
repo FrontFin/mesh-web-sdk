@@ -1,6 +1,6 @@
 {
   "name": "@front-finance/api",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Front Finance API lib",
   "type": "module",
   "main": "./index.ts",
