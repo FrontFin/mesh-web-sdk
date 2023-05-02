@@ -189,6 +189,8 @@ export interface B2BBrokerAuthRequest {
     | 'huobi'
     | 'bitfinex'
     | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
   username?: string | null
   password?: string | null
   tradePin?: string | null
@@ -197,9 +199,11 @@ export interface B2BBrokerAuthRequest {
   /** Used to provide answers to security questions */
   challengeAnswer?: string | null
   mfaCode?: string | null
+  mfaType?: 'phone' | 'phoneAndEmail' | 'requireNextSecurityQuestion' | 'readEmail'
   key?: string | null
   authToken?: string | null
   redirectLink?: string | null
+  confirmationEmail?: string | null
   cryptocurrencyWalletAuthData?: B2BBrokerCryptocurrencyWalletAuthRequest | null
 }
 
@@ -214,6 +218,7 @@ export interface B2BBrokerAuthResponse {
     | 'openInBrokerModule'
     | 'delayed'
     | 'deviceConfirmationRequired'
+    | 'emailVerification'
   /** Id of the challenge, relevant when the status is `ChallengeIssued` */
   challengeId?: string | null
   challengeText?: string | null
@@ -234,6 +239,7 @@ export interface B2BBrokerAuthResponse {
   brokerBrandInfo?: BrokerBrandInfo | null
   accountTokens?: BrokerAccountTokens[] | null
   requiresReauthentication?: boolean | null
+  email?: string | null
 }
 
 export interface B2BBrokerAuthResponseIApiResult {
@@ -251,7 +257,7 @@ export interface B2BBrokerAuthResponseIApiResult {
   readonly displayMessage?: string | null
 }
 
-export type B2BBrokerAuthStatus = 'failed' | 'succeeded'
+export type B2BBrokerAuthStatus = 'failed' | 'succeeded' | 'mfaRequired'
 
 export interface B2BBrokerCreateCryptocurrencyTransactionResponse {
   /** Transaction Id by the financial institution */
@@ -336,6 +342,8 @@ export interface B2BBrokerCreateOrderRequest {
     | 'huobi'
     | 'bitfinex'
     | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -393,6 +401,8 @@ export interface B2BBrokerCreateOrderRequest {
     | 'netCredit'
     | 'exercise'
   timeInForce: 'goodTillCanceled' | 'immediateOrCancel' | 'fillOrKill' | 'goodForDay' | 'postOnly' | 'unknown'
+  /** MFA Code to create an order (requested by Kraken if MFA is enabled in user settings) */
+  mfaCode?: string | null
 }
 
 export interface B2BBrokerCreateOrderResult {
@@ -433,6 +443,8 @@ export interface B2BBrokerCreateOrderResult {
     | 'huobi'
     | 'bitfinex'
     | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
   /** Side of the order. */
   side?: 'unknown' | 'buy' | 'sell'
   /**
@@ -509,6 +521,8 @@ export interface B2BBrokerCryptocurrencyDepositAddressResponse {
   chain?: string | null
   memo?: string | null
   minimumDepositAmount?: string | null
+  brokerResponseStatus?: BrokerResponseStatus | null
+  errorMessage?: string | null
 }
 
 export interface B2BBrokerCryptocurrencyDepositAddressResponseIApiResult {
@@ -768,6 +782,8 @@ export interface B2BBrokerOrder {
     | 'huobi'
     | 'bitfinex'
     | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
   /** Type of the transaction */
   transactionType?:
     | 'order'
@@ -844,6 +860,8 @@ export interface B2BBrokerOrderListRequest {
     | 'huobi'
     | 'bitfinex'
     | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
   /**
    * The cursor to retrieve the next page of transactions.
    * Providing it will cause the response to only return changes after this update.
@@ -937,6 +955,8 @@ export interface B2BBrokerOrderRequest {
     | 'huobi'
     | 'bitfinex'
     | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
   /** @minLength 1 */
   id: string
   /** Should be provided for Coinbase. */
@@ -945,6 +965,8 @@ export interface B2BBrokerOrderRequest {
   isCryptocurrency: boolean
   /** Symbol pair of the order (requested by some brokers). */
   symbolPair?: string | null
+  /** MFA Code to cancel an order (requested by Kraken if MFA is enabled in user settings) */
+  mfaCode?: string | null
 }
 
 export interface B2BBrokerOrderSymbolInfo {
@@ -1048,6 +1070,8 @@ export interface B2BBrokerPortfolioModel {
     | 'huobi'
     | 'bitfinex'
     | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
   /** External institution's account id (returned by the institution) */
   accountId?: string | null
   /** Friendly name of the connected institution */
@@ -1106,6 +1130,8 @@ export interface B2BBrokerPreviewOrderResult {
     | 'huobi'
     | 'bitfinex'
     | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
   /** @format double */
   fee?: number | null
   feeText?: string | null
@@ -1136,7 +1162,7 @@ export interface B2BBrokerPreviewOrderResultIApiResult {
 }
 
 export interface B2BBrokerRefreshTokenResponse {
-  status?: 'failed' | 'succeeded'
+  status?: 'failed' | 'succeeded' | 'mfaRequired'
   errorMessage?: string | null
   displayMessage?: string | null
   accessToken?: string | null
@@ -1204,6 +1230,8 @@ export interface B2BBrokerSymbolInfoForOrderRequest {
     | 'huobi'
     | 'bitfinex'
     | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -1261,6 +1289,8 @@ export interface B2BBrokerSymbolInfoForOrderRequest {
     | 'netCredit'
     | 'exercise'
   timeInForce: 'goodTillCanceled' | 'immediateOrCancel' | 'fillOrKill' | 'goodForDay' | 'postOnly' | 'unknown'
+  /** MFA Code to create an order (requested by Kraken if MFA is enabled in user settings) */
+  mfaCode?: string | null
   side?: BrokerOrderType | null
 }
 
@@ -1313,6 +1343,8 @@ export interface B2BBrokerTradingFeatureInfo {
     | 'huobi'
     | 'bitfinex'
     | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
   /** Account Id of the integration. */
   accountId?: string | null
   /** Model, describing the ability to place cryptocurrency orders. */
@@ -1447,6 +1479,8 @@ export interface B2BBrokersHealthStatus {
     | 'huobi'
     | 'bitfinex'
     | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
   /** Is the communication with the integration up */
   isUp?: boolean
   /** Description of the outage */
@@ -1869,6 +1903,7 @@ export type BrokerAuthStatus =
   | 'openInBrokerModule'
   | 'delayed'
   | 'deviceConfirmationRequired'
+  | 'emailVerification'
 
 export interface BrokerAuthenticationScheme {
   brokerType?:
@@ -1905,6 +1940,8 @@ export interface BrokerAuthenticationScheme {
     | 'huobi'
     | 'bitfinex'
     | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
   /** Type of authentication for the integration. */
   authenticationSchemeType?: 'usernamePassword' | 'oAuth' | 'apiKey' | 'blockchainAddress'
   /** Set of fields that should be provided in the initial POST `authenticate` request. */
@@ -1973,6 +2010,8 @@ export interface BrokerBaseRequest {
     | 'huobi'
     | 'bitfinex'
     | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
 }
 
 export interface BrokerBrandInfo {
@@ -2021,6 +2060,8 @@ export interface BrokerCreateCryptocurrencyTransactionRequest {
     | 'huobi'
     | 'bitfinex'
     | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
   /** Additional data to send on-chain (optional, depends on an integration) */
   data?: string | null
   /**
@@ -2101,6 +2142,8 @@ export interface BrokerCryptocurrencyDepositAddressRequest {
     | 'huobi'
     | 'bitfinex'
     | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
    * Can be used instead of the `AddressType` field.
@@ -2113,6 +2156,8 @@ export interface BrokerCryptocurrencyDepositAddressRequest {
   addressType?: CryptocurrencyAddressType | null
   /** Chain of the required cryptocurrency, e.g. USDT has USDT-ERC20, USDT-TRC20, and USDT-Omni */
   chain?: string | null
+  /** Some of integrations require MFA code to create a deposit address, e.g. KrakenDirect */
+  mfaCode?: string | null
 }
 
 export type BrokerCryptocurrencyTransactionBlockchainMethod =
@@ -2177,6 +2222,8 @@ export interface BrokerCryptocurrencyTransactionDetailsRequest {
     | 'huobi'
     | 'bitfinex'
     | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
   /** Type of the address of the transferred asset. Can be used instead of the `Symbol` field. */
   addressType?: CryptocurrencyAddressType | null
   /** Transaction Id by the financial institution */
@@ -2349,6 +2396,8 @@ export interface BrokerRefreshTokenRequest {
     | 'huobi'
     | 'bitfinex'
     | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
   /** @minLength 1 */
   refreshToken: string
   /**
@@ -2358,16 +2407,20 @@ export interface BrokerRefreshTokenRequest {
   createNewRefreshToken?: boolean | null
   /**
    * Some institutions may require accessToken to be provided as well.
-   * It's currently required by WeBull only
+   * It's currently required by WeBull and Vanguard
    */
   accessToken?: string | null
   /** Currently used to update WeBull trade token. */
   tradeToken?: string | null
+  /** Optional, currently used by Vanguard if account has enforced MFA enabled. */
+  mfaCode?: string | null
   /** Additional metadata */
   metadata?: Record<string, string | null>
 }
 
 export type BrokerRequestStatus = 'succeeded' | 'failed' | 'notAuthorized'
+
+export type BrokerResponseStatus = 'unknown' | 'mfaRequired'
 
 export interface BrokerTransactionsListRequest {
   /**
@@ -2410,6 +2463,8 @@ export interface BrokerTransactionsListRequest {
     | 'huobi'
     | 'bitfinex'
     | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
   /**
    * Number of records to include in the response. <br />
    * Default: `100` <br />
@@ -2468,6 +2523,8 @@ export type BrokerType =
   | 'huobi'
   | 'bitfinex'
   | 'deFiWallet'
+  | 'krakenDirect'
+  | 'vanguard'
 
 export interface CatalogLink {
   /**
@@ -2544,6 +2601,8 @@ export interface ConfigureTransferRequest {
     | 'huobi'
     | 'bitfinex'
     | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
   /**
    * The authentication token of the target integration. Can be used alternatively to the list of requested address (`toAddresses`).
    * If used, `toType` should also be provided.
@@ -2736,6 +2795,8 @@ export interface ExecuteTransferRequest {
     | 'huobi'
     | 'bitfinex'
     | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
   /**
    * Id of the Preview of the transfer.
    * @format uuid
@@ -2852,6 +2913,8 @@ export interface IApiResult {
 }
 
 export type MfaScheme = 'mfaCode' | 'challenge' | 'deviceConfirmation' | 'securityQuestion'
+
+export type MfaType = 'phone' | 'phoneAndEmail' | 'requireNextSecurityQuestion' | 'readEmail'
 
 export interface NetworkModelResponse {
   networks?: NetworkResponse[] | null
@@ -3008,6 +3071,8 @@ export interface PreviewTransferRequest {
     | 'huobi'
     | 'bitfinex'
     | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
   /**
    * The authentication token of the target integration. Can be used alternatively to the address in the `ToAddress` field.
    * If used, `toType` should also be provided.
@@ -3048,6 +3113,8 @@ export interface PreviewTransferRequest {
     | 'huobi'
     | 'bitfinex'
     | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
   /**
    * The network to send the asset over.
    * @format uuid
@@ -3478,7 +3545,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
       }),
 
     /**
-     * @description Refresh auth token of the connected institution. Some institutions do not require tokens to be refreshed. The following institutions require custom flows: WeBull: AuthToken should be provided along with the RefreshToken TdAmeritrade: refresh token should also be refreshed. CreateNewRefreshToken parameter should be set to true in order to refresh the refresh token for TdAmeritrade.
+     * @description Refresh auth token of the connected institution. Some institutions do not require tokens to be refreshed. The following institutions require custom flows: WeBull: AuthToken should be provided along with the RefreshToken TdAmeritrade: refresh token should also be refreshed. CreateNewRefreshToken parameter should be set to true in order to refresh the refresh token for TdAmeritrade. Vanguard: security settings may activate MFA, requiring user action. If MFA is triggered, a second refresh request should be sent. Second request should contain MFA code and access token obtained from initial response.
      *
      * @tags Managed Account Authentication
      * @name V1TokenRefreshCreate
@@ -3661,7 +3728,9 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         | 'coinlist'
         | 'huobi'
         | 'bitfinex'
-        | 'deFiWallet',
+        | 'deFiWallet'
+        | 'krakenDirect'
+        | 'vanguard',
       query: {
         /** Id of the end-user */
         userId: string

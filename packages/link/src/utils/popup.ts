@@ -15,7 +15,7 @@ const getPopupHtml = (link: string) => `
 <div id="${popupId}">
   <div id="${backdropId}"></div>
   <div id="${popupContentId}">
-    <iframe src="${link}" />
+    <iframe src="${link}" allow="clipboard-read; clipboard-write" />
   </div>
 </div>
 `
@@ -42,6 +42,7 @@ const styles = `
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    z-index: 10000;
   }
 
   #${backdropId} {

@@ -436,7 +436,7 @@
           "Managed Account Authentication"
         ],
         "summary": "Refresh auth token",
-        "description": "Refresh auth token of the connected institution.\r\nSome institutions do not require tokens to be refreshed.\r\n            \r\nThe following institutions require custom flows:\r\n            \r\nWeBull: AuthToken should be provided along with the RefreshToken\r\n            \r\nTdAmeritrade: refresh token should also be refreshed.\r\nCreateNewRefreshToken parameter should be set to true in order\r\nto refresh the refresh token for TdAmeritrade.",
+        "description": "Refresh auth token of the connected institution.\r\nSome institutions do not require tokens to be refreshed.\r\n            \r\nThe following institutions require custom flows:\r\n            \r\nWeBull: AuthToken should be provided along with the RefreshToken\r\n            \r\nTdAmeritrade: refresh token should also be refreshed.\r\nCreateNewRefreshToken parameter should be set to true in order\r\nto refresh the refresh token for TdAmeritrade.\r\n            \r\nVanguard: security settings may activate MFA, requiring user action.\r\nIf MFA is triggered, a second refresh request should be sent.\r\nSecond request should contain MFA code and access token obtained from initial response.",
         "parameters": [
           {
             "name": "X-Client-Id",
@@ -808,7 +808,7 @@
                   }
                 ]
               },
-              "example": {"username":"username","password":"password","mfaCode":"000000","type":"robinhood"}
+              "example": {"username":"username","password":"password","mfaCode":"000000","mfaType":"phone","type":"robinhood"}
             }
           }
         },
@@ -890,7 +890,9 @@
                 "coinlist",
                 "huobi",
                 "bitfinex",
-                "deFiWallet"
+                "deFiWallet",
+                "krakenDirect",
+                "vanguard"
               ],
               "allOf": [
                 {
@@ -3360,7 +3362,9 @@
               "coinlist",
               "huobi",
               "bitfinex",
-              "deFiWallet"
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard"
             ],
             "allOf": [
               {
@@ -3397,6 +3401,19 @@
             "type": "string",
             "nullable": true
           },
+          "mfaType": {
+            "enum": [
+              "phone",
+              "phoneAndEmail",
+              "requireNextSecurityQuestion",
+              "readEmail"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MfaType"
+              }
+            ]
+          },
           "key": {
             "type": "string",
             "nullable": true
@@ -3406,6 +3423,10 @@
             "nullable": true
           },
           "redirectLink": {
+            "type": "string",
+            "nullable": true
+          },
+          "confirmationEmail": {
             "type": "string",
             "nullable": true
           },
@@ -3432,7 +3453,8 @@
               "mfaRequired",
               "openInBrokerModule",
               "delayed",
-              "deviceConfirmationRequired"
+              "deviceConfirmationRequired",
+              "emailVerification"
             ],
             "allOf": [
               {
@@ -3508,6 +3530,10 @@
           "requiresReauthentication": {
             "type": "boolean",
             "nullable": true
+          },
+          "email": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3558,7 +3584,8 @@
       "B2BBrokerAuthStatus": {
         "enum": [
           "failed",
-          "succeeded"
+          "succeeded",
+          "mfaRequired"
         ],
         "type": "string"
       },
@@ -3712,7 +3739,9 @@
               "coinlist",
               "huobi",
               "bitfinex",
-              "deFiWallet"
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard"
             ],
             "allOf": [
               {
@@ -3806,6 +3835,11 @@
                 "$ref": "#/components/schemas/BrokerOrderTimeInForceType"
               }
             ]
+          },
+          "mfaCode": {
+            "type": "string",
+            "description": "MFA Code to create an order (requested by Kraken if MFA is enabled in user settings)",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -3852,7 +3886,9 @@
               "coinlist",
               "huobi",
               "bitfinex",
-              "deFiWallet"
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard"
             ],
             "allOf": [
               {
@@ -4030,6 +4066,18 @@
             "nullable": true
           },
           "minimumDepositAmount": {
+            "type": "string",
+            "nullable": true
+          },
+          "brokerResponseStatus": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerResponseStatus"
+              }
+            ],
+            "nullable": true
+          },
+          "errorMessage": {
             "type": "string",
             "nullable": true
           }
@@ -4540,7 +4588,9 @@
               "coinlist",
               "huobi",
               "bitfinex",
-              "deFiWallet"
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard"
             ],
             "allOf": [
               {
@@ -4677,7 +4727,9 @@
               "coinlist",
               "huobi",
               "bitfinex",
-              "deFiWallet"
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard"
             ],
             "allOf": [
               {
@@ -4835,7 +4887,9 @@
               "coinlist",
               "huobi",
               "bitfinex",
-              "deFiWallet"
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard"
             ],
             "allOf": [
               {
@@ -4864,6 +4918,11 @@
           "symbolPair": {
             "type": "string",
             "description": "Symbol pair of the order (requested by some brokers).",
+            "nullable": true
+          },
+          "mfaCode": {
+            "type": "string",
+            "description": "MFA Code to cancel an order (requested by Kraken if MFA is enabled in user settings)",
             "nullable": true
           }
         },
@@ -5094,7 +5153,9 @@
               "coinlist",
               "huobi",
               "bitfinex",
-              "deFiWallet"
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard"
             ],
             "allOf": [
               {
@@ -5201,7 +5262,9 @@
               "coinlist",
               "huobi",
               "bitfinex",
-              "deFiWallet"
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard"
             ],
             "allOf": [
               {
@@ -5313,7 +5376,8 @@
           "status": {
             "enum": [
               "failed",
-              "succeeded"
+              "succeeded",
+              "mfaRequired"
             ],
             "allOf": [
               {
@@ -5454,7 +5518,9 @@
               "coinlist",
               "huobi",
               "bitfinex",
-              "deFiWallet"
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard"
             ],
             "allOf": [
               {
@@ -5548,6 +5614,11 @@
                 "$ref": "#/components/schemas/BrokerOrderTimeInForceType"
               }
             ]
+          },
+          "mfaCode": {
+            "type": "string",
+            "description": "MFA Code to create an order (requested by Kraken if MFA is enabled in user settings)",
+            "nullable": true
           },
           "side": {
             "allOf": [
@@ -5660,7 +5731,9 @@
               "coinlist",
               "huobi",
               "bitfinex",
-              "deFiWallet"
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard"
             ],
             "allOf": [
               {
@@ -5932,7 +6005,9 @@
               "coinlist",
               "huobi",
               "bitfinex",
-              "deFiWallet"
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard"
             ],
             "allOf": [
               {
@@ -6828,7 +6903,8 @@
           "mfaRequired",
           "openInBrokerModule",
           "delayed",
-          "deviceConfirmationRequired"
+          "deviceConfirmationRequired",
+          "emailVerification"
         ],
         "type": "string"
       },
@@ -6869,7 +6945,9 @@
               "coinlist",
               "huobi",
               "bitfinex",
-              "deFiWallet"
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard"
             ],
             "allOf": [
               {
@@ -7012,7 +7090,9 @@
               "coinlist",
               "huobi",
               "bitfinex",
-              "deFiWallet"
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard"
             ],
             "allOf": [
               {
@@ -7085,7 +7165,9 @@
               "coinlist",
               "huobi",
               "bitfinex",
-              "deFiWallet"
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard"
             ],
             "allOf": [
               {
@@ -7197,7 +7279,9 @@
               "coinlist",
               "huobi",
               "bitfinex",
-              "deFiWallet"
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard"
             ],
             "allOf": [
               {
@@ -7223,6 +7307,11 @@
           "chain": {
             "type": "string",
             "description": "Chain of the required cryptocurrency, e.g. USDT has USDT-ERC20, USDT-TRC20, and USDT-Omni",
+            "nullable": true
+          },
+          "mfaCode": {
+            "type": "string",
+            "description": "Some of integrations require MFA code to create a deposit address, e.g. KrakenDirect",
             "nullable": true
           }
         },
@@ -7298,7 +7387,9 @@
               "coinlist",
               "huobi",
               "bitfinex",
-              "deFiWallet"
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard"
             ],
             "allOf": [
               {
@@ -7616,7 +7707,9 @@
               "coinlist",
               "huobi",
               "bitfinex",
-              "deFiWallet"
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard"
             ],
             "allOf": [
               {
@@ -7635,12 +7728,17 @@
           },
           "accessToken": {
             "type": "string",
-            "description": "Some institutions may require accessToken to be provided as well.\r\nIt's currently required by WeBull only",
+            "description": "Some institutions may require accessToken to be provided as well.\r\nIt's currently required by WeBull and Vanguard",
             "nullable": true
           },
           "tradeToken": {
             "type": "string",
             "description": "Currently used to update WeBull trade token.",
+            "nullable": true
+          },
+          "mfaCode": {
+            "type": "string",
+            "description": "Optional, currently used by Vanguard if account has enforced MFA enabled.",
             "nullable": true
           },
           "metadata": {
@@ -7660,6 +7758,13 @@
           "succeeded",
           "failed",
           "notAuthorized"
+        ],
+        "type": "string"
+      },
+      "BrokerResponseStatus": {
+        "enum": [
+          "unknown",
+          "mfaRequired"
         ],
         "type": "string"
       },
@@ -7709,7 +7814,9 @@
               "coinlist",
               "huobi",
               "bitfinex",
-              "deFiWallet"
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard"
             ],
             "allOf": [
               {
@@ -7788,7 +7895,9 @@
           "coinlist",
           "huobi",
           "bitfinex",
-          "deFiWallet"
+          "deFiWallet",
+          "krakenDirect",
+          "vanguard"
         ],
         "type": "string"
       },
@@ -7913,7 +8022,9 @@
               "coinlist",
               "huobi",
               "bitfinex",
-              "deFiWallet"
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard"
             ],
             "allOf": [
               {
@@ -8261,7 +8372,9 @@
               "coinlist",
               "huobi",
               "bitfinex",
-              "deFiWallet"
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard"
             ],
             "allOf": [
               {
@@ -8519,6 +8632,15 @@
           "challenge",
           "deviceConfirmation",
           "securityQuestion"
+        ],
+        "type": "string"
+      },
+      "MfaType": {
+        "enum": [
+          "phone",
+          "phoneAndEmail",
+          "requireNextSecurityQuestion",
+          "readEmail"
         ],
         "type": "string"
       },
@@ -8887,7 +9009,9 @@
               "coinlist",
               "huobi",
               "bitfinex",
-              "deFiWallet"
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard"
             ],
             "allOf": [
               {
@@ -8935,7 +9059,9 @@
               "coinlist",
               "huobi",
               "bitfinex",
-              "deFiWallet"
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard"
             ],
             "allOf": [
               {
@@ -9234,19 +9360,19 @@
     },
     {
       "name": "Portfolio",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```CryptocurrencyAddress```\n```CryptocurrencyWallet```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```DeFiWallet```\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```CryptocurrencyAddress```\n```CryptocurrencyWallet```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```DeFiWallet```\n```KrakenDirect```\n```Vanguard```\n"
     },
     {
       "name": "Balance",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n"
     },
     {
       "name": "Transactions",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n\n\n### Integration-specific notes:\n\n\n#### TdAmeritrade:\n\n\nBecause of limitations of TD Ameritrade API, it is not guaranteed that details of a new order\n\nwill be returned upon executing it.\n\n\n#### Binance:\n\n\nBecause of limitations of Binance API, initial loading of transaction history in Binance can take long time\n\ndepending on the size of the portfolio.\n\n\n#### OkCoin:\n\n\nGetting transactions history from OkCoin is not currently supported.\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n\n\n### Integration-specific notes:\n\n\n#### TdAmeritrade:\n\n\nBecause of limitations of TD Ameritrade API, it is not guaranteed that details of a new order\n\nwill be returned upon executing it.\n\n\n#### Binance:\n\n\nBecause of limitations of Binance API, initial loading of transaction history in Binance can take long time\n\ndepending on the size of the portfolio.\n\n\n#### OkCoin:\n\n\nGetting transactions history from OkCoin is not currently supported.\n"
     },
     {
       "name": "Transfers",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```CryptocurrencyAddress```\n```CryptocurrencyWallet```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n\n\n### Integration-specific notes:\n\n\n#### Robinhood:\n\n\nCryptocurrency transfers should be enabled in Robinhood settings. Transfers are disabled by default, enabling them for end users requires a review from Robinhood.\n\nPlease note:\n * `MfaCode` parameter is required to initiate a transaction in Robinhood.\n * The user's security settings should be configured to use an authenticator application.\n * Robinhood doesn't allow initiation of transactions if the authenticator application is not configured.\n\n\n#### Coinbase:\n\n\n`MfaCode` parameter should be used to initiate transactions in Coinbase.\n * If the end user's Coinbase account is configured to use text messages (SMS) for two factor authentication, the API will return `MfaRequired` status, and a text code will then be sent by Coinbase. The code is expected to be provided in the subsequent call using the `MfaCode` request field\n * If the account is configured to use an authenticator application, the API is expecting to get the code in the `MfaCode` request field.\n\n\n#### Kraken:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n\n\n#### CoinbasePro:\n * CoinbasePro does not provide multiple chains per a symbol, so default chains are used for getting Deposit addresses.\n\n\n#### Binance:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance Us.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### KuCoin:\n\n\nKuCoin requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n\n`Fee` parameter should be used to initiate a transaction in KuCoin.\n\nPlease note:\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * All currencies have their minimum `fee` and `amount` requirements. Please use `symbol/details` endpoint to get this data for a particular symbol.\n * KuCoin requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### BinanceInternational:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance International.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### GateIo:\n\n\nGate.io requires adding IP address to the list of trusted IP addresses to be able to initiate a cryptocurrency transfers.\n\nWithdrawal address should be already verified or added on the Gate.io UI (in mobile application or on the web site).\n * Please reach out to Front to get the static IP address for withdrawals. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * Only verified withdrawal blockchain addresses are allowed for withdrawal with Gate.io API.\n * Gate.io requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### Huobi:\n\n\nWarning: Huobi does not refund executed deposits that are below the `Minimum Deposit Amount`\n * Please check the MinimumDepositAmount in Get Deposit Address response in order to avoid making a deposit below the minimum amount\n * Huobi does not allow withdrawals to addresses that are not white-listed, please add the address that you would like to withdraw to the white list of addresses through the UI so that a withrawal can be processed\n\n\n#### Bitfinex:\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```CryptocurrencyAddress```\n```CryptocurrencyWallet```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n\n\n### Integration-specific notes:\n\n\n#### Robinhood:\n\n\nCryptocurrency transfers should be enabled in Robinhood settings. Transfers are disabled by default, enabling them for end users requires a review from Robinhood.\n\nPlease note:\n * `MfaCode` parameter is required to initiate a transaction in Robinhood.\n * The user's security settings should be configured to use an authenticator application.\n * Robinhood doesn't allow initiation of transactions if the authenticator application is not configured.\n\n\n#### Coinbase:\n\n\n`MfaCode` parameter should be used to initiate transactions in Coinbase.\n * If the end user's Coinbase account is configured to use text messages (SMS) for two factor authentication, the API will return `MfaRequired` status, and a text code will then be sent by Coinbase. The code is expected to be provided in the subsequent call using the `MfaCode` request field\n * If the account is configured to use an authenticator application, the API is expecting to get the code in the `MfaCode` request field.\n\n\n#### Kraken:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n\n\n#### CoinbasePro:\n * CoinbasePro does not provide multiple chains per a symbol, so default chains are used for getting Deposit addresses.\n\n\n#### Binance:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance Us.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### KuCoin:\n\n\nKuCoin requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n\n`Fee` parameter should be used to initiate a transaction in KuCoin.\n\nPlease note:\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * All currencies have their minimum `fee` and `amount` requirements. Please use `symbol/details` endpoint to get this data for a particular symbol.\n * KuCoin requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### BinanceInternational:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance International.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### GateIo:\n\n\nGate.io requires adding IP address to the list of trusted IP addresses to be able to initiate a cryptocurrency transfers.\n\nWithdrawal address should be already verified or added on the Gate.io UI (in mobile application or on the web site).\n * Please reach out to Front to get the static IP address for withdrawals. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * Only verified withdrawal blockchain addresses are allowed for withdrawal with Gate.io API.\n * Gate.io requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### Huobi:\n\n\nWarning: Huobi does not refund executed deposits that are below the `Minimum Deposit Amount`\n * Please check the MinimumDepositAmount in Get Deposit Address response in order to avoid making a deposit below the minimum amount\n * Huobi does not allow withdrawals to addresses that are not white-listed, please add the address that you would like to withdraw to the white list of addresses through the UI so that a withrawal can be processed\n\n\n#### Bitfinex:\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\n\n\n#### KrakenDirect:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n"
     },
     {
       "name": "News"
