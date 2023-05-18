@@ -3,7 +3,8 @@ import {
   DelayedAuthPayload,
   EventType,
   FrontOptions,
-  FrontPayload
+  FrontPayload,
+  TransferFinishedPayload
 } from './types'
 
 const popupId = 'front-link-popup'
@@ -98,7 +99,7 @@ function onClose() {
 function eventsListener(
   event: MessageEvent<{
     type: EventType
-    payload?: AccessTokenPayload | DelayedAuthPayload
+    payload?: AccessTokenPayload | DelayedAuthPayload | TransferFinishedPayload
     message?: string
     link?: string
   }>
@@ -116,6 +117,12 @@ function eventsListener(
         delayedAuth: event.data.payload as DelayedAuthPayload
       }
       currentOptions?.onBrokerConnected?.(payload)
+      break
+    }
+    case 'transferFinished': {
+      const payload = event.data.payload as TransferFinishedPayload
+
+      currentOptions?.onTransferFinished?.(payload)
       break
     }
     case 'close':

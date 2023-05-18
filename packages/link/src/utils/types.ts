@@ -7,6 +7,7 @@ export type EventType =
   | 'done'
   | 'loaded'
   | 'oauthLinkOpen'
+  | 'transferFinished'
 
 export interface FrontConnection {
   openLink: (authLink: string) => Promise<void>
@@ -61,8 +62,28 @@ export interface DelayedAuthPayload {
   brokerBrandInfo: BrokerBrandInfo
 }
 
+export interface TransferFinishedSuccessPayload {
+  status: 'success'
+  txId: string
+  fromAddress: string
+  toAddress: string
+  symbol: string
+  amount: number
+  networkId: string
+}
+
+export interface TransferFinishedErrorPayload {
+  status: 'error'
+  errorMessage: string
+}
+
+export type TransferFinishedPayload =
+  | TransferFinishedSuccessPayload
+  | TransferFinishedErrorPayload
+
 export interface FrontOptions {
   clientId: string
   onBrokerConnected: (payload: FrontPayload) => void
   onExit?: (error?: string) => void
+  onTransferFinished?: (payload: TransferFinishedPayload) => void
 }

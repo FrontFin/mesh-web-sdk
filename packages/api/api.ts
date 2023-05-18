@@ -219,6 +219,7 @@ export interface B2BBrokerAuthResponse {
     | 'delayed'
     | 'deviceConfirmationRequired'
     | 'emailVerification'
+    | 'emailReceived'
   /** Id of the challenge, relevant when the status is `ChallengeIssued` */
   challengeId?: string | null
   challengeText?: string | null
@@ -280,6 +281,7 @@ export interface B2BBrokerCreateCryptocurrencyTransactionResponse {
     | 'awaitingVerification'
     | 'rejected'
     | 'pendingCancel'
+    | 'emailVerification'
   /** Details of the current status of the transfer, as provided by the financial institution */
   statusDetails?: string | null
   /** Details of the created transaction */
@@ -560,6 +562,7 @@ export interface B2BBrokerCryptocurrencyTransaction {
     | 'awaitingVerification'
     | 'rejected'
     | 'pendingCancel'
+    | 'emailVerification'
   /** Details of the current status of the transfer, as provided by the financial institution */
   statusDetails?: string | null
   /** The direction of the transaction */
@@ -895,6 +898,11 @@ export interface B2BBrokerOrderListResponse {
    * @format int64
    */
   total?: number
+  /**
+   * Earliest transaction timestamp.
+   * @format int64
+   */
+  earliestTimestamp?: number
 }
 
 export interface B2BBrokerOrderListResponseIApiResult {
@@ -1369,6 +1377,11 @@ export interface B2BBrokerTradingFeatureInfo {
   isTradingSupported?: boolean
   /** List of fiat balances of the account. */
   fiatBalances?: B2BBrokerAccountBalance[] | null
+  /**
+   * Limit for history records
+   * @format int32
+   */
+  historyRecordLimit?: number | null
 }
 
 export interface B2BBrokerTradingFeatureInfoIApiResult {
@@ -1422,10 +1435,20 @@ export interface B2BBrokerTradingFeatureOrderType {
 }
 
 export interface B2BBrokerTransactionsListModel {
+  /** List of obtained transfers. */
   transfers?: B2BBrokerCryptocurrencyTransaction[] | null
-  /** @format int64 */
+  /**
+   * Total amount of records.
+   * @format int64
+   */
   total?: number
+  /** The cursor to retrieve the next page of transfers. */
   cursor?: string | null
+  /**
+   * Earliest transfer timestamp.
+   * @format int64
+   */
+  earliestTimestamp?: number
 }
 
 export interface B2BBrokerTransactionsListModelIApiResult {
@@ -1904,6 +1927,7 @@ export type BrokerAuthStatus =
   | 'delayed'
   | 'deviceConfirmationRequired'
   | 'emailVerification'
+  | 'emailReceived'
 
 export interface BrokerAuthenticationScheme {
   brokerType?:
@@ -2260,6 +2284,7 @@ export type BrokerCryptocurrencyTransactionStatus =
   | 'awaitingVerification'
   | 'rejected'
   | 'pendingCancel'
+  | 'emailVerification'
 
 export type BrokerCryptocurrencyTransactionType = 'unknown' | 'deposit' | 'withdrawal'
 
@@ -2668,10 +2693,17 @@ export interface ConfigureTransferResultHolding {
    * @format double
    */
   availableBalance?: number
+  /**
+   * The available balance of the digital asset, converted to fiat currency.
+   * @format double
+   */
+  availableBalanceInFiat?: number
   /** Specifies if the asset is eligible for a transfer. */
   eligibleForTransfer?: boolean
   /** Supported networks. */
   networks?: ConfigureTransferResultNetwork[] | null
+  /** The reason indicating why the transfer of the current asset cannot be performed. */
+  ineligibilityReason?: HoldingTransferIneligibilityReason | null
 }
 
 export interface ConfigureTransferResultNetwork {
@@ -2686,18 +2718,28 @@ export interface ConfigureTransferResultNetwork {
    * Then minimum amount that can be withdrawn using this network.
    * @format double
    */
-  minimumAmount?: number
+  minimumAmount?: number | null
   /**
    * The maximum amount that can be withdrawn using this network.
    * @format double
    */
-  maximumAmount?: number
+  maximumAmount?: number | null
   /**
    * Total estimated transfer fee converted to fiat. Can consist of the fee taken by the financial institution and the
    * gas fee.
    * @format double
    */
-  totalTransferFeeInFiat?: number
+  totalEstimatedTransferFeeInFiat?: number | null
+  /**
+   * The minimum amount that can be withdrawn using this network, converted to fiat currency.
+   * @format double
+   */
+  minimumAmountInFiat?: number | null
+  /**
+   * The maximum amount that can be withdrawn using this network, converted to fiat currency.
+   * @format double
+   */
+  maximumAmountInFiat?: number | null
   /**
    * The gas fee that is estimated to be taken by the network. Depending on the integration, the network gas fee might be
    * covered by the `InstitutionTransferFee`.
@@ -2708,6 +2750,12 @@ export interface ConfigureTransferResultNetwork {
    * take the transfer fee and only network fee is used for the transfer.
    */
   institutionTransferFee?: TransferFee | null
+  /** Specifies if the asset is eligible for a transfer over the current network. */
+  eligibleForTransfer?: boolean
+  /** The reason indicating why the transfer cannot be performed over this network. */
+  ineligibilityReason?: NetworkTransferIneligibilityReason | null
+  /** The designated destination for sending the asset. */
+  toAddress?: string | null
 }
 
 export type ConfigureTransferStatus =
@@ -2850,6 +2898,7 @@ export interface ExecuteTransferResultResponse {
     | 'awaitingVerification'
     | 'rejected'
     | 'pendingCancel'
+    | 'emailVerification'
   /** Details of the current status of the transfer, as provided by the integration. */
   statusDetails?: string | null
   /** The address of the source account or wallet. */
@@ -2898,6 +2947,12 @@ export interface ExecuteTransferResultResponse {
 
 export type ExecuteTransferStatus = 'succeeded' | 'failed' | 'mfaRequired' | 'emailConfirmationRequired'
 
+export type HoldingTransferIneligibilityReason =
+  | 'noEligibleNetworks'
+  | 'symbolDoesNotMatch'
+  | 'notSupportedForTransferByTarget'
+  | 'notSupportedForTransferBySource'
+
 export interface IApiResult {
   readonly status?:
     | 'ok'
@@ -2910,6 +2965,14 @@ export interface IApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+}
+
+export interface InitializeTransfersForLinkRequest {
+  /**
+   * The list of destination addresses with corresponding networks are asset symbols that
+   * can be used to initiate incoming transfers.
+   */
+  toAddresses?: TransferToAddress[] | null
 }
 
 export type MfaScheme = 'mfaCode' | 'challenge' | 'deviceConfirmation' | 'securityQuestion'
@@ -2950,6 +3013,11 @@ export interface NetworkResponse {
   /** The list of types of integrations that are currently supported to perform transfers over the network. */
   supportedBrokerTypes?: BrokerType[] | null
 }
+
+export type NetworkTransferIneligibilityReason =
+  | 'amountNotSufficient'
+  | 'gasFeeAssetBalanceNotEnough'
+  | 'noTargetNetworkFound'
 
 export type NftBlockchain = 'ethereum' | 'polygon' | 'klaytn'
 
@@ -3079,42 +3147,7 @@ export interface PreviewTransferRequest {
    */
   toAuthToken?: string | null
   /** The type of the target integration to send assets to. Used along with the `toAuthToken` alternatively to `ToAddress`. */
-  toType?:
-    | 'robinhood'
-    | 'eTrade'
-    | 'alpaca'
-    | 'tdAmeritrade'
-    | 'weBull'
-    | 'stash'
-    | 'interactiveBrokers'
-    | 'public'
-    | 'coinbase'
-    | 'kraken'
-    | 'coinbasePro'
-    | 'cryptoCom'
-    | 'openSea'
-    | 'binanceUs'
-    | 'gemini'
-    | 'cryptocurrencyAddress'
-    | 'cryptocurrencyWallet'
-    | 'okCoin'
-    | 'bittrex'
-    | 'kuCoin'
-    | 'etoro'
-    | 'cexIo'
-    | 'binanceInternational'
-    | 'bitstamp'
-    | 'gateIo'
-    | 'celsius'
-    | 'acorns'
-    | 'okx'
-    | 'bitFlyer'
-    | 'coinlist'
-    | 'huobi'
-    | 'bitfinex'
-    | 'deFiWallet'
-    | 'krakenDirect'
-    | 'vanguard'
+  toType?: BrokerType | null
   /**
    * The network to send the asset over.
    * @format uuid
@@ -3201,6 +3234,10 @@ export interface PreviewTransferResult {
    * @format uuid
    */
   networkId?: string
+  /** Name of the network in Front system. */
+  networkName?: string | null
+  /** Blockchain address of the transferred token's contract */
+  contractAddress?: string | null
   /**
    * The fee that is taken by the institution. Depending on the institution, can cover the gas fee. Some institutions do not
    * take the transfer fee and only network fee is used for the transfer.
@@ -3211,6 +3248,11 @@ export interface PreviewTransferResult {
    * covered by the `InstitutionTransferFee`.
    */
   estimatedNetworkGasFee?: TransferFee | null
+  /**
+   * Number of decimal places used to represent the token's smallest unit
+   * @format int32
+   */
+  decimalPlaces?: number | null
 }
 
 export type PreviewTransferStatus = 'succeeded' | 'failed'
@@ -3248,13 +3290,13 @@ export interface TransferFee {
 
 export interface TransferToAddress {
   /**
-   * The Id of the network in Front system. The list of all available networks can be obtained by using `GET /networks` endpoint.
+   * The Id of the network in Front system. The list of all available networks can be obtained by using `GET /transfers/managed/networks` endpoint.
    * @format uuid
    */
   networkId?: string
   /** The symbol of the digital asset. */
   symbol?: string | null
-  /** The address to send asset to. */
+  /** The address to send the asset to. */
   address?: string | null
 }
 
@@ -3540,6 +3582,54 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         method: 'GET',
         query: query,
         secure: true,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Get personalized catalog link for client supplying parameters for Link actions, such as transfers
+     *
+     * @tags Managed Account Authentication
+     * @name V1CataloglinkCreate
+     * @summary Get catalog link with parameters
+     * @request POST:/api/v1/cataloglink
+     * @secure
+     * @response `200` `CatalogLinkIApiResult` Catalog link created.
+     * @response `400` `ApiResult` BadRequest can happen in following cases: <list type="number"><item><description>userId parameter not specified</description></item><item><description>Callback url parameter is invalid</description></item><item><description>Client does not have callback url specified</description></item></list>
+     * @response `401` `any` Unauthorized: Client Id or Client Secret are not correct or missing.
+     * @response `404` `ApiResult` API Client not found.
+     */
+    v1CataloglinkCreate: (
+      query: {
+        /**
+         * A unique Id representing the end user. Typically this will be a user Id from the
+         *             client application. Personally identifiable information, such as an email address or phone number,
+         *             should not be used.
+         */
+        userId: string
+        /** Type of broker to redirect to. Will redirect to catalog if not provided. */
+        brokerType?: BrokerType
+        /**
+         * Callback link - url to redirect user after authentication in brokerage account.
+         * If not provided default client's url will be used.
+         */
+        callbackUrl?: string
+        /**
+         * Specifies if created Catalog Link session should allow transfers to be executed using the Link UI
+         * @default false
+         */
+        enableTransfers?: boolean
+      },
+      data: InitializeTransfersForLinkRequest,
+      params: RequestParams = {}
+    ) =>
+      this.request<CatalogLinkIApiResult, ApiResult>({
+        path: `/api/v1/cataloglink`,
+        method: 'POST',
+        query: query,
+        body: data,
+        secure: true,
+        type: ContentType.Json,
         format: 'json',
         ...params
       }),

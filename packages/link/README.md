@@ -102,11 +102,12 @@ After successfull authentication on Front Finance user will be redirected back t
 
 #### `createFrontConnection` arguments
 
-| key                 | type                                                   | description                                                |
-| ------------------- | ------------------------------------------------------ | ---------------------------------------------------------- |
-| `clientId`          | `string`                                               | Keys from https://dashboard.getfront.com/company/keys page |
-| `onBrokerConnected` | `(payload: FrontPayload) => void`                      | Callback called when users connects their accounts         |
-| `onExit`            | `((error?: string \| undefined) => void) \| undefined` | Called if connection not happened                          |
+| key                  | type                                                   | description                                                |
+| -------------------- | ------------------------------------------------------ | ---------------------------------------------------------- |
+| `clientId`           | `string`                                               | Keys from https://dashboard.getfront.com/company/keys page |
+| `onBrokerConnected`  | `(payload: FrontPayload) => void`                      | Callback called when users connects their accounts         |
+| `onExit`             | `((error?: string \| undefined) => void) \| undefined` | Called if connection not happened                          |
+| `onTransferFinished` | `(payload: TransferFinishedPayload) => void`           | Callback called when a crypto transfer is executed         |
 
 #### `createFrontConnection` return value
 

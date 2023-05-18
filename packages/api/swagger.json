@@ -428,6 +428,151 @@
             }
           }
         }
+      },
+      "post": {
+        "tags": [
+          "Managed Account Authentication"
+        ],
+        "summary": "Get catalog link with parameters",
+        "description": "Get personalized catalog link for client supplying parameters for Link actions, such as transfers",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "query",
+            "description": "A unique Id representing the end user. Typically this will be a user Id from the\r\n            client application. Personally identifiable information, such as an email address or phone number,\r\n            should not be used.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "brokerType",
+            "in": "query",
+            "description": "Type of broker to redirect to. Will redirect to catalog if not provided.",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/BrokerType"
+                }
+              ]
+            }
+          },
+          {
+            "name": "callbackUrl",
+            "in": "query",
+            "description": "Callback link - url to redirect user after authentication in brokerage account.\r\nIf not provided default client's url will be used.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "enableTransfers",
+            "in": "query",
+            "description": "Specifies if created Catalog Link session should allow transfers to be executed using the Link UI",
+            "schema": {
+              "type": "boolean",
+              "default": false
+            }
+          },
+          {
+            "name": "X-Client-Id",
+            "in": "header",
+            "description": "Id of the client",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "X-Client-Secret",
+            "in": "header",
+            "description": "Client secret, should be stored safely and never shared",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/InitializeTransfersForLinkRequest"
+                  }
+                ]
+              },
+              "example": {"toAddresses":[{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"ETH","address":"0x00000000000000000000000"},{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"USDC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"MATIC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDC","address":"0x00000000000000000000000"}]}
+            },
+            "text/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/InitializeTransfersForLinkRequest"
+                  }
+                ]
+              },
+              "example": {"toAddresses":[{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"ETH","address":"0x00000000000000000000000"},{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"USDC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"MATIC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDC","address":"0x00000000000000000000000"}]}
+            },
+            "application/*+json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/InitializeTransfersForLinkRequest"
+                  }
+                ]
+              },
+              "example": {"toAddresses":[{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"ETH","address":"0x00000000000000000000000"},{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"USDC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"MATIC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDC","address":"0x00000000000000000000000"}]}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Catalog link created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CatalogLinkIApiResult"
+                },
+                "example": {"content":{"url":"https://web.getfront.com/broker-connect?auth_code={authCode}","iFrameUrl":"https://web.getfront.com/b2b-iframe/{clientId}/broker-connect?auth_code={authCode}"},"status":"ok","message":""}
+              }
+            }
+          },
+          "404": {
+            "description": "API Client not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResult"
+                },
+                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message"}
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest can happen in following cases:\r\n<list type=\"number\"><item><description>userId parameter not specified</description></item><item><description>Callback url parameter is invalid</description></item><item><description>Client does not have callback url specified</description></item></list>",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResult"
+                },
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: Client Id or Client Secret are not correct or missing.",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v1/token/refresh": {
@@ -1120,13 +1265,13 @@
                 },
                 "examples": {
                   "Successful transfer configuration": {
-                    "value": {"content":{"status":"succeeded","holdings":[{"symbol":"USDC","availableBalance":130,"eligibleForTransfer":true,"networks":[{"name":"Ethereum","id":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","minimumAmount":1,"maximumAmount":0,"totalTransferFeeInFiat":1.8,"estimatedNetworkGasFee":{"fee":0.000850608941007,"feeCurrency":"ETH","feeInFiat":1.8},"institutionTransferFee":{"fee":0,"feeCurrency":"ETH","feeInFiat":0}},{"name":"Solana","id":"0291810a-5947-424d-9a59-e88bb33e999d","minimumAmount":1,"maximumAmount":0,"totalTransferFeeInFiat":0.1,"estimatedNetworkGasFee":{"fee":0.00025,"feeCurrency":"SOL","feeInFiat":0.1},"institutionTransferFee":{"fee":0,"feeCurrency":"SOL","feeInFiat":0}}]}]},"status":"ok","message":""}
+                    "value": {"content":{"status":"succeeded","holdings":[{"symbol":"USDC","availableBalance":130,"availableBalanceInFiat":0,"eligibleForTransfer":true,"networks":[{"name":"Ethereum","id":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","minimumAmount":1,"totalEstimatedTransferFeeInFiat":1.8,"estimatedNetworkGasFee":{"fee":0.000850608941007,"feeCurrency":"ETH","feeInFiat":1.8},"institutionTransferFee":{"fee":0,"feeCurrency":"ETH","feeInFiat":0},"eligibleForTransfer":true},{"name":"Solana","id":"0291810a-5947-424d-9a59-e88bb33e999d","minimumAmount":1,"totalEstimatedTransferFeeInFiat":0.1,"estimatedNetworkGasFee":{"fee":0.00025,"feeCurrency":"SOL","feeInFiat":0.1},"institutionTransferFee":{"fee":0,"feeCurrency":"SOL","feeInFiat":0},"eligibleForTransfer":true}]}]},"status":"ok","message":""}
                   },
                   "Transfer configuration with failed validation": {
                     "value": {"content":{"status":"validationFailed","errorMessage":"Either `ToAddresses` or `ToAuthToken` should be provided."},"status":"ok","message":""}
                   },
                   "Transfer configuration with no eligible tokens to transfer": {
-                    "value": {"content":{"status":"succeeded","holdings":[{"symbol":"USDC","availableBalance":1,"eligibleForTransfer":false},{"symbol":"ETH","availableBalance":0.00001,"eligibleForTransfer":false}]},"status":"ok","message":""}
+                    "value": {"content":{"status":"succeeded","holdings":[{"symbol":"USDC","availableBalance":1,"availableBalanceInFiat":0,"eligibleForTransfer":false},{"symbol":"ETH","availableBalance":0.00001,"availableBalanceInFiat":0,"eligibleForTransfer":false}]},"status":"ok","message":""}
                   }
                 }
               }
@@ -1195,13 +1340,13 @@
               },
               "examples": {
                 "Preview with provided address": {
-                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toType":"robinhood","networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amount":10}
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amount":10}
                 },
                 "Preview transfer between two connected accounts": {
-                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAuthToken":"Secret authentication token","toType":"coinbase","networkId":"00000000-0000-0000-0000-000000000000","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amount":10}
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAuthToken":"Secret authentication token","toType":"coinbase","networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amount":10}
                 },
                 "Preview transfer between two connected accounts, using fiat amount": {
-                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAuthToken":"Secret authentication token","toType":"coinbase","networkId":"00000000-0000-0000-0000-000000000000","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amountInFiat":10}
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAuthToken":"Secret authentication token","toType":"coinbase","networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amountInFiat":10}
                 }
               }
             },
@@ -1215,13 +1360,13 @@
               },
               "examples": {
                 "Preview with provided address": {
-                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toType":"robinhood","networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amount":10}
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amount":10}
                 },
                 "Preview transfer between two connected accounts": {
-                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAuthToken":"Secret authentication token","toType":"coinbase","networkId":"00000000-0000-0000-0000-000000000000","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amount":10}
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAuthToken":"Secret authentication token","toType":"coinbase","networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amount":10}
                 },
                 "Preview transfer between two connected accounts, using fiat amount": {
-                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAuthToken":"Secret authentication token","toType":"coinbase","networkId":"00000000-0000-0000-0000-000000000000","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amountInFiat":10}
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAuthToken":"Secret authentication token","toType":"coinbase","networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amountInFiat":10}
                 }
               }
             },
@@ -1235,13 +1380,13 @@
               },
               "examples": {
                 "Preview with provided address": {
-                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toType":"robinhood","networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amount":10}
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amount":10}
                 },
                 "Preview transfer between two connected accounts": {
-                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAuthToken":"Secret authentication token","toType":"coinbase","networkId":"00000000-0000-0000-0000-000000000000","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amount":10}
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAuthToken":"Secret authentication token","toType":"coinbase","networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amount":10}
                 },
                 "Preview transfer between two connected accounts, using fiat amount": {
-                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAuthToken":"Secret authentication token","toType":"coinbase","networkId":"00000000-0000-0000-0000-000000000000","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amountInFiat":10}
+                  "value": {"fromAuthToken":"Secret authentication token","fromType":"robinhood","toAuthToken":"Secret authentication token","toType":"coinbase","networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDT","toAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","amountInFiat":10}
                 }
               }
             }
@@ -1970,7 +2115,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerOrderListResponseIApiResult"
                 },
-                "example": {"content":{"transactions":[{"id":"17EC1243-D91A-48B6-B0CE-ECFDB134F8A0","side":"buy","symbol":"AAPL","name":"APPLE INC","assetType":"option","paymentSymbol":"USD","paymentType":"fiat","amount":1,"price":120,"value":120,"createdTimestamp":1653215676,"updatedTimestamp":1653215697,"status":"success","orderType":"market","timeInForce":"goodForDay","brokerType":"robinhood","transactionType":"order","optionDetails":{"optionType":"call","direction":"buyToOpen","strikePrice":200,"expirationTimestamp":1673215697,"numberOfSharesInContract":100,"complexOrderStrategyType":"NONE"}},{"id":"F9E932AE-A780-42F3-B887-82D888D594E5","side":"sell","symbol":"AAPL","name":"APPLE INC","assetType":"equity","paymentSymbol":"USD","paymentType":"fiat","amount":2,"price":130,"value":260,"createdTimestamp":1651739676,"updatedTimestamp":1651739781,"status":"success","orderType":"market","timeInForce":"goodTillCanceled","brokerType":"robinhood","transactionType":"order"},{"id":"9B5827E4-7D08-4A71-B4C0-B1B4E5562592","side":"buy","symbol":"BTC","name":"Bitcoin","assetType":"cryptocurrency","paymentSymbol":"ETH","paymentType":"cryptocurrency","amount":0.3,"price":18604.8197,"value":5581.44591,"createdTimestamp":1651739676,"updatedTimestamp":1651739781,"status":"success","orderType":"limit","timeInForce":"goodTillCanceled","brokerType":"robinhood","transactionType":"order"}],"cursor":"N2VkZDI0MDMtNmRhYy01NThhLTk5NDUDYzI12M3GQ3ZmQ2","total":3},"status":"ok","message":""}
+                "example": {"content":{"transactions":[{"id":"17EC1243-D91A-48B6-B0CE-ECFDB134F8A0","side":"buy","symbol":"AAPL","name":"APPLE INC","assetType":"option","paymentSymbol":"USD","paymentType":"fiat","amount":1,"price":120,"value":120,"createdTimestamp":1653215676,"updatedTimestamp":1653215697,"status":"success","orderType":"market","timeInForce":"goodForDay","brokerType":"robinhood","transactionType":"order","optionDetails":{"optionType":"call","direction":"buyToOpen","strikePrice":200,"expirationTimestamp":1673215697,"numberOfSharesInContract":100,"complexOrderStrategyType":"NONE"}},{"id":"F9E932AE-A780-42F3-B887-82D888D594E5","side":"sell","symbol":"AAPL","name":"APPLE INC","assetType":"equity","paymentSymbol":"USD","paymentType":"fiat","amount":2,"price":130,"value":260,"createdTimestamp":1651739676,"updatedTimestamp":1651739781,"status":"success","orderType":"market","timeInForce":"goodTillCanceled","brokerType":"robinhood","transactionType":"order"},{"id":"9B5827E4-7D08-4A71-B4C0-B1B4E5562592","side":"buy","symbol":"BTC","name":"Bitcoin","assetType":"cryptocurrency","paymentSymbol":"ETH","paymentType":"cryptocurrency","amount":0.3,"price":18604.8197,"value":5581.44591,"createdTimestamp":1651739676,"updatedTimestamp":1651739781,"status":"success","orderType":"limit","timeInForce":"goodTillCanceled","brokerType":"robinhood","transactionType":"order"}],"cursor":"N2VkZDI0MDMtNmRhYy01NThhLTk5NDUDYzI12M3GQ3ZmQ2","total":3,"earliestTimestamp":1651739676},"status":"ok","message":""}
               }
             }
           },
@@ -2565,7 +2710,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerTransactionsListModelIApiResult"
                 },
-                "example": {"content":{"transfers":[{"id":"8E25ACB5-A9E2-4D00-8772-A255F010A2A9","status":"succeeded","type":"deposit","fromAddress":"D5PumQwt...","targetAddress":"D641Fmzx...","symbol":"DOGE","hash":"3310c6202aaeb44754a118ce11f255382d012060ade0d6d9f...","amount":15,"transactionAmount":10,"createdTimestamp":1653215600,"updatedTimestamp":1653215600,"networkTransactionFee":{"amount":5,"symbol":"DOGE"},"confirmations":17,"blockchainMethod":"transfer"},{"id":"70E6E3CF-5ACF-49C5-A4E1-5FB85A567F26","status":"succeeded","type":"withdrawal","fromAddress":"0x7BDE8361Fe587daD0e35448E754...","targetAddress":"0x83C8F28c26bF6aaca652Df1DbBE...","symbol":"ETH","hash":"0x77f3a280aa5cfe956a5759c24cf774325504070b32b4159...","amount":0.1,"transactionAmount":0.099,"createdTimestamp":1653211113,"updatedTimestamp":1653211113,"networkTransactionFee":{"amount":0.001,"symbol":"ETH"},"confirmations":18,"blockchainMethod":"transfer"}],"total":0},"status":"ok","message":""}
+                "example": {"content":{"transfers":[{"id":"8E25ACB5-A9E2-4D00-8772-A255F010A2A9","status":"succeeded","type":"deposit","fromAddress":"D5PumQwt...","targetAddress":"D641Fmzx...","symbol":"DOGE","hash":"3310c6202aaeb44754a118ce11f255382d012060ade0d6d9f...","amount":15,"transactionAmount":10,"createdTimestamp":1653215600,"updatedTimestamp":1653215600,"networkTransactionFee":{"amount":5,"symbol":"DOGE"},"confirmations":17,"blockchainMethod":"transfer"},{"id":"70E6E3CF-5ACF-49C5-A4E1-5FB85A567F26","status":"succeeded","type":"withdrawal","fromAddress":"0x7BDE8361Fe587daD0e35448E754...","targetAddress":"0x83C8F28c26bF6aaca652Df1DbBE...","symbol":"ETH","hash":"0x77f3a280aa5cfe956a5759c24cf774325504070b32b4159...","amount":0.1,"transactionAmount":0.099,"createdTimestamp":1653211113,"updatedTimestamp":1653211113,"networkTransactionFee":{"amount":0.001,"symbol":"ETH"},"confirmations":18,"blockchainMethod":"transfer"}],"total":2,"cursor":"N2VkZDI0MDMtNmRhYy01NThhLTk5NDUDYzI12M3GQ3ZmQ2","earliestTimestamp":1653211113},"status":"ok","message":""}
               }
             }
           },
@@ -3454,7 +3599,8 @@
               "openInBrokerModule",
               "delayed",
               "deviceConfirmationRequired",
-              "emailVerification"
+              "emailVerification",
+              "emailReceived"
             ],
             "allOf": [
               {
@@ -3616,7 +3762,8 @@
               "awaitingConfirmation",
               "awaitingVerification",
               "rejected",
-              "pendingCancel"
+              "pendingCancel",
+              "emailVerification"
             ],
             "allOf": [
               {
@@ -4151,7 +4298,8 @@
               "awaitingConfirmation",
               "awaitingVerification",
               "rejected",
-              "pendingCancel"
+              "pendingCancel",
+              "emailVerification"
             ],
             "allOf": [
               {
@@ -4784,6 +4932,11 @@
           "total": {
             "type": "integer",
             "description": "Total amount of records.",
+            "format": "int64"
+          },
+          "earliestTimestamp": {
+            "type": "integer",
+            "description": "Earliest transaction timestamp.",
             "format": "int64"
           }
         },
@@ -5805,6 +5958,12 @@
             },
             "description": "List of fiat balances of the account.",
             "nullable": true
+          },
+          "historyRecordLimit": {
+            "type": "integer",
+            "description": "Limit for history records",
+            "format": "int32",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -5912,15 +6071,23 @@
             "items": {
               "$ref": "#/components/schemas/B2BBrokerCryptocurrencyTransaction"
             },
+            "description": "List of obtained transfers.",
             "nullable": true
           },
           "total": {
             "type": "integer",
+            "description": "Total amount of records.",
             "format": "int64"
           },
           "cursor": {
             "type": "string",
+            "description": "The cursor to retrieve the next page of transfers.",
             "nullable": true
+          },
+          "earliestTimestamp": {
+            "type": "integer",
+            "description": "Earliest transfer timestamp.",
+            "format": "int64"
           }
         },
         "additionalProperties": false
@@ -6904,7 +7071,8 @@
           "openInBrokerModule",
           "delayed",
           "deviceConfirmationRequired",
-          "emailVerification"
+          "emailVerification",
+          "emailReceived"
         ],
         "type": "string"
       },
@@ -7466,7 +7634,8 @@
           "awaitingConfirmation",
           "awaitingVerification",
           "rejected",
-          "pendingCancel"
+          "pendingCancel",
+          "emailVerification"
         ],
         "type": "string"
       },
@@ -8176,6 +8345,11 @@
             "description": "The available balance of the digital asset.",
             "format": "double"
           },
+          "availableBalanceInFiat": {
+            "type": "number",
+            "description": "The available balance of the digital asset, converted to fiat currency.",
+            "format": "double"
+          },
           "eligibleForTransfer": {
             "type": "boolean",
             "description": "Specifies if the asset is eligible for a transfer."
@@ -8186,6 +8360,15 @@
               "$ref": "#/components/schemas/ConfigureTransferResultNetwork"
             },
             "description": "Supported networks.",
+            "nullable": true
+          },
+          "ineligibilityReason": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/HoldingTransferIneligibilityReason"
+              }
+            ],
+            "description": "The reason indicating why the transfer of the current asset cannot be performed.",
             "nullable": true
           }
         },
@@ -8207,17 +8390,32 @@
           "minimumAmount": {
             "type": "number",
             "description": "Then minimum amount that can be withdrawn using this network.",
-            "format": "double"
+            "format": "double",
+            "nullable": true
           },
           "maximumAmount": {
             "type": "number",
             "description": "The maximum amount that can be withdrawn using this network.",
-            "format": "double"
+            "format": "double",
+            "nullable": true
           },
-          "totalTransferFeeInFiat": {
+          "totalEstimatedTransferFeeInFiat": {
             "type": "number",
             "description": "Total estimated transfer fee converted to fiat. Can consist of the fee taken by the financial institution and the\r\ngas fee.",
-            "format": "double"
+            "format": "double",
+            "nullable": true
+          },
+          "minimumAmountInFiat": {
+            "type": "number",
+            "description": "The minimum amount that can be withdrawn using this network, converted to fiat currency.",
+            "format": "double",
+            "nullable": true
+          },
+          "maximumAmountInFiat": {
+            "type": "number",
+            "description": "The maximum amount that can be withdrawn using this network, converted to fiat currency.",
+            "format": "double",
+            "nullable": true
           },
           "estimatedNetworkGasFee": {
             "allOf": [
@@ -8235,6 +8433,24 @@
               }
             ],
             "description": "The fee that is taken by the institution. Depending on the institution, can cover the gas fee. Some institutions do not\r\ntake the transfer fee and only network fee is used for the transfer.",
+            "nullable": true
+          },
+          "eligibleForTransfer": {
+            "type": "boolean",
+            "description": "Specifies if the asset is eligible for a transfer over the current network."
+          },
+          "ineligibilityReason": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NetworkTransferIneligibilityReason"
+              }
+            ],
+            "description": "The reason indicating why the transfer cannot be performed over this network.",
+            "nullable": true
+          },
+          "toAddress": {
+            "type": "string",
+            "description": "The designated destination for sending the asset.",
             "nullable": true
           }
         },
@@ -8497,7 +8713,8 @@
               "awaitingConfirmation",
               "awaitingVerification",
               "rejected",
-              "pendingCancel"
+              "pendingCancel",
+              "emailVerification"
             ],
             "allOf": [
               {
@@ -8592,6 +8809,15 @@
         ],
         "type": "string"
       },
+      "HoldingTransferIneligibilityReason": {
+        "enum": [
+          "noEligibleNetworks",
+          "symbolDoesNotMatch",
+          "notSupportedForTransferByTarget",
+          "notSupportedForTransferBySource"
+        ],
+        "type": "string"
+      },
       "IApiResult": {
         "type": "object",
         "properties": {
@@ -8622,6 +8848,20 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "InitializeTransfersForLinkRequest": {
+        "type": "object",
+        "properties": {
+          "toAddresses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransferToAddress"
+            },
+            "description": "The list of destination addresses with corresponding networks are asset symbols that\r\ncan be used to initiate incoming transfers.",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -8736,6 +8976,14 @@
           }
         },
         "additionalProperties": false
+      },
+      "NetworkTransferIneligibilityReason": {
+        "enum": [
+          "amountNotSufficient",
+          "gasFeeAssetBalanceNotEnough",
+          "noTargetNetworkFound"
+        ],
+        "type": "string"
       },
       "NftBlockchain": {
         "enum": [
@@ -9026,49 +9274,13 @@
             "nullable": true
           },
           "toType": {
-            "enum": [
-              "robinhood",
-              "eTrade",
-              "alpaca",
-              "tdAmeritrade",
-              "weBull",
-              "stash",
-              "interactiveBrokers",
-              "public",
-              "coinbase",
-              "kraken",
-              "coinbasePro",
-              "cryptoCom",
-              "openSea",
-              "binanceUs",
-              "gemini",
-              "cryptocurrencyAddress",
-              "cryptocurrencyWallet",
-              "okCoin",
-              "bittrex",
-              "kuCoin",
-              "etoro",
-              "cexIo",
-              "binanceInternational",
-              "bitstamp",
-              "gateIo",
-              "celsius",
-              "acorns",
-              "okx",
-              "bitFlyer",
-              "coinlist",
-              "huobi",
-              "bitfinex",
-              "deFiWallet",
-              "krakenDirect",
-              "vanguard"
-            ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "The type of the target integration to send assets to. Used along with the `toAuthToken` alternatively to `ToAddress`."
+            "description": "The type of the target integration to send assets to. Used along with the `toAuthToken` alternatively to `ToAddress`.",
+            "nullable": true
           },
           "networkId": {
             "type": "string",
@@ -9228,6 +9440,16 @@
             "description": "Id of the network in Front system.",
             "format": "uuid"
           },
+          "networkName": {
+            "type": "string",
+            "description": "Name of the network in Front system.",
+            "nullable": true
+          },
+          "contractAddress": {
+            "type": "string",
+            "description": "Blockchain address of the transferred token's contract",
+            "nullable": true
+          },
           "institutionTransferFee": {
             "allOf": [
               {
@@ -9244,6 +9466,12 @@
               }
             ],
             "description": "The gas fee that is estimated to be taken by the network. Depending on the integration, the network gas fee might be\r\ncovered by the `InstitutionTransferFee`.",
+            "nullable": true
+          },
+          "decimalPlaces": {
+            "type": "integer",
+            "description": "Number of decimal places used to represent the token's smallest unit",
+            "format": "int32",
             "nullable": true
           }
         },
@@ -9318,7 +9546,7 @@
         "properties": {
           "networkId": {
             "type": "string",
-            "description": "The Id of the network in Front system. The list of all available networks can be obtained by using `GET /networks` endpoint.",
+            "description": "The Id of the network in Front system. The list of all available networks can be obtained by using `GET /transfers/managed/networks` endpoint.",
             "format": "uuid"
           },
           "symbol": {
@@ -9328,7 +9556,7 @@
           },
           "address": {
             "type": "string",
-            "description": "The address to send asset to.",
+            "description": "The address to send the asset to.",
             "nullable": true
           }
         },
