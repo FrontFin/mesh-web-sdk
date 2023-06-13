@@ -16,7 +16,7 @@ const getPopupHtml = (link: string) => `
 <div id="${popupId}">
   <div id="${backdropId}"></div>
   <div id="${popupContentId}">
-    <iframe src="${link}" allow="clipboard-read; clipboard-write" />
+    <iframe src="${link}" allow="clipboard-read *; clipboard-write *" />
   </div>
 </div>
 `
