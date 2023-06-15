@@ -11,7 +11,7 @@ const popupId = 'front-link-popup'
 const backdropId = 'front-link-popup__backdrop'
 const popupContentId = 'front-link-popup__popup-content'
 const stylesId = 'front-link-popup__styles'
-const closeButtonId = 'front-link-popup__close'
+
 const getPopupHtml = (link: string) => `
 <div id="${popupId}">
   <div id="${backdropId}"></div>
@@ -81,20 +81,25 @@ const styles = `
     border-radius: 24px;
   }
 
-  #${popupContentId} h3 #${closeButtonId} {
-    border: none;
-    background: white;
-    cursor: pointer;
+  @media only screen and (max-width: 768px) {
+    #${popupContentId} {
+      height: 100vh;
+      width: 100vw;
+      max-width: 100%;
+      min-width: 100%;
+      max-height: 100%;
+      min-height: 100%;
+      border-radius: 0px;
+    }
+
+    #${popupContentId} iframe {
+      border-radius: 0px;
+    }
   }
 </style>
 `
 
 let currentOptions: FrontOptions | undefined
-
-function onClose() {
-  removePopup()
-  currentOptions?.onExit?.()
-}
 
 function eventsListener(
   event: MessageEvent<{
@@ -175,11 +180,6 @@ export function addPopup(iframeLink: string, options: FrontOptions): void {
   const popup = getPopupHtml(iframeLink)
   window.document.head.appendChild(htmlToElement(styles))
   window.document.body.appendChild(htmlToElement(popup))
-
-  const closeButton = window.document.getElementById(closeButtonId)
-  if (closeButton) {
-    closeButton.onclick = onClose
-  }
 
   window.addEventListener('message', eventsListener)
 }

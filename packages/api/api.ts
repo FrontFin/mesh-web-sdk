@@ -191,6 +191,8 @@ export interface B2BBrokerAuthRequest {
     | 'deFiWallet'
     | 'krakenDirect'
     | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
   username?: string | null
   password?: string | null
   tradePin?: string | null
@@ -199,7 +201,7 @@ export interface B2BBrokerAuthRequest {
   /** Used to provide answers to security questions */
   challengeAnswer?: string | null
   mfaCode?: string | null
-  mfaType?: 'phone' | 'phoneAndEmail' | 'requireNextSecurityQuestion' | 'readEmail'
+  mfaType?: 'phone' | 'email' | 'totp' | 'phoneAndEmail' | 'requireNextSecurityQuestion' | 'readEmail'
   key?: string | null
   authToken?: string | null
   redirectLink?: string | null
@@ -220,6 +222,8 @@ export interface B2BBrokerAuthResponse {
     | 'deviceConfirmationRequired'
     | 'emailVerification'
     | 'emailReceived'
+    | 'captchaChallenge'
+  mfaType?: MfaType | null
   /** Id of the challenge, relevant when the status is `ChallengeIssued` */
   challengeId?: string | null
   challengeText?: string | null
@@ -282,6 +286,8 @@ export interface B2BBrokerCreateCryptocurrencyTransactionResponse {
     | 'rejected'
     | 'pendingCancel'
     | 'emailVerification'
+    | 'deviceConfirmationRequired'
+    | 'mfaFailed'
   /** Details of the current status of the transfer, as provided by the financial institution */
   statusDetails?: string | null
   /** Details of the created transaction */
@@ -346,6 +352,8 @@ export interface B2BBrokerCreateOrderRequest {
     | 'deFiWallet'
     | 'krakenDirect'
     | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -447,6 +455,8 @@ export interface B2BBrokerCreateOrderResult {
     | 'deFiWallet'
     | 'krakenDirect'
     | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
   /** Side of the order. */
   side?: 'unknown' | 'buy' | 'sell'
   /**
@@ -475,17 +485,7 @@ export interface B2BBrokerCreateOrderResult {
    */
   timestamp?: number
   /** Status of the order. */
-  status?:
-    | 'unknown'
-    | 'inProgress'
-    | 'cancelled'
-    | 'rejected'
-    | 'failed'
-    | 'success'
-    | 'partiallyFilled'
-    | 'expired'
-    | 'active'
-    | 'filled'
+  status?: 'unknown' | 'inProgress' | 'cancelled' | 'rejected' | 'failed' | 'success' | 'partiallyFilled' | 'expired'
   /** Text details of the order, if additionally returned from the financial institution. */
   statusDetails?: string | null
   /** Value that indicates how long the order will remain active before it is executed or expires. */
@@ -523,12 +523,38 @@ export interface B2BBrokerCryptocurrencyDepositAddressResponse {
   chain?: string | null
   memo?: string | null
   minimumDepositAmount?: string | null
+  /** @format uuid */
+  networkId?: string | null
   brokerResponseStatus?: BrokerResponseStatus | null
   errorMessage?: string | null
 }
 
 export interface B2BBrokerCryptocurrencyDepositAddressResponseIApiResult {
   readonly content?: B2BBrokerCryptocurrencyDepositAddressResponse | null
+  readonly status?:
+    | 'ok'
+    | 'serverFailure'
+    | 'permissionDenied'
+    | 'badRequest'
+    | 'notFound'
+    | 'conflict'
+    | 'tooManyRequest'
+    | 'locked'
+  readonly message?: string | null
+  readonly displayMessage?: string | null
+}
+
+export interface B2BBrokerCryptocurrencySymbolDetailsResponse {
+  /** Requested symbol */
+  symbol?: string | null
+  /** Supported address types */
+  addressTypes?: CryptocurrencyAddressType[] | null
+  /** Supported chains. One of the values should be provided to execute transfers */
+  chains?: BrokerCryptocurrencyChain[] | null
+}
+
+export interface B2BBrokerCryptocurrencySymbolDetailsResponseIApiResult {
+  readonly content?: B2BBrokerCryptocurrencySymbolDetailsResponse | null
   readonly status?:
     | 'ok'
     | 'serverFailure'
@@ -563,6 +589,8 @@ export interface B2BBrokerCryptocurrencyTransaction {
     | 'rejected'
     | 'pendingCancel'
     | 'emailVerification'
+    | 'deviceConfirmationRequired'
+    | 'mfaFailed'
   /** Details of the current status of the transfer, as provided by the financial institution */
   statusDetails?: string | null
   /** The direction of the transaction */
@@ -600,7 +628,7 @@ export interface B2BBrokerCryptocurrencyTransaction {
    */
   updatedTimestamp?: number
   /** Fee taken by the network */
-  networkTransactionFee?: BrokerCryptocurrencyTransactionFee | null
+  networkTransactionFee?: BrokerCryptocurrencyTransactionNetworkFee | null
   /**
    * Fee taken by the financial institution
    * @format double
@@ -733,17 +761,7 @@ export interface B2BBrokerOrder {
    */
   updatedTimestamp?: number
   /** Status of the transaction */
-  status?:
-    | 'unknown'
-    | 'inProgress'
-    | 'cancelled'
-    | 'rejected'
-    | 'failed'
-    | 'success'
-    | 'partiallyFilled'
-    | 'expired'
-    | 'active'
-    | 'filled'
+  status?: 'unknown' | 'inProgress' | 'cancelled' | 'rejected' | 'failed' | 'success' | 'partiallyFilled' | 'expired'
   /** Status text, as provided by the institution */
   statusDetails?: string | null
   /** Type of the placed order */
@@ -787,6 +805,8 @@ export interface B2BBrokerOrder {
     | 'deFiWallet'
     | 'krakenDirect'
     | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
   /** Type of the transaction */
   transactionType?:
     | 'order'
@@ -865,6 +885,8 @@ export interface B2BBrokerOrderListRequest {
     | 'deFiWallet'
     | 'krakenDirect'
     | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
   /**
    * The cursor to retrieve the next page of transactions.
    * Providing it will cause the response to only return changes after this update.
@@ -965,6 +987,8 @@ export interface B2BBrokerOrderRequest {
     | 'deFiWallet'
     | 'krakenDirect'
     | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
   /** @minLength 1 */
   id: string
   /** Should be provided for Coinbase. */
@@ -1080,6 +1104,8 @@ export interface B2BBrokerPortfolioModel {
     | 'deFiWallet'
     | 'krakenDirect'
     | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
   /** External institution's account id (returned by the institution) */
   accountId?: string | null
   /** Friendly name of the connected institution */
@@ -1140,6 +1166,8 @@ export interface B2BBrokerPreviewOrderResult {
     | 'deFiWallet'
     | 'krakenDirect'
     | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
   /** @format double */
   fee?: number | null
   feeText?: string | null
@@ -1240,6 +1268,8 @@ export interface B2BBrokerSymbolInfoForOrderRequest {
     | 'deFiWallet'
     | 'krakenDirect'
     | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -1353,6 +1383,8 @@ export interface B2BBrokerTradingFeatureInfo {
     | 'deFiWallet'
     | 'krakenDirect'
     | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
   /** Account Id of the integration. */
   accountId?: string | null
   /** Model, describing the ability to place cryptocurrency orders. */
@@ -1504,6 +1536,8 @@ export interface B2BBrokersHealthStatus {
     | 'deFiWallet'
     | 'krakenDirect'
     | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
   /** Is the communication with the integration up */
   isUp?: boolean
   /** Description of the outage */
@@ -1928,6 +1962,7 @@ export type BrokerAuthStatus =
   | 'deviceConfirmationRequired'
   | 'emailVerification'
   | 'emailReceived'
+  | 'captchaChallenge'
 
 export interface BrokerAuthenticationScheme {
   brokerType?:
@@ -1966,6 +2001,8 @@ export interface BrokerAuthenticationScheme {
     | 'deFiWallet'
     | 'krakenDirect'
     | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
   /** Type of authentication for the integration. */
   authenticationSchemeType?: 'usernamePassword' | 'oAuth' | 'apiKey' | 'blockchainAddress'
   /** Set of fields that should be provided in the initial POST `authenticate` request. */
@@ -2036,6 +2073,8 @@ export interface BrokerBaseRequest {
     | 'deFiWallet'
     | 'krakenDirect'
     | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
 }
 
 export interface BrokerBrandInfo {
@@ -2086,6 +2125,8 @@ export interface BrokerCreateCryptocurrencyTransactionRequest {
     | 'deFiWallet'
     | 'krakenDirect'
     | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
   /** Additional data to send on-chain (optional, depends on an integration) */
   data?: string | null
   /**
@@ -2123,6 +2164,19 @@ export interface BrokerCreateCryptocurrencyTransactionRequest {
   memo?: string | null
   /** Symbol to be transferred. Can be provided instead of the `AddressType` field. */
   symbol?: string | null
+  challengeId?: string | null
+}
+
+export interface BrokerCryptocurrencyChain {
+  /** Name of the chain, should be provided when initiating a transfer */
+  chain?: string | null
+  feeDescription?: string | null
+  /** Notes or tips provided by the integration */
+  notes?: string | null
+  /** @format double */
+  fee?: number | null
+  /** @format uuid */
+  networkId?: string | null
 }
 
 export interface BrokerCryptocurrencyDepositAddressRequest {
@@ -2168,6 +2222,8 @@ export interface BrokerCryptocurrencyDepositAddressRequest {
     | 'deFiWallet'
     | 'krakenDirect'
     | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
    * Can be used instead of the `AddressType` field.
@@ -2248,6 +2304,8 @@ export interface BrokerCryptocurrencyTransactionDetailsRequest {
     | 'deFiWallet'
     | 'krakenDirect'
     | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
   /** Type of the address of the transferred asset. Can be used instead of the `Symbol` field. */
   addressType?: CryptocurrencyAddressType | null
   /** Transaction Id by the financial institution */
@@ -2258,7 +2316,7 @@ export interface BrokerCryptocurrencyTransactionDetailsRequest {
   symbol?: string | null
 }
 
-export interface BrokerCryptocurrencyTransactionFee {
+export interface BrokerCryptocurrencyTransactionNetworkFee {
   /** @format double */
   gasPrice?: number | null
   /** @format double */
@@ -2285,6 +2343,8 @@ export type BrokerCryptocurrencyTransactionStatus =
   | 'rejected'
   | 'pendingCancel'
   | 'emailVerification'
+  | 'deviceConfirmationRequired'
+  | 'mfaFailed'
 
 export type BrokerCryptocurrencyTransactionType = 'unknown' | 'deposit' | 'withdrawal'
 
@@ -2371,8 +2431,6 @@ export type BrokerOrderStatus =
   | 'success'
   | 'partiallyFilled'
   | 'expired'
-  | 'active'
-  | 'filled'
 
 export type BrokerOrderTimeInForceType =
   | 'goodTillCanceled'
@@ -2423,6 +2481,8 @@ export interface BrokerRefreshTokenRequest {
     | 'deFiWallet'
     | 'krakenDirect'
     | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
   /** @minLength 1 */
   refreshToken: string
   /**
@@ -2445,7 +2505,7 @@ export interface BrokerRefreshTokenRequest {
 
 export type BrokerRequestStatus = 'succeeded' | 'failed' | 'notAuthorized'
 
-export type BrokerResponseStatus = 'unknown' | 'mfaRequired'
+export type BrokerResponseStatus = 'unknown' | 'mfaRequired' | 'kycRequired'
 
 export interface BrokerTransactionsListRequest {
   /**
@@ -2490,6 +2550,8 @@ export interface BrokerTransactionsListRequest {
     | 'deFiWallet'
     | 'krakenDirect'
     | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
   /**
    * Number of records to include in the response. <br />
    * Default: `100` <br />
@@ -2550,6 +2612,8 @@ export type BrokerType =
   | 'deFiWallet'
   | 'krakenDirect'
   | 'vanguard'
+  | 'binanceInternationalDirect'
+  | 'bitfinexDirect'
 
 export interface CatalogLink {
   /**
@@ -2628,6 +2692,8 @@ export interface ConfigureTransferRequest {
     | 'deFiWallet'
     | 'krakenDirect'
     | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
   /**
    * The authentication token of the target integration. Can be used alternatively to the list of requested address (`toAddresses`).
    * If used, `toType` should also be provided.
@@ -2663,7 +2729,15 @@ export interface ConfigureTransferRequest {
 
 export interface ConfigureTransferResponse {
   /** Status of the operation. */
-  status?: 'succeeded' | 'failed' | 'validationFailed' | 'notAuthorizedTo' | 'notAuthorizedFrom'
+  status?:
+    | 'succeeded'
+    | 'failed'
+    | 'validationFailed'
+    | 'notAuthorizedTo'
+    | 'notAuthorizedFrom'
+    | 'kycRequired'
+    | 'fromIntegrationNotSupported'
+    | 'toIntegrationNotSupported'
   /** Error message, if the operation did not complete successfully. */
   errorMessage?: string | null
   /** List of holdings on the source account. */
@@ -2764,6 +2838,9 @@ export type ConfigureTransferStatus =
   | 'validationFailed'
   | 'notAuthorizedTo'
   | 'notAuthorizedFrom'
+  | 'kycRequired'
+  | 'fromIntegrationNotSupported'
+  | 'toIntegrationNotSupported'
 
 export type CryptocurrencyAddressType =
   | 'ethAddress'
@@ -2845,6 +2922,8 @@ export interface ExecuteTransferRequest {
     | 'deFiWallet'
     | 'krakenDirect'
     | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
   /**
    * Id of the Preview of the transfer.
    * @format uuid
@@ -2856,7 +2935,13 @@ export interface ExecuteTransferRequest {
 
 export interface ExecuteTransferResponse {
   /** The status of the transfer. */
-  status?: 'succeeded' | 'failed' | 'mfaRequired' | 'emailConfirmationRequired'
+  status?:
+    | 'succeeded'
+    | 'failed'
+    | 'mfaRequired'
+    | 'emailConfirmationRequired'
+    | 'deviceConfirmationRequired'
+    | 'mfaFailed'
   /** Error message, if the operation did not complete successfully. */
   errorMessage?: string | null
   /** Result of the transfer initiation. */
@@ -2899,6 +2984,8 @@ export interface ExecuteTransferResultResponse {
     | 'rejected'
     | 'pendingCancel'
     | 'emailVerification'
+    | 'deviceConfirmationRequired'
+    | 'mfaFailed'
   /** Details of the current status of the transfer, as provided by the integration. */
   statusDetails?: string | null
   /** The address of the source account or wallet. */
@@ -2945,7 +3032,13 @@ export interface ExecuteTransferResultResponse {
   networkGasFee?: TransferFee | null
 }
 
-export type ExecuteTransferStatus = 'succeeded' | 'failed' | 'mfaRequired' | 'emailConfirmationRequired'
+export type ExecuteTransferStatus =
+  | 'succeeded'
+  | 'failed'
+  | 'mfaRequired'
+  | 'emailConfirmationRequired'
+  | 'deviceConfirmationRequired'
+  | 'mfaFailed'
 
 export type HoldingTransferIneligibilityReason =
   | 'noEligibleNetworks'
@@ -2975,12 +3068,79 @@ export interface InitializeTransfersForLinkRequest {
   toAddresses?: TransferToAddress[] | null
 }
 
+export interface IntegrationNetworkResponse {
+  integrations?: IntegrationNetworksModelResponse[] | null
+}
+
+export interface IntegrationNetworkResponseIApiResult {
+  readonly content?: IntegrationNetworkResponse | null
+  readonly status?:
+    | 'ok'
+    | 'serverFailure'
+    | 'permissionDenied'
+    | 'badRequest'
+    | 'notFound'
+    | 'conflict'
+    | 'tooManyRequest'
+    | 'locked'
+  readonly message?: string | null
+  readonly displayMessage?: string | null
+}
+
+export interface IntegrationNetworksModelResponse {
+  /** Type of the integration. */
+  type?:
+    | 'robinhood'
+    | 'eTrade'
+    | 'alpaca'
+    | 'tdAmeritrade'
+    | 'weBull'
+    | 'stash'
+    | 'interactiveBrokers'
+    | 'public'
+    | 'coinbase'
+    | 'kraken'
+    | 'coinbasePro'
+    | 'cryptoCom'
+    | 'openSea'
+    | 'binanceUs'
+    | 'gemini'
+    | 'cryptocurrencyAddress'
+    | 'cryptocurrencyWallet'
+    | 'okCoin'
+    | 'bittrex'
+    | 'kuCoin'
+    | 'etoro'
+    | 'cexIo'
+    | 'binanceInternational'
+    | 'bitstamp'
+    | 'gateIo'
+    | 'celsius'
+    | 'acorns'
+    | 'okx'
+    | 'bitFlyer'
+    | 'coinlist'
+    | 'huobi'
+    | 'bitfinex'
+    | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
+  /** The list of supported networks and corresponding tokens for the integration. */
+  networks?: NetworkResponse[] | null
+  /** Specifies if the integration supports outgoing transfers. */
+  supportsOutgoingTransfers?: boolean
+  /** Specifies if the integration supports incoming transfers. */
+  supportsIncomingTransfers?: boolean
+}
+
 export type MfaScheme = 'mfaCode' | 'challenge' | 'deviceConfirmation' | 'securityQuestion'
 
-export type MfaType = 'phone' | 'phoneAndEmail' | 'requireNextSecurityQuestion' | 'readEmail'
+export type MfaType = 'phone' | 'email' | 'totp' | 'phoneAndEmail' | 'requireNextSecurityQuestion' | 'readEmail'
 
 export interface NetworkModelResponse {
-  networks?: NetworkResponse[] | null
+  networks?: NetworkResponseWithIntegrations[] | null
 }
 
 export interface NetworkModelResponseIApiResult {
@@ -3010,6 +3170,20 @@ export interface NetworkResponse {
   chainId?: string | null
   /** The list of tokens that are currently supported to be transferred using the network. */
   supportedTokens?: string[] | null
+}
+
+export interface NetworkResponseWithIntegrations {
+  /**
+   * The Id of the network in Front system. Should be used to initiate transfers.
+   * @format uuid
+   */
+  id?: string
+  /** The name if the network. */
+  name?: string | null
+  /** The Inner id of the chain, used for reference. For example, Polygon's (MATIC) chain Id is 137. */
+  chainId?: string | null
+  /** The list of tokens that are currently supported to be transferred using the network. */
+  supportedTokens?: string[] | null
   /** The list of types of integrations that are currently supported to perform transfers over the network. */
   supportedBrokerTypes?: BrokerType[] | null
 }
@@ -3018,6 +3192,7 @@ export type NetworkTransferIneligibilityReason =
   | 'amountNotSufficient'
   | 'gasFeeAssetBalanceNotEnough'
   | 'noTargetNetworkFound'
+  | 'refusedByInstitution'
 
 export type NftBlockchain = 'ethereum' | 'polygon' | 'klaytn'
 
@@ -3141,6 +3316,8 @@ export interface PreviewTransferRequest {
     | 'deFiWallet'
     | 'krakenDirect'
     | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
   /**
    * The authentication token of the target integration. Can be used alternatively to the address in the `ToAddress` field.
    * If used, `toType` should also be provided.
@@ -3447,6 +3624,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      *
      * @tags Assets
      * @name V1AssetsDetail
+     * @summary Get available assets
      * @request GET:/api/v1/assets/{assetType}
      * @secure
      * @response `200` `AssetPaginationResponseIApiResult` Success
@@ -3478,6 +3656,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      *
      * @tags Assets
      * @name V1AssetsEquityPriceDetail
+     * @summary Get symbol price
      * @request GET:/api/v1/assets/equity/{symbol}/price
      * @secure
      * @response `200` `B2BPriceInfoIApiResult` Success
@@ -3635,7 +3814,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
       }),
 
     /**
-     * @description Refresh auth token of the connected institution. Some institutions do not require tokens to be refreshed. The following institutions require custom flows: WeBull: AuthToken should be provided along with the RefreshToken TdAmeritrade: refresh token should also be refreshed. CreateNewRefreshToken parameter should be set to true in order to refresh the refresh token for TdAmeritrade. Vanguard: security settings may activate MFA, requiring user action. If MFA is triggered, a second refresh request should be sent. Second request should contain MFA code and access token obtained from initial response.
+     * @description Refresh auth token of the connected institution. Some institutions do not require tokens to be refreshed. The following institutions require custom flows: WeBull: AuthToken should be provided along with the RefreshToken TdAmeritrade: refresh token should also be refreshed. CreateNewRefreshToken parameter should be set to true in order to refresh the refresh token for TdAmeritrade. Vanguard: security settings may activate MFA, requiring user action. If MFA is triggered, a second refresh request should be sent. Second request should contain MFA code and access token obtained from initial response. Bitfinex Direct: Expired Access Token is used as Refresh token. Use this endpoint to trade it for a new one
      *
      * @tags Managed Account Authentication
      * @name V1TokenRefreshCreate
@@ -3820,7 +3999,9 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         | 'bitfinex'
         | 'deFiWallet'
         | 'krakenDirect'
-        | 'vanguard',
+        | 'vanguard'
+        | 'binanceInternationalDirect'
+        | 'bitfinexDirect',
       query: {
         /** Id of the end-user */
         userId: string
@@ -3836,11 +4017,11 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         ...params
       })
   }
-  managedTransfersComingSoon = {
+  managedTransfers = {
     /**
      * @description **Get the list of all networks supported by the Front API to perform transfers.** <br /> --- Returns the list of all networks supported by the Front API and corresponding supported tokens. The IDs of networks should be used to configure and initiate transfers.
      *
-     * @tags Managed Transfers [coming soon]
+     * @tags Managed Transfers
      * @name V1TransfersManagedNetworksList
      * @summary Get networks
      * @request GET:/api/v1/transfers/managed/networks
@@ -3858,9 +4039,29 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
       }),
 
     /**
+     * @description **Get the list of all integrations supported by the Front API to perform managed transfers.** <br /> --- Returns the list of all integrations currently supported by the Front API and corresponding supported tokens and networks. The IDs of networks should be used to configure and initiate transfers.
+     *
+     * @tags Managed Transfers
+     * @name V1TransfersManagedIntegrationsList
+     * @summary Get integrations
+     * @request GET:/api/v1/transfers/managed/integrations
+     * @secure
+     * @response `200` `IntegrationNetworkResponseIApiResult` Success
+     * @response `401` `any` Unauthorized
+     */
+    v1TransfersManagedIntegrationsList: (params: RequestParams = {}) =>
+      this.request<IntegrationNetworkResponseIApiResult, any>({
+        path: `/api/v1/transfers/managed/integrations`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params
+      }),
+
+    /**
      * @description **Get the list of networks and tokens eligible for a transfer, based on the provided request data.** <br /> --- Transfers can be configured either from one connected account to another connected account, or from a connected account to any arbitrary address or addresses. <br /> * **From one connected account to another connected account:** <br /> The API client provides `FromAuthToken` that is representing the source account and `ToAuthToken` that is representing the target account. Front API maps networks and tokens supported by both accounts and returns all tokens and networks eligible for a transfer as the result. <br /> * **From a connected account to any arbitrary address:** <br /> The API client provides `FromAuthToken` that is representing the source account and the list of target addresses using the `ToAddresses` field. Front API verifies the addresses and returns the list of tokens, eligible to be transferred as the result of the operation. <br /><br /> Returns the list of holdings on the account that can be used to perform the transfer. Each holdings item contains the list of supported networks that can be used to transfer the corresponding asset. Each network contains details such as gas fees and the amount eligible to be transferred.
      *
-     * @tags Managed Transfers [coming soon]
+     * @tags Managed Transfers
      * @name V1TransfersManagedConfigureCreate
      * @summary Configure transfer
      * @request POST:/api/v1/transfers/managed/configure
@@ -3883,7 +4084,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
     /**
      * @description **Validate and preview the transfer.** <br /> --- Validates the transfer, calculates the relevant amount in crypto if requested amount was in fiat and updates the current network fee values. <br /> This endpoint uses the `NetworkId` field to specify which network will be used to perform the transfer. The target `NetworkId` should be selected after configuring the transfer using `/configure` endpoint. <br /><br /> Returns the `PreviewId` value that can be used to commit the transfer.
      *
-     * @tags Managed Transfers [coming soon]
+     * @tags Managed Transfers
      * @name V1TransfersManagedPreviewCreate
      * @summary Preview transfer
      * @request POST:/api/v1/transfers/managed/preview
@@ -3906,7 +4107,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
     /**
      * @description **Commit the previously previewed transfer.** <br /> --- Previews the transfer, using the `PreviewId` value. <br /> Handles multi-factor authentication codes if the account is configured to use them for additional security. <br /><br /> Returns the status of the transfer and the details of the transfer if it was initiated successfully.
      *
-     * @tags Managed Transfers [coming soon]
+     * @tags Managed Transfers
      * @name V1TransfersManagedExecuteCreate
      * @summary Execute transfer
      * @request POST:/api/v1/transfers/managed/execute
@@ -4390,13 +4591,13 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @summary Get details of asset
      * @request POST:/api/v1/transfers/symbol/details
      * @secure
-     * @response `200` `B2BBrokerCryptocurrencyDepositAddressResponseIApiResult` Address successfully obtained or generation initiated.
+     * @response `200` `B2BBrokerCryptocurrencySymbolDetailsResponseIApiResult` Address successfully obtained or generation initiated.
      * @response `400` `ApiResult` Request details are not correct.
      * @response `401` `any` Unauthorized: Client Id or Client Secret are not correct or missing.
      * @response `404` `ApiResult` Asset details for provided symbol are not found.
      */
     v1TransfersSymbolDetailsCreate: (data: BrokerCryptocurrencyDepositAddressRequest, params: RequestParams = {}) =>
-      this.request<B2BBrokerCryptocurrencyDepositAddressResponseIApiResult, ApiResult>({
+      this.request<B2BBrokerCryptocurrencySymbolDetailsResponseIApiResult, ApiResult>({
         path: `/api/v1/transfers/symbol/details`,
         method: 'POST',
         body: data,

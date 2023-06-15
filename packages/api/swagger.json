@@ -16,6 +16,7 @@
         "tags": [
           "Assets"
         ],
+        "summary": "Get available assets",
         "parameters": [
           {
             "name": "assetType",
@@ -65,16 +66,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -116,6 +107,7 @@
         "tags": [
           "Assets"
         ],
+        "summary": "Get symbol price",
         "parameters": [
           {
             "name": "symbol",
@@ -129,16 +121,6 @@
             "name": "X-Client-Id",
             "in": "header",
             "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
             "required": true,
             "style": "simple",
             "schema": {
@@ -192,16 +174,6 @@
             "name": "X-Client-Id",
             "in": "header",
             "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
             "required": true,
             "style": "simple",
             "schema": {
@@ -277,16 +249,6 @@
             "name": "X-Client-Id",
             "in": "header",
             "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
             "required": true,
             "style": "simple",
             "schema": {
@@ -368,16 +330,6 @@
             "name": "X-Client-Id",
             "in": "header",
             "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
             "required": true,
             "style": "simple",
             "schema": {
@@ -483,16 +435,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "requestBody": {
@@ -581,22 +523,12 @@
           "Managed Account Authentication"
         ],
         "summary": "Refresh auth token",
-        "description": "Refresh auth token of the connected institution.\r\nSome institutions do not require tokens to be refreshed.\r\n            \r\nThe following institutions require custom flows:\r\n            \r\nWeBull: AuthToken should be provided along with the RefreshToken\r\n            \r\nTdAmeritrade: refresh token should also be refreshed.\r\nCreateNewRefreshToken parameter should be set to true in order\r\nto refresh the refresh token for TdAmeritrade.\r\n            \r\nVanguard: security settings may activate MFA, requiring user action.\r\nIf MFA is triggered, a second refresh request should be sent.\r\nSecond request should contain MFA code and access token obtained from initial response.",
+        "description": "Refresh auth token of the connected institution.\r\nSome institutions do not require tokens to be refreshed.\r\n            \r\nThe following institutions require custom flows:\r\n            \r\nWeBull: AuthToken should be provided along with the RefreshToken\r\n            \r\nTdAmeritrade: refresh token should also be refreshed.\r\nCreateNewRefreshToken parameter should be set to true in order\r\nto refresh the refresh token for TdAmeritrade.\r\n            \r\nVanguard: security settings may activate MFA, requiring user action.\r\nIf MFA is triggered, a second refresh request should be sent.\r\nSecond request should contain MFA code and access token obtained from initial response.\r\n            \r\nBitfinex Direct: Expired Access Token is used as Refresh token. Use this endpoint to\r\ntrade it for a new one",
         "parameters": [
           {
             "name": "X-Client-Id",
             "in": "header",
             "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
             "required": true,
             "style": "simple",
             "schema": {
@@ -664,16 +596,6 @@
             "name": "X-Client-Id",
             "in": "header",
             "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
             "required": true,
             "style": "simple",
             "schema": {
@@ -766,16 +688,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -818,16 +730,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -865,16 +767,6 @@
             "name": "X-Client-Id",
             "in": "header",
             "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
             "required": true,
             "style": "simple",
             "schema": {
@@ -925,16 +817,6 @@
             "name": "X-Client-Id",
             "in": "header",
             "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
             "required": true,
             "style": "simple",
             "schema": {
@@ -1037,7 +919,9 @@
                 "bitfinex",
                 "deFiWallet",
                 "krakenDirect",
-                "vanguard"
+                "vanguard",
+                "binanceInternationalDirect",
+                "bitfinexDirect"
               ],
               "allOf": [
                 {
@@ -1059,16 +943,6 @@
             "name": "X-Client-Id",
             "in": "header",
             "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
             "required": true,
             "style": "simple",
             "schema": {
@@ -1104,7 +978,7 @@
     "/api/v1/transfers/managed/networks": {
       "get": {
         "tags": [
-          "Managed Transfers [coming soon]"
+          "Managed Transfers"
         ],
         "summary": "Get networks",
         "description": "**Get the list of all networks supported by the Front API to perform transfers.**\r\n<br /> \r\n---\r\nReturns the list of all networks supported by the Front API and corresponding supported tokens.\r\nThe IDs of networks should be used to configure and initiate transfers.",
@@ -1113,16 +987,6 @@
             "name": "X-Client-Id",
             "in": "header",
             "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
             "required": true,
             "style": "simple",
             "schema": {
@@ -1138,7 +1002,49 @@
                 "schema": {
                   "$ref": "#/components/schemas/NetworkModelResponseIApiResult"
                 },
-                "example": {"content":{"networks":[{"id":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","name":"Ethereum","chainId":"1","supportedTokens":["ETH","USDC","USDT"],"supportedBrokerTypes":["deFiWallet","robinhood","coinbase","kraken","binanceInternational","binanceUs"]}]},"status":"ok","message":""}
+                "example": {"content":{"networks":[{"supportedBrokerTypes":["deFiWallet","robinhood","coinbase","kraken","binanceInternational","binanceUs"],"id":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","name":"Ethereum","chainId":"1","supportedTokens":["ETH","USDC","USDT"]}]},"status":"ok","message":""}
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/transfers/managed/integrations": {
+      "get": {
+        "tags": [
+          "Managed Transfers"
+        ],
+        "summary": "Get integrations",
+        "description": "**Get the list of all integrations supported by the Front API to perform managed transfers.**\r\n<br /> \r\n---\r\nReturns the list of all integrations currently supported by the Front API and corresponding supported tokens and networks.\r\nThe IDs of networks should be used to configure and initiate transfers.",
+        "parameters": [
+          {
+            "name": "X-Client-Id",
+            "in": "header",
+            "description": "Id of the client",
+            "required": true,
+            "style": "simple",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationNetworkResponseIApiResult"
+                },
+                "example": {"content":{"integrations":[{"type":"robinhood","networks":[{"id":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","name":"Ethereum","chainId":"1","supportedTokens":["USDC","ETH"]},{"id":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","name":"Polygon","chainId":"137","supportedTokens":["MATIC","ETH"]}],"supportsOutgoingTransfers":true,"supportsIncomingTransfers":true}]},"status":"ok","message":""}
               }
             }
           },
@@ -1156,7 +1062,7 @@
     "/api/v1/transfers/managed/configure": {
       "post": {
         "tags": [
-          "Managed Transfers [coming soon]"
+          "Managed Transfers"
         ],
         "summary": "Configure transfer",
         "description": "**Get the list of networks and tokens eligible for a transfer, based on the provided request data.**\r\n<br />\r\n---\r\nTransfers can be configured either from one connected account to another connected account, or\r\nfrom a connected account to any arbitrary address or addresses.\r\n<br />\r\n* **From one connected account to another connected account:**\r\n<br />\r\nThe API client provides `FromAuthToken` that is representing the source account and `ToAuthToken` that is representing the target account. Front API maps networks and tokens supported by both accounts and returns all tokens and networks eligible for a transfer as the result.\r\n<br />\r\n* **From a connected account to any arbitrary address:**\r\n<br />\r\nThe API client provides `FromAuthToken` that is representing the source account and the list of target addresses using the `ToAddresses` field. Front API verifies the addresses and returns the list of tokens, eligible to be transferred as the result of the operation.\r\n<br /><br />\r\nReturns the list of holdings on the account that can be used to perform the transfer. Each holdings item\r\ncontains the list of supported networks that can be used to transfer the corresponding asset.\r\nEach network contains details such as gas fees and the amount eligible to be transferred.",
@@ -1165,16 +1071,6 @@
             "name": "X-Client-Id",
             "in": "header",
             "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
             "required": true,
             "style": "simple",
             "schema": {
@@ -1302,7 +1198,7 @@
     "/api/v1/transfers/managed/preview": {
       "post": {
         "tags": [
-          "Managed Transfers [coming soon]"
+          "Managed Transfers"
         ],
         "summary": "Preview transfer",
         "description": "**Validate and preview the transfer.**\r\n<br />\r\n---\r\nValidates the transfer, calculates the relevant amount in crypto if requested amount was in fiat and updates\r\nthe current network fee values. \r\n<br />\r\nThis endpoint uses the `NetworkId` field to specify which network will be used to perform the transfer. The target `NetworkId`\r\nshould be selected after configuring the transfer using `/configure` endpoint.\r\n<br /><br />\r\nReturns the `PreviewId` value that can be used to commit the transfer.",
@@ -1311,16 +1207,6 @@
             "name": "X-Client-Id",
             "in": "header",
             "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
             "required": true,
             "style": "simple",
             "schema": {
@@ -1436,7 +1322,7 @@
     "/api/v1/transfers/managed/execute": {
       "post": {
         "tags": [
-          "Managed Transfers [coming soon]"
+          "Managed Transfers"
         ],
         "summary": "Execute transfer",
         "description": "**Commit the previously previewed transfer.**\r\n<br />\r\n---\r\nPreviews the transfer, using the `PreviewId` value.\r\n<br />\r\nHandles multi-factor authentication codes if the account is configured to use them for additional security.\r\n<br /><br />\r\nReturns the status of the transfer and the details of the transfer if it was initiated successfully.",
@@ -1445,16 +1331,6 @@
             "name": "X-Client-Id",
             "in": "header",
             "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
             "required": true,
             "style": "simple",
             "schema": {
@@ -1651,16 +1527,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -1790,16 +1656,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -1848,16 +1704,6 @@
             "name": "X-Client-Id",
             "in": "header",
             "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
             "required": true,
             "style": "simple",
             "schema": {
@@ -1938,16 +1784,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -2018,16 +1854,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "responses": {
@@ -2076,16 +1902,6 @@
             "name": "X-Client-Id",
             "in": "header",
             "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
             "required": true,
             "style": "simple",
             "schema": {
@@ -2142,16 +1958,6 @@
             "name": "X-Client-Id",
             "in": "header",
             "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
             "required": true,
             "style": "simple",
             "schema": {
@@ -2228,16 +2034,6 @@
             "name": "X-Client-Id",
             "in": "header",
             "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
             "required": true,
             "style": "simple",
             "schema": {
@@ -2321,16 +2117,6 @@
             "name": "X-Client-Id",
             "in": "header",
             "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
             "required": true,
             "style": "simple",
             "schema": {
@@ -2429,16 +2215,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "requestBody": {
@@ -2510,16 +2286,6 @@
             "name": "X-Client-Id",
             "in": "header",
             "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
             "required": true,
             "style": "simple",
             "schema": {
@@ -2600,16 +2366,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "requestBody": {
@@ -2671,16 +2427,6 @@
             "name": "X-Client-Id",
             "in": "header",
             "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
             "required": true,
             "style": "simple",
             "schema": {
@@ -2748,16 +2494,6 @@
             "name": "X-Client-Id",
             "in": "header",
             "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
             "required": true,
             "style": "simple",
             "schema": {
@@ -2841,16 +2577,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "requestBody": {
@@ -2920,16 +2646,6 @@
             "name": "X-Client-Id",
             "in": "header",
             "description": "Id of the client",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
             "required": true,
             "style": "simple",
             "schema": {
@@ -3013,16 +2729,6 @@
             "schema": {
               "type": "string"
             }
-          },
-          {
-            "name": "X-Client-Secret",
-            "in": "header",
-            "description": "Client secret, should be stored safely and never shared",
-            "required": true,
-            "style": "simple",
-            "schema": {
-              "type": "string"
-            }
           }
         ],
         "requestBody": {
@@ -3045,7 +2751,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/B2BBrokerCryptocurrencyDepositAddressResponseIApiResult"
+                  "$ref": "#/components/schemas/B2BBrokerCryptocurrencySymbolDetailsResponseIApiResult"
                 },
                 "example": {"content":{"symbol":"ETH","addressTypes":["ethAddress"],"chains":[{"chain":"Ethereum","fee":0.00001}]},"status":"ok","message":""}
               }
@@ -3509,7 +3215,9 @@
               "bitfinex",
               "deFiWallet",
               "krakenDirect",
-              "vanguard"
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect"
             ],
             "allOf": [
               {
@@ -3549,6 +3257,8 @@
           "mfaType": {
             "enum": [
               "phone",
+              "email",
+              "totp",
               "phoneAndEmail",
               "requireNextSecurityQuestion",
               "readEmail"
@@ -3600,7 +3310,8 @@
               "delayed",
               "deviceConfirmationRequired",
               "emailVerification",
-              "emailReceived"
+              "emailReceived",
+              "captchaChallenge"
             ],
             "allOf": [
               {
@@ -3608,6 +3319,14 @@
               }
             ],
             "description": "Status of the request"
+          },
+          "mfaType": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MfaType"
+              }
+            ],
+            "nullable": true
           },
           "challengeId": {
             "type": "string",
@@ -3763,7 +3482,9 @@
               "awaitingVerification",
               "rejected",
               "pendingCancel",
-              "emailVerification"
+              "emailVerification",
+              "deviceConfirmationRequired",
+              "mfaFailed"
             ],
             "allOf": [
               {
@@ -3888,7 +3609,9 @@
               "bitfinex",
               "deFiWallet",
               "krakenDirect",
-              "vanguard"
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect"
             ],
             "allOf": [
               {
@@ -4035,7 +3758,9 @@
               "bitfinex",
               "deFiWallet",
               "krakenDirect",
-              "vanguard"
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect"
             ],
             "allOf": [
               {
@@ -4094,9 +3819,7 @@
               "failed",
               "success",
               "partiallyFilled",
-              "expired",
-              "active",
-              "filled"
+              "expired"
             ],
             "allOf": [
               {
@@ -4216,6 +3939,11 @@
             "type": "string",
             "nullable": true
           },
+          "networkId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
+          },
           "brokerResponseStatus": {
             "allOf": [
               {
@@ -4238,6 +3966,76 @@
             "allOf": [
               {
                 "$ref": "#/components/schemas/B2BBrokerCryptocurrencyDepositAddressResponse"
+              }
+            ],
+            "nullable": true,
+            "readOnly": true
+          },
+          "status": {
+            "enum": [
+              "ok",
+              "serverFailure",
+              "permissionDenied",
+              "badRequest",
+              "notFound",
+              "conflict",
+              "tooManyRequest",
+              "locked"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiResultStatus"
+              }
+            ],
+            "readOnly": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "displayMessage": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "B2BBrokerCryptocurrencySymbolDetailsResponse": {
+        "type": "object",
+        "properties": {
+          "symbol": {
+            "type": "string",
+            "description": "Requested symbol",
+            "nullable": true
+          },
+          "addressTypes": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/CryptocurrencyAddressType"
+            },
+            "description": "Supported address types",
+            "nullable": true
+          },
+          "chains": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BrokerCryptocurrencyChain"
+            },
+            "description": "Supported chains. One of the values should be provided to execute transfers",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "B2BBrokerCryptocurrencySymbolDetailsResponseIApiResult": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/B2BBrokerCryptocurrencySymbolDetailsResponse"
               }
             ],
             "nullable": true,
@@ -4299,7 +4097,9 @@
               "awaitingVerification",
               "rejected",
               "pendingCancel",
-              "emailVerification"
+              "emailVerification",
+              "deviceConfirmationRequired",
+              "mfaFailed"
             ],
             "allOf": [
               {
@@ -4380,7 +4180,7 @@
           "networkTransactionFee": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/BrokerCryptocurrencyTransactionFee"
+                "$ref": "#/components/schemas/BrokerCryptocurrencyTransactionNetworkFee"
               }
             ],
             "description": "Fee taken by the network",
@@ -4668,9 +4468,7 @@
               "failed",
               "success",
               "partiallyFilled",
-              "expired",
-              "active",
-              "filled"
+              "expired"
             ],
             "allOf": [
               {
@@ -4738,7 +4536,9 @@
               "bitfinex",
               "deFiWallet",
               "krakenDirect",
-              "vanguard"
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect"
             ],
             "allOf": [
               {
@@ -4877,7 +4677,9 @@
               "bitfinex",
               "deFiWallet",
               "krakenDirect",
-              "vanguard"
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect"
             ],
             "allOf": [
               {
@@ -5042,7 +4844,9 @@
               "bitfinex",
               "deFiWallet",
               "krakenDirect",
-              "vanguard"
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect"
             ],
             "allOf": [
               {
@@ -5308,7 +5112,9 @@
               "bitfinex",
               "deFiWallet",
               "krakenDirect",
-              "vanguard"
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect"
             ],
             "allOf": [
               {
@@ -5417,7 +5223,9 @@
               "bitfinex",
               "deFiWallet",
               "krakenDirect",
-              "vanguard"
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect"
             ],
             "allOf": [
               {
@@ -5673,7 +5481,9 @@
               "bitfinex",
               "deFiWallet",
               "krakenDirect",
-              "vanguard"
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect"
             ],
             "allOf": [
               {
@@ -5886,7 +5696,9 @@
               "bitfinex",
               "deFiWallet",
               "krakenDirect",
-              "vanguard"
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect"
             ],
             "allOf": [
               {
@@ -6174,7 +5986,9 @@
               "bitfinex",
               "deFiWallet",
               "krakenDirect",
-              "vanguard"
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect"
             ],
             "allOf": [
               {
@@ -7072,7 +6886,8 @@
           "delayed",
           "deviceConfirmationRequired",
           "emailVerification",
-          "emailReceived"
+          "emailReceived",
+          "captchaChallenge"
         ],
         "type": "string"
       },
@@ -7115,7 +6930,9 @@
               "bitfinex",
               "deFiWallet",
               "krakenDirect",
-              "vanguard"
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect"
             ],
             "allOf": [
               {
@@ -7260,7 +7077,9 @@
               "bitfinex",
               "deFiWallet",
               "krakenDirect",
-              "vanguard"
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect"
             ],
             "allOf": [
               {
@@ -7335,7 +7154,9 @@
               "bitfinex",
               "deFiWallet",
               "krakenDirect",
-              "vanguard"
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect"
             ],
             "allOf": [
               {
@@ -7397,6 +7218,40 @@
             "type": "string",
             "description": "Symbol to be transferred. Can be provided instead of the `AddressType` field.",
             "nullable": true
+          },
+          "challengeId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BrokerCryptocurrencyChain": {
+        "type": "object",
+        "properties": {
+          "chain": {
+            "type": "string",
+            "description": "Name of the chain, should be provided when initiating a transfer",
+            "nullable": true
+          },
+          "feeDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "notes": {
+            "type": "string",
+            "description": "Notes or tips provided by the integration",
+            "nullable": true
+          },
+          "fee": {
+            "type": "number",
+            "format": "double",
+            "nullable": true
+          },
+          "networkId": {
+            "type": "string",
+            "format": "uuid",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -7449,7 +7304,9 @@
               "bitfinex",
               "deFiWallet",
               "krakenDirect",
-              "vanguard"
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect"
             ],
             "allOf": [
               {
@@ -7557,7 +7414,9 @@
               "bitfinex",
               "deFiWallet",
               "krakenDirect",
-              "vanguard"
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect"
             ],
             "allOf": [
               {
@@ -7593,7 +7452,7 @@
         },
         "additionalProperties": false
       },
-      "BrokerCryptocurrencyTransactionFee": {
+      "BrokerCryptocurrencyTransactionNetworkFee": {
         "type": "object",
         "properties": {
           "gasPrice": {
@@ -7635,7 +7494,9 @@
           "awaitingVerification",
           "rejected",
           "pendingCancel",
-          "emailVerification"
+          "emailVerification",
+          "deviceConfirmationRequired",
+          "mfaFailed"
         ],
         "type": "string"
       },
@@ -7803,9 +7664,7 @@
           "failed",
           "success",
           "partiallyFilled",
-          "expired",
-          "active",
-          "filled"
+          "expired"
         ],
         "type": "string"
       },
@@ -7878,7 +7737,9 @@
               "bitfinex",
               "deFiWallet",
               "krakenDirect",
-              "vanguard"
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect"
             ],
             "allOf": [
               {
@@ -7933,7 +7794,8 @@
       "BrokerResponseStatus": {
         "enum": [
           "unknown",
-          "mfaRequired"
+          "mfaRequired",
+          "kycRequired"
         ],
         "type": "string"
       },
@@ -7985,7 +7847,9 @@
               "bitfinex",
               "deFiWallet",
               "krakenDirect",
-              "vanguard"
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect"
             ],
             "allOf": [
               {
@@ -8066,7 +7930,9 @@
           "bitfinex",
           "deFiWallet",
           "krakenDirect",
-          "vanguard"
+          "vanguard",
+          "binanceInternationalDirect",
+          "bitfinexDirect"
         ],
         "type": "string"
       },
@@ -8193,7 +8059,9 @@
               "bitfinex",
               "deFiWallet",
               "krakenDirect",
-              "vanguard"
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect"
             ],
             "allOf": [
               {
@@ -8264,7 +8132,10 @@
               "failed",
               "validationFailed",
               "notAuthorizedTo",
-              "notAuthorizedFrom"
+              "notAuthorizedFrom",
+              "kycRequired",
+              "fromIntegrationNotSupported",
+              "toIntegrationNotSupported"
             ],
             "allOf": [
               {
@@ -8462,7 +8333,10 @@
           "failed",
           "validationFailed",
           "notAuthorizedTo",
-          "notAuthorizedFrom"
+          "notAuthorizedFrom",
+          "kycRequired",
+          "fromIntegrationNotSupported",
+          "toIntegrationNotSupported"
         ],
         "type": "string"
       },
@@ -8590,7 +8464,9 @@
               "bitfinex",
               "deFiWallet",
               "krakenDirect",
-              "vanguard"
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect"
             ],
             "allOf": [
               {
@@ -8620,7 +8496,9 @@
               "succeeded",
               "failed",
               "mfaRequired",
-              "emailConfirmationRequired"
+              "emailConfirmationRequired",
+              "deviceConfirmationRequired",
+              "mfaFailed"
             ],
             "allOf": [
               {
@@ -8714,7 +8592,9 @@
               "awaitingVerification",
               "rejected",
               "pendingCancel",
-              "emailVerification"
+              "emailVerification",
+              "deviceConfirmationRequired",
+              "mfaFailed"
             ],
             "allOf": [
               {
@@ -8805,7 +8685,9 @@
           "succeeded",
           "failed",
           "mfaRequired",
-          "emailConfirmationRequired"
+          "emailConfirmationRequired",
+          "deviceConfirmationRequired",
+          "mfaFailed"
         ],
         "type": "string"
       },
@@ -8866,6 +8748,131 @@
         },
         "additionalProperties": false
       },
+      "IntegrationNetworkResponse": {
+        "type": "object",
+        "properties": {
+          "integrations": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IntegrationNetworksModelResponse"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "IntegrationNetworkResponseIApiResult": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/IntegrationNetworkResponse"
+              }
+            ],
+            "nullable": true,
+            "readOnly": true
+          },
+          "status": {
+            "enum": [
+              "ok",
+              "serverFailure",
+              "permissionDenied",
+              "badRequest",
+              "notFound",
+              "conflict",
+              "tooManyRequest",
+              "locked"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiResultStatus"
+              }
+            ],
+            "readOnly": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "displayMessage": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "IntegrationNetworksModelResponse": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "enum": [
+              "robinhood",
+              "eTrade",
+              "alpaca",
+              "tdAmeritrade",
+              "weBull",
+              "stash",
+              "interactiveBrokers",
+              "public",
+              "coinbase",
+              "kraken",
+              "coinbasePro",
+              "cryptoCom",
+              "openSea",
+              "binanceUs",
+              "gemini",
+              "cryptocurrencyAddress",
+              "cryptocurrencyWallet",
+              "okCoin",
+              "bittrex",
+              "kuCoin",
+              "etoro",
+              "cexIo",
+              "binanceInternational",
+              "bitstamp",
+              "gateIo",
+              "celsius",
+              "acorns",
+              "okx",
+              "bitFlyer",
+              "coinlist",
+              "huobi",
+              "bitfinex",
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerType"
+              }
+            ],
+            "description": "Type of the integration."
+          },
+          "networks": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/NetworkResponse"
+            },
+            "description": "The list of supported networks and corresponding tokens for the integration.",
+            "nullable": true
+          },
+          "supportsOutgoingTransfers": {
+            "type": "boolean",
+            "description": "Specifies if the integration supports outgoing transfers."
+          },
+          "supportsIncomingTransfers": {
+            "type": "boolean",
+            "description": "Specifies if the integration supports incoming transfers."
+          }
+        },
+        "additionalProperties": false
+      },
       "MfaScheme": {
         "enum": [
           "mfaCode",
@@ -8878,6 +8885,8 @@
       "MfaType": {
         "enum": [
           "phone",
+          "email",
+          "totp",
           "phoneAndEmail",
           "requireNextSecurityQuestion",
           "readEmail"
@@ -8890,7 +8899,7 @@
           "networks": {
             "type": "array",
             "items": {
-              "$ref": "#/components/schemas/NetworkResponse"
+              "$ref": "#/components/schemas/NetworkResponseWithIntegrations"
             },
             "nullable": true
           }
@@ -8965,6 +8974,35 @@
             },
             "description": "The list of tokens that are currently supported to be transferred using the network.",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "NetworkResponseWithIntegrations": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "The Id of the network in Front system. Should be used to initiate transfers.",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "description": "The name if the network.",
+            "nullable": true
+          },
+          "chainId": {
+            "type": "string",
+            "description": "The Inner id of the chain, used for reference. For example, Polygon's (MATIC) chain Id is 137.",
+            "nullable": true
+          },
+          "supportedTokens": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The list of tokens that are currently supported to be transferred using the network.",
+            "nullable": true
           },
           "supportedBrokerTypes": {
             "type": "array",
@@ -8981,7 +9019,8 @@
         "enum": [
           "amountNotSufficient",
           "gasFeeAssetBalanceNotEnough",
-          "noTargetNetworkFound"
+          "noTargetNetworkFound",
+          "refusedByInstitution"
         ],
         "type": "string"
       },
@@ -9259,7 +9298,9 @@
               "bitfinex",
               "deFiWallet",
               "krakenDirect",
-              "vanguard"
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect"
             ],
             "allOf": [
               {
@@ -9566,8 +9607,8 @@
     "securitySchemes": {
       "API-keys": {
         "type": "apiKey",
-        "description": "Contact Front to get client Id and client Secret",
-        "name": "X-Client-Id and X-Client-Secret headers",
+        "description": "Contact Front to get client Secret",
+        "name": "X-Client-Secret",
         "in": "header"
       }
     }
@@ -9588,19 +9629,19 @@
     },
     {
       "name": "Portfolio",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```CryptocurrencyAddress```\n```CryptocurrencyWallet```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```DeFiWallet```\n```KrakenDirect```\n```Vanguard```\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```DeFiWallet```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n"
     },
     {
       "name": "Balance",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n"
     },
     {
       "name": "Transactions",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n\n\n### Integration-specific notes:\n\n\n#### TdAmeritrade:\n\n\nBecause of limitations of TD Ameritrade API, it is not guaranteed that details of a new order\n\nwill be returned upon executing it.\n\n\n#### Binance:\n\n\nBecause of limitations of Binance API, initial loading of transaction history in Binance can take long time\n\ndepending on the size of the portfolio.\n\n\n#### OkCoin:\n\n\nGetting transactions history from OkCoin is not currently supported.\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n\n\n### Integration-specific notes:\n\n\n#### TdAmeritrade:\n\n\nBecause of limitations of TD Ameritrade API, it is not guaranteed that details of a new order\n\nwill be returned upon executing it.\n\n\n#### Binance:\n\n\nBecause of limitations of Binance API, initial loading of transaction history in Binance can take long time\n\ndepending on the size of the portfolio.\n\n\n#### OkCoin:\n\n\nGetting transactions history from OkCoin is not currently supported.\n"
     },
     {
       "name": "Transfers",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```CryptocurrencyAddress```\n```CryptocurrencyWallet```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n\n\n### Integration-specific notes:\n\n\n#### Robinhood:\n\n\nCryptocurrency transfers should be enabled in Robinhood settings. Transfers are disabled by default, enabling them for end users requires a review from Robinhood.\n\nPlease note:\n * `MfaCode` parameter is required to initiate a transaction in Robinhood.\n * The user's security settings should be configured to use an authenticator application.\n * Robinhood doesn't allow initiation of transactions if the authenticator application is not configured.\n\n\n#### Coinbase:\n\n\n`MfaCode` parameter should be used to initiate transactions in Coinbase.\n * If the end user's Coinbase account is configured to use text messages (SMS) for two factor authentication, the API will return `MfaRequired` status, and a text code will then be sent by Coinbase. The code is expected to be provided in the subsequent call using the `MfaCode` request field\n * If the account is configured to use an authenticator application, the API is expecting to get the code in the `MfaCode` request field.\n\n\n#### Kraken:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n\n\n#### CoinbasePro:\n * CoinbasePro does not provide multiple chains per a symbol, so default chains are used for getting Deposit addresses.\n\n\n#### Binance:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance Us.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### KuCoin:\n\n\nKuCoin requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n\n`Fee` parameter should be used to initiate a transaction in KuCoin.\n\nPlease note:\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * All currencies have their minimum `fee` and `amount` requirements. Please use `symbol/details` endpoint to get this data for a particular symbol.\n * KuCoin requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### BinanceInternational:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance International.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### GateIo:\n\n\nGate.io requires adding IP address to the list of trusted IP addresses to be able to initiate a cryptocurrency transfers.\n\nWithdrawal address should be already verified or added on the Gate.io UI (in mobile application or on the web site).\n * Please reach out to Front to get the static IP address for withdrawals. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * Only verified withdrawal blockchain addresses are allowed for withdrawal with Gate.io API.\n * Gate.io requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### Huobi:\n\n\nWarning: Huobi does not refund executed deposits that are below the `Minimum Deposit Amount`\n * Please check the MinimumDepositAmount in Get Deposit Address response in order to avoid making a deposit below the minimum amount\n * Huobi does not allow withdrawals to addresses that are not white-listed, please add the address that you would like to withdraw to the white list of addresses through the UI so that a withrawal can be processed\n\n\n#### Bitfinex:\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\n\n\n#### KrakenDirect:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```DeFiWallet```\n```KrakenDirect```\n```BinanceInternationalDirect```\n\n\n### Integration-specific notes:\n\n\n#### Robinhood:\n\n\nCryptocurrency transfers should be enabled in Robinhood settings. Transfers are disabled by default, enabling them for end users requires a review from Robinhood.\n\nPlease note:\n * `MfaCode` parameter is required to initiate a transaction in Robinhood.\n * The user's security settings should be configured to use an authenticator application.\n * Robinhood doesn't allow initiation of transactions if the authenticator application is not configured.\n\n\n#### Coinbase:\n\n\n`MfaCode` parameter should be used to initiate transactions in Coinbase.\n * If the end user's Coinbase account is configured to use text messages (SMS) for two factor authentication, the API will return `MfaRequired` status, and a text code will then be sent by Coinbase. The code is expected to be provided in the subsequent call using the `MfaCode` request field\n * If the account is configured to use an authenticator application, the API is expecting to get the code in the `MfaCode` request field.\n\n\n#### Kraken:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n\n\n#### CoinbasePro:\n * CoinbasePro does not provide multiple chains per a symbol, so default chains are used for getting Deposit addresses.\n\n\n#### Binance:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance Us.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### KuCoin:\n\n\nKuCoin requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n\n`Fee` parameter should be used to initiate a transaction in KuCoin.\n\nPlease note:\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * All currencies have their minimum `fee` and `amount` requirements. Please use `symbol/details` endpoint to get this data for a particular symbol.\n * KuCoin requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### BinanceInternational:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance International.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### GateIo:\n\n\nGate.io requires adding IP address to the list of trusted IP addresses to be able to initiate a cryptocurrency transfers.\n\nWithdrawal address should be already verified or added on the Gate.io UI (in mobile application or on the web site).\n * Please reach out to Front to get the static IP address for withdrawals. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * Only verified withdrawal blockchain addresses are allowed for withdrawal with Gate.io API.\n * Gate.io requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### Huobi:\n\n\nWarning: Huobi does not refund executed deposits that are below the `Minimum Deposit Amount`\n * Please check the MinimumDepositAmount in Get Deposit Address response in order to avoid making a deposit below the minimum amount\n * Huobi does not allow withdrawals to addresses that are not white-listed, please add the address that you would like to withdraw to the white list of addresses through the UI so that a withrawal can be processed\n\n\n#### Bitfinex:\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\n\n\n#### KrakenDirect:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n"
     },
     {
       "name": "News"
@@ -9609,7 +9650,7 @@
       "name": "Assets"
     },
     {
-      "name": "Managed Transfers [coming soon]"
+      "name": "Managed Transfers"
     }
   ]
 }
