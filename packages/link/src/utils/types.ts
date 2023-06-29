@@ -10,7 +10,6 @@ export type EventType =
   | 'transferFinished'
 
 export interface FrontConnection {
-  openLink: (authLink: string) => Promise<void>
   openPopup: (iframeLink: string) => Promise<void>
   closePopup: () => void
 }

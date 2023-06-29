@@ -1,12 +1,3 @@
-import {
-  AccessTokenPayload,
-  DelayedAuthPayload,
-  EventType,
-  FrontOptions,
-  FrontPayload,
-  TransferFinishedPayload
-} from './types'
-
 const popupId = 'front-link-popup'
 const backdropId = 'front-link-popup__backdrop'
 const popupContentId = 'front-link-popup__popup-content'
@@ -99,63 +90,6 @@ const styles = `
 </style>
 `
 
-let currentOptions: FrontOptions | undefined
-
-function eventsListener(
-  event: MessageEvent<{
-    type: EventType
-    payload?: AccessTokenPayload | DelayedAuthPayload | TransferFinishedPayload
-    message?: string
-    link?: string
-  }>
-) {
-  switch (event.data.type) {
-    case 'brokerageAccountAccessToken': {
-      const payload: FrontPayload = {
-        accessToken: event.data.payload as AccessTokenPayload
-      }
-      currentOptions?.onBrokerConnected?.(payload)
-      break
-    }
-    case 'delayedAuthentication': {
-      const payload: FrontPayload = {
-        delayedAuth: event.data.payload as DelayedAuthPayload
-      }
-      currentOptions?.onBrokerConnected?.(payload)
-      break
-    }
-    case 'transferFinished': {
-      const payload = event.data.payload as TransferFinishedPayload
-
-      currentOptions?.onTransferFinished?.(payload)
-      break
-    }
-    case 'close':
-    case 'done': {
-      currentOptions?.onExit?.(event.data.message)
-      removePopup()
-      break
-    }
-    case 'oauthLinkOpen': {
-      if (event.data.link) {
-        const w = 700
-        const h = 800
-        const left = screen.width / 2 - w / 2
-        const top = screen.height / 2 - h / 2
-        window
-          .open(
-            event.data.link,
-            '_blank',
-            `popup,noopener,noreferrer,resizable,scrollbars,width=${w},height=${h},top=${top},left=${left}`
-          )
-          ?.focus()
-      }
-
-      break
-    }
-  }
-}
-
 export function removePopup(): void {
   const existingPopup = window.document.getElementById(popupId)
   if (existingPopup) {
@@ -170,18 +104,14 @@ export function removePopup(): void {
       existingStyles
     )
   }
-
-  window.removeEventListener('message', eventsListener)
 }
 
-export function addPopup(iframeLink: string, options: FrontOptions): void {
+export function addPopup(iframeLink: string): void {
   removePopup()
-  currentOptions = options
+
   const popup = getPopupHtml(iframeLink)
   window.document.head.appendChild(htmlToElement(styles))
   window.document.body.appendChild(htmlToElement(popup))
-
-  window.addEventListener('message', eventsListener)
 }
 
 function htmlToElement(html: string): Node {

@@ -31,7 +31,7 @@ Connection link should be obtained from the GET `/api/v1/cataloglink` endpoint. 
 }
 ```
 
-You can use `iFrameUrl` from this response to open the popup window with `openPopup` method. `url` field is used to open link in the same tab by `openLink` method.
+You can use `iFrameUrl` from this response to open the popup window with `openPopup` method.
 
 ### Generating connection method
 
@@ -111,11 +111,10 @@ After successfull authentication on Front Finance user will be redirected back t
 
 #### `createFrontConnection` return value
 
-| key          | type                                   | description            |
-| ------------ | -------------------------------------- | ---------------------- |
-| `openLink`   | `(link: string) => Promise<void>`      | Opens url in same tab. |
-| `openPopup`  | `(iframeUrl: string) => Promise<void>` | Opens url in popup     |
-| `closePopup` | `() => Promise<void>`                  | Closes popup window    |
+| key          | type                                   | description         |
+| ------------ | -------------------------------------- | ------------------- |
+| `openPopup`  | `(iframeUrl: string) => Promise<void>` | Opens url in popup  |
+| `closePopup` | `() => Promise<void>`                  | Closes popup window |
 
 ### Using tokens
 

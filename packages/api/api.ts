@@ -75,6 +75,8 @@ export interface AssetWeight {
   isCrypto?: boolean | null
 }
 
+export type AuthFlowStep = 'loginPassword' | 'mfaFlow'
+
 export interface AuthenticationFieldDescription {
   /** Name of the field, as expected from the API */
   name?: string | null
@@ -193,15 +195,19 @@ export interface B2BBrokerAuthRequest {
     | 'vanguard'
     | 'binanceInternationalDirect'
     | 'bitfinexDirect'
+    | 'bybit'
+  phone?: string | null
   username?: string | null
   password?: string | null
   tradePin?: string | null
+  countryInfo?: CountryInfo | null
   challengeId?: string | null
   challengeCode?: string | null
   /** Used to provide answers to security questions */
   challengeAnswer?: string | null
   mfaCode?: string | null
   mfaType?: 'phone' | 'email' | 'totp' | 'phoneAndEmail' | 'requireNextSecurityQuestion' | 'readEmail'
+  authFlowStep?: AuthFlowStep | null
   key?: string | null
   authToken?: string | null
   redirectLink?: string | null
@@ -224,6 +230,8 @@ export interface B2BBrokerAuthResponse {
     | 'emailReceived'
     | 'captchaChallenge'
   mfaType?: MfaType | null
+  /** The AuthFlowStep is used to determine which state the authentication is in, for initial requests without MFA verification the value should be LoginPassword and when calling with MFA code it should be MfaFlow (currently used for BinanceInternationalDirect only). */
+  authFlowStep?: AuthFlowStep | null
   /** Id of the challenge, relevant when the status is `ChallengeIssued` */
   challengeId?: string | null
   challengeText?: string | null
@@ -268,6 +276,7 @@ export interface B2BBrokerCreateCryptocurrencyTransactionResponse {
   /** Transaction Id by the financial institution */
   transactionId?: string | null
   failed?: boolean
+  mfaType?: MfaType | null
   /** Status of the operation */
   status?:
     | 'unknown'
@@ -354,6 +363,7 @@ export interface B2BBrokerCreateOrderRequest {
     | 'vanguard'
     | 'binanceInternationalDirect'
     | 'bitfinexDirect'
+    | 'bybit'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -457,6 +467,7 @@ export interface B2BBrokerCreateOrderResult {
     | 'vanguard'
     | 'binanceInternationalDirect'
     | 'bitfinexDirect'
+    | 'bybit'
   /** Side of the order. */
   side?: 'unknown' | 'buy' | 'sell'
   /**
@@ -807,6 +818,7 @@ export interface B2BBrokerOrder {
     | 'vanguard'
     | 'binanceInternationalDirect'
     | 'bitfinexDirect'
+    | 'bybit'
   /** Type of the transaction */
   transactionType?:
     | 'order'
@@ -887,6 +899,7 @@ export interface B2BBrokerOrderListRequest {
     | 'vanguard'
     | 'binanceInternationalDirect'
     | 'bitfinexDirect'
+    | 'bybit'
   /**
    * The cursor to retrieve the next page of transactions.
    * Providing it will cause the response to only return changes after this update.
@@ -989,6 +1002,7 @@ export interface B2BBrokerOrderRequest {
     | 'vanguard'
     | 'binanceInternationalDirect'
     | 'bitfinexDirect'
+    | 'bybit'
   /** @minLength 1 */
   id: string
   /** Should be provided for Coinbase. */
@@ -1106,6 +1120,7 @@ export interface B2BBrokerPortfolioModel {
     | 'vanguard'
     | 'binanceInternationalDirect'
     | 'bitfinexDirect'
+    | 'bybit'
   /** External institution's account id (returned by the institution) */
   accountId?: string | null
   /** Friendly name of the connected institution */
@@ -1168,6 +1183,7 @@ export interface B2BBrokerPreviewOrderResult {
     | 'vanguard'
     | 'binanceInternationalDirect'
     | 'bitfinexDirect'
+    | 'bybit'
   /** @format double */
   fee?: number | null
   feeText?: string | null
@@ -1270,6 +1286,7 @@ export interface B2BBrokerSymbolInfoForOrderRequest {
     | 'vanguard'
     | 'binanceInternationalDirect'
     | 'bitfinexDirect'
+    | 'bybit'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -1385,6 +1402,7 @@ export interface B2BBrokerTradingFeatureInfo {
     | 'vanguard'
     | 'binanceInternationalDirect'
     | 'bitfinexDirect'
+    | 'bybit'
   /** Account Id of the integration. */
   accountId?: string | null
   /** Model, describing the ability to place cryptocurrency orders. */
@@ -1538,6 +1556,7 @@ export interface B2BBrokersHealthStatus {
     | 'vanguard'
     | 'binanceInternationalDirect'
     | 'bitfinexDirect'
+    | 'bybit'
   /** Is the communication with the integration up */
   isUp?: boolean
   /** Description of the outage */
@@ -2003,6 +2022,7 @@ export interface BrokerAuthenticationScheme {
     | 'vanguard'
     | 'binanceInternationalDirect'
     | 'bitfinexDirect'
+    | 'bybit'
   /** Type of authentication for the integration. */
   authenticationSchemeType?: 'usernamePassword' | 'oAuth' | 'apiKey' | 'blockchainAddress'
   /** Set of fields that should be provided in the initial POST `authenticate` request. */
@@ -2075,6 +2095,7 @@ export interface BrokerBaseRequest {
     | 'vanguard'
     | 'binanceInternationalDirect'
     | 'bitfinexDirect'
+    | 'bybit'
 }
 
 export interface BrokerBrandInfo {
@@ -2127,6 +2148,7 @@ export interface BrokerCreateCryptocurrencyTransactionRequest {
     | 'vanguard'
     | 'binanceInternationalDirect'
     | 'bitfinexDirect'
+    | 'bybit'
   /** Additional data to send on-chain (optional, depends on an integration) */
   data?: string | null
   /**
@@ -2152,6 +2174,8 @@ export interface BrokerCreateCryptocurrencyTransactionRequest {
   addressType?: CryptocurrencyAddressType | null
   /** 2 Factor auth code (optional, depends on an integration) */
   mfaCode?: string | null
+  /** 2 Factor auth type (optional, depends on an integration) */
+  mfaType?: MfaType | null
   /** Password or pass-phrase, required to send transfers (optional, depends on an integration) */
   password?: string | null
   /**
@@ -2224,6 +2248,7 @@ export interface BrokerCryptocurrencyDepositAddressRequest {
     | 'vanguard'
     | 'binanceInternationalDirect'
     | 'bitfinexDirect'
+    | 'bybit'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
    * Can be used instead of the `AddressType` field.
@@ -2306,6 +2331,7 @@ export interface BrokerCryptocurrencyTransactionDetailsRequest {
     | 'vanguard'
     | 'binanceInternationalDirect'
     | 'bitfinexDirect'
+    | 'bybit'
   /** Type of the address of the transferred asset. Can be used instead of the `Symbol` field. */
   addressType?: CryptocurrencyAddressType | null
   /** Transaction Id by the financial institution */
@@ -2483,6 +2509,7 @@ export interface BrokerRefreshTokenRequest {
     | 'vanguard'
     | 'binanceInternationalDirect'
     | 'bitfinexDirect'
+    | 'bybit'
   /** @minLength 1 */
   refreshToken: string
   /**
@@ -2552,6 +2579,7 @@ export interface BrokerTransactionsListRequest {
     | 'vanguard'
     | 'binanceInternationalDirect'
     | 'bitfinexDirect'
+    | 'bybit'
   /**
    * Number of records to include in the response. <br />
    * Default: `100` <br />
@@ -2614,6 +2642,7 @@ export type BrokerType =
   | 'vanguard'
   | 'binanceInternationalDirect'
   | 'bitfinexDirect'
+  | 'bybit'
 
 export interface CatalogLink {
   /**
@@ -2694,6 +2723,7 @@ export interface ConfigureTransferRequest {
     | 'vanguard'
     | 'binanceInternationalDirect'
     | 'bitfinexDirect'
+    | 'bybit'
   /**
    * The authentication token of the target integration. Can be used alternatively to the list of requested address (`toAddresses`).
    * If used, `toType` should also be provided.
@@ -2842,6 +2872,12 @@ export type ConfigureTransferStatus =
   | 'fromIntegrationNotSupported'
   | 'toIntegrationNotSupported'
 
+export interface CountryInfo {
+  countryCode?: string | null
+  countryNumber?: string | null
+  description?: string | null
+}
+
 export type CryptocurrencyAddressType =
   | 'ethAddress'
   | 'btcAddress'
@@ -2924,6 +2960,7 @@ export interface ExecuteTransferRequest {
     | 'vanguard'
     | 'binanceInternationalDirect'
     | 'bitfinexDirect'
+    | 'bybit'
   /**
    * Id of the Preview of the transfer.
    * @format uuid
@@ -3127,6 +3164,7 @@ export interface IntegrationNetworksModelResponse {
     | 'vanguard'
     | 'binanceInternationalDirect'
     | 'bitfinexDirect'
+    | 'bybit'
   /** The list of supported networks and corresponding tokens for the integration. */
   networks?: NetworkResponse[] | null
   /** Specifies if the integration supports outgoing transfers. */
@@ -3318,6 +3356,7 @@ export interface PreviewTransferRequest {
     | 'vanguard'
     | 'binanceInternationalDirect'
     | 'bitfinexDirect'
+    | 'bybit'
   /**
    * The authentication token of the target integration. Can be used alternatively to the address in the `ToAddress` field.
    * If used, `toType` should also be provided.
@@ -3753,6 +3792,12 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
          * If not provided default client's url will be used.
          */
         callbackUrl?: string
+        /**
+         * Link Configuration identifier - an optional paramater for used configuration.
+         * If not provided default configuration with all avaialbe integrations will be used.
+         * @format uuid
+         */
+        configurationId?: string
       },
       params: RequestParams = {}
     ) =>
@@ -3798,6 +3843,12 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
          * @default false
          */
         enableTransfers?: boolean
+        /**
+         * Link Configuration identifier - an optional paramater for used configuration.
+         * If not provided default configuration with all avaialbe integrations will be used.
+         * @format uuid
+         */
+        configurationId?: string
       },
       data: InitializeTransfersForLinkRequest,
       params: RequestParams = {}
@@ -4001,7 +4052,8 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         | 'krakenDirect'
         | 'vanguard'
         | 'binanceInternationalDirect'
-        | 'bitfinexDirect',
+        | 'bitfinexDirect'
+        | 'bybit',
       query: {
         /** Id of the end-user */
         userId: string

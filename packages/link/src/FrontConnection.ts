@@ -1,134 +1,91 @@
 import {
+  FrontOptions,
+  FrontConnection,
   EventType,
   AccessTokenPayload,
   DelayedAuthPayload,
-  FrontPayload,
-  FrontOptions,
-  FrontConnection
+  TransferFinishedPayload,
+  FrontPayload
 } from './utils/types'
-import { generateAndSaveNonce, validateNonce } from './utils/nonce'
-import localforage from 'localforage'
 import { addPopup, removePopup } from './utils/popup'
 
-const authLinkHostKey = 'front-auth-link-host'
-const hostRegex = /^https?:\/\/[^/]+/i
-async function saveAuthLinkHost(authLink: string): Promise<void> {
-  const result = hostRegex.exec(authLink)
-  if (result && result.length > 0) {
-    await localforage.setItem(authLinkHostKey, result[0])
-  }
-}
+let currentOptions: FrontOptions | undefined
 
-async function getAuthLinkHost(): Promise<string> {
-  const host = await localforage.getItem<string>(authLinkHostKey)
-  return host || 'https://web.getfront.com'
-}
-
-const iframeId = 'front-link'
-function deleteIframe() {
-  const iframe = document.getElementById(iframeId)
-  if (iframe) {
-    setTimeout(() => iframe.remove(), 1000)
-  }
-}
-
-function createListenerIframe(options: FrontOptions, host: string) {
-  const iframe = document.createElement('iframe')
-  iframe.id = iframeId
-  iframe.title = 'Front'
-  iframe.style.width = '0'
-  iframe.style.height = '0'
-  iframe.src = `${host}/b2b-iframe/${options.clientId}`
-  document.body.appendChild(iframe)
-
-  const messageListener = (
-    event: MessageEvent<{
-      type: EventType
-      payload?: AccessTokenPayload | DelayedAuthPayload
-      message?: string
-    }>
-  ) => {
-    switch (event.data.type) {
-      case 'brokerageAccountAccessToken': {
-        const payload: FrontPayload = {
-          accessToken: event.data.payload as AccessTokenPayload
-        }
-        options.onBrokerConnected && options.onBrokerConnected(payload)
-        break
+function eventsListener(
+  event: MessageEvent<{
+    type: EventType
+    payload?: AccessTokenPayload | DelayedAuthPayload | TransferFinishedPayload
+    message?: string
+    link?: string
+  }>
+) {
+  switch (event.data.type) {
+    case 'brokerageAccountAccessToken': {
+      const payload: FrontPayload = {
+        accessToken: event.data.payload as AccessTokenPayload
       }
-      case 'delayedAuthentication': {
-        const payload: FrontPayload = {
-          delayedAuth: event.data.payload as DelayedAuthPayload
-        }
-        options.onBrokerConnected && options.onBrokerConnected(payload)
-        break
+      currentOptions?.onBrokerConnected?.(payload)
+      break
+    }
+    case 'delayedAuthentication': {
+      const payload: FrontPayload = {
+        delayedAuth: event.data.payload as DelayedAuthPayload
       }
-      case 'close':
-      case 'done': {
-        options.onExit && options.onExit(event.data.message)
-        deleteIframe()
-        break
+      currentOptions?.onBrokerConnected?.(payload)
+      break
+    }
+    case 'transferFinished': {
+      const payload = event.data.payload as TransferFinishedPayload
+
+      currentOptions?.onTransferFinished?.(payload)
+      break
+    }
+    case 'close':
+    case 'done': {
+      currentOptions?.onExit?.(event.data.message)
+      removePopup()
+      break
+    }
+    case 'oauthLinkOpen': {
+      if (event.data.link) {
+        const w = 700
+        const h = 800
+        const left = screen.width / 2 - w / 2
+        const top = screen.height / 2 - h / 2
+        window
+          .open(
+            event.data.link,
+            '_blank',
+            `popup,noopener,noreferrer,resizable,scrollbars,width=${w},height=${h},top=${top},left=${left}`
+          )
+          ?.focus()
       }
+
+      break
     }
   }
-
-  window.addEventListener('message', messageListener)
-}
-
-async function checkNonceAndCreateIframe(options: FrontOptions): Promise<void> {
-  const queryParams = new URLSearchParams(window.location.search)
-  const isSuccessConnection = queryParams.get('front-connection-success')
-  const nonce = queryParams.get('front-connection-nonce')
-  if (isSuccessConnection !== 'true' || !nonce) {
-    return
-  }
-
-  const isNonceValid = await validateNonce(nonce)
-  if (isNonceValid) {
-    const host = await getAuthLinkHost()
-    createListenerIframe(options, host)
-  }
-}
-
-async function addNonceToUrl(link: string): Promise<string> {
-  await saveAuthLinkHost(link)
-  const nonce = await generateAndSaveNonce()
-  const delimiter = link.indexOf('?') > 0 ? '&' : '?'
-  const url = `${link}${delimiter}b2bNonce=${nonce}`
-  return url
 }
 
 export const createFrontConnection = (
   options: FrontOptions
 ): FrontConnection => {
-  const openLink = async (link: string) => {
-    if (!link) {
-      options?.onExit && options.onExit('Invalid link!')
-      return
-    }
-
-    const url = await addNonceToUrl(link)
-    window.location.href = url
-    addPopup(url, options)
-  }
-
   const openPopup = async (iframeUrl: string) => {
     if (!iframeUrl) {
-      options?.onExit && options.onExit('Invalid link!')
+      options?.onExit?.('Invalid link!')
       return
     }
 
-    const url = await addNonceToUrl(iframeUrl)
-    addPopup(url, options)
+    currentOptions = options
+    window.removeEventListener('message', eventsListener)
+    addPopup(iframeUrl)
+    window.addEventListener('message', eventsListener)
   }
 
-  checkNonceAndCreateIframe(options)
-
   return {
-    openLink: openLink,
     openPopup: openPopup,
     closePopup: () => {
       removePopup()
+      window.removeEventListener('message', eventsListener)
       options.onExit?.()
     }
   }
