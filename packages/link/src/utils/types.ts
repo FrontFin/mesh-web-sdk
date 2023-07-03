@@ -80,9 +80,28 @@ export type TransferFinishedPayload =
   | TransferFinishedSuccessPayload
   | TransferFinishedErrorPayload
 
+export interface IntegrationAccessToken {
+  accountId: string
+  accountName: string
+  accessToken: string
+  brokerType: BrokerType
+  brokerName: string
+}
+
 export interface FrontOptions {
   clientId: string
   onBrokerConnected: (payload: FrontPayload) => void
   onExit?: (error?: string) => void
+
+  /**
+   * (Optional) A callback function that is called when a transfer is finished.
+   * It receives a payload of type `TransferFinishedPayload`.
+   */
   onTransferFinished?: (payload: TransferFinishedPayload) => void
+
+  /**
+   * (Optional) An array of integration access tokens.
+   * These access tokens are used to initialize crypto transfers flow at 'Select asset step'
+   */
+  accessTokens?: IntegrationAccessToken[]
 }

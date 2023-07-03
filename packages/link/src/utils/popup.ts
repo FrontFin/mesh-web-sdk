@@ -2,12 +2,13 @@ const popupId = 'front-link-popup'
 const backdropId = 'front-link-popup__backdrop'
 const popupContentId = 'front-link-popup__popup-content'
 const stylesId = 'front-link-popup__styles'
+export const iframeId = 'front-link-popup__iframe'
 
 const getPopupHtml = (link: string) => `
 <div id="${popupId}">
   <div id="${backdropId}"></div>
   <div id="${popupContentId}">
-    <iframe src="${link}" allow="clipboard-read *; clipboard-write *" />
+    <iframe id="${iframeId}" src="${link}" allow="clipboard-read *; clipboard-write *" />
   </div>
 </div>
 `
@@ -108,7 +109,6 @@ export function removePopup(): void {
 
 export function addPopup(iframeLink: string): void {
   removePopup()
-
   const popup = getPopupHtml(iframeLink)
   window.document.head.appendChild(htmlToElement(styles))
   window.document.body.appendChild(htmlToElement(popup))

@@ -7,9 +7,10 @@ import {
   TransferFinishedPayload,
   FrontPayload
 } from './utils/types'
-import { addPopup, removePopup } from './utils/popup'
+import { addPopup, iframeId, removePopup } from './utils/popup'
 
 let currentOptions: FrontOptions | undefined
+let iframeUrlObject: URL | undefined
 
 function eventsListener(
   event: MessageEvent<{
@@ -63,6 +64,18 @@ function eventsListener(
 
       break
     }
+    case 'loaded': {
+      if (currentOptions?.accessTokens) {
+        const iframeElement = document.getElementById(
+          iframeId
+        ) as HTMLIFrameElement
+
+        iframeElement.contentWindow?.postMessage(
+          { type: 'frontAccessTokens', payload: currentOptions.accessTokens },
+          iframeUrlObject?.origin || 'https://web.getfront.com'
+        )
+      }
+    }
   }
 }
 
@@ -76,6 +89,8 @@ export const createFrontConnection = (
     }
 
     currentOptions = options
+    iframeUrlObject = new URL(iframeUrl)
+
     window.removeEventListener('message', eventsListener)
     addPopup(iframeUrl)
     window.addEventListener('message', eventsListener)
