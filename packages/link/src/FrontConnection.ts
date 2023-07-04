@@ -8,23 +8,33 @@ import {
   FrontPayload
 } from './utils/types'
 import { addPopup, iframeId, removePopup } from './utils/popup'
+import { FrontEventType, isFrontEventTypeKey } from './utils/event-types'
 
 let currentOptions: FrontOptions | undefined
 let iframeUrlObject: URL | undefined
 
 function eventsListener(
-  event: MessageEvent<{
-    type: EventType
-    payload?: AccessTokenPayload | DelayedAuthPayload | TransferFinishedPayload
-    message?: string
-    link?: string
-  }>
+  event:
+    | MessageEvent<{
+        type: EventType
+        payload?:
+          | AccessTokenPayload
+          | DelayedAuthPayload
+          | TransferFinishedPayload
+        message?: string
+        link?: string
+      }>
+    | MessageEvent<FrontEventType>
 ) {
   switch (event.data.type) {
     case 'brokerageAccountAccessToken': {
       const payload: FrontPayload = {
         accessToken: event.data.payload as AccessTokenPayload
       }
+      currentOptions?.onEvent?.({
+        type: 'integrationConnected',
+        payload: payload
+      })
       currentOptions?.onBrokerConnected?.(payload)
       break
     }
@@ -32,12 +42,20 @@ function eventsListener(
       const payload: FrontPayload = {
         delayedAuth: event.data.payload as DelayedAuthPayload
       }
+      currentOptions?.onEvent?.({
+        type: 'integrationConnected',
+        payload: payload
+      })
       currentOptions?.onBrokerConnected?.(payload)
       break
     }
     case 'transferFinished': {
       const payload = event.data.payload as TransferFinishedPayload
 
+      currentOptions?.onEvent?.({
+        type: 'transferCompleted',
+        payload: payload
+      })
       currentOptions?.onTransferFinished?.(payload)
       break
     }
@@ -75,6 +93,13 @@ function eventsListener(
           iframeUrlObject?.origin || 'https://web.getfront.com'
         )
       }
+      break
+    }
+    default: {
+      if (isFrontEventTypeKey(event.data.type)) {
+        currentOptions?.onEvent?.(event.data)
+      }
+      break
     }
   }
 }

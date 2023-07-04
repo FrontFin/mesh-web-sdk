@@ -2915,6 +2915,8 @@ export type CryptocurrencyWalletType =
   | 'alphaWallet'
   | 'atomicWallet'
 
+export type ExecuteTransferMfaType = 'unspecified' | 'phone' | 'email' | 'totp'
+
 export interface ExecuteTransferRequest {
   /**
    * The authentication token to send the asset from.
@@ -2979,6 +2981,8 @@ export interface ExecuteTransferResponse {
     | 'emailConfirmationRequired'
     | 'deviceConfirmationRequired'
     | 'mfaFailed'
+  /** The type of the MFA when the status is `MfaRequired`. */
+  mfaType?: ExecuteTransferMfaType | null
   /** Error message, if the operation did not complete successfully. */
   errorMessage?: string | null
   /** Result of the transfer initiation. */

@@ -1,4 +1,5 @@
 import type { BrokerType } from '@front-finance/api'
+import { FrontEventType } from './event-types'
 
 export type EventType =
   | 'brokerageAccountAccessToken'
@@ -12,12 +13,6 @@ export type EventType =
 export interface FrontConnection {
   openPopup: (iframeLink: string) => Promise<void>
   closePopup: () => void
-}
-
-export interface SetTitleEvent {
-  type: 'setTitle'
-  title: string
-  hideTitle?: boolean
 }
 
 export interface BrokerAccountToken {
@@ -89,8 +84,20 @@ export interface IntegrationAccessToken {
 }
 
 export interface FrontOptions {
+  /**
+   * Client ID that can be obtained at https://dashboard.getfront.com/company/keys
+   */
   clientId: string
+
+  /**
+   * A callback function that is called when an integration is succesfully connected.
+   * It receives a payload of type `FrontPayload`.
+   */
   onBrokerConnected: (payload: FrontPayload) => void
+
+  /**
+   * (Optional) A callback function that is called when the Front iframe is closed.
+   */
   onExit?: (error?: string) => void
 
   /**
@@ -98,6 +105,12 @@ export interface FrontOptions {
    * It receives a payload of type `TransferFinishedPayload`.
    */
   onTransferFinished?: (payload: TransferFinishedPayload) => void
+
+  /**
+   * (Optional) A callback function that is called when various events occur within the Front iframe.
+   * It receives an object with type `FrontEventTypeKeys` indicating the event, and an optional 'payload' containing additional data.
+   */
+  onEvent?: (event: FrontEventType) => void
 
   /**
    * (Optional) An array of integration access tokens.

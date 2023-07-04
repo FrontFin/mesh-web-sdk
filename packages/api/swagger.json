@@ -8131,6 +8131,15 @@
         ],
         "type": "string"
       },
+      "ExecuteTransferMfaType": {
+        "enum": [
+          "unspecified",
+          "phone",
+          "email",
+          "totp"
+        ],
+        "type": "string"
+      },
       "ExecuteTransferRequest": {
         "required": [
           "fromAuthToken",
@@ -8223,6 +8232,15 @@
               }
             ],
             "description": "The status of the transfer."
+          },
+          "mfaType": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ExecuteTransferMfaType"
+              }
+            ],
+            "description": "The type of the MFA when the status is `MfaRequired`.",
+            "nullable": true
           },
           "errorMessage": {
             "type": "string",
@@ -9355,11 +9373,11 @@
     },
     {
       "name": "Portfolio",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```DeFiWallet```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```Bybit```\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```DeFiWallet```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n"
     },
     {
       "name": "Balance",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```Bybit```\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n"
     },
     {
       "name": "Transactions",
