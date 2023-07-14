@@ -257,15 +257,15 @@
         "description": "Get personalized catalog link for client",
         "parameters": [
           {
-            "name": "userId",
+            "name": "UserId",
             "in": "query",
-            "description": "A unique Id representing the end user. Typically this will be a user Id from the\r\n            client application. Personally identifiable information, such as an email address or phone number,\r\n            should not be used.",
+            "description": "A unique Id representing the end user. Typically this will be a user Id from the\r\nclient application. Personally identifiable information, such as an email address or phone number,\r\nshould not be used.",
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "brokerType",
+            "name": "BrokerType",
             "in": "query",
             "description": "Type of broker to redirect to. Will redirect to catalog if not provided.",
             "schema": {
@@ -277,7 +277,7 @@
             }
           },
           {
-            "name": "callbackUrl",
+            "name": "CallbackUrl",
             "in": "query",
             "description": "Callback link - url to redirect user after authentication in brokerage account.\r\nIf not provided default client's url will be used.",
             "schema": {
@@ -285,12 +285,28 @@
             }
           },
           {
-            "name": "configurationId",
+            "name": "EnableTransfers",
+            "in": "query",
+            "description": "Link Configuration identifier - an optional paramater for used configuration.\r\nIf not provided default configuration with all avaialbe integrations will be used.",
+            "schema": {
+              "type": "boolean"
+            }
+          },
+          {
+            "name": "ConfigurationId",
             "in": "query",
             "description": "Link Configuration identifier - an optional paramater for used configuration.\r\nIf not provided default configuration with all avaialbe integrations will be used.",
             "schema": {
               "type": "string",
               "format": "uuid"
+            }
+          },
+          {
+            "name": "RestrictMultipleAccounts",
+            "in": "query",
+            "description": "The final screen of Link allows users to “continue” back to your app or “Link another account.”\r\nIf this param is present then this button will be hidden.",
+            "schema": {
+              "type": "boolean"
             }
           }
         ],
@@ -346,16 +362,15 @@
         "description": "Get personalized catalog link for client supplying parameters for Link actions, such as transfers",
         "parameters": [
           {
-            "name": "userId",
+            "name": "UserId",
             "in": "query",
-            "description": "A unique Id representing the end user. Typically this will be a user Id from the\r\n            client application. Personally identifiable information, such as an email address or phone number,\r\n            should not be used.",
-            "required": true,
+            "description": "A unique Id representing the end user. Typically this will be a user Id from the\r\nclient application. Personally identifiable information, such as an email address or phone number,\r\nshould not be used.",
             "schema": {
               "type": "string"
             }
           },
           {
-            "name": "brokerType",
+            "name": "BrokerType",
             "in": "query",
             "description": "Type of broker to redirect to. Will redirect to catalog if not provided.",
             "schema": {
@@ -367,7 +382,7 @@
             }
           },
           {
-            "name": "callbackUrl",
+            "name": "CallbackUrl",
             "in": "query",
             "description": "Callback link - url to redirect user after authentication in brokerage account.\r\nIf not provided default client's url will be used.",
             "schema": {
@@ -375,26 +390,33 @@
             }
           },
           {
-            "name": "enableTransfers",
+            "name": "EnableTransfers",
             "in": "query",
-            "description": "Specifies if created Catalog Link session should allow transfers to be executed using the Link UI",
+            "description": "Link Configuration identifier - an optional paramater for used configuration.\r\nIf not provided default configuration with all avaialbe integrations will be used.",
             "schema": {
-              "type": "boolean",
-              "default": false
+              "type": "boolean"
             }
           },
           {
-            "name": "configurationId",
+            "name": "ConfigurationId",
             "in": "query",
             "description": "Link Configuration identifier - an optional paramater for used configuration.\r\nIf not provided default configuration with all avaialbe integrations will be used.",
             "schema": {
               "type": "string",
               "format": "uuid"
             }
+          },
+          {
+            "name": "RestrictMultipleAccounts",
+            "in": "query",
+            "description": "The final screen of Link allows users to “continue” back to your app or “Link another account.”\r\nIf this param is present then this button will be hidden.",
+            "schema": {
+              "type": "boolean"
+            }
           }
         ],
         "requestBody": {
-          "description": "",
+          "description": "Data to execute transfer.",
           "content": {
             "application/json": {
               "schema": {

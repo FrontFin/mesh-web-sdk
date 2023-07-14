@@ -22,8 +22,8 @@ export const App: React.FC = () => {
 
     // this request should be performed from the backend side
     const response = await api.managedAccountAuthentication.v1CataloglinkList({
-      userId: '7652B44F-9CDB-4519-AC82-4FA5500F7455', // insert your unique user identifier here
-      callbackUrl: window.location.href // insert your callback URL here
+      UserId: '7652B44F-9CDB-4519-AC82-4FA5500F7455', // insert your unique user identifier here
+      CallbackUrl: window.location.href // insert your callback URL here
     })
 
     const data = response.data

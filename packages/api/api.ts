@@ -3785,23 +3785,33 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
       query?: {
         /**
          * A unique Id representing the end user. Typically this will be a user Id from the
-         *             client application. Personally identifiable information, such as an email address or phone number,
-         *             should not be used.
+         * client application. Personally identifiable information, such as an email address or phone number,
+         * should not be used.
          */
-        userId?: string
+        UserId?: string
         /** Type of broker to redirect to. Will redirect to catalog if not provided. */
-        brokerType?: BrokerType
+        BrokerType?: BrokerType
         /**
          * Callback link - url to redirect user after authentication in brokerage account.
          * If not provided default client's url will be used.
          */
-        callbackUrl?: string
+        CallbackUrl?: string
+        /**
+         * Link Configuration identifier - an optional paramater for used configuration.
+         * If not provided default configuration with all avaialbe integrations will be used.
+         */
+        EnableTransfers?: boolean
         /**
          * Link Configuration identifier - an optional paramater for used configuration.
          * If not provided default configuration with all avaialbe integrations will be used.
          * @format uuid
          */
-        configurationId?: string
+        ConfigurationId?: string
+        /**
+         * The final screen of Link allows users to “continue” back to your app or “Link another account.”
+         * If this param is present then this button will be hidden.
+         */
+        RestrictMultipleAccounts?: boolean
       },
       params: RequestParams = {}
     ) =>
@@ -3828,33 +3838,38 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @response `404` `ApiResult` API Client not found.
      */
     v1CataloglinkCreate: (
-      query: {
+      data: InitializeTransfersForLinkRequest,
+      query?: {
         /**
          * A unique Id representing the end user. Typically this will be a user Id from the
-         *             client application. Personally identifiable information, such as an email address or phone number,
-         *             should not be used.
+         * client application. Personally identifiable information, such as an email address or phone number,
+         * should not be used.
          */
-        userId: string
+        UserId?: string
         /** Type of broker to redirect to. Will redirect to catalog if not provided. */
-        brokerType?: BrokerType
+        BrokerType?: BrokerType
         /**
          * Callback link - url to redirect user after authentication in brokerage account.
          * If not provided default client's url will be used.
          */
-        callbackUrl?: string
+        CallbackUrl?: string
         /**
-         * Specifies if created Catalog Link session should allow transfers to be executed using the Link UI
-         * @default false
+         * Link Configuration identifier - an optional paramater for used configuration.
+         * If not provided default configuration with all avaialbe integrations will be used.
          */
-        enableTransfers?: boolean
+        EnableTransfers?: boolean
         /**
          * Link Configuration identifier - an optional paramater for used configuration.
          * If not provided default configuration with all avaialbe integrations will be used.
          * @format uuid
          */
-        configurationId?: string
+        ConfigurationId?: string
+        /**
+         * The final screen of Link allows users to “continue” back to your app or “Link another account.”
+         * If this param is present then this button will be hidden.
+         */
+        RestrictMultipleAccounts?: boolean
       },
-      data: InitializeTransfersForLinkRequest,
       params: RequestParams = {}
     ) =>
       this.request<CatalogLinkIApiResult, ApiResult>({
