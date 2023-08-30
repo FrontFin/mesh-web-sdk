@@ -27,6 +27,7 @@
     "lint": "lerna run lint",
     "build": "lerna run build",
     "test": "lerna run test",
+    "test:cov": "lerna run test:cov",
     "lint:fix": "lerna run lint -- --fix",
     "start:demo": "cd examples/react-example && yarn start",
     "updateApi": "cd packages/api && yarn updateApi",

@@ -2,15 +2,17 @@ import React, { useEffect, useState } from 'react'
 import {
   FrontConnection,
   FrontPayload,
+  TransferFinishedPayload,
   createFrontConnection
 } from '@front-finance/link'
 import { clientId } from '../utility/config'
 
 export const FrontComponent: React.FC<{
   iframeLink?: string | null
-  onSuccess: (authData: FrontPayload) => void
+  onBrokerConnected: (authData: FrontPayload) => void
+  onTransferFinished?: (payload: TransferFinishedPayload) => void
   onExit?: (error?: string) => void
-}> = ({ iframeLink, onSuccess, onExit }) => {
+}> = ({ iframeLink, onBrokerConnected, onTransferFinished, onExit }) => {
   const [frontConnection, setFrontConnection] =
     useState<FrontConnection | null>(null)
 
@@ -20,7 +22,7 @@ export const FrontComponent: React.FC<{
         clientId: clientId,
         onBrokerConnected: authData => {
           console.info('[FRONT SUCCESS]', authData)
-          onSuccess(authData)
+          onBrokerConnected(authData)
         },
         onExit: (error?: string) => {
           if (error) {
@@ -28,6 +30,10 @@ export const FrontComponent: React.FC<{
           }
 
           onExit?.()
+        },
+        onTransferFinished: transferData => {
+          console.info('[FRONT TRANSFER FINISHED]', transferData)
+          onTransferFinished?.(transferData)
         }
       })
     )

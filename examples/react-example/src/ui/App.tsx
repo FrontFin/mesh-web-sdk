@@ -1,13 +1,15 @@
 import React, { useState, useCallback } from 'react'
 import { frontApiUrl, clientId, clientSecret } from '../utility/config'
 import { FrontComponent } from './Front'
-import { FrontPayload } from '@front-finance/link'
+import { FrontPayload, TransferFinishedPayload } from '@front-finance/link'
 import { FrontApi } from '@front-finance/api'
 
 export const App: React.FC = () => {
   const [iframeLink, setIframeLink] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [payload, setPayload] = useState<FrontPayload | null>(null)
+  const [trasnferFinishedData, setTrasnferFinishedData] =
+    useState<TransferFinishedPayload | null>(null)
 
   const getAuthLink = useCallback(async () => {
     setError(null)
@@ -25,6 +27,48 @@ export const App: React.FC = () => {
       UserId: '7652B44F-9CDB-4519-AC82-4FA5500F7455', // insert your unique user identifier here
       CallbackUrl: window.location.href // insert your callback URL here
     })
+
+    const data = response.data
+    if (response.status !== 200 || !data?.content) {
+      const error = (data && data.message) || response.statusText
+      console.error('Error!', error)
+      setError(error)
+    } else if (!data.content.iFrameUrl) {
+      setError('Iframe url is empty')
+    } else {
+      setIframeLink(data.content.iFrameUrl)
+    }
+  }, [])
+
+  const getTransferLink = useCallback(async () => {
+    setError(null)
+    setIframeLink(null)
+    const api = new FrontApi({
+      baseURL: frontApiUrl,
+      headers: {
+        'x-client-id': clientId, // insert your client id here
+        'x-client-secret': clientSecret // do not use your clientSecret on the FE
+      }
+    })
+
+    // this request should be performed from the backend side
+    const response = await api.managedAccountAuthentication.v1CataloglinkCreate(
+      {
+        amountInFiat: 10, // amount to transfer
+        toAddresses: [
+          {
+            symbol: 'USDC', // cryptocurrency to transfer
+            address: '0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6', // address to transfer
+            networkId: '7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12' // network id from /api/v1/transfers/managed/networks request
+          }
+        ]
+      },
+      {
+        UserId: '7652B44F-9CDB-4519-AC82-4FA5500F7455', // insert your unique user identifier here
+        CallbackUrl: window.location.href, // insert your callback URL here
+        EnableTransfers: true
+      }
+    )
 
     const data = response.data
     if (response.status !== 200 || !data?.content) {
@@ -70,23 +114,45 @@ export const App: React.FC = () => {
         </p>
       )}
 
+      {trasnferFinishedData && (
+        <div style={{ wordWrap: 'break-word' }}>
+          <h1>Transfer finished!</h1>
+          <p>{JSON.stringify(trasnferFinishedData, null, 2)}</p>
+        </div>
+      )}
+
       {error && <p style={{ color: 'red' }}>Error: {error}</p>}
 
-      <div style={{ width: '100%', display: 'flex', justifyContent: 'center' }}>
+      <div
+        style={{
+          width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          flexDirection: 'column',
+          gap: '20px'
+        }}
+      >
         <button style={{ width: '50%' }} onClick={getAuthLink}>
-          Front Broker Connection
+          Front Connection
+        </button>
+
+        <button style={{ width: '50%' }} onClick={getTransferLink}>
+          Front Transfer
         </button>
       </div>
 
       <FrontComponent
         iframeLink={iframeLink}
-        onSuccess={(authData: FrontPayload) => {
+        onBrokerConnected={(authData: FrontPayload) => {
           setPayload(authData)
           setIframeLink(null)
         }}
         onExit={err => {
           setIframeLink(null)
           setError(err || null)
+        }}
+        onTransferFinished={data => {
+          setTrasnferFinishedData(data)
         }}
       />
     </div>

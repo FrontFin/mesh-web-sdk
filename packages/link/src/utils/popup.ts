@@ -88,35 +88,41 @@ const styles = `
       border-radius: 0px;
     }
   }
+
+  @media only screen and (max-height: 710px) {
+    #${popupContentId} {
+      max-height: 100%;
+      min-height: 100%;
+    }
+  }
 </style>
 `
 
 export function removePopup(): void {
   const existingPopup = window.document.getElementById(popupId)
-  if (existingPopup) {
-    ;(existingPopup.parentElement || window.document.body).removeChild(
-      existingPopup
-    )
-  }
+  existingPopup?.parentElement?.removeChild(existingPopup)
 
   const existingStyles = window.document.getElementById(stylesId)
-  if (existingStyles) {
-    ;(existingStyles.parentElement || window.document.head).removeChild(
-      existingStyles
-    )
-  }
+  existingStyles?.parentElement?.removeChild(existingStyles)
 }
 
 export function addPopup(iframeLink: string): void {
   removePopup()
   const popup = getPopupHtml(iframeLink)
-  window.document.head.appendChild(htmlToElement(styles))
-  window.document.body.appendChild(htmlToElement(popup))
+  const stylesElement = htmlToElement(styles)
+  if (stylesElement) {
+    window.document.head.appendChild(stylesElement)
+  }
+
+  const popupElement = htmlToElement(popup)
+  if (popupElement) {
+    window.document.body.appendChild(popupElement)
+  }
 }
 
-function htmlToElement(html: string): Node {
+function htmlToElement(html: string): Node | null {
   const template = document.createElement('template')
   html = html.trim()
   template.innerHTML = html
-  return template.content.firstChild || document.createTextNode('')
+  return template.content.firstChild
 }

@@ -1,0 +1,50 @@
+import { addPopup, removePopup } from './popup'
+
+describe('Popup tests', () => {
+  test('addPopup should add correct popup', () => {
+    addPopup('http://localhost/1')
+
+    const stylesElement = document.getElementById('front-link-popup__styles')
+    expect(stylesElement).toBeTruthy()
+
+    const popupElement = document.getElementById('front-link-popup')
+    expect(popupElement).toBeTruthy()
+
+    const iframeElement = document.getElementById('front-link-popup__iframe')
+    expect(iframeElement).toBeTruthy()
+    expect(iframeElement?.attributes.getNamedItem('src')?.nodeValue).toBe(
+      'http://localhost/1'
+    )
+  })
+
+  test('addPopup when popup already added should replace popup', () => {
+    addPopup('http://localhost/1')
+    addPopup('http://localhost/2')
+
+    const stylesElement = document.getElementById('front-link-popup__styles')
+    expect(stylesElement).toBeTruthy()
+
+    const popupElement = document.getElementById('front-link-popup')
+    expect(popupElement).toBeTruthy()
+
+    const iframeElement = document.getElementById('front-link-popup__iframe')
+    expect(iframeElement).toBeTruthy()
+    expect(iframeElement?.attributes.getNamedItem('src')?.nodeValue).toBe(
+      'http://localhost/2'
+    )
+  })
+
+  test('removePopup should remove popup', () => {
+    addPopup('http://localhost/1')
+    removePopup()
+
+    const stylesElement = document.getElementById('front-link-popup__styles')
+    expect(stylesElement).toBeFalsy()
+
+    const popupElement = document.getElementById('front-link-popup')
+    expect(popupElement).toBeFalsy()
+
+    const iframeElement = document.getElementById('front-link-popup__iframe')
+    expect(iframeElement).toBeFalsy()
+  })
+})

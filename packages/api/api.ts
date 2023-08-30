@@ -68,13 +68,6 @@ export interface AssetPaginationResponseIApiResult {
 
 export type AssetType = 'equity' | 'cryptocurrency'
 
-export interface AssetWeight {
-  symbol?: string | null
-  /** @format double */
-  weight?: number
-  isCrypto?: boolean | null
-}
-
 export type AuthFlowStep = 'loginPassword' | 'mfaFlow'
 
 export interface AuthenticationFieldDescription {
@@ -115,6 +108,16 @@ export interface B2BBrokerAccountBalance {
 
 export interface B2BBrokerAccountBalanceModel {
   balances?: B2BBrokerAccountBalance[] | null
+  /**
+   * Total USD value of all currencies
+   * @format double
+   */
+  totalCashUsdValue?: number | null
+  /**
+   * Total USD value of all Buying Power
+   * @format double
+   */
+  totalBuyingPowerUsdValue?: number | null
 }
 
 export interface B2BBrokerAccountBalanceModelIApiResult {
@@ -297,6 +300,7 @@ export interface B2BBrokerCreateCryptocurrencyTransactionResponse {
     | 'emailVerification'
     | 'deviceConfirmationRequired'
     | 'mfaFailed'
+    | 'addressWhitelistRequired'
   /** Details of the current status of the transfer, as provided by the financial institution */
   statusDetails?: string | null
   /** Details of the created transaction */
@@ -410,16 +414,7 @@ export interface B2BBrokerCreateOrderRequest {
   amountInPaymentSymbol?: number | null
   /** Specifies if the extended trading hours should be used. */
   extendedHours?: boolean
-  orderType:
-    | 'unknown'
-    | 'market'
-    | 'limit'
-    | 'stopLoss'
-    | 'stopLimit'
-    | 'takeProfit'
-    | 'netDebit'
-    | 'netCredit'
-    | 'exercise'
+  orderType: 'market' | 'limit' | 'stopLoss'
   timeInForce: 'goodTillCanceled' | 'immediateOrCancel' | 'fillOrKill' | 'goodForDay' | 'postOnly' | 'unknown'
   /** MFA Code to create an order (requested by Kraken if MFA is enabled in user settings) */
   mfaCode?: string | null
@@ -602,6 +597,7 @@ export interface B2BBrokerCryptocurrencyTransaction {
     | 'emailVerification'
     | 'deviceConfirmationRequired'
     | 'mfaFailed'
+    | 'addressWhitelistRequired'
   /** Details of the current status of the transfer, as provided by the financial institution */
   statusDetails?: string | null
   /** The direction of the transaction */
@@ -917,7 +913,7 @@ export interface B2BBrokerOrderListRequest {
   statuses?: BrokerOrderStatus[] | null
   /**
    * Return orders created after this timestamp.
-   * If this field is not provided, orders with any creation timestamp will be returned.
+   * If this field is not provided, orders will be returned according to the default of the institution.
    * @format int64
    */
   from?: number | null
@@ -1217,6 +1213,7 @@ export interface B2BBrokerRefreshTokenResponse {
   status?: 'failed' | 'succeeded' | 'mfaRequired'
   errorMessage?: string | null
   displayMessage?: string | null
+  account?: BrokerAccount | null
   accessToken?: string | null
   refreshToken?: string | null
   /** @format int32 */
@@ -1333,16 +1330,7 @@ export interface B2BBrokerSymbolInfoForOrderRequest {
   amountInPaymentSymbol?: number | null
   /** Specifies if the extended trading hours should be used. */
   extendedHours?: boolean
-  orderType:
-    | 'unknown'
-    | 'market'
-    | 'limit'
-    | 'stopLoss'
-    | 'stopLimit'
-    | 'takeProfit'
-    | 'netDebit'
-    | 'netCredit'
-    | 'exercise'
+  orderType: 'market' | 'limit' | 'stopLoss'
   timeInForce: 'goodTillCanceled' | 'immediateOrCancel' | 'fillOrKill' | 'goodForDay' | 'postOnly' | 'unknown'
   /** MFA Code to create an order (requested by Kraken if MFA is enabled in user settings) */
   mfaCode?: string | null
@@ -1639,17 +1627,7 @@ export interface B2BNftPosition {
     | 'harmonyOneAddress'
     | 'tronAddress'
     | 'dogeAddress'
-}
-
-export interface B2BOptimizedPortfolio {
-  /** @format double */
-  annualizedStandardDeviation?: number
-  /** @format double */
-  performance?: number
-  assetWeights?: AssetWeight[] | null
-  /** @format double */
-  value?: number
-  chartItems?: ChartItem[] | null
+    | 'opAddress'
 }
 
 export interface B2BOptionPosition {
@@ -1690,19 +1668,6 @@ export interface B2BOptionPosition {
   strikePrice?: number
 }
 
-export interface B2BOriginalPortfolio {
-  /** @format double */
-  annualizedStandardDeviation?: number
-  /** @format double */
-  performance?: number
-  assetWeights?: AssetWeight[] | null
-  /** @format double */
-  value?: number
-  chartItems?: ChartItem[] | null
-  /** @format double */
-  startingValue?: number
-}
-
 export interface B2BPortfolioModel {
   /**
    * Amount of money spent to buy all positions of the portfolio.
@@ -1739,26 +1704,6 @@ export interface B2BPortfolioModel {
 
 export interface B2BPortfolioModelIApiResult {
   readonly content?: B2BPortfolioModel | null
-  readonly status?:
-    | 'ok'
-    | 'serverFailure'
-    | 'permissionDenied'
-    | 'badRequest'
-    | 'notFound'
-    | 'conflict'
-    | 'tooManyRequest'
-    | 'locked'
-  readonly message?: string | null
-  readonly displayMessage?: string | null
-}
-
-export interface B2BPortfolioOptimizationModel {
-  originalPortfolio?: B2BOriginalPortfolio | null
-  optimizedPortfolios?: B2BOptimizedPortfolio[] | null
-}
-
-export interface B2BPortfolioOptimizationModelIApiResult {
-  readonly content?: B2BPortfolioOptimizationModel | null
   readonly status?:
     | 'ok'
     | 'serverFailure'
@@ -1862,69 +1807,6 @@ export interface B2BPriceInfoIApiResult {
   readonly displayMessage?: string | null
 }
 
-export interface B2BSymbolNewsData {
-  /**
-   * The identifier of the news item.
-   * @format uuid
-   */
-  id?: string
-  /** The title of the news. */
-  title?: string | null
-  /** The news content. */
-  content?: string | null
-  /** The url of the image related to th news. */
-  imageUrl?: string | null
-  /** The name of the news source. */
-  source?: string | null
-  /** The url of the news source. */
-  sourceUrl?: string | null
-  /**
-   * The time of the creation of the news.
-   * @format int64
-   */
-  createdTimestamp?: number
-  /** The url where the news is available. */
-  url?: string | null
-  /**
-   * Integer value which describes the relevance of the news in the Front system.
-   * @format int32
-   */
-  rank?: number
-  /** List of stock symbols mentioned in the news. */
-  symbols?: string[] | null
-  /** List of cryptocurrencies mentioned in the news. */
-  cryptocurrencySymbols?: string[] | null
-}
-
-export type B2BSymbolNewsOrder = 'rank' | 'timestamp'
-
-export interface B2BSymbolNewsResponse {
-  /** The collection of news. */
-  news?: B2BSymbolNewsData[] | null
-  /**
-   * The total count of news related to the symbol
-   * @format int32
-   */
-  count?: number
-}
-
-export interface B2BSymbolNewsResponseIApiResult {
-  readonly content?: B2BSymbolNewsResponse | null
-  readonly status?:
-    | 'ok'
-    | 'serverFailure'
-    | 'permissionDenied'
-    | 'badRequest'
-    | 'notFound'
-    | 'conflict'
-    | 'tooManyRequest'
-    | 'locked'
-  readonly message?: string | null
-  readonly displayMessage?: string | null
-}
-
-export type B2BSymbolNewsSortingDirection = 'ascending' | 'descending'
-
 export type B2BTransactionType =
   | 'order'
   | 'conversionTo'
@@ -1940,6 +1822,8 @@ export type B2BTransactionType =
   | 'conversionFromFiat'
 
 export interface BrokerAccount {
+  /** @format uuid */
+  frontAccountId?: string
   accountId?: string | null
   accountName?: string | null
   /**
@@ -2371,6 +2255,7 @@ export type BrokerCryptocurrencyTransactionStatus =
   | 'emailVerification'
   | 'deviceConfirmationRequired'
   | 'mfaFailed'
+  | 'addressWhitelistRequired'
 
 export type BrokerCryptocurrencyTransactionType = 'unknown' | 'deposit' | 'withdrawal'
 
@@ -2448,6 +2333,8 @@ export type BrokerOrderPlaceType =
   | 'netCredit'
   | 'exercise'
 
+export type BrokerOrderPlaceTypeTrade = 'market' | 'limit' | 'stopLoss'
+
 export type BrokerOrderStatus =
   | 'unknown'
   | 'inProgress'
@@ -2469,6 +2356,64 @@ export type BrokerOrderTimeInForceType =
 export type BrokerOrderType = 'unknown' | 'buy' | 'sell'
 
 export type BrokerOrderValidationStatus = 'success' | 'failed'
+
+export interface BrokerPortfolioValueModel {
+  /**
+   * Total USD value of portfolio.
+   * @format double
+   */
+  readonly totalValue?: number
+  /**
+   * Total performance in percents based on the cost basis.
+   * @format double
+   */
+  totalPerformance?: number
+  /**
+   * USD value of all equities in the portfolio.
+   * @format double
+   */
+  equitiesValue?: number
+  /**
+   * Performance in percents of all equities based on the cost basis.
+   * @format double
+   */
+  equitiesPerformance?: number
+  /**
+   * USD value of all cryptocurrencies in the portfolio.
+   * @format double
+   */
+  cryptocurrenciesValue?: number
+  /**
+   * Performance in percents of all cryptocurrencies in the portfolio based on the cost basis.
+   * @format double
+   */
+  cryptocurrenciesPerformance?: number
+  /**
+   * USD value of all NFTs in the portfolio.
+   * @format double
+   */
+  nftsValue?: number
+  /**
+   * USD value of all fiat currencies in the portfolio.
+   * @format double
+   */
+  fiatValue?: number
+}
+
+export interface BrokerPortfolioValueModelIApiResult {
+  readonly content?: BrokerPortfolioValueModel | null
+  readonly status?:
+    | 'ok'
+    | 'serverFailure'
+    | 'permissionDenied'
+    | 'badRequest'
+    | 'notFound'
+    | 'conflict'
+    | 'tooManyRequest'
+    | 'locked'
+  readonly message?: string | null
+  readonly displayMessage?: string | null
+}
 
 export interface BrokerRefreshTokenRequest {
   type:
@@ -2605,44 +2550,39 @@ export interface BrokerTransactionsListRequest {
 }
 
 export type BrokerType =
-  | 'robinhood'
-  | 'eTrade'
-  | 'alpaca'
-  | 'tdAmeritrade'
-  | 'weBull'
-  | 'stash'
-  | 'interactiveBrokers'
-  | 'public'
-  | 'coinbase'
-  | 'kraken'
-  | 'coinbasePro'
-  | 'cryptoCom'
-  | 'openSea'
-  | 'binanceUs'
-  | 'gemini'
-  | 'cryptocurrencyAddress'
-  | 'cryptocurrencyWallet'
-  | 'okCoin'
-  | 'bittrex'
-  | 'kuCoin'
-  | 'etoro'
-  | 'cexIo'
-  | 'binanceInternational'
-  | 'bitstamp'
-  | 'gateIo'
-  | 'celsius'
-  | 'acorns'
-  | 'okx'
-  | 'bitFlyer'
-  | 'coinlist'
-  | 'huobi'
-  | 'bitfinex'
-  | 'deFiWallet'
-  | 'krakenDirect'
-  | 'vanguard'
-  | 'binanceInternationalDirect'
-  | 'bitfinexDirect'
-  | 'bybit'
+  | 'Robinhood'
+  | 'Alpaca'
+  | 'TdAmeritrade'
+  | 'WeBull'
+  | 'InteractiveBrokers'
+  | 'Public'
+  | 'Coinbase'
+  | 'Kraken'
+  | 'CoinbasePro'
+  | 'CryptoCom'
+  | 'OpenSea'
+  | 'BinanceUs'
+  | 'Gemini'
+  | 'OkCoin'
+  | 'Bittrex'
+  | 'KuCoin'
+  | 'Etoro'
+  | 'CexIo'
+  | 'BinanceInternational'
+  | 'Bitstamp'
+  | 'GateIo'
+  | 'Acorns'
+  | 'Okx'
+  | 'BitFlyer'
+  | 'Coinlist'
+  | 'Huobi'
+  | 'Bitfinex'
+  | 'DeFiWallet'
+  | 'KrakenDirect'
+  | 'Vanguard'
+  | 'BinanceInternationalDirect'
+  | 'BitfinexDirect'
+  | 'Bybit'
 
 export interface CatalogLink {
   /**
@@ -2670,12 +2610,6 @@ export interface CatalogLinkIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
-}
-
-export interface ChartItem {
-  /** @format double */
-  value?: number
-  date?: string | null
 }
 
 export interface ConfigureTransferRequest {
@@ -2772,6 +2706,21 @@ export interface ConfigureTransferResponse {
   errorMessage?: string | null
   /** List of holdings on the source account. */
   holdings?: ConfigureTransferResultHolding[] | null
+  /**
+   * Amount in USD to transfer. If not provided users can specify amount by themselves.
+   * @format double
+   */
+  amountInFiat?: number | null
+  /**
+   * Minimum transfer amount in fiat
+   * @format double
+   */
+  minimumTransferAmountInFiat?: number | null
+  /**
+   * Maximum transfer amount in fiat
+   * @format double
+   */
+  maximumTransferAmountInFiat?: number | null
 }
 
 export interface ConfigureTransferResponseIApiResult {
@@ -2895,6 +2844,7 @@ export type CryptocurrencyAddressType =
   | 'harmonyOneAddress'
   | 'tronAddress'
   | 'dogeAddress'
+  | 'opAddress'
 
 export interface CryptocurrencyCoinDescription {
   symbol?: string | null
@@ -2981,6 +2931,7 @@ export interface ExecuteTransferResponse {
     | 'emailConfirmationRequired'
     | 'deviceConfirmationRequired'
     | 'mfaFailed'
+    | 'addressWhitelistRequired'
   /** The type of the MFA when the status is `MfaRequired`. */
   mfaType?: ExecuteTransferMfaType | null
   /** Error message, if the operation did not complete successfully. */
@@ -3027,6 +2978,7 @@ export interface ExecuteTransferResultResponse {
     | 'emailVerification'
     | 'deviceConfirmationRequired'
     | 'mfaFailed'
+    | 'addressWhitelistRequired'
   /** Details of the current status of the transfer, as provided by the integration. */
   statusDetails?: string | null
   /** The address of the source account or wallet. */
@@ -3080,6 +3032,7 @@ export type ExecuteTransferStatus =
   | 'emailConfirmationRequired'
   | 'deviceConfirmationRequired'
   | 'mfaFailed'
+  | 'addressWhitelistRequired'
 
 export type HoldingTransferIneligibilityReason =
   | 'noEligibleNetworks'
@@ -3107,6 +3060,11 @@ export interface InitializeTransfersForLinkRequest {
    * can be used to initiate incoming transfers.
    */
   toAddresses?: TransferToAddress[] | null
+  /**
+   * Amount in USD to transfer. If not provided users can specify amount by themselves.
+   * @format double
+   */
+  amountInFiat?: number | null
 }
 
 export interface IntegrationNetworkResponse {
@@ -3786,7 +3744,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         /**
          * A unique Id representing the end user. Typically this will be a user Id from the
          * client application. Personally identifiable information, such as an email address or phone number,
-         * should not be used.
+         * should not be used. 50 characters length maximum.
          */
         UserId?: string
         /** Type of broker to redirect to. Will redirect to catalog if not provided. */
@@ -3843,7 +3801,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         /**
          * A unique Id representing the end user. Typically this will be a user Id from the
          * client application. Personally identifiable information, such as an email address or phone number,
-         * should not be used.
+         * should not be used. 50 characters length maximum.
          */
         UserId?: string
         /** Type of broker to redirect to. Will redirect to catalog if not provided. */
@@ -3977,6 +3935,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @name V1CryptocurrencyWalletsList
      * @summary Get supported wallets
      * @request GET:/api/v1/cryptocurrencyWallets
+     * @deprecated
      * @secure
      * @response `200` `BrokerCryptocurrencyWalletListResponseIApiResult` Success
      * @response `401` `any` Unauthorized
@@ -4198,118 +4157,13 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         ...params
       })
   }
-  news = {
-    /**
-     * @description Retrieve news related to the symbol in the request.
-     *
-     * @tags News
-     * @name V1NewsStockList
-     * @summary Retrieve news related to the symbol in the request
-     * @request GET:/api/v1/news/stock
-     * @secure
-     * @response `200` `B2BSymbolNewsResponseIApiResult` The list of news related to the symbol.
-     * @response `400` `ApiResult` Bad Request
-     * @response `401` `any` Unauthorized: Client Id or Client Secret are not correct or missing.
-     */
-    v1NewsStockList: (
-      query?: {
-        /**
-         * Lower timestamp limit of the news. If not speciefied news will be returned from the last 7 days.
-         * @format int64
-         */
-        From?: number
-        /**
-         * Upper timestamp limit of the news. If not speciefied news will be returned up to the current time.
-         * @format int64
-         */
-        To?: number
-        /** Specifies which symbol's news should be returned. */
-        Symbol?: string
-        /**
-         * The number of news to return. If not specified the maximum 25 value will be used.
-         * @format int32
-         */
-        Count?: number
-        /**
-         * The offset which is used for paginatin the result set.
-         * @format int32
-         */
-        Offset?: number
-        /** Specifies the sorting criteria of the news. By default the most relevant news will be returned first. */
-        Order?: 'rank' | 'timestamp'
-        /** Specifies the soring direction of the result set. */
-        SortDirection?: 'ascending' | 'descending'
-      },
-      params: RequestParams = {}
-    ) =>
-      this.request<B2BSymbolNewsResponseIApiResult, ApiResult>({
-        path: `/api/v1/news/stock`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params
-      }),
-
-    /**
-     * @description Retrieve news related to the symbol in the request.
-     *
-     * @tags News
-     * @name V1NewsCryptocurrencyList
-     * @summary Retrieve news related to the cryptocurrency symbol in the request
-     * @request GET:/api/v1/news/cryptocurrency
-     * @secure
-     * @response `200` `B2BSymbolNewsResponseIApiResult` The list of news related to the symbol.
-     * @response `400` `ApiResult` Bad Request
-     * @response `401` `any` Unauthorized: Client Id or Client Secret are not correct or missing.
-     */
-    v1NewsCryptocurrencyList: (
-      query?: {
-        /**
-         * Lower timestamp limit of the news. If not speciefied news will be returned from the last 7 days.
-         * @format int64
-         */
-        From?: number
-        /**
-         * Upper timestamp limit of the news. If not speciefied news will be returned up to the current time.
-         * @format int64
-         */
-        To?: number
-        /** Specifies which symbol's news should be returned. */
-        Symbol?: string
-        /**
-         * The number of news to return. If not specified the maximum 25 value will be used.
-         * @format int32
-         */
-        Count?: number
-        /**
-         * The offset which is used for paginatin the result set.
-         * @format int32
-         */
-        Offset?: number
-        /** Specifies the sorting criteria of the news. By default the most relevant news will be returned first. */
-        Order?: 'rank' | 'timestamp'
-        /** Specifies the soring direction of the result set. */
-        SortDirection?: 'ascending' | 'descending'
-      },
-      params: RequestParams = {}
-    ) =>
-      this.request<B2BSymbolNewsResponseIApiResult, ApiResult>({
-        path: `/api/v1/news/cryptocurrency`,
-        method: 'GET',
-        query: query,
-        secure: true,
-        format: 'json',
-        ...params
-      })
-  }
   portfolio = {
     /**
      * @description Obtain assets from the connected investment account. Performs realtime API call to the underlying integration.
      *
      * @tags Portfolio
      * @name V1HoldingsGetCreate
-     * @summary Get holdings
+     * @summary Get holdings.
      * @request POST:/api/v1/holdings/get
      * @secure
      * @response `200` `B2BBrokerPortfolioModelIApiResult` Holdings obtained
@@ -4328,29 +4182,24 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
       }),
 
     /**
-     * @description Get suggested portfolio optimizations based on different annualized standard deviations and performance.
+     * @description Obtain assets from the connected investment account and return total value and performance. Performs realtime API call to the underlying integration.
      *
      * @tags Portfolio
-     * @name V1HoldingsOptimizeList
-     * @summary Get optimized portfolio
-     * @request GET:/api/v1/holdings/optimize
+     * @name V1HoldingsValueCreate
+     * @summary Get holdings values.
+     * @request POST:/api/v1/holdings/value
      * @secure
-     * @response `200` `B2BPortfolioOptimizationModelIApiResult` Portfolio optimized
+     * @response `200` `BrokerPortfolioValueModelIApiResult` Market values of assets
      * @response `400` `ApiResult` Bad Request
      * @response `401` `any` Unauthorized: Client Id or Client Secret are not correct or missing.
      */
-    v1HoldingsOptimizeList: (
-      query?: {
-        /** Id of the end user to get the optimization of the aggregated portfolio for. */
-        UserId?: string
-      },
-      params: RequestParams = {}
-    ) =>
-      this.request<B2BPortfolioOptimizationModelIApiResult, ApiResult>({
-        path: `/api/v1/holdings/optimize`,
-        method: 'GET',
-        query: query,
+    v1HoldingsValueCreate: (data: BrokerBaseRequest, params: RequestParams = {}) =>
+      this.request<BrokerPortfolioValueModelIApiResult, ApiResult>({
+        path: `/api/v1/holdings/value`,
+        method: 'POST',
+        body: data,
         secure: true,
+        type: ContentType.Json,
         format: 'json',
         ...params
       }),
