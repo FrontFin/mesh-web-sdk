@@ -120,7 +120,7 @@ describe('createFrontConnection tests', () => {
     const payload: AccessTokenPayload = {
       accountTokens: [],
       brokerBrandInfo: { brokerLogo: '' },
-      brokerType: 'Robinhood',
+      brokerType: 'robinhood',
       brokerName: 'R'
     }
     window.dispatchEvent(
@@ -152,7 +152,7 @@ describe('createFrontConnection tests', () => {
 
     const payload: DelayedAuthPayload = {
       brokerBrandInfo: { brokerLogo: '' },
-      brokerType: 'Robinhood',
+      brokerType: 'robinhood',
       brokerName: 'R',
       refreshToken: 'rt'
     }
@@ -239,7 +239,7 @@ describe('createFrontConnection tests', () => {
         accessToken: 'at',
         accountId: 'aid',
         accountName: 'an',
-        brokerType: 'Acorns',
+        brokerType: 'acorns',
         brokerName: 'A'
       }
     ]
