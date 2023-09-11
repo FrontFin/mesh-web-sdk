@@ -3039,6 +3039,32 @@ export type ExecuteTransferStatus =
   | 'mfaFailed'
   | 'addressWhitelistRequired'
 
+export interface GetLinkTokenRequest {
+  /**
+   * A unique Id representing the end user. Typically this will be a user Id from the
+   * client application. Personally identifiable information, such as an email address or phone number,
+   * should not be used. 50 characters length maximum.
+   * @minLength 1
+   * @maxLength 50
+   */
+  userId: string
+  /** Type of broker to redirect to.Will redirect to catalog if not provided. */
+  brokerType?: BrokerType | null
+  /**
+   * Link Configuration identifier - an optional paramater for used configuration.
+   * If not provided default configuration with all avaialbe integrations will be used.
+   * @format uuid
+   */
+  configurationId?: string | null
+  /**
+   * The final screen of Link allows users to “continue” back to your app or “Link another account.”
+   * If this param is present then this button will be hidden.
+   */
+  restrictMultipleAccounts?: boolean
+  /** Encapsulates transaction-related parameters, including destination addresses and the amount to transfer in fiat currency. */
+  transferOptions?: LinkTokenTransferOptions | null
+}
+
 export type HoldingTransferIneligibilityReason =
   | 'noEligibleNetworks'
   | 'symbolDoesNotMatch'
@@ -3138,6 +3164,39 @@ export interface IntegrationNetworksModelResponse {
   supportsOutgoingTransfers?: boolean
   /** Specifies if the integration supports incoming transfers. */
   supportsIncomingTransfers?: boolean
+}
+
+export interface LinkTokenModel {
+  linkToken?: string | null
+}
+
+export interface LinkTokenModelIApiResult {
+  readonly content?: LinkTokenModel | null
+  readonly status?:
+    | 'ok'
+    | 'serverFailure'
+    | 'permissionDenied'
+    | 'badRequest'
+    | 'notFound'
+    | 'conflict'
+    | 'tooManyRequest'
+    | 'locked'
+  readonly message?: string | null
+  readonly displayMessage?: string | null
+}
+
+export interface LinkTokenTransferOptions {
+  /**
+   * The list of destination addresses with corresponding networks are asset symbols that
+   * can be used to initiate incoming transfers. If this parameter is present, the Link
+   * session will continue to transfer flow after connecting the origin account.
+   */
+  toAddresses?: TransferToAddress[] | null
+  /**
+   * Amount in USD to transfer. If not provided users can specify amount by themselves.
+   * @format double
+   */
+  amountInFiat?: number | null
 }
 
 export type MfaScheme = 'mfaCode' | 'challenge' | 'deviceConfirmation' | 'securityQuestion'
@@ -3755,11 +3814,6 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         /** Type of broker to redirect to. Will redirect to catalog if not provided. */
         BrokerType?: BrokerType
         /**
-         * Callback link - url to redirect user after authentication in brokerage account.
-         * If not provided default client's url will be used.
-         */
-        CallbackUrl?: string
-        /**
          * Link Configuration identifier - an optional paramater for used configuration.
          * If not provided default configuration with all avaialbe integrations will be used.
          */
@@ -3812,11 +3866,6 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         /** Type of broker to redirect to. Will redirect to catalog if not provided. */
         BrokerType?: BrokerType
         /**
-         * Callback link - url to redirect user after authentication in brokerage account.
-         * If not provided default client's url will be used.
-         */
-        CallbackUrl?: string
-        /**
          * Link Configuration identifier - an optional paramater for used configuration.
          * If not provided default configuration with all avaialbe integrations will be used.
          */
@@ -3839,6 +3888,30 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         path: `/api/v1/cataloglink`,
         method: 'POST',
         query: query,
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Get a short lived, one-time use token for initializing a Link session using the client-side SDKs
+     *
+     * @tags Managed Account Authentication
+     * @name V1LinktokenCreate
+     * @summary Get Link token with parameters
+     * @request POST:/api/v1/linktoken
+     * @secure
+     * @response `200` `LinkTokenModelIApiResult` Link token created.
+     * @response `400` `ApiResult` BadRequest can happen in following cases: <list type="number"><item><description>userId parameter not specified</description></item></list>
+     * @response `401` `any` Unauthorized: Client Id or Client Secret are not correct or missing.
+     * @response `404` `ApiResult` API Client not found.
+     */
+    v1LinktokenCreate: (data: GetLinkTokenRequest, params: RequestParams = {}) =>
+      this.request<LinkTokenModelIApiResult, ApiResult>({
+        path: `/api/v1/linktoken`,
+        method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,

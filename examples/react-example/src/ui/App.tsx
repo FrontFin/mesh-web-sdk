@@ -5,7 +5,7 @@ import { FrontPayload, TransferFinishedPayload } from '@front-finance/link'
 import { FrontApi } from '@front-finance/api'
 
 export const App: React.FC = () => {
-  const [iframeLink, setIframeLink] = useState<string | null>(null)
+  const [linkToken, setLinkToken] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [payload, setPayload] = useState<FrontPayload | null>(null)
   const [trasnferFinishedData, setTrasnferFinishedData] =
@@ -13,7 +13,7 @@ export const App: React.FC = () => {
 
   const getAuthLink = useCallback(async () => {
     setError(null)
-    setIframeLink(null)
+    setLinkToken(null)
     const api = new FrontApi({
       baseURL: frontApiUrl,
       headers: {
@@ -23,9 +23,8 @@ export const App: React.FC = () => {
     })
 
     // this request should be performed from the backend side
-    const response = await api.managedAccountAuthentication.v1CataloglinkList({
-      UserId: '7652B44F-9CDB-4519-AC82-4FA5500F7455', // insert your unique user identifier here
-      CallbackUrl: window.location.href // insert your callback URL here
+    const response = await api.managedAccountAuthentication.v1LinktokenCreate({
+      userId: '7652B44F-9CDB-4519-AC82-4FA5500F7455' // insert your unique user identifier here
     })
 
     const data = response.data
@@ -33,16 +32,16 @@ export const App: React.FC = () => {
       const error = (data && data.message) || response.statusText
       console.error('Error!', error)
       setError(error)
-    } else if (!data.content.iFrameUrl) {
+    } else if (!data.content.linkToken) {
       setError('Iframe url is empty')
     } else {
-      setIframeLink(data.content.iFrameUrl)
+      setLinkToken(data.content.linkToken)
     }
   }, [])
 
   const getTransferLink = useCallback(async () => {
     setError(null)
-    setIframeLink(null)
+    setLinkToken(null)
     const api = new FrontApi({
       baseURL: frontApiUrl,
       headers: {
@@ -52,8 +51,9 @@ export const App: React.FC = () => {
     })
 
     // this request should be performed from the backend side
-    const response = await api.managedAccountAuthentication.v1CataloglinkCreate(
-      {
+    const response = await api.managedAccountAuthentication.v1LinktokenCreate({
+      userId: '7652B44F-9CDB-4519-AC82-4FA5500F7455', // insert your unique user identifier here
+      transferOptions: {
         amountInFiat: 10, // amount to transfer
         toAddresses: [
           {
@@ -62,23 +62,18 @@ export const App: React.FC = () => {
             networkId: '7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12' // network id from /api/v1/transfers/managed/networks request
           }
         ]
-      },
-      {
-        UserId: '7652B44F-9CDB-4519-AC82-4FA5500F7455', // insert your unique user identifier here
-        CallbackUrl: window.location.href, // insert your callback URL here
-        EnableTransfers: true
       }
-    )
+    })
 
     const data = response.data
     if (response.status !== 200 || !data?.content) {
       const error = (data && data.message) || response.statusText
       console.error('Error!', error)
       setError(error)
-    } else if (!data.content.iFrameUrl) {
+    } else if (!data.content.linkToken) {
       setError('Iframe url is empty')
     } else {
-      setIframeLink(data.content.iFrameUrl)
+      setLinkToken(data.content.linkToken)
     }
   }, [])
 
@@ -142,13 +137,13 @@ export const App: React.FC = () => {
       </div>
 
       <FrontComponent
-        iframeLink={iframeLink}
+        linkToken={linkToken}
         onBrokerConnected={(authData: FrontPayload) => {
           setPayload(authData)
-          setIframeLink(null)
+          setLinkToken(null)
         }}
         onExit={err => {
-          setIframeLink(null)
+          setLinkToken(null)
           setError(err || null)
         }}
         onTransferFinished={data => {

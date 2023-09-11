@@ -277,14 +277,6 @@
             }
           },
           {
-            "name": "CallbackUrl",
-            "in": "query",
-            "description": "Callback link - url to redirect user after authentication in brokerage account.\r\nIf not provided default client's url will be used.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "EnableTransfers",
             "in": "query",
             "description": "Link Configuration identifier - an optional paramater for used configuration.\r\nIf not provided default configuration with all avaialbe integrations will be used.",
@@ -382,14 +374,6 @@
             }
           },
           {
-            "name": "CallbackUrl",
-            "in": "query",
-            "description": "Callback link - url to redirect user after authentication in brokerage account.\r\nIf not provided default client's url will be used.",
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
             "name": "EnableTransfers",
             "in": "query",
             "description": "Link Configuration identifier - an optional paramater for used configuration.\r\nIf not provided default configuration with all avaialbe integrations will be used.",
@@ -475,6 +459,93 @@
           },
           "400": {
             "description": "BadRequest can happen in following cases:\r\n<list type=\"number\"><item><description>userId parameter not specified</description></item><item><description>Callback url parameter is invalid</description></item><item><description>Client does not have callback url specified</description></item></list>",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResult"
+                },
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: Client Id or Client Secret are not correct or missing.",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/linktoken": {
+      "post": {
+        "tags": [
+          "Managed Account Authentication"
+        ],
+        "summary": "Get Link token with parameters",
+        "description": "Get a short lived, one-time use token for initializing a Link session using the client-side SDKs",
+        "requestBody": {
+          "description": "Create Link token request.",
+          "content": {
+            "application/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/GetLinkTokenRequest"
+                  }
+                ]
+              },
+              "example": {"userId":"UserId","brokerType":"robinhood","configurationId":"18a20b11-e47f-43b9-8546-94284e9ee547","restrictMultipleAccounts":true,"transferOptions":{"toAddresses":[{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"ETH","address":"0x00000000000000000000000"},{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"USDC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"MATIC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDC","address":"0x00000000000000000000000"}],"amountInFiat":10}}
+            },
+            "text/json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/GetLinkTokenRequest"
+                  }
+                ]
+              },
+              "example": {"userId":"UserId","brokerType":"robinhood","configurationId":"18a20b11-e47f-43b9-8546-94284e9ee547","restrictMultipleAccounts":true,"transferOptions":{"toAddresses":[{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"ETH","address":"0x00000000000000000000000"},{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"USDC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"MATIC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDC","address":"0x00000000000000000000000"}],"amountInFiat":10}}
+            },
+            "application/*+json": {
+              "schema": {
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/GetLinkTokenRequest"
+                  }
+                ]
+              },
+              "example": {"userId":"UserId","brokerType":"robinhood","configurationId":"18a20b11-e47f-43b9-8546-94284e9ee547","restrictMultipleAccounts":true,"transferOptions":{"toAddresses":[{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"ETH","address":"0x00000000000000000000000"},{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"USDC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"MATIC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDC","address":"0x00000000000000000000000"}],"amountInFiat":10}}
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Link token created.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LinkTokenModelIApiResult"
+                },
+                "example": {"content":{"linkToken":"aHR0cHM6Ly93ZWIuZ2V0ZnJvbnQuY29tL2IyYi1pZnJhbWUve2NsaWVudElkfS9icm9rZXItY29ubmVjdD9hdXRoX2NvZGU9e2F1dGhDb2RlfQ=="},"status":"ok","message":""}
+              }
+            }
+          },
+          "404": {
+            "description": "API Client not found.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResult"
+                },
+                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message"}
+              }
+            }
+          },
+          "400": {
+            "description": "BadRequest can happen in following cases:\r\n<list type=\"number\"><item><description>userId parameter not specified</description></item></list>",
             "content": {
               "application/json": {
                 "schema": {
@@ -8046,6 +8117,49 @@
         ],
         "type": "string"
       },
+      "GetLinkTokenRequest": {
+        "required": [
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "userId": {
+            "maxLength": 50,
+            "minLength": 1,
+            "type": "string",
+            "description": "A unique Id representing the end user. Typically this will be a user Id from the\r\nclient application. Personally identifiable information, such as an email address or phone number,\r\nshould not be used. 50 characters length maximum."
+          },
+          "brokerType": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerType"
+              }
+            ],
+            "description": "Type of broker to redirect to.Will redirect to catalog if not provided.",
+            "nullable": true
+          },
+          "configurationId": {
+            "type": "string",
+            "description": "Link Configuration identifier - an optional paramater for used configuration.\r\nIf not provided default configuration with all avaialbe integrations will be used.",
+            "format": "uuid",
+            "nullable": true
+          },
+          "restrictMultipleAccounts": {
+            "type": "boolean",
+            "description": "The final screen of Link allows users to “continue” back to your app or “Link another account.”\r\nIf this param is present then this button will be hidden."
+          },
+          "transferOptions": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LinkTokenTransferOptions"
+              }
+            ],
+            "description": "Encapsulates transaction-related parameters, including destination addresses and the amount to transfer in fiat currency.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "HoldingTransferIneligibilityReason": {
         "enum": [
           "noEligibleNetworks",
@@ -8231,6 +8345,79 @@
           "supportsIncomingTransfers": {
             "type": "boolean",
             "description": "Specifies if the integration supports incoming transfers."
+          }
+        },
+        "additionalProperties": false
+      },
+      "LinkTokenModel": {
+        "type": "object",
+        "properties": {
+          "linkToken": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LinkTokenModelIApiResult": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/LinkTokenModel"
+              }
+            ],
+            "nullable": true,
+            "readOnly": true
+          },
+          "status": {
+            "enum": [
+              "ok",
+              "serverFailure",
+              "permissionDenied",
+              "badRequest",
+              "notFound",
+              "conflict",
+              "tooManyRequest",
+              "locked"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiResultStatus"
+              }
+            ],
+            "readOnly": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "displayMessage": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "LinkTokenTransferOptions": {
+        "type": "object",
+        "properties": {
+          "toAddresses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransferToAddress"
+            },
+            "description": "The list of destination addresses with corresponding networks are asset symbols that\r\ncan be used to initiate incoming transfers. If this parameter is present, the Link\r\nsession will continue to transfer flow after connecting the origin account.",
+            "nullable": true
+          },
+          "amountInFiat": {
+            "type": "number",
+            "description": "Amount in USD to transfer. If not provided users can specify amount by themselves.",
+            "format": "double",
+            "nullable": true
           }
         },
         "additionalProperties": false

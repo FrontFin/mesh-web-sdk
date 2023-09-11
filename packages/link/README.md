@@ -16,22 +16,22 @@ With `yarn`
 yarn add @front-finance/link
 ```
 
-### Getting connection link
+### Getting Link token
 
-Connection link should be obtained from the GET `/api/v1/cataloglink` endpoint. Api reference for this request is available [here](https://integration-api.getfront.com/apireference#tag/Integrations/paths/~1api~1v1~1cataloglink/get). Request must be preformed from the server side because it requires the client secret. You will get the response in the following format:
+Link token should be obtained from the GET `/api/v1/linktoken` endpoint. Api reference for this request is available [here](https://integration-api.getfront.com/apireference#tag/Managed-Account-Authentication/paths/~1api~1v1~1linktoken/post). Request must be preformed from the server side because it requires the client secret. You will get the response in the following format:
 
 ```json
 {
   "content": {
-    "url": "https://web.getfront.com/broker-connect?auth_code={authCode}",
-    "iFrameUrl": "https://web.getfront.com/b2b-iframe/{clientId}/broker-connect?auth_code={authCode}"
+   "linkToken": "{linktoken}"
+},
   },
   "status": "ok",
   "message": ""
 }
 ```
 
-You can use `iFrameUrl` from this response to open the popup window with `openPopup` method.
+You can use `linkToken` value from this response to open the popup window with `openLink` method.
 
 ### Generating connection method
 
@@ -57,10 +57,10 @@ const frontConnection = createFrontConnection({
 
 ### Using connection to open auth link
 
-To open authentication link rpovided by Front Finance Integration API you need to call `openPopup` method:
+To open authentication link provided by Front Finance Integration API you need to call `openLink` method:
 
 ```tsx
-frontConnection.openPopup(authLink)
+frontConnection.openLink(linkToken)
 ```
 
 ℹ️ See full source code example at [react-example/src/ui/Front.tsx](../../examples/react-example/src/ui/Front.tsx)
@@ -84,7 +84,7 @@ useEffect(() => {
 
 useEffect(() => {
   if (authLink) {
-    frontConnection?.openPopup(authLink)
+    frontConnection?.openLink(linkToken)
   }
 }, [frontConnection, authLink])
 
@@ -93,7 +93,7 @@ return <></>
 
 ### Getting tokens
 
-After successfull authentication on Front Finance user will be redirected back to provided callback URL.
+After successfull authentication on the Link session, the popup will be closed and the broker tokens will be passed to the `onBrokerConnected` function.
 `FrontConnection` instance will check if URL contains query parameters, load broker tokens and fire the events.
 
 ### Available Connection configuration options
@@ -113,10 +113,12 @@ After successfull authentication on Front Finance user will be redirected back t
 
 #### `createFrontConnection` return value
 
-| key          | type                                   | description         |
-| ------------ | -------------------------------------- | ------------------- |
-| `openPopup`  | `(iframeUrl: string) => Promise<void>` | Opens url in popup  |
-| `closePopup` | `() => Promise<void>`                  | Closes popup window |
+| key          | type                                   | description                    |
+| ------------ | -------------------------------------- | ------------------------------ |
+| `openLink`   | `(linkToken: string) => Promise<void>` | Opens the Link UI popup        |
+| `closeLink`  | `() => Promise<void>`                  | Closes the Link UI popup       |
+| `o̶p̶e̶n̶P̶o̶p̶u̶p̶`  | `(iframeUrl: string) => Promise<void>` | (OBSOLETE) Opens url in popup  |
+| `c̶l̶o̶s̶e̶P̶o̶p̶u̶p̶` | `() => Promise<void>`                  | (OBSOLETE) Closes popup window |
 
 ### Using tokens
 

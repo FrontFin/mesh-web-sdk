@@ -121,12 +121,31 @@ export const createFrontConnection = (
     window.addEventListener('message', eventsListener)
   }
 
+  const openLink = async (linkToken: string) => {
+    if (!linkToken) {
+      options?.onExit?.('Invalid link token!')
+      return
+    }
+
+    currentOptions = options
+    const linkUrl = Buffer.from(linkToken, 'base64').toString()
+    iframeUrlObject = new URL(linkUrl)
+
+    window.removeEventListener('message', eventsListener)
+    addPopup(linkUrl)
+    window.addEventListener('message', eventsListener)
+  }
+
+  const closeLink = () => {
+    removePopup()
+    window.removeEventListener('message', eventsListener)
+    options.onExit?.()
+  }
+
   return {
     openPopup: openPopup,
-    closePopup: () => {
-      removePopup()
-      window.removeEventListener('message', eventsListener)
-      options.onExit?.()
-    }
+    openLink: openLink,
+    closePopup: closeLink,
+    closeLink: closeLink
   }
 }

@@ -316,4 +316,58 @@ describe('createFrontConnection tests', () => {
 
     expect(onEventHandler).not.toBeCalled()
   })
+
+  test('createFrontConnection "brokerageAccountAccessToken" event should send tokens - used with openLink function', () => {
+    const onEventHandler = jest.fn<void, [FrontEventType]>()
+    const onBrokerConnectedHandler = jest.fn<void, [FrontPayload]>()
+    const frontConnection = createFrontConnection({
+      clientId: 'test',
+      onBrokerConnected: onBrokerConnectedHandler,
+      onEvent: onEventHandler
+    })
+
+    frontConnection.openLink(
+      Buffer.from('http://localhost/1').toString('base64')
+    )
+
+    const payload: AccessTokenPayload = {
+      accountTokens: [],
+      brokerBrandInfo: { brokerLogo: '' },
+      brokerType: 'robinhood',
+      brokerName: 'R'
+    }
+    window.dispatchEvent(
+      new MessageEvent<EventPayload>('message', {
+        data: {
+          type: 'brokerageAccountAccessToken',
+          payload: payload
+        }
+      })
+    )
+
+    expect(onEventHandler).toBeCalledWith({
+      type: 'integrationConnected',
+      payload: { accessToken: payload }
+    })
+    expect(onBrokerConnectedHandler).toBeCalledWith({ accessToken: payload })
+  })
+
+  test('createFrontConnection closeLink should close popup', () => {
+    const exitFunction = jest.fn<void, [string | undefined]>()
+    const frontConnection = createFrontConnection({
+      clientId: 'test',
+      onBrokerConnected: jest.fn(),
+      onExit: exitFunction
+    })
+
+    frontConnection.openLink(
+      Buffer.from('http://localhost/1').toString('base64')
+    )
+    frontConnection.closeLink()
+
+    const iframeElement = document.getElementById('front-link-popup__iframe')
+    expect(iframeElement).toBeFalsy()
+
+    expect(exitFunction).toBeCalled()
+  })
 })

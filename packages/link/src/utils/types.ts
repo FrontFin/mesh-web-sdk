@@ -11,8 +11,22 @@ export type EventType =
   | 'transferFinished'
 
 export interface FrontConnection {
+  /**
+   * @deprecated (Obsolete) A function that takes iFrameUrl parameter from `/api/v1/cataloglink` endpoint as an input, and opens the Link UI popup
+   */
   openPopup: (iframeLink: string) => Promise<void>
+  /**
+   * A function that takes linkToken parameter from `/api/v1/linktoken` endpoint as an input, and opens the Link UI popup
+   */
+  openLink: (linkToken: string) => Promise<void>
+  /**
+   * @deprecated (Obsolete) A function to close Link UI popup
+   */
   closePopup: () => void
+  /**
+   * A function to close Link UI popup
+   */
+  closeLink: () => void
 }
 
 export interface BrokerAccountToken {

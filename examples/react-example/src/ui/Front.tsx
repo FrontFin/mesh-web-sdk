@@ -8,11 +8,11 @@ import {
 import { clientId } from '../utility/config'
 
 export const FrontComponent: React.FC<{
-  iframeLink?: string | null
+  linkToken?: string | null
   onBrokerConnected: (authData: FrontPayload) => void
   onTransferFinished?: (payload: TransferFinishedPayload) => void
   onExit?: (error?: string) => void
-}> = ({ iframeLink, onBrokerConnected, onTransferFinished, onExit }) => {
+}> = ({ linkToken, onBrokerConnected, onTransferFinished, onExit }) => {
   const [frontConnection, setFrontConnection] =
     useState<FrontConnection | null>(null)
 
@@ -40,10 +40,10 @@ export const FrontComponent: React.FC<{
   }, [])
 
   useEffect(() => {
-    if (iframeLink) {
-      frontConnection?.openPopup(iframeLink)
+    if (linkToken) {
+      frontConnection?.openLink(linkToken)
     }
-  }, [frontConnection, iframeLink])
+  }, [frontConnection, linkToken])
 
   return <></>
 }
