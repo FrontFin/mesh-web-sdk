@@ -13,6 +13,10 @@ import { FrontEventType, isFrontEventTypeKey } from './utils/event-types'
 let currentOptions: FrontOptions | undefined
 let iframeUrlObject: URL | undefined
 
+const iframeElement = () => {
+  return document.getElementById(iframeId) as HTMLIFrameElement
+}
+
 function eventsListener(
   event:
     | MessageEvent<{
@@ -84,12 +88,17 @@ function eventsListener(
     }
     case 'loaded': {
       if (currentOptions?.accessTokens) {
-        const iframeElement = document.getElementById(
-          iframeId
-        ) as HTMLIFrameElement
-
-        iframeElement.contentWindow?.postMessage(
+        iframeElement().contentWindow?.postMessage(
           { type: 'frontAccessTokens', payload: currentOptions.accessTokens },
+          iframeUrlObject?.origin || 'https://web.getfront.com'
+        )
+      }
+      if (currentOptions?.transferDestinationTokens) {
+        iframeElement().contentWindow?.postMessage(
+          {
+            type: 'frontTransferDestinationTokens',
+            payload: currentOptions.transferDestinationTokens
+          },
           iframeUrlObject?.origin || 'https://web.getfront.com'
         )
       }

@@ -243,10 +243,20 @@ describe('createFrontConnection tests', () => {
         brokerName: 'A'
       }
     ]
+    const destinationTokens: IntegrationAccessToken[] = [
+      {
+        accessToken: 'ttoken',
+        accountId: 'tid',
+        accountName: 'tname',
+        brokerType: 'acorns',
+        brokerName: 'tbrokername'
+      }
+    ]
     const frontConnection = createFrontConnection({
       clientId: 'test',
       onBrokerConnected: jest.fn(),
-      accessTokens: tokens
+      accessTokens: tokens,
+      transferDestinationTokens: destinationTokens
     })
 
     frontConnection.openPopup('http://localhost/1')
@@ -271,6 +281,11 @@ describe('createFrontConnection tests', () => {
 
     expect(postMessageSpy).toBeCalledWith(
       { type: 'frontAccessTokens', payload: tokens },
+      'http://localhost'
+    )
+
+    expect(postMessageSpy).toBeCalledWith(
+      { type: 'frontTransferDestinationTokens', payload: destinationTokens },
       'http://localhost'
     )
   })

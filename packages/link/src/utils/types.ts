@@ -131,4 +131,10 @@ export interface FrontOptions {
    * These access tokens are used to initialize crypto transfers flow at 'Select asset step'
    */
   accessTokens?: IntegrationAccessToken[]
+
+  /**
+   * (Optional) An array of integration access tokens.
+   * Can be used to initialize the crypto transfers flow as an alternative to the target addresses.
+   */
+  transferDestinationTokens?: IntegrationAccessToken[]
 }
