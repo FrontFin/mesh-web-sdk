@@ -3048,7 +3048,10 @@ export interface GetLinkTokenRequest {
    * @maxLength 50
    */
   userId: string
-  /** Type of broker to redirect to.Will redirect to catalog if not provided. */
+  /**
+   * Type of integration to redirect to. Will redirect to catalog if not provided.
+   * Not supported types: DeFiWallet, CryptocurrencyAddress, CryptocurrencyWallet.
+   */
   brokerType?: BrokerType | null
   /**
    * Link Configuration identifier - an optional paramater for used configuration.
@@ -3811,7 +3814,10 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
          * should not be used. 50 characters length maximum.
          */
         UserId?: string
-        /** Type of broker to redirect to. Will redirect to catalog if not provided. */
+        /**
+         * Type of integration to redirect to. Will redirect to catalog if not provided.
+         * Not supported types: DeFiWallet, CryptocurrencyAddress, CryptocurrencyWallet.
+         */
         BrokerType?: BrokerType
         /**
          * Link Configuration identifier - an optional paramater for used configuration.
@@ -3863,7 +3869,10 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
          * should not be used. 50 characters length maximum.
          */
         UserId?: string
-        /** Type of broker to redirect to. Will redirect to catalog if not provided. */
+        /**
+         * Type of integration to redirect to. Will redirect to catalog if not provided.
+         * Not supported types: DeFiWallet, CryptocurrencyAddress, CryptocurrencyWallet.
+         */
         BrokerType?: BrokerType
         /**
          * Link Configuration identifier - an optional paramater for used configuration.

@@ -102,6 +102,8 @@ function eventsListener(
           iframeUrlObject?.origin || 'https://web.getfront.com'
         )
       }
+
+      currentOptions?.onEvent?.({ type: 'pageLoaded' })
       break
     }
     default: {
@@ -137,7 +139,7 @@ export const createFrontConnection = (
     }
 
     currentOptions = options
-    const linkUrl = Buffer.from(linkToken, 'base64').toString()
+    const linkUrl = window.atob(linkToken)
     iframeUrlObject = new URL(linkUrl)
 
     window.removeEventListener('message', eventsListener)

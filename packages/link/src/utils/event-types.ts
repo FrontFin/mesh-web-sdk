@@ -10,6 +10,7 @@ export type FrontEventType =
   | TransferPreviewed
   | TransferPreviewError
   | TransferExecutionError
+  | PageLoaded
 
 const FRONT_EVENT_TYPE_KEYS = [
   'integrationConnected',
@@ -20,7 +21,8 @@ const FRONT_EVENT_TYPE_KEYS = [
   'transferStarted',
   'transferPreviewed',
   'transferPreviewError',
-  'transferExecutionError'
+  'transferExecutionError',
+  'pageLoaded'
 ] as const
 
 export type FrontEventTypeKeys = (typeof FRONT_EVENT_TYPE_KEYS)[number]
@@ -31,6 +33,10 @@ export function isFrontEventTypeKey(key: string): key is FrontEventTypeKeys {
 
 interface FrontEventBase {
   type: FrontEventTypeKeys
+}
+
+export interface PageLoaded {
+  type: 'pageLoaded'
 }
 
 export interface IntegrationConnected extends FrontEventBase {

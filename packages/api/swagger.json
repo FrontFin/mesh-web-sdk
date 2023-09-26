@@ -267,7 +267,7 @@
           {
             "name": "BrokerType",
             "in": "query",
-            "description": "Type of broker to redirect to. Will redirect to catalog if not provided.",
+            "description": "Type of integration to redirect to. Will redirect to catalog if not provided.\r\nNot supported types: DeFiWallet, CryptocurrencyAddress, CryptocurrencyWallet.",
             "schema": {
               "allOf": [
                 {
@@ -364,7 +364,7 @@
           {
             "name": "BrokerType",
             "in": "query",
-            "description": "Type of broker to redirect to. Will redirect to catalog if not provided.",
+            "description": "Type of integration to redirect to. Will redirect to catalog if not provided.\r\nNot supported types: DeFiWallet, CryptocurrencyAddress, CryptocurrencyWallet.",
             "schema": {
               "allOf": [
                 {
@@ -8135,7 +8135,7 @@
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of broker to redirect to.Will redirect to catalog if not provided.",
+            "description": "Type of integration to redirect to. Will redirect to catalog if not provided.\r\nNot supported types: DeFiWallet, CryptocurrencyAddress, CryptocurrencyWallet.",
             "nullable": true
           },
           "configurationId": {

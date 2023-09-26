@@ -34,6 +34,9 @@ export const FrontComponent: React.FC<{
         onTransferFinished: transferData => {
           console.info('[FRONT TRANSFER FINISHED]', transferData)
           onTransferFinished?.(transferData)
+        },
+        onEvent: ev => {
+          console.info('[FRONT Event]', ev)
         }
       })
     )
