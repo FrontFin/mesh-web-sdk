@@ -23,6 +23,11 @@ export interface ApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /**
+   * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
+   * All possible error types are available in the documentation.
+   */
+  errorType?: string | null
 }
 
 export type ApiResultStatus =
@@ -64,6 +69,7 @@ export interface AssetPaginationResponseIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export type AssetType = 'equity' | 'cryptocurrency'
@@ -133,6 +139,7 @@ export interface B2BBrokerAccountBalanceModelIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface B2BBrokerAuthPromptResponse {
@@ -157,6 +164,7 @@ export interface B2BBrokerAuthPromptResponseIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface B2BBrokerAuthRequest {
@@ -186,7 +194,6 @@ export interface B2BBrokerAuthRequest {
     | 'binanceInternational'
     | 'bitstamp'
     | 'gateIo'
-    | 'celsius'
     | 'acorns'
     | 'okx'
     | 'bitFlyer'
@@ -245,12 +252,15 @@ export interface B2BBrokerAuthResponse {
   challengeExpiresInSeconds?: number | null
   errorMessage?: string | null
   displayMessage?: string | null
+  /** @deprecated */
   accessToken?: string | null
+  /** @deprecated */
   refreshToken?: string | null
   /** @format int32 */
   expiresInSeconds?: number | null
   /** @format int32 */
   refreshTokenExpiresInSeconds?: number | null
+  /** @deprecated */
   account?: BrokerAccount | null
   brokerBrandInfo?: BrokerBrandInfo | null
   accountTokens?: BrokerAccountTokens[] | null
@@ -271,6 +281,7 @@ export interface B2BBrokerAuthResponseIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export type B2BBrokerAuthStatus = 'failed' | 'succeeded' | 'mfaRequired'
@@ -320,6 +331,7 @@ export interface B2BBrokerCreateCryptocurrencyTransactionResponseIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface B2BBrokerCreateOrderRequest {
@@ -355,7 +367,6 @@ export interface B2BBrokerCreateOrderRequest {
     | 'binanceInternational'
     | 'bitstamp'
     | 'gateIo'
-    | 'celsius'
     | 'acorns'
     | 'okx'
     | 'bitFlyer'
@@ -450,7 +461,6 @@ export interface B2BBrokerCreateOrderResult {
     | 'binanceInternational'
     | 'bitstamp'
     | 'gateIo'
-    | 'celsius'
     | 'acorns'
     | 'okx'
     | 'bitFlyer'
@@ -521,6 +531,7 @@ export interface B2BBrokerCreateOrderResultIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface B2BBrokerCryptocurrencyDepositAddressResponse {
@@ -548,6 +559,7 @@ export interface B2BBrokerCryptocurrencyDepositAddressResponseIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface B2BBrokerCryptocurrencySymbolDetailsResponse {
@@ -572,6 +584,7 @@ export interface B2BBrokerCryptocurrencySymbolDetailsResponseIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface B2BBrokerCryptocurrencyTransaction {
@@ -684,6 +697,7 @@ export interface B2BBrokerCryptocurrencyTransactionIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface B2BBrokerCryptocurrencyWalletAuthRequest {
@@ -802,7 +816,6 @@ export interface B2BBrokerOrder {
     | 'binanceInternational'
     | 'bitstamp'
     | 'gateIo'
-    | 'celsius'
     | 'acorns'
     | 'okx'
     | 'bitFlyer'
@@ -848,6 +861,7 @@ export interface B2BBrokerOrderIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface B2BBrokerOrderListRequest {
@@ -883,7 +897,6 @@ export interface B2BBrokerOrderListRequest {
     | 'binanceInternational'
     | 'bitstamp'
     | 'gateIo'
-    | 'celsius'
     | 'acorns'
     | 'okx'
     | 'bitFlyer'
@@ -949,6 +962,7 @@ export interface B2BBrokerOrderListResponseIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export type B2BBrokerOrderPaymentSymbolType = 'fiat' | 'cryptocurrency'
@@ -986,7 +1000,6 @@ export interface B2BBrokerOrderRequest {
     | 'binanceInternational'
     | 'bitstamp'
     | 'gateIo'
-    | 'celsius'
     | 'acorns'
     | 'okx'
     | 'bitFlyer'
@@ -1043,6 +1056,7 @@ export interface B2BBrokerOrderSymbolInfoIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface B2BBrokerOrderTrade {
@@ -1104,7 +1118,6 @@ export interface B2BBrokerPortfolioModel {
     | 'binanceInternational'
     | 'bitstamp'
     | 'gateIo'
-    | 'celsius'
     | 'acorns'
     | 'okx'
     | 'bitFlyer'
@@ -1138,6 +1151,7 @@ export interface B2BBrokerPortfolioModelIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface B2BBrokerPreviewOrderResult {
@@ -1167,7 +1181,6 @@ export interface B2BBrokerPreviewOrderResult {
     | 'binanceInternational'
     | 'bitstamp'
     | 'gateIo'
-    | 'celsius'
     | 'acorns'
     | 'okx'
     | 'bitFlyer'
@@ -1207,14 +1220,18 @@ export interface B2BBrokerPreviewOrderResultIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface B2BBrokerRefreshTokenResponse {
   status?: 'failed' | 'succeeded' | 'mfaRequired'
   errorMessage?: string | null
   displayMessage?: string | null
+  /** @deprecated */
   account?: BrokerAccount | null
+  /** @deprecated */
   accessToken?: string | null
+  /** @deprecated */
   refreshToken?: string | null
   /** @format int32 */
   expiresInSeconds?: number | null
@@ -1236,6 +1253,7 @@ export interface B2BBrokerRefreshTokenResponseIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface B2BBrokerSymbolInfoForOrderRequest {
@@ -1271,7 +1289,6 @@ export interface B2BBrokerSymbolInfoForOrderRequest {
     | 'binanceInternational'
     | 'bitstamp'
     | 'gateIo'
-    | 'celsius'
     | 'acorns'
     | 'okx'
     | 'bitFlyer'
@@ -1378,7 +1395,6 @@ export interface B2BBrokerTradingFeatureInfo {
     | 'binanceInternational'
     | 'bitstamp'
     | 'gateIo'
-    | 'celsius'
     | 'acorns'
     | 'okx'
     | 'bitFlyer'
@@ -1435,6 +1451,7 @@ export interface B2BBrokerTradingFeatureInfoIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface B2BBrokerTradingFeatureOrderType {
@@ -1502,6 +1519,7 @@ export interface B2BBrokerTransactionsListModelIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface B2BBrokersHealthStatus {
@@ -1532,7 +1550,6 @@ export interface B2BBrokersHealthStatus {
     | 'binanceInternational'
     | 'bitstamp'
     | 'gateIo'
-    | 'celsius'
     | 'acorns'
     | 'okx'
     | 'bitFlyer'
@@ -1545,6 +1562,8 @@ export interface B2BBrokersHealthStatus {
     | 'binanceInternationalDirect'
     | 'bitfinexDirect'
     | 'bybit'
+  /** Name of the integration */
+  name?: string | null
   /** Is the communication with the integration up */
   isUp?: boolean
   /** Description of the outage */
@@ -1561,6 +1580,8 @@ export interface B2BBrokersHealthStatus {
   downTimeEnd?: number | null
   /** Get products supported by the financial institution */
   supportedProducts?: BrokerFeature[] | null
+  /** Short information about DeFiWallet */
+  deFiWalletData?: DeFiWalletHealthStatusInfo | null
 }
 
 export interface B2BBrokersHealthStatusListIApiResult {
@@ -1576,6 +1597,7 @@ export interface B2BBrokersHealthStatusListIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface B2BFiatPortfolioModel {
@@ -1596,6 +1618,7 @@ export interface B2BFiatPortfolioModelIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface B2BNftPosition {
@@ -1715,6 +1738,7 @@ export interface B2BPortfolioModelIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface B2BPosition {
@@ -1805,6 +1829,7 @@ export interface B2BPriceInfoIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export type B2BTransactionType =
@@ -1820,6 +1845,90 @@ export type B2BTransactionType =
   | 'unknown'
   | 'conversionToFiat'
   | 'conversionFromFiat'
+
+export interface BalanceBrokerBaseRequest {
+  /**
+   * Auth token that allows connecting to the target institution
+   * @minLength 1
+   */
+  authToken: string
+  /**
+   * Type of the institution to connect
+   *
+   * ### Supported integrations:
+   * ```Robinhood```
+   * ```ETrade```
+   * ```Alpaca```
+   * ```TdAmeritrade```
+   * ```WeBull```
+   * ```Stash```
+   * ```InteractiveBrokers```
+   * ```Public```
+   * ```Coinbase```
+   * ```Kraken```
+   * ```CoinbasePro```
+   * ```CryptoCom```
+   * ```Binance```
+   * ```Gemini```
+   * ```OkCoin```
+   * ```Bittrex```
+   * ```KuCoin```
+   * ```Etoro```
+   * ```CexIo```
+   * ```BinanceInternational```
+   * ```Bitstamp```
+   * ```GateIo```
+   * ```Acorns```
+   * ```Okx```
+   * ```BitFlyer```
+   * ```Coinlist```
+   * ```Huobi```
+   * ```Bitfinex```
+   * ```KrakenDirect```
+   * ```Vanguard```
+   * ```BinanceInternationalDirect```
+   * ```BitfinexDirect```
+   * ```Bybit```
+   */
+  type:
+    | 'robinhood'
+    | 'eTrade'
+    | 'alpaca'
+    | 'tdAmeritrade'
+    | 'weBull'
+    | 'stash'
+    | 'interactiveBrokers'
+    | 'public'
+    | 'coinbase'
+    | 'kraken'
+    | 'coinbasePro'
+    | 'cryptoCom'
+    | 'openSea'
+    | 'binanceUs'
+    | 'gemini'
+    | 'cryptocurrencyAddress'
+    | 'cryptocurrencyWallet'
+    | 'okCoin'
+    | 'bittrex'
+    | 'kuCoin'
+    | 'etoro'
+    | 'cexIo'
+    | 'binanceInternational'
+    | 'bitstamp'
+    | 'gateIo'
+    | 'acorns'
+    | 'okx'
+    | 'bitFlyer'
+    | 'coinlist'
+    | 'huobi'
+    | 'bitfinex'
+    | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
+    | 'bybit'
+}
 
 export interface BrokerAccount {
   /** @format uuid */
@@ -1894,7 +2003,6 @@ export interface BrokerAuthenticationScheme {
     | 'binanceInternational'
     | 'bitstamp'
     | 'gateIo'
-    | 'celsius'
     | 'acorns'
     | 'okx'
     | 'bitFlyer'
@@ -1932,6 +2040,7 @@ export interface BrokerAuthenticationSchemeIReadOnlyCollectionIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface BrokerBaseRequest {
@@ -1967,7 +2076,6 @@ export interface BrokerBaseRequest {
     | 'binanceInternational'
     | 'bitstamp'
     | 'gateIo'
-    | 'celsius'
     | 'acorns'
     | 'okx'
     | 'bitFlyer'
@@ -2020,7 +2128,6 @@ export interface BrokerCreateCryptocurrencyTransactionRequest {
     | 'binanceInternational'
     | 'bitstamp'
     | 'gateIo'
-    | 'celsius'
     | 'acorns'
     | 'okx'
     | 'bitFlyer'
@@ -2120,7 +2227,6 @@ export interface BrokerCryptocurrencyDepositAddressRequest {
     | 'binanceInternational'
     | 'bitstamp'
     | 'gateIo'
-    | 'celsius'
     | 'acorns'
     | 'okx'
     | 'bitFlyer'
@@ -2203,7 +2309,6 @@ export interface BrokerCryptocurrencyTransactionDetailsRequest {
     | 'binanceInternational'
     | 'bitstamp'
     | 'gateIo'
-    | 'celsius'
     | 'acorns'
     | 'okx'
     | 'bitFlyer'
@@ -2277,6 +2382,7 @@ export interface BrokerCryptocurrencyWalletListResponseIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export type BrokerFeature =
@@ -2413,6 +2519,7 @@ export interface BrokerPortfolioValueModelIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface BrokerRefreshTokenRequest {
@@ -2442,7 +2549,6 @@ export interface BrokerRefreshTokenRequest {
     | 'binanceInternational'
     | 'bitstamp'
     | 'gateIo'
-    | 'celsius'
     | 'acorns'
     | 'okx'
     | 'bitFlyer'
@@ -2512,7 +2618,6 @@ export interface BrokerTransactionsListRequest {
     | 'binanceInternational'
     | 'bitstamp'
     | 'gateIo'
-    | 'celsius'
     | 'acorns'
     | 'okx'
     | 'bitFlyer'
@@ -2575,7 +2680,6 @@ export type BrokerType =
   | 'binanceInternational'
   | 'bitstamp'
   | 'gateIo'
-  | 'celsius'
   | 'acorns'
   | 'okx'
   | 'bitFlyer'
@@ -2615,6 +2719,7 @@ export interface CatalogLinkIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface ConfigureTransferRequest {
@@ -2650,7 +2755,6 @@ export interface ConfigureTransferRequest {
     | 'binanceInternational'
     | 'bitstamp'
     | 'gateIo'
-    | 'celsius'
     | 'acorns'
     | 'okx'
     | 'bitFlyer'
@@ -2741,6 +2845,7 @@ export interface ConfigureTransferResponseIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface ConfigureTransferResultHolding {
@@ -2870,6 +2975,12 @@ export type CryptocurrencyWalletType =
   | 'alphaWallet'
   | 'atomicWallet'
 
+export interface DeFiWalletHealthStatusInfo {
+  /** @format uuid */
+  id?: string
+  name?: string | null
+}
+
 export type ExecuteTransferMfaType = 'unspecified' | 'phone' | 'email' | 'totp'
 
 export interface ExecuteTransferRequest {
@@ -2905,7 +3016,6 @@ export interface ExecuteTransferRequest {
     | 'binanceInternational'
     | 'bitstamp'
     | 'gateIo'
-    | 'celsius'
     | 'acorns'
     | 'okx'
     | 'bitFlyer'
@@ -2958,6 +3068,7 @@ export interface ExecuteTransferResponseIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface ExecuteTransferResultResponse {
@@ -3039,6 +3150,15 @@ export type ExecuteTransferStatus =
   | 'mfaFailed'
   | 'addressWhitelistRequired'
 
+export type FinancialInstitutionIntegrationType =
+  | 'brokerage'
+  | 'bank'
+  | 'exchange'
+  | 'wallet'
+  | 'address'
+  | 'nftMarketplace'
+  | 'deFiWallet'
+
 export interface GetLinkTokenRequest {
   /**
    * A unique Id representing the end user. Typically this will be a user Id from the
@@ -3051,14 +3171,9 @@ export interface GetLinkTokenRequest {
   /**
    * Type of integration to redirect to. Will redirect to catalog if not provided.
    * Not supported types: DeFiWallet, CryptocurrencyAddress, CryptocurrencyWallet.
+   * @deprecated
    */
   brokerType?: BrokerType | null
-  /**
-   * Link Configuration identifier - an optional paramater for used configuration.
-   * If not provided default configuration with all avaialbe integrations will be used.
-   * @format uuid
-   */
-  configurationId?: string | null
   /**
    * The final screen of Link allows users to “continue” back to your app or “Link another account.”
    * If this param is present then this button will be hidden.
@@ -3066,6 +3181,11 @@ export interface GetLinkTokenRequest {
   restrictMultipleAccounts?: boolean
   /** Encapsulates transaction-related parameters, including destination addresses and the amount to transfer in fiat currency. */
   transferOptions?: LinkTokenTransferOptions | null
+  /**
+   * A unique identifier representing a specific integration obtained from the list of available integrations.
+   * @format uuid
+   */
+  integrationId?: string | null
 }
 
 export type HoldingTransferIneligibilityReason =
@@ -3086,6 +3206,7 @@ export interface IApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface InitializeTransfersForLinkRequest {
@@ -3099,6 +3220,52 @@ export interface InitializeTransfersForLinkRequest {
    * @format double
    */
   amountInFiat?: number | null
+}
+
+export interface IntegrationModel {
+  /** @format uuid */
+  id?: string
+  name?: string | null
+  type?:
+    | 'robinhood'
+    | 'eTrade'
+    | 'alpaca'
+    | 'tdAmeritrade'
+    | 'weBull'
+    | 'stash'
+    | 'interactiveBrokers'
+    | 'public'
+    | 'coinbase'
+    | 'kraken'
+    | 'coinbasePro'
+    | 'cryptoCom'
+    | 'openSea'
+    | 'binanceUs'
+    | 'gemini'
+    | 'cryptocurrencyAddress'
+    | 'cryptocurrencyWallet'
+    | 'okCoin'
+    | 'bittrex'
+    | 'kuCoin'
+    | 'etoro'
+    | 'cexIo'
+    | 'binanceInternational'
+    | 'bitstamp'
+    | 'gateIo'
+    | 'acorns'
+    | 'okx'
+    | 'bitFlyer'
+    | 'coinlist'
+    | 'huobi'
+    | 'bitfinex'
+    | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
+    | 'bybit'
+  deFiWalletProviderId?: string | null
+  categories?: FinancialInstitutionIntegrationType[] | null
 }
 
 export interface IntegrationNetworkResponse {
@@ -3118,6 +3285,7 @@ export interface IntegrationNetworkResponseIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface IntegrationNetworksModelResponse {
@@ -3148,7 +3316,6 @@ export interface IntegrationNetworksModelResponse {
     | 'binanceInternational'
     | 'bitstamp'
     | 'gateIo'
-    | 'celsius'
     | 'acorns'
     | 'okx'
     | 'bitFlyer'
@@ -3169,6 +3336,26 @@ export interface IntegrationNetworksModelResponse {
   supportsIncomingTransfers?: boolean
 }
 
+export interface IntegrationsResponse {
+  items?: IntegrationModel[] | null
+}
+
+export interface IntegrationsResponseIApiResult {
+  readonly content?: IntegrationsResponse | null
+  readonly status?:
+    | 'ok'
+    | 'serverFailure'
+    | 'permissionDenied'
+    | 'badRequest'
+    | 'notFound'
+    | 'conflict'
+    | 'tooManyRequest'
+    | 'locked'
+  readonly message?: string | null
+  readonly displayMessage?: string | null
+  readonly errorType?: string | null
+}
+
 export interface LinkTokenModel {
   linkToken?: string | null
 }
@@ -3186,6 +3373,7 @@ export interface LinkTokenModelIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface LinkTokenTransferOptions {
@@ -3223,6 +3411,7 @@ export interface NetworkModelResponseIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface NetworkResponse {
@@ -3237,6 +3426,8 @@ export interface NetworkResponse {
   chainId?: string | null
   /** The list of tokens that are currently supported to be transferred using the network. */
   supportedTokens?: string[] | null
+  /** The symbol of the network's native cryptocurrency. */
+  nativeSymbol?: string | null
 }
 
 export interface NetworkResponseWithIntegrations {
@@ -3251,6 +3442,8 @@ export interface NetworkResponseWithIntegrations {
   chainId?: string | null
   /** The list of tokens that are currently supported to be transferred using the network. */
   supportedTokens?: string[] | null
+  /** The symbol of the network's native cryptocurrency. */
+  nativeSymbol?: string | null
   /** The list of types of integrations that are currently supported to perform transfers over the network. */
   supportedBrokerTypes?: BrokerType[] | null
 }
@@ -3324,6 +3517,310 @@ export interface NftPositionWithMarketValues {
   portfolioPercentage?: number | null
 }
 
+export interface PortfolioBrokerBaseRequest {
+  /**
+   * Auth token that allows connecting to the target institution
+   * @minLength 1
+   */
+  authToken: string
+  /**
+   * Type of the institution to connect
+   *
+   * ### Supported integrations:
+   * ```Robinhood```
+   * ```ETrade```
+   * ```Alpaca```
+   * ```TdAmeritrade```
+   * ```WeBull```
+   * ```Stash```
+   * ```InteractiveBrokers```
+   * ```Public```
+   * ```Coinbase```
+   * ```Kraken```
+   * ```CoinbasePro```
+   * ```CryptoCom```
+   * ```OpenSea```
+   * ```Binance```
+   * ```Gemini```
+   * ```OkCoin```
+   * ```Bittrex```
+   * ```KuCoin```
+   * ```Etoro```
+   * ```CexIo```
+   * ```BinanceInternational```
+   * ```Bitstamp```
+   * ```GateIo```
+   * ```Acorns```
+   * ```Okx```
+   * ```BitFlyer```
+   * ```Coinlist```
+   * ```Huobi```
+   * ```Bitfinex```
+   * ```KrakenDirect```
+   * ```Vanguard```
+   * ```BinanceInternationalDirect```
+   * ```BitfinexDirect```
+   * ```Bybit```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   */
+  type:
+    | 'robinhood'
+    | 'eTrade'
+    | 'alpaca'
+    | 'tdAmeritrade'
+    | 'weBull'
+    | 'stash'
+    | 'interactiveBrokers'
+    | 'public'
+    | 'coinbase'
+    | 'kraken'
+    | 'coinbasePro'
+    | 'cryptoCom'
+    | 'openSea'
+    | 'binanceUs'
+    | 'gemini'
+    | 'cryptocurrencyAddress'
+    | 'cryptocurrencyWallet'
+    | 'okCoin'
+    | 'bittrex'
+    | 'kuCoin'
+    | 'etoro'
+    | 'cexIo'
+    | 'binanceInternational'
+    | 'bitstamp'
+    | 'gateIo'
+    | 'acorns'
+    | 'okx'
+    | 'bitFlyer'
+    | 'coinlist'
+    | 'huobi'
+    | 'bitfinex'
+    | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
+    | 'bybit'
+}
+
 export interface PortfolioFiatBalance {
   /** Balance currency */
   symbol?: string | null
@@ -3373,7 +3870,6 @@ export interface PreviewTransferRequest {
     | 'binanceInternational'
     | 'bitstamp'
     | 'gateIo'
-    | 'celsius'
     | 'acorns'
     | 'okx'
     | 'bitFlyer'
@@ -3438,6 +3934,7 @@ export interface PreviewTransferResponseIApiResult {
     | 'locked'
   readonly message?: string | null
   readonly displayMessage?: string | null
+  readonly errorType?: string | null
 }
 
 export interface PreviewTransferResult {
@@ -3518,6 +4015,559 @@ export type SymbolTradingAllowance =
   | 'tradingNotAllowed'
   | 'fractionalTradingPossiblyAllowed'
 
+export type TranferOrderByFields =
+  | 'id'
+  | 'clientTransferId'
+  | 'userId'
+  | 'fromType'
+  | 'amountInFiat'
+  | 'status'
+  | 'createdTimestamp'
+
+export type TranferStatus = 'pending' | 'succeeded' | 'failed'
+
+export interface TransactionsB2BBrokerCreateOrderRequest {
+  /**
+   * Auth token that allows connecting to the target institution
+   * @minLength 1
+   */
+  authToken: string
+  /**
+   * Type of the institution to connect
+   *
+   * ### Supported integrations:
+   * ```Robinhood```
+   * ```ETrade```
+   * ```Alpaca```
+   * ```TdAmeritrade```
+   * ```WeBull```
+   * ```Stash```
+   * ```InteractiveBrokers```
+   * ```Public```
+   * ```Coinbase```
+   * ```Kraken```
+   * ```CoinbasePro```
+   * ```CryptoCom```
+   * ```Binance```
+   * ```Gemini```
+   * ```OkCoin```
+   * ```Bittrex```
+   * ```KuCoin```
+   * ```Etoro```
+   * ```CexIo```
+   * ```BinanceInternational```
+   * ```Bitstamp```
+   * ```GateIo```
+   * ```Okx```
+   * ```BitFlyer```
+   * ```Coinlist```
+   * ```Huobi```
+   * ```Bitfinex```
+   * ```KrakenDirect```
+   * ```Vanguard```
+   * ```BinanceInternationalDirect```
+   * ```Bybit```
+   */
+  type:
+    | 'robinhood'
+    | 'eTrade'
+    | 'alpaca'
+    | 'tdAmeritrade'
+    | 'weBull'
+    | 'stash'
+    | 'interactiveBrokers'
+    | 'public'
+    | 'coinbase'
+    | 'kraken'
+    | 'coinbasePro'
+    | 'cryptoCom'
+    | 'openSea'
+    | 'binanceUs'
+    | 'gemini'
+    | 'cryptocurrencyAddress'
+    | 'cryptocurrencyWallet'
+    | 'okCoin'
+    | 'bittrex'
+    | 'kuCoin'
+    | 'etoro'
+    | 'cexIo'
+    | 'binanceInternational'
+    | 'bitstamp'
+    | 'gateIo'
+    | 'acorns'
+    | 'okx'
+    | 'bitFlyer'
+    | 'coinlist'
+    | 'huobi'
+    | 'bitfinex'
+    | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
+    | 'bybit'
+  /**
+   * Symbol to trade. For example, `AAPL` or `ETH`
+   * @minLength 1
+   */
+  symbol: string
+  /**
+   * Symbol to use for payment, defaults to `USD`.
+   * @minLength 1
+   */
+  paymentSymbol: string
+  /**
+   * Amount of purchase.
+   * @format double
+   */
+  amount: number
+  /**
+   * Price of the unit, used for `Limit` and `StopLoss` orders.
+   * @format double
+   */
+  price?: number
+  /** Some Stock and Crypto symbols can intersect, so the type of the asset needs to be specified explicitly. */
+  isCryptocurrency: boolean
+  /** Indicates whether the `PaymentSymbol` is fiat or cryptocurrency */
+  paymentIsCryptocurrency: boolean
+  /** @deprecated */
+  amountIsFiat?: boolean | null
+  /**
+   * @deprecated
+   * @format double
+   */
+  amountInFiat?: number | null
+  /**
+   * This value indicates if the order should be executed in payment/quote currency amount (e.g. purchase ETH for $10). This can be
+   * performed only if the current institution supports such orders (`SupportsPlacingSellOrdersInPaymentSymbolAmount` and
+   * `SupportsPlacingBuyOrdersInPaymentSymbolAmount` fields in `get supported order features for institution`) and `AmountInPaymentSymbol`
+   * value is passed.
+   */
+  amountIsInPaymentSymbol: boolean
+  /**
+   * Specifies the target amount in the payment/quote currency. For example, setting this to `10` when the `AmountInPaymentSymbol` = `true`
+   * and `PaymentSymbol` = `USD` will instruct the API to place an order to buy/sell the asset worth $10.
+   * @format double
+   */
+  amountInPaymentSymbol?: number | null
+  /** Specifies if the extended trading hours should be used. */
+  extendedHours?: boolean
+  orderType: 'market' | 'limit' | 'stopLoss'
+  timeInForce: 'goodTillCanceled' | 'immediateOrCancel' | 'fillOrKill' | 'goodForDay' | 'postOnly' | 'unknown'
+  /** MFA Code to create an order (requested by Kraken if MFA is enabled in user settings) */
+  mfaCode?: string | null
+}
+
+export interface TransactionsB2BBrokerOrderListRequest {
+  /**
+   * Auth token that allows connecting to the target institution
+   * @minLength 1
+   */
+  authToken: string
+  /**
+   * Type of the institution to connect
+   *
+   * ### Supported integrations:
+   * ```Robinhood```
+   * ```ETrade```
+   * ```Alpaca```
+   * ```TdAmeritrade```
+   * ```WeBull```
+   * ```Stash```
+   * ```InteractiveBrokers```
+   * ```Public```
+   * ```Coinbase```
+   * ```Kraken```
+   * ```CoinbasePro```
+   * ```CryptoCom```
+   * ```Binance```
+   * ```Gemini```
+   * ```OkCoin```
+   * ```Bittrex```
+   * ```KuCoin```
+   * ```Etoro```
+   * ```CexIo```
+   * ```BinanceInternational```
+   * ```Bitstamp```
+   * ```GateIo```
+   * ```Okx```
+   * ```BitFlyer```
+   * ```Coinlist```
+   * ```Huobi```
+   * ```Bitfinex```
+   * ```KrakenDirect```
+   * ```Vanguard```
+   * ```BinanceInternationalDirect```
+   * ```Bybit```
+   */
+  type:
+    | 'robinhood'
+    | 'eTrade'
+    | 'alpaca'
+    | 'tdAmeritrade'
+    | 'weBull'
+    | 'stash'
+    | 'interactiveBrokers'
+    | 'public'
+    | 'coinbase'
+    | 'kraken'
+    | 'coinbasePro'
+    | 'cryptoCom'
+    | 'openSea'
+    | 'binanceUs'
+    | 'gemini'
+    | 'cryptocurrencyAddress'
+    | 'cryptocurrencyWallet'
+    | 'okCoin'
+    | 'bittrex'
+    | 'kuCoin'
+    | 'etoro'
+    | 'cexIo'
+    | 'binanceInternational'
+    | 'bitstamp'
+    | 'gateIo'
+    | 'acorns'
+    | 'okx'
+    | 'bitFlyer'
+    | 'coinlist'
+    | 'huobi'
+    | 'bitfinex'
+    | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
+    | 'bybit'
+  /**
+   * The cursor to retrieve the next page of transactions.
+   * Providing it will cause the response to only return changes after this update.
+   * If this field is not provided, the history of transactions will be returned starting with the first-added transaction.
+   */
+  cursor?: string | null
+  /**
+   * Number of records to include in the response. <br />
+   * Default: `100` <br />
+   * Maximum: `250`
+   * @format int32
+   */
+  count?: number
+  /** Return orders of this statuses only. If this field is not provided, orders with all available statuses will be returned. */
+  statuses?: BrokerOrderStatus[] | null
+  /**
+   * Return orders created after this timestamp.
+   * If this field is not provided, orders will be returned according to the default of the institution.
+   * @format int64
+   */
+  from?: number | null
+}
+
+export interface TransactionsB2BBrokerOrderRequest {
+  /**
+   * Auth token that allows connecting to the target institution
+   * @minLength 1
+   */
+  authToken: string
+  /**
+   * Type of the institution to connect
+   *
+   * ### Supported integrations:
+   * ```Robinhood```
+   * ```ETrade```
+   * ```Alpaca```
+   * ```TdAmeritrade```
+   * ```WeBull```
+   * ```Stash```
+   * ```InteractiveBrokers```
+   * ```Public```
+   * ```Coinbase```
+   * ```Kraken```
+   * ```CoinbasePro```
+   * ```CryptoCom```
+   * ```Binance```
+   * ```Gemini```
+   * ```OkCoin```
+   * ```Bittrex```
+   * ```KuCoin```
+   * ```Etoro```
+   * ```CexIo```
+   * ```BinanceInternational```
+   * ```Bitstamp```
+   * ```GateIo```
+   * ```Okx```
+   * ```BitFlyer```
+   * ```Coinlist```
+   * ```Huobi```
+   * ```Bitfinex```
+   * ```KrakenDirect```
+   * ```Vanguard```
+   * ```BinanceInternationalDirect```
+   * ```Bybit```
+   */
+  type:
+    | 'robinhood'
+    | 'eTrade'
+    | 'alpaca'
+    | 'tdAmeritrade'
+    | 'weBull'
+    | 'stash'
+    | 'interactiveBrokers'
+    | 'public'
+    | 'coinbase'
+    | 'kraken'
+    | 'coinbasePro'
+    | 'cryptoCom'
+    | 'openSea'
+    | 'binanceUs'
+    | 'gemini'
+    | 'cryptocurrencyAddress'
+    | 'cryptocurrencyWallet'
+    | 'okCoin'
+    | 'bittrex'
+    | 'kuCoin'
+    | 'etoro'
+    | 'cexIo'
+    | 'binanceInternational'
+    | 'bitstamp'
+    | 'gateIo'
+    | 'acorns'
+    | 'okx'
+    | 'bitFlyer'
+    | 'coinlist'
+    | 'huobi'
+    | 'bitfinex'
+    | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
+    | 'bybit'
+  /** @minLength 1 */
+  id: string
+  /** Should be provided for Coinbase. */
+  side?: BrokerOrderType | null
+  /** Some Stock and Crypto symbols can intersect, so we need to explicitly specify what type of asset is requested to be bought. */
+  isCryptocurrency: boolean
+  /** Symbol pair of the order (requested by some brokers). */
+  symbolPair?: string | null
+  /** MFA Code to cancel an order (requested by Kraken if MFA is enabled in user settings) */
+  mfaCode?: string | null
+}
+
+export interface TransactionsB2BBrokerSymbolInfoForOrderRequest {
+  /**
+   * Auth token that allows connecting to the target institution
+   * @minLength 1
+   */
+  authToken: string
+  /**
+   * Type of the institution to connect
+   *
+   * ### Supported integrations:
+   * ```Robinhood```
+   * ```ETrade```
+   * ```Alpaca```
+   * ```TdAmeritrade```
+   * ```WeBull```
+   * ```Stash```
+   * ```InteractiveBrokers```
+   * ```Public```
+   * ```Coinbase```
+   * ```Kraken```
+   * ```CoinbasePro```
+   * ```CryptoCom```
+   * ```Binance```
+   * ```Gemini```
+   * ```OkCoin```
+   * ```Bittrex```
+   * ```KuCoin```
+   * ```Etoro```
+   * ```CexIo```
+   * ```BinanceInternational```
+   * ```Bitstamp```
+   * ```GateIo```
+   * ```Okx```
+   * ```BitFlyer```
+   * ```Coinlist```
+   * ```Huobi```
+   * ```Bitfinex```
+   * ```KrakenDirect```
+   * ```Vanguard```
+   * ```BinanceInternationalDirect```
+   * ```Bybit```
+   */
+  type:
+    | 'robinhood'
+    | 'eTrade'
+    | 'alpaca'
+    | 'tdAmeritrade'
+    | 'weBull'
+    | 'stash'
+    | 'interactiveBrokers'
+    | 'public'
+    | 'coinbase'
+    | 'kraken'
+    | 'coinbasePro'
+    | 'cryptoCom'
+    | 'openSea'
+    | 'binanceUs'
+    | 'gemini'
+    | 'cryptocurrencyAddress'
+    | 'cryptocurrencyWallet'
+    | 'okCoin'
+    | 'bittrex'
+    | 'kuCoin'
+    | 'etoro'
+    | 'cexIo'
+    | 'binanceInternational'
+    | 'bitstamp'
+    | 'gateIo'
+    | 'acorns'
+    | 'okx'
+    | 'bitFlyer'
+    | 'coinlist'
+    | 'huobi'
+    | 'bitfinex'
+    | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
+    | 'bybit'
+  /**
+   * Symbol to trade. For example, `AAPL` or `ETH`
+   * @minLength 1
+   */
+  symbol: string
+  /**
+   * Symbol to use for payment, defaults to `USD`.
+   * @minLength 1
+   */
+  paymentSymbol: string
+  /**
+   * Amount of purchase.
+   * @format double
+   */
+  amount: number
+  /**
+   * Price of the unit, used for `Limit` and `StopLoss` orders.
+   * @format double
+   */
+  price?: number
+  /** Some Stock and Crypto symbols can intersect, so the type of the asset needs to be specified explicitly. */
+  isCryptocurrency: boolean
+  /** Indicates whether the `PaymentSymbol` is fiat or cryptocurrency */
+  paymentIsCryptocurrency: boolean
+  /** @deprecated */
+  amountIsFiat?: boolean | null
+  /**
+   * @deprecated
+   * @format double
+   */
+  amountInFiat?: number | null
+  /**
+   * This value indicates if the order should be executed in payment/quote currency amount (e.g. purchase ETH for $10). This can be
+   * performed only if the current institution supports such orders (`SupportsPlacingSellOrdersInPaymentSymbolAmount` and
+   * `SupportsPlacingBuyOrdersInPaymentSymbolAmount` fields in `get supported order features for institution`) and `AmountInPaymentSymbol`
+   * value is passed.
+   */
+  amountIsInPaymentSymbol: boolean
+  /**
+   * Specifies the target amount in the payment/quote currency. For example, setting this to `10` when the `AmountInPaymentSymbol` = `true`
+   * and `PaymentSymbol` = `USD` will instruct the API to place an order to buy/sell the asset worth $10.
+   * @format double
+   */
+  amountInPaymentSymbol?: number | null
+  /** Specifies if the extended trading hours should be used. */
+  extendedHours?: boolean
+  orderType: 'market' | 'limit' | 'stopLoss'
+  timeInForce: 'goodTillCanceled' | 'immediateOrCancel' | 'fillOrKill' | 'goodForDay' | 'postOnly' | 'unknown'
+  /** MFA Code to create an order (requested by Kraken if MFA is enabled in user settings) */
+  mfaCode?: string | null
+  side?: BrokerOrderType | null
+}
+
+export interface TransactionsBrokerBaseRequest {
+  /**
+   * Auth token that allows connecting to the target institution
+   * @minLength 1
+   */
+  authToken: string
+  /**
+   * Type of the institution to connect
+   *
+   * ### Supported integrations:
+   * ```Robinhood```
+   * ```ETrade```
+   * ```Alpaca```
+   * ```TdAmeritrade```
+   * ```WeBull```
+   * ```Stash```
+   * ```InteractiveBrokers```
+   * ```Public```
+   * ```Coinbase```
+   * ```Kraken```
+   * ```CoinbasePro```
+   * ```CryptoCom```
+   * ```Binance```
+   * ```Gemini```
+   * ```OkCoin```
+   * ```Bittrex```
+   * ```KuCoin```
+   * ```Etoro```
+   * ```CexIo```
+   * ```BinanceInternational```
+   * ```Bitstamp```
+   * ```GateIo```
+   * ```Okx```
+   * ```BitFlyer```
+   * ```Coinlist```
+   * ```Huobi```
+   * ```Bitfinex```
+   * ```KrakenDirect```
+   * ```Vanguard```
+   * ```BinanceInternationalDirect```
+   * ```Bybit```
+   */
+  type:
+    | 'robinhood'
+    | 'eTrade'
+    | 'alpaca'
+    | 'tdAmeritrade'
+    | 'weBull'
+    | 'stash'
+    | 'interactiveBrokers'
+    | 'public'
+    | 'coinbase'
+    | 'kraken'
+    | 'coinbasePro'
+    | 'cryptoCom'
+    | 'openSea'
+    | 'binanceUs'
+    | 'gemini'
+    | 'cryptocurrencyAddress'
+    | 'cryptocurrencyWallet'
+    | 'okCoin'
+    | 'bittrex'
+    | 'kuCoin'
+    | 'etoro'
+    | 'cexIo'
+    | 'binanceInternational'
+    | 'bitstamp'
+    | 'gateIo'
+    | 'acorns'
+    | 'okx'
+    | 'bitFlyer'
+    | 'coinlist'
+    | 'huobi'
+    | 'bitfinex'
+    | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
+    | 'bybit'
+}
+
 export interface TransferFee {
   /**
    * The amount of the fee.
@@ -3533,6 +4583,121 @@ export interface TransferFee {
   feeInFiat?: number
 }
 
+export interface TransferIntegrationModel {
+  /** @format uuid */
+  id?: string
+  type?:
+    | 'robinhood'
+    | 'eTrade'
+    | 'alpaca'
+    | 'tdAmeritrade'
+    | 'weBull'
+    | 'stash'
+    | 'interactiveBrokers'
+    | 'public'
+    | 'coinbase'
+    | 'kraken'
+    | 'coinbasePro'
+    | 'cryptoCom'
+    | 'openSea'
+    | 'binanceUs'
+    | 'gemini'
+    | 'cryptocurrencyAddress'
+    | 'cryptocurrencyWallet'
+    | 'okCoin'
+    | 'bittrex'
+    | 'kuCoin'
+    | 'etoro'
+    | 'cexIo'
+    | 'binanceInternational'
+    | 'bitstamp'
+    | 'gateIo'
+    | 'acorns'
+    | 'okx'
+    | 'bitFlyer'
+    | 'coinlist'
+    | 'huobi'
+    | 'bitfinex'
+    | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
+    | 'bybit'
+  name?: string | null
+}
+
+export interface TransferModel {
+  /**
+   * Mesh transfer identifier.
+   * @format uuid
+   */
+  id?: string
+  /** Client transaction identifier. */
+  clientTransactionId?: string | null
+  /** Client's user identifier. */
+  userId?: string | null
+  /** Transfer status. */
+  status?: 'pending' | 'succeeded' | 'failed'
+  /**
+   * Tranfer amount in fiat.
+   * @format double
+   */
+  amountInFiat?: number
+  /** Tranfer amount in fiat currency code. */
+  amountInFiatCurrencyCode?: string | null
+  /**
+   * Tranfer amount.
+   * @format double
+   */
+  amount?: number
+  /** Tranfer cryptocurrency symbol. */
+  symbol?: string | null
+  /** Tranfer network name. */
+  networkName?: string | null
+  /**
+   * Created timestamp.
+   * @format int64
+   */
+  createdTimestamp?: number
+  /** From integration. */
+  from?: TransferIntegrationModel | null
+  /** Transfer hash. */
+  hash?: string | null
+}
+
+export interface TransferModelPaginationResponse {
+  /** list of items */
+  items?: TransferModel[] | null
+  /**
+   * Total number of items
+   * @format int32
+   */
+  total?: number
+}
+
+export interface TransferModelPaginationResponseApiResult {
+  readonly status?:
+    | 'ok'
+    | 'serverFailure'
+    | 'permissionDenied'
+    | 'badRequest'
+    | 'notFound'
+    | 'conflict'
+    | 'tooManyRequest'
+    | 'locked'
+  /** A message generated by the API */
+  message?: string | null
+  /** User-friendly display message that can be presented to the end user */
+  displayMessage?: string | null
+  /**
+   * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
+   * All possible error types are available in the documentation.
+   */
+  errorType?: string | null
+  content?: TransferModelPaginationResponse | null
+}
+
 export interface TransferToAddress {
   /**
    * The Id of the network in Front system. The list of all available networks can be obtained by using `GET /transfers/managed/networks` endpoint.
@@ -3543,6 +4708,1246 @@ export interface TransferToAddress {
   symbol?: string | null
   /** The address to send the asset to. */
   address?: string | null
+}
+
+export interface TransfersBrokerCreateCryptocurrencyTransactionRequest {
+  /**
+   * Auth token that allows connecting to the target institution
+   * @minLength 1
+   */
+  authToken: string
+  /**
+   * Type of the institution to connect
+   *
+   * ### Supported integrations:
+   * ```Robinhood```
+   * ```Coinbase```
+   * ```Kraken```
+   * ```CoinbasePro```
+   * ```CryptoCom```
+   * ```Binance```
+   * ```Gemini```
+   * ```OkCoin```
+   * ```Bittrex```
+   * ```KuCoin```
+   * ```BinanceInternational```
+   * ```Bitstamp```
+   * ```GateIo```
+   * ```Okx```
+   * ```Huobi```
+   * ```Bitfinex```
+   * ```KrakenDirect```
+   * ```BinanceInternationalDirect```
+   * ```Bybit```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   */
+  type:
+    | 'robinhood'
+    | 'eTrade'
+    | 'alpaca'
+    | 'tdAmeritrade'
+    | 'weBull'
+    | 'stash'
+    | 'interactiveBrokers'
+    | 'public'
+    | 'coinbase'
+    | 'kraken'
+    | 'coinbasePro'
+    | 'cryptoCom'
+    | 'openSea'
+    | 'binanceUs'
+    | 'gemini'
+    | 'cryptocurrencyAddress'
+    | 'cryptocurrencyWallet'
+    | 'okCoin'
+    | 'bittrex'
+    | 'kuCoin'
+    | 'etoro'
+    | 'cexIo'
+    | 'binanceInternational'
+    | 'bitstamp'
+    | 'gateIo'
+    | 'acorns'
+    | 'okx'
+    | 'bitFlyer'
+    | 'coinlist'
+    | 'huobi'
+    | 'bitfinex'
+    | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
+    | 'bybit'
+  /** Additional data to send on-chain (optional, depends on an integration) */
+  data?: string | null
+  /**
+   * Target address to transfer the asset to
+   * @minLength 1
+   */
+  targetAddress: string
+  /**
+   * Amount to transfer
+   * @format double
+   */
+  amount?: number
+  /**
+   * On-chain fee (optional, depends on an integration)
+   * @format double
+   */
+  fee?: number
+  /**
+   * Type of the address of symbol to be transferred. Providing `EthAddress` will initiate a transfer of ETH over Ethereum blockchain.
+   * Can be used instead of `Symbol` and `Chain` fields.
+   * To transfer assets over non-default chains (e.g. sending USDT over ERC20) please `Symbol` and `Chain` fields.
+   */
+  addressType?: CryptocurrencyAddressType | null
+  /** 2 Factor auth code (optional, depends on an integration) */
+  mfaCode?: string | null
+  /** 2 Factor auth type (optional, depends on an integration) */
+  mfaType?: MfaType | null
+  /** Password or pass-phrase, required to send transfers (optional, depends on an integration) */
+  password?: string | null
+  /**
+   * Custom chain name, required by some of the integrations. E.g. USDT can be sent over USDT-ERC20, USDT-TRC20, and USDT-Omni.
+   * Can be used to transfer assets over non-default chains (e.g. sending USDT over ERC20).
+   * Please use `symbol/details` endpoint to get the list of all possible chains.
+   */
+  chain?: string | null
+  /** Memo (also called "Tag") - address remark. */
+  memo?: string | null
+  /** Symbol to be transferred. Can be provided instead of the `AddressType` field. */
+  symbol?: string | null
+  challengeId?: string | null
+}
+
+export interface TransfersBrokerCryptocurrencyDepositAddressRequest {
+  /**
+   * Auth token that allows connecting to the target institution
+   * @minLength 1
+   */
+  authToken: string
+  /**
+   * Type of the institution to connect
+   *
+   * ### Supported integrations:
+   * ```Robinhood```
+   * ```Coinbase```
+   * ```Kraken```
+   * ```CoinbasePro```
+   * ```CryptoCom```
+   * ```Binance```
+   * ```Gemini```
+   * ```OkCoin```
+   * ```Bittrex```
+   * ```KuCoin```
+   * ```BinanceInternational```
+   * ```Bitstamp```
+   * ```GateIo```
+   * ```Okx```
+   * ```Huobi```
+   * ```Bitfinex```
+   * ```KrakenDirect```
+   * ```BinanceInternationalDirect```
+   * ```Bybit```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   */
+  type:
+    | 'robinhood'
+    | 'eTrade'
+    | 'alpaca'
+    | 'tdAmeritrade'
+    | 'weBull'
+    | 'stash'
+    | 'interactiveBrokers'
+    | 'public'
+    | 'coinbase'
+    | 'kraken'
+    | 'coinbasePro'
+    | 'cryptoCom'
+    | 'openSea'
+    | 'binanceUs'
+    | 'gemini'
+    | 'cryptocurrencyAddress'
+    | 'cryptocurrencyWallet'
+    | 'okCoin'
+    | 'bittrex'
+    | 'kuCoin'
+    | 'etoro'
+    | 'cexIo'
+    | 'binanceInternational'
+    | 'bitstamp'
+    | 'gateIo'
+    | 'acorns'
+    | 'okx'
+    | 'bitFlyer'
+    | 'coinlist'
+    | 'huobi'
+    | 'bitfinex'
+    | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
+    | 'bybit'
+  /**
+   * Symbol of the required cryptocurrency, e.g. ETH or BTC.
+   * Can be used instead of the `AddressType` field.
+   */
+  symbol?: string | null
+  /**
+   * Type of the address of symbol to be transferred. Providing `EthAddress` will assume a transfer of ETH over Ethereum blockchain.
+   * Can be used instead of `Symbol` field.
+   */
+  addressType?: CryptocurrencyAddressType | null
+  /** Chain of the required cryptocurrency, e.g. USDT has USDT-ERC20, USDT-TRC20, and USDT-Omni */
+  chain?: string | null
+  /** Some of integrations require MFA code to create a deposit address, e.g. KrakenDirect */
+  mfaCode?: string | null
+}
+
+export interface TransfersBrokerCryptocurrencyTransactionDetailsRequest {
+  /**
+   * Auth token that allows connecting to the target institution
+   * @minLength 1
+   */
+  authToken: string
+  /**
+   * Type of the institution to connect
+   *
+   * ### Supported integrations:
+   * ```Robinhood```
+   * ```Coinbase```
+   * ```Kraken```
+   * ```CoinbasePro```
+   * ```CryptoCom```
+   * ```Binance```
+   * ```Gemini```
+   * ```OkCoin```
+   * ```Bittrex```
+   * ```KuCoin```
+   * ```BinanceInternational```
+   * ```Bitstamp```
+   * ```GateIo```
+   * ```Okx```
+   * ```Huobi```
+   * ```Bitfinex```
+   * ```KrakenDirect```
+   * ```BinanceInternationalDirect```
+   * ```Bybit```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   */
+  type:
+    | 'robinhood'
+    | 'eTrade'
+    | 'alpaca'
+    | 'tdAmeritrade'
+    | 'weBull'
+    | 'stash'
+    | 'interactiveBrokers'
+    | 'public'
+    | 'coinbase'
+    | 'kraken'
+    | 'coinbasePro'
+    | 'cryptoCom'
+    | 'openSea'
+    | 'binanceUs'
+    | 'gemini'
+    | 'cryptocurrencyAddress'
+    | 'cryptocurrencyWallet'
+    | 'okCoin'
+    | 'bittrex'
+    | 'kuCoin'
+    | 'etoro'
+    | 'cexIo'
+    | 'binanceInternational'
+    | 'bitstamp'
+    | 'gateIo'
+    | 'acorns'
+    | 'okx'
+    | 'bitFlyer'
+    | 'coinlist'
+    | 'huobi'
+    | 'bitfinex'
+    | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
+    | 'bybit'
+  /** Type of the address of the transferred asset. Can be used instead of the `Symbol` field. */
+  addressType?: CryptocurrencyAddressType | null
+  /** Transaction Id by the financial institution */
+  transactionId?: string | null
+  /** Hash of the transaction on the blockchain */
+  transactionHash?: string | null
+  /** Symbol of the transferred asset. Can be provided instead of the `AddressType` field. */
+  symbol?: string | null
+}
+
+export interface TransfersBrokerTransactionsListRequest {
+  /**
+   * Auth token that allows connecting to the target institution
+   * @minLength 1
+   */
+  authToken: string
+  /**
+   * Type of the institution to connect
+   *
+   * ### Supported integrations:
+   * ```Robinhood```
+   * ```Coinbase```
+   * ```Kraken```
+   * ```CoinbasePro```
+   * ```CryptoCom```
+   * ```Binance```
+   * ```Gemini```
+   * ```OkCoin```
+   * ```Bittrex```
+   * ```KuCoin```
+   * ```BinanceInternational```
+   * ```Bitstamp```
+   * ```GateIo```
+   * ```Okx```
+   * ```Huobi```
+   * ```Bitfinex```
+   * ```KrakenDirect```
+   * ```BinanceInternationalDirect```
+   * ```Bybit```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   * ```DeFiWallet```
+   */
+  type:
+    | 'robinhood'
+    | 'eTrade'
+    | 'alpaca'
+    | 'tdAmeritrade'
+    | 'weBull'
+    | 'stash'
+    | 'interactiveBrokers'
+    | 'public'
+    | 'coinbase'
+    | 'kraken'
+    | 'coinbasePro'
+    | 'cryptoCom'
+    | 'openSea'
+    | 'binanceUs'
+    | 'gemini'
+    | 'cryptocurrencyAddress'
+    | 'cryptocurrencyWallet'
+    | 'okCoin'
+    | 'bittrex'
+    | 'kuCoin'
+    | 'etoro'
+    | 'cexIo'
+    | 'binanceInternational'
+    | 'bitstamp'
+    | 'gateIo'
+    | 'acorns'
+    | 'okx'
+    | 'bitFlyer'
+    | 'coinlist'
+    | 'huobi'
+    | 'bitfinex'
+    | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
+    | 'bybit'
+  /**
+   * Number of records to include in the response. <br />
+   * Default: `100` <br />
+   * Maximum: `250`
+   * @format int32
+   */
+  count?: number
+  /**
+   * The cursor to retrieve the next page of transactions.
+   * Providing it will cause the response to only return changes after this update.
+   * If this field is not provided, the history of transactions will be returned starting with the first-added transaction.
+   */
+  cursor?: string | null
+  /** If this value is provided, result set is filtered to only include transaction with the provided statuses. */
+  statuses?: BrokerCryptocurrencyTransactionStatus[] | null
+  /** For cryptocurrency address the type of address is required. */
+  cryptocurrencyAddressType?: CryptocurrencyAddressType | null
+  /**
+   * If this value is provided, result set is filtered to only include transactions created after this timestamp
+   * @format int64
+   */
+  from?: number | null
 }
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from 'axios'
@@ -3753,7 +6158,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @response `400` `ApiResult` Bad Request
      * @response `401` `any` Unauthorized
      */
-    v1BalanceGetCreate: (data: BrokerBaseRequest, params: RequestParams = {}) =>
+    v1BalanceGetCreate: (data: BalanceBrokerBaseRequest, params: RequestParams = {}) =>
       this.request<B2BBrokerAccountBalanceModelIApiResult, ApiResult>({
         path: `/api/v1/balance/get`,
         method: 'POST',
@@ -3800,6 +6205,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @name V1CataloglinkList
      * @summary Get catalog link
      * @request GET:/api/v1/cataloglink
+     * @deprecated
      * @secure
      * @response `200` `CatalogLinkIApiResult` Catalog link created.
      * @response `400` `ApiResult` BadRequest can happen in following cases: <list type="number"><item><description>userId parameter not specified</description></item><item><description>Callback url parameter is invalid</description></item><item><description>Client does not have callback url specified</description></item></list>
@@ -3807,13 +6213,14 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @response `404` `ApiResult` API Client not found.
      */
     v1CataloglinkList: (
-      query?: {
+      query: {
         /**
          * A unique Id representing the end user. Typically this will be a user Id from the
          * client application. Personally identifiable information, such as an email address or phone number,
          * should not be used. 50 characters length maximum.
+         * @maxLength 50
          */
-        UserId?: string
+        UserId: string
         /**
          * Type of integration to redirect to. Will redirect to catalog if not provided.
          * Not supported types: DeFiWallet, CryptocurrencyAddress, CryptocurrencyWallet.
@@ -3824,12 +6231,6 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
          * If not provided default configuration with all avaialbe integrations will be used.
          */
         EnableTransfers?: boolean
-        /**
-         * Link Configuration identifier - an optional paramater for used configuration.
-         * If not provided default configuration with all avaialbe integrations will be used.
-         * @format uuid
-         */
-        ConfigurationId?: string
         /**
          * The final screen of Link allows users to “continue” back to your app or “Link another account.”
          * If this param is present then this button will be hidden.
@@ -3854,6 +6255,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @name V1CataloglinkCreate
      * @summary Get catalog link with parameters
      * @request POST:/api/v1/cataloglink
+     * @deprecated
      * @secure
      * @response `200` `CatalogLinkIApiResult` Catalog link created.
      * @response `400` `ApiResult` BadRequest can happen in following cases: <list type="number"><item><description>userId parameter not specified</description></item><item><description>Callback url parameter is invalid</description></item><item><description>Client does not have callback url specified</description></item></list>
@@ -3861,14 +6263,14 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @response `404` `ApiResult` API Client not found.
      */
     v1CataloglinkCreate: (
-      data: InitializeTransfersForLinkRequest,
-      query?: {
+      query: {
         /**
          * A unique Id representing the end user. Typically this will be a user Id from the
          * client application. Personally identifiable information, such as an email address or phone number,
          * should not be used. 50 characters length maximum.
+         * @maxLength 50
          */
-        UserId?: string
+        UserId: string
         /**
          * Type of integration to redirect to. Will redirect to catalog if not provided.
          * Not supported types: DeFiWallet, CryptocurrencyAddress, CryptocurrencyWallet.
@@ -3880,17 +6282,12 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
          */
         EnableTransfers?: boolean
         /**
-         * Link Configuration identifier - an optional paramater for used configuration.
-         * If not provided default configuration with all avaialbe integrations will be used.
-         * @format uuid
-         */
-        ConfigurationId?: string
-        /**
          * The final screen of Link allows users to “continue” back to your app or “Link another account.”
          * If this param is present then this button will be hidden.
          */
         RestrictMultipleAccounts?: boolean
       },
+      data: InitializeTransfersForLinkRequest,
       params: RequestParams = {}
     ) =>
       this.request<CatalogLinkIApiResult, ApiResult>({
@@ -3988,6 +6385,25 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
     v1StatusList: (params: RequestParams = {}) =>
       this.request<B2BBrokersHealthStatusListIApiResult, any>({
         path: `/api/v1/status`,
+        method: 'GET',
+        secure: true,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * No description
+     *
+     * @tags Managed Account Authentication
+     * @name V1IntegrationsList
+     * @summary Retrieve the list of all available integrations.
+     * @request GET:/api/v1/integrations
+     * @secure
+     * @response `200` `IntegrationsResponseIApiResult` Success
+     */
+    v1IntegrationsList: (params: RequestParams = {}) =>
+      this.request<IntegrationsResponseIApiResult, any>({
+        path: `/api/v1/integrations`,
         method: 'GET',
         secure: true,
         format: 'json',
@@ -4106,7 +6522,6 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         | 'binanceInternational'
         | 'bitstamp'
         | 'gateIo'
-        | 'celsius'
         | 'acorns'
         | 'okx'
         | 'bitFlyer'
@@ -4257,7 +6672,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @response `400` `ApiResult` Bad Request
      * @response `401` `any` Unauthorized: Client Id or Client Secret are not correct or missing.
      */
-    v1HoldingsGetCreate: (data: BrokerBaseRequest, params: RequestParams = {}) =>
+    v1HoldingsGetCreate: (data: PortfolioBrokerBaseRequest, params: RequestParams = {}) =>
       this.request<B2BBrokerPortfolioModelIApiResult, ApiResult>({
         path: `/api/v1/holdings/get`,
         method: 'POST',
@@ -4280,7 +6695,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @response `400` `ApiResult` Bad Request
      * @response `401` `any` Unauthorized: Client Id or Client Secret are not correct or missing.
      */
-    v1HoldingsValueCreate: (data: BrokerBaseRequest, params: RequestParams = {}) =>
+    v1HoldingsValueCreate: (data: PortfolioBrokerBaseRequest, params: RequestParams = {}) =>
       this.request<BrokerPortfolioValueModelIApiResult, ApiResult>({
         path: `/api/v1/holdings/value`,
         method: 'POST',
@@ -4304,9 +6719,9 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @response `401` `any` Unauthorized: Client Id or Client Secret are not correct or missing.
      */
     v1HoldingsPortfolioList: (
-      query?: {
+      query: {
         /** End user ID to get the aggregated portfolio for. */
-        UserId?: string
+        UserId: string
         /**
          * Offset in second, used to calculate daily return for cryptocurrencies.
          * @format int64
@@ -4336,7 +6751,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @response `200` `B2BBrokerOrderListResponseIApiResult` Transactions obtained.
      * @response `401` `any` Unauthorized: Client Id or Client Secret are not correct or provided integration token is not correct.
      */
-    v1TransactionsListCreate: (data: B2BBrokerOrderListRequest, params: RequestParams = {}) =>
+    v1TransactionsListCreate: (data: TransactionsB2BBrokerOrderListRequest, params: RequestParams = {}) =>
       this.request<B2BBrokerOrderListResponseIApiResult, any>({
         path: `/api/v1/transactions/list`,
         method: 'POST',
@@ -4360,7 +6775,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @response `401` `any` Unauthorized: Client Id or Client Secret are not correct or provided integration token is not correct.
      * @response `404` `ProblemDetails` Transaction is not found.
      */
-    v1TransactionsDetailsCreate: (data: B2BBrokerOrderRequest, params: RequestParams = {}) =>
+    v1TransactionsDetailsCreate: (data: TransactionsB2BBrokerOrderRequest, params: RequestParams = {}) =>
       this.request<B2BBrokerOrderIApiResult, ProblemDetails>({
         path: `/api/v1/transactions/details`,
         method: 'POST',
@@ -4383,7 +6798,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @response `400` `ProblemDetails` Bad Request
      * @response `401` `any` Unauthorized: Client Id or Client Secret are not correct or provided integration token is not correct.
      */
-    v1TransactionsFeatureListCreate: (data: BrokerBaseRequest, params: RequestParams = {}) =>
+    v1TransactionsFeatureListCreate: (data: TransactionsBrokerBaseRequest, params: RequestParams = {}) =>
       this.request<B2BBrokerTradingFeatureInfoIApiResult, ProblemDetails>({
         path: `/api/v1/transactions/featureList`,
         method: 'POST',
@@ -4408,7 +6823,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      */
     v1TransactionsPreviewCreate: (
       side: 'unknown' | 'buy' | 'sell',
-      data: B2BBrokerCreateOrderRequest,
+      data: TransactionsB2BBrokerCreateOrderRequest,
       params: RequestParams = {}
     ) =>
       this.request<B2BBrokerPreviewOrderResultIApiResult, ProblemDetails>({
@@ -4435,7 +6850,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      */
     v1TransactionsCreate: (
       side: 'unknown' | 'buy' | 'sell',
-      data: B2BBrokerCreateOrderRequest,
+      data: TransactionsB2BBrokerCreateOrderRequest,
       params: RequestParams = {}
     ) =>
       this.request<B2BBrokerCreateOrderResultIApiResult, ProblemDetails>({
@@ -4461,7 +6876,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @response `401` `any` Unauthorized: Client Id or Client Secret are not correct or provided integration token is not correct.
      * @response `404` `ProblemDetails` Not Found
      */
-    v1TransactionsCancelCreate: (data: B2BBrokerOrderRequest, params: RequestParams = {}) =>
+    v1TransactionsCancelCreate: (data: TransactionsB2BBrokerOrderRequest, params: RequestParams = {}) =>
       this.request<IApiResult, ProblemDetails>({
         path: `/api/v1/transactions/cancel`,
         method: 'POST',
@@ -4484,7 +6899,10 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @response `400` `ProblemDetails` Request details are not correct.
      * @response `401` `any` Unauthorized: Client Id or Client Secret are not correct.
      */
-    v1TransactionsSymbolinfoCreate: (data: B2BBrokerSymbolInfoForOrderRequest, params: RequestParams = {}) =>
+    v1TransactionsSymbolinfoCreate: (
+      data: TransactionsB2BBrokerSymbolInfoForOrderRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<B2BBrokerOrderSymbolInfoIApiResult, ProblemDetails>({
         path: `/api/v1/transactions/symbolinfo`,
         method: 'POST',
@@ -4508,13 +6926,86 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @response `400` `ApiResult` Bad Request
      * @response `401` `any` Unauthorized: Client Id or Client Secret are not correct or missing.
      */
-    v1TransfersListCreate: (data: BrokerTransactionsListRequest, params: RequestParams = {}) =>
+    v1TransfersListCreate: (data: TransfersBrokerTransactionsListRequest, params: RequestParams = {}) =>
       this.request<B2BBrokerTransactionsListModelIApiResult, ApiResult>({
         path: `/api/v1/transfers/list`,
         method: 'POST',
         body: data,
         secure: true,
         type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Get cryptocurrency transfers, such as transfers on a cryptocurrency wallet, or deposit/withdrawal transfers on an cryptocurrency exchange account executed via Mesh Connect.
+     *
+     * @tags Transfers
+     * @name V1TransfersMeshList
+     * @summary Get transfers executed by Mesh Connect
+     * @request GET:/api/v1/transfers/mesh
+     * @secure
+     * @response `200` `TransferModelPaginationResponseApiResult` Transfers obtained.
+     * @response `400` `ApiResult` Bad Request
+     * @response `401` `any` Unauthorized: Client Id or Client Secret are not correct or missing.
+     */
+    v1TransfersMeshList: (
+      query?: {
+        /**
+         * Number of items to return. Default 10, maximum - 100.
+         * @format int32
+         */
+        Count?: number
+        /**
+         * Number of items to skip.
+         * @format int32
+         */
+        Offset?: number
+        /**
+         * Mesh transfer identifier.
+         * @format uuid
+         */
+        Id?: string
+        /** Client transaction identifier. */
+        ClientTransactionId?: string
+        /** Client's user identifier. */
+        UserId?: string
+        /** Transfered integration. */
+        IntegrationIds?: string[]
+        /** Transfer statuses. */
+        Statuses?: TranferStatus[]
+        /**
+         * Transfer created minimum timestamp.
+         * @format int64
+         */
+        FromTimestamp?: number
+        /**
+         * Transfer created maximum timestamp.
+         * @format int64
+         */
+        ToTimestamp?: number
+        /**
+         * Minimum amount in fiat.
+         * @format double
+         */
+        MinAmountInFiat?: number
+        /**
+         * Maximum amount in fiat.
+         * @format double
+         */
+        MaxAmountInFiat?: number
+        /** Order by column. */
+        OrderBy?: TranferOrderByFields
+        /** Value indicating if ordering is descending. */
+        DescendingOrder?: boolean
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<TransferModelPaginationResponseApiResult, ApiResult>({
+        path: `/api/v1/transfers/mesh`,
+        method: 'GET',
+        query: query,
+        secure: true,
         format: 'json',
         ...params
       }),
@@ -4532,7 +7023,10 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @response `401` `any` Unauthorized: Client Id or Client Secret are not correct or missing.
      * @response `404` `ApiResult` Transfer with provided id was not found.
      */
-    v1TransfersDetailsCreate: (data: BrokerCryptocurrencyTransactionDetailsRequest, params: RequestParams = {}) =>
+    v1TransfersDetailsCreate: (
+      data: TransfersBrokerCryptocurrencyTransactionDetailsRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<B2BBrokerCryptocurrencyTransactionIApiResult, ApiResult>({
         path: `/api/v1/transfers/details`,
         method: 'POST',
@@ -4555,7 +7049,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @response `400` `ApiResult` Transfer details are not correct.
      * @response `401` `any` Unauthorized: Client Id or Client Secret are not correct or missing.
      */
-    v1TransfersCreate: (data: BrokerCreateCryptocurrencyTransactionRequest, params: RequestParams = {}) =>
+    v1TransfersCreate: (data: TransfersBrokerCreateCryptocurrencyTransactionRequest, params: RequestParams = {}) =>
       this.request<B2BBrokerCreateCryptocurrencyTransactionResponseIApiResult, ApiResult>({
         path: `/api/v1/transfers`,
         method: 'POST',
@@ -4579,7 +7073,10 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @response `401` `any` Unauthorized: Client Id or Client Secret are not correct or missing.
      * @response `404` `ApiResult` Address for the required symbol is not found.
      */
-    v1TransfersAddressGetCreate: (data: BrokerCryptocurrencyDepositAddressRequest, params: RequestParams = {}) =>
+    v1TransfersAddressGetCreate: (
+      data: TransfersBrokerCryptocurrencyDepositAddressRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<B2BBrokerCryptocurrencyDepositAddressResponseIApiResult, ApiResult>({
         path: `/api/v1/transfers/address/get`,
         method: 'POST',
@@ -4603,7 +7100,10 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @response `401` `any` Unauthorized: Client Id or Client Secret are not correct or missing.
      * @response `404` `ApiResult` Asset details for provided symbol are not found.
      */
-    v1TransfersSymbolDetailsCreate: (data: BrokerCryptocurrencyDepositAddressRequest, params: RequestParams = {}) =>
+    v1TransfersSymbolDetailsCreate: (
+      data: TransfersBrokerCryptocurrencyDepositAddressRequest,
+      params: RequestParams = {}
+    ) =>
       this.request<B2BBrokerCryptocurrencySymbolDetailsResponseIApiResult, ApiResult>({
         path: `/api/v1/transfers/symbol/details`,
         method: 'POST',

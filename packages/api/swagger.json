@@ -66,7 +66,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/AssetPaginationResponseIApiResult"
                 },
-                "example": {"content":{"items":[{"symbol":"AAPL","name":"Apple Inc","type":"equity"},{"symbol":"MSFT","name":"Microsoft Inc","type":"equity"}],"total":5},"status":"ok","message":""}
+                "example": {"content":{"items":[{"symbol":"AAPL","name":"Apple Inc","type":"equity"},{"symbol":"MSFT","name":"Microsoft Inc","type":"equity"}],"total":5},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -77,7 +77,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
               }
             }
           },
@@ -116,7 +116,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BPriceInfoIApiResult"
                 },
-                "example": {"content":{"items":[{"symbol":"AAPL","name":"Apple Inc","type":"equity"},{"symbol":"MSFT","name":"Microsoft Inc","type":"equity"}],"total":5},"status":"ok","message":""}
+                "example": {"content":{"items":[{"symbol":"AAPL","name":"Apple Inc","type":"equity"},{"symbol":"MSFT","name":"Microsoft Inc","type":"equity"}],"total":5},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -127,7 +127,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
               }
             }
           },
@@ -155,7 +155,7 @@
               "schema": {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/BrokerBaseRequest"
+                    "$ref": "#/components/schemas/BalanceBrokerBaseRequest"
                   }
                 ]
               },
@@ -171,7 +171,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerAccountBalanceModelIApiResult"
                 },
-                "example": {"content":{"balances":[{"cash":158.5,"buyingPower":258.5,"currencyCode":"USD"},{"cash":10,"buyingPower":10,"currencyCode":"EUR"}],"totalCashUsdValue":10,"totalBuyingPowerUsdValue":10},"status":"ok","message":""}
+                "example": {"content":{"balances":[{"cash":158.5,"buyingPower":258.5,"currencyCode":"USD"},{"cash":10,"buyingPower":10,"currencyCode":"EUR"}],"totalCashUsdValue":10,"totalBuyingPowerUsdValue":10},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -182,7 +182,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
               }
             }
           },
@@ -222,7 +222,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BFiatPortfolioModelIApiResult"
                 },
-                "example": {"content":{"fiatBalances":[{"symbol":"USD","cash":3.099,"buyingPower":3.099},{"symbol":"EUR","cash":-102.880,"buyingPower":1293.596}]},"status":"ok","message":""}
+                "example": {"content":{"fiatBalances":[{"symbol":"USD","cash":3.099,"buyingPower":3.099},{"symbol":"EUR","cash":-102.880,"buyingPower":1293.596}]},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -233,7 +233,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
               }
             }
           },
@@ -260,7 +260,9 @@
             "name": "UserId",
             "in": "query",
             "description": "A unique Id representing the end user. Typically this will be a user Id from the\r\nclient application. Personally identifiable information, such as an email address or phone number,\r\nshould not be used. 50 characters length maximum.",
+            "required": true,
             "schema": {
+              "maxLength": 50,
               "type": "string"
             }
           },
@@ -282,15 +284,6 @@
             "description": "Link Configuration identifier - an optional paramater for used configuration.\r\nIf not provided default configuration with all avaialbe integrations will be used.",
             "schema": {
               "type": "boolean"
-            }
-          },
-          {
-            "name": "ConfigurationId",
-            "in": "query",
-            "description": "Link Configuration identifier - an optional paramater for used configuration.\r\nIf not provided default configuration with all avaialbe integrations will be used.",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
             }
           },
           {
@@ -310,7 +303,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/CatalogLinkIApiResult"
                 },
-                "example": {"content":{"url":"https://web.getfront.com/broker-connect?auth_code={authCode}","iFrameUrl":"https://web.getfront.com/b2b-iframe/{clientId}/broker-connect?auth_code={authCode}"},"status":"ok","message":""}
+                "example": {"content":{"url":"https://web.getfront.com/broker-connect?auth_code={authCode}","iFrameUrl":"https://web.getfront.com/b2b-iframe/{clientId}/broker-connect?auth_code={authCode}"},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -321,7 +314,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message"}
+                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
               }
             }
           },
@@ -332,7 +325,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
               }
             }
           },
@@ -344,7 +337,8 @@
               }
             }
           }
-        }
+        },
+        "deprecated": true
       },
       "post": {
         "tags": [
@@ -357,7 +351,9 @@
             "name": "UserId",
             "in": "query",
             "description": "A unique Id representing the end user. Typically this will be a user Id from the\r\nclient application. Personally identifiable information, such as an email address or phone number,\r\nshould not be used. 50 characters length maximum.",
+            "required": true,
             "schema": {
+              "maxLength": 50,
               "type": "string"
             }
           },
@@ -379,15 +375,6 @@
             "description": "Link Configuration identifier - an optional paramater for used configuration.\r\nIf not provided default configuration with all avaialbe integrations will be used.",
             "schema": {
               "type": "boolean"
-            }
-          },
-          {
-            "name": "ConfigurationId",
-            "in": "query",
-            "description": "Link Configuration identifier - an optional paramater for used configuration.\r\nIf not provided default configuration with all avaialbe integrations will be used.",
-            "schema": {
-              "type": "string",
-              "format": "uuid"
             }
           },
           {
@@ -442,7 +429,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/CatalogLinkIApiResult"
                 },
-                "example": {"content":{"url":"https://web.getfront.com/broker-connect?auth_code={authCode}","iFrameUrl":"https://web.getfront.com/b2b-iframe/{clientId}/broker-connect?auth_code={authCode}"},"status":"ok","message":""}
+                "example": {"content":{"url":"https://web.getfront.com/broker-connect?auth_code={authCode}","iFrameUrl":"https://web.getfront.com/b2b-iframe/{clientId}/broker-connect?auth_code={authCode}"},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -453,7 +440,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message"}
+                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
               }
             }
           },
@@ -464,7 +451,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
               }
             }
           },
@@ -476,7 +463,8 @@
               }
             }
           }
-        }
+        },
+        "deprecated": true
       }
     },
     "/api/v1/linktoken": {
@@ -497,7 +485,7 @@
                   }
                 ]
               },
-              "example": {"userId":"UserId","brokerType":"robinhood","configurationId":"18a20b11-e47f-43b9-8546-94284e9ee547","restrictMultipleAccounts":true,"transferOptions":{"toAddresses":[{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"ETH","address":"0x00000000000000000000000"},{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"USDC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"MATIC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDC","address":"0x00000000000000000000000"}],"amountInFiat":10}}
+              "example": {"userId":"UserId","configurationId":"18a20b11-e47f-43b9-8546-94284e9ee547","restrictMultipleAccounts":true,"transferOptions":{"toAddresses":[{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"ETH","address":"0x00000000000000000000000"},{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"USDC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"MATIC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDC","address":"0x00000000000000000000000"}],"amountInFiat":10}}
             },
             "text/json": {
               "schema": {
@@ -507,7 +495,7 @@
                   }
                 ]
               },
-              "example": {"userId":"UserId","brokerType":"robinhood","configurationId":"18a20b11-e47f-43b9-8546-94284e9ee547","restrictMultipleAccounts":true,"transferOptions":{"toAddresses":[{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"ETH","address":"0x00000000000000000000000"},{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"USDC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"MATIC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDC","address":"0x00000000000000000000000"}],"amountInFiat":10}}
+              "example": {"userId":"UserId","configurationId":"18a20b11-e47f-43b9-8546-94284e9ee547","restrictMultipleAccounts":true,"transferOptions":{"toAddresses":[{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"ETH","address":"0x00000000000000000000000"},{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"USDC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"MATIC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDC","address":"0x00000000000000000000000"}],"amountInFiat":10}}
             },
             "application/*+json": {
               "schema": {
@@ -517,7 +505,7 @@
                   }
                 ]
               },
-              "example": {"userId":"UserId","brokerType":"robinhood","configurationId":"18a20b11-e47f-43b9-8546-94284e9ee547","restrictMultipleAccounts":true,"transferOptions":{"toAddresses":[{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"ETH","address":"0x00000000000000000000000"},{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"USDC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"MATIC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDC","address":"0x00000000000000000000000"}],"amountInFiat":10}}
+              "example": {"userId":"UserId","configurationId":"18a20b11-e47f-43b9-8546-94284e9ee547","restrictMultipleAccounts":true,"transferOptions":{"toAddresses":[{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"ETH","address":"0x00000000000000000000000"},{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"USDC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"MATIC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDC","address":"0x00000000000000000000000"}],"amountInFiat":10}}
             }
           }
         },
@@ -529,7 +517,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/LinkTokenModelIApiResult"
                 },
-                "example": {"content":{"linkToken":"aHR0cHM6Ly93ZWIuZ2V0ZnJvbnQuY29tL2IyYi1pZnJhbWUve2NsaWVudElkfS9icm9rZXItY29ubmVjdD9hdXRoX2NvZGU9e2F1dGhDb2RlfQ=="},"status":"ok","message":""}
+                "example": {"content":{"linkToken":"aHR0cHM6Ly93ZWIuZ2V0ZnJvbnQuY29tL2IyYi1pZnJhbWUve2NsaWVudElkfS9icm9rZXItY29ubmVjdD9hdXRoX2NvZGU9e2F1dGhDb2RlfQ=="},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -540,7 +528,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message"}
+                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
               }
             }
           },
@@ -551,7 +539,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
               }
             }
           },
@@ -595,7 +583,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerRefreshTokenResponseIApiResult"
                 },
-                "example": {"content":{"status":"succeeded","accessToken":"New secret token","refreshToken":"New secret refresh token","expiresInSeconds":86400},"status":"ok","message":""}
+                "example": {"content":{"status":"succeeded","expiresInSeconds":86400,"brokerAccountTokens":[{"accessToken":"New secret token","refreshToken":"New secret refresh token"}]},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -606,7 +594,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Unauthorized token","displayMessage":"Could not refresh the authentication token. The provided data is not correct"}
+                "example": {"status":"badRequest","message":"Unauthorized token","displayMessage":"Could not refresh the authentication token. The provided data is not correct","errorType":"badRequest"}
               }
             }
           },
@@ -670,7 +658,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/IApiResult"
                 },
-                "example": {"status":"ok"}
+                "example": {"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -681,7 +669,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
               }
             }
           },
@@ -711,7 +699,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokersHealthStatusListIApiResult"
                 },
-                "example": {"content":[{"type":"robinhood","isUp":true,"supportedProducts":["balance","holdings","identity","orders","transfers"]},{"type":"celsius","isUp":false,"description":"Temporarily disabled","downTimeStart":1655891444,"supportedProducts":["balance","orders","transfers","holdings"]}],"status":"ok","message":""}
+                "example": {"content":[{"type":"robinhood","name":"Robinhood","isUp":true,"supportedProducts":["balance","holdings","identity","orders","transfers"]},{"type":"celsius","name":"Celsius","isUp":false,"description":"Temporarily disabled","downTimeStart":1655891444,"supportedProducts":["balance","orders","transfers","holdings"]},{"type":"deFiWallet","name":"MetaMask","isUp":false,"supportedProducts":["transfers","holdings"],"deFiWalletData":{"id":"00000000-0000-0000-0000-000000000000","name":"MetaMask"}}],"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -749,7 +737,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/BrokerAuthenticationSchemeIReadOnlyCollectionIApiResult"
                 },
-                "example": {"content":[{"brokerType":"coinbasePro","authenticationSchemeType":"apiKey","initialAuthenticationModel":{"fields":[{"name":"Username","description":"API key"},{"name":"Password","description":"Secret key"},{"name":"AuthToken","description":"Passphrase"},{"name":"Type","description":"CoinbasePro"}]},"mfaSchemes":[],"instructionsUrl":"https://help.coinbase.com/en/pro/other-topics/api/how-do-i-create-an-api-key-for-coinbase-pro"}],"status":"ok","message":""}
+                "example": {"content":[{"brokerType":"coinbasePro","authenticationSchemeType":"apiKey","initialAuthenticationModel":{"fields":[{"name":"Username","description":"API key"},{"name":"Password","description":"Secret key"},{"name":"AuthToken","description":"Passphrase"},{"name":"Type","description":"CoinbasePro"}]},"mfaSchemes":[],"instructionsUrl":"https://help.coinbase.com/en/pro/other-topics/api/how-do-i-create-an-api-key-for-coinbase-pro"}],"status":"ok","message":"","errorType":""}
               }
             }
           }
@@ -827,7 +815,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerAuthResponseIApiResult"
                 },
-                "example": {"content":{"status":"succeeded","accessToken":"Access token, allowing access to the integration","refreshToken":"Optional refresh token, allowing to refresh the access token","expiresInSeconds":7200,"account":{"frontAccountId":"00000000-0000-0000-0000-000000000000","accountId":"Id of the account","accountName":"Name of the account"}},"status":"ok","message":""}
+                "example": {"content":{"status":"succeeded","expiresInSeconds":7200,"accountTokens":[{"account":{"frontAccountId":"00000000-0000-0000-0000-000000000000","accountId":"Id of the account","accountName":"Name of the account"},"accessToken":"Access token, allowing access to the integration","refreshToken":"Optional refresh token, allowing to refresh the access token"}]},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -890,7 +878,6 @@
                 "binanceInternational",
                 "bitstamp",
                 "gateIo",
-                "celsius",
                 "acorns",
                 "okx",
                 "bitFlyer",
@@ -929,7 +916,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerAuthPromptResponseIApiResult"
                 },
-                "example": {"content":{"status":"redirect","redirectLink":"https://front.org/","linkToken":"Link to the integration's site"},"status":"ok","message":""}
+                "example": {"content":{"status":"redirect","redirectLink":"https://front.org/","linkToken":"Link to the integration's site"},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -940,6 +927,27 @@
                 "schema": {
                   "$ref": "#/components/schemas/ProblemDetails"
                 }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/integrations": {
+      "get": {
+        "tags": [
+          "Managed Account Authentication"
+        ],
+        "summary": "Retrieve the list of all available integrations.",
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IntegrationsResponseIApiResult"
+                },
+                "example": {"content":{"items":[{"id":"40d1cc2d-fbeb-47f3-8f06-9a898d49e707","name":"CoinbasePro","type":"coinbasePro"},{"id":"3b0595b7-4900-48ab-b903-4c3c8010712a","name":"CoinCircle","type":"deFiWallet","deFiWalletProviderId":"36d8d9c0c7fe2957149ce8e878f3a01...","categories":["deFiWallet"]}]},"status":"ok","message":"","errorType":""}
               }
             }
           }
@@ -961,7 +969,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/NetworkModelResponseIApiResult"
                 },
-                "example": {"content":{"networks":[{"supportedBrokerTypes":["deFiWallet","robinhood","coinbase","kraken","binanceInternational","binanceUs"],"id":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","name":"Ethereum","chainId":"1","supportedTokens":["ETH","USDC","USDT"]}]},"status":"ok","message":""}
+                "example": {"content":{"networks":[{"supportedBrokerTypes":["deFiWallet","robinhood","coinbase","kraken","binanceInternational","binanceUs"],"id":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","name":"Ethereum","chainId":"1","supportedTokens":["ETH","USDC","USDT"]}]},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -991,7 +999,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/IntegrationNetworkResponseIApiResult"
                 },
-                "example": {"content":{"integrations":[{"type":"robinhood","networks":[{"id":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","name":"Ethereum","chainId":"1","supportedTokens":["USDC","ETH"]},{"id":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","name":"Polygon","chainId":"137","supportedTokens":["MATIC","ETH"]}],"supportsOutgoingTransfers":true,"supportsIncomingTransfers":true}]},"status":"ok","message":""}
+                "example": {"content":{"integrations":[{"type":"robinhood","networks":[{"id":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","name":"Ethereum","chainId":"1","supportedTokens":["USDC","ETH"]},{"id":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","name":"Polygon","chainId":"137","supportedTokens":["MATIC","ETH"]}],"supportsOutgoingTransfers":true,"supportsIncomingTransfers":true}]},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -1096,13 +1104,13 @@
                 },
                 "examples": {
                   "Successful transfer configuration": {
-                    "value": {"content":{"status":"succeeded","holdings":[{"symbol":"USDC","availableBalance":130,"availableBalanceInFiat":0,"eligibleForTransfer":true,"networks":[{"name":"Ethereum","id":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","minimumAmount":1,"totalEstimatedTransferFeeInFiat":1.8,"estimatedNetworkGasFee":{"fee":0.000850608941007,"feeCurrency":"ETH","feeInFiat":1.8},"institutionTransferFee":{"fee":0,"feeCurrency":"ETH","feeInFiat":0},"eligibleForTransfer":true},{"name":"Solana","id":"0291810a-5947-424d-9a59-e88bb33e999d","minimumAmount":1,"totalEstimatedTransferFeeInFiat":0.1,"estimatedNetworkGasFee":{"fee":0.00025,"feeCurrency":"SOL","feeInFiat":0.1},"institutionTransferFee":{"fee":0,"feeCurrency":"SOL","feeInFiat":0},"eligibleForTransfer":true}]}]},"status":"ok","message":""}
+                    "value": {"content":{"status":"succeeded","holdings":[{"symbol":"USDC","availableBalance":130,"availableBalanceInFiat":0,"eligibleForTransfer":true,"networks":[{"name":"Ethereum","id":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","minimumAmount":1,"totalEstimatedTransferFeeInFiat":1.8,"estimatedNetworkGasFee":{"fee":0.000850608941007,"feeCurrency":"ETH","feeInFiat":1.8},"institutionTransferFee":{"fee":0,"feeCurrency":"ETH","feeInFiat":0},"eligibleForTransfer":true},{"name":"Solana","id":"0291810a-5947-424d-9a59-e88bb33e999d","minimumAmount":1,"totalEstimatedTransferFeeInFiat":0.1,"estimatedNetworkGasFee":{"fee":0.00025,"feeCurrency":"SOL","feeInFiat":0.1},"institutionTransferFee":{"fee":0,"feeCurrency":"SOL","feeInFiat":0},"eligibleForTransfer":true}]}]},"status":"ok","message":"","errorType":""}
                   },
                   "Transfer configuration with failed validation": {
-                    "value": {"content":{"status":"validationFailed","errorMessage":"Either `ToAddresses` or `ToAuthToken` should be provided."},"status":"ok","message":""}
+                    "value": {"status":"badRequest","message":"Either `ToAddresses` or `ToAuthToken` should be provided.","errorType":"invalidField"}
                   },
                   "Transfer configuration with no eligible tokens to transfer": {
-                    "value": {"content":{"status":"succeeded","holdings":[{"symbol":"USDC","availableBalance":1,"availableBalanceInFiat":0,"eligibleForTransfer":false},{"symbol":"ETH","availableBalance":0.00001,"availableBalanceInFiat":0,"eligibleForTransfer":false}]},"status":"ok","message":""}
+                    "value": {"content":{"status":"succeeded","holdings":[{"symbol":"USDC","availableBalance":1,"availableBalanceInFiat":0,"eligibleForTransfer":false},{"symbol":"ETH","availableBalance":0.00001,"availableBalanceInFiat":0,"eligibleForTransfer":false}]},"status":"ok","message":"","errorType":""}
                   }
                 }
               }
@@ -1115,7 +1123,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
               }
             }
           },
@@ -1211,10 +1219,10 @@
                 },
                 "examples": {
                   "Successful transfer preview": {
-                    "value": {"content":{"status":"succeeded","previewResult":{"previewId":"29b185b1-2305-40fb-a0e2-929d61451568","previewExpiresIn":300,"fromAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","toAddress":"0x326a8825472bb0f4719998e708a1eeeb4473ed1b","symbol":"USDT","amount":10,"amountInFiat":10,"totalEstimatedAmountInFiat":11.1,"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","institutionTransferFee":{"fee":0,"feeCurrency":"USDT","feeInFiat":0},"estimatedNetworkGasFee":{"fee":1.1,"feeCurrency":"USDT","feeInFiat":1.1}}},"status":"ok","message":""}
+                    "value": {"content":{"status":"succeeded","previewResult":{"previewId":"29b185b1-2305-40fb-a0e2-929d61451568","previewExpiresIn":300,"fromAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","toAddress":"0x326a8825472bb0f4719998e708a1eeeb4473ed1b","symbol":"USDT","amount":10,"amountInFiat":10,"totalEstimatedAmountInFiat":11.1,"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","institutionTransferFee":{"fee":0,"feeCurrency":"USDT","feeInFiat":0},"estimatedNetworkGasFee":{"fee":1.1,"feeCurrency":"USDT","feeInFiat":1.1}}},"status":"ok","message":"","errorType":""}
                   },
                   "Failed transfer preview": {
-                    "value": {"content":{"status":"failed","errorMessage":"The\u00A0specified amount is greater than the maximum amount allowed."},"status":"ok","message":""}
+                    "value": {"status":"badRequest","message":"The\u00A0specified amount is greater than the maximum amount allowed.","displayMessage":"The\u00A0specified amount is greater than the maximum amount allowed.","errorType":"invalidField"}
                   }
                 }
               }
@@ -1227,7 +1235,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
               }
             }
           },
@@ -1314,10 +1322,10 @@
                 },
                 "examples": {
                   "Successful transfer preview": {
-                    "value": {"content":{"status":"succeeded","executeTransferResult":{"transferId":"e332336c-de22-11ed-b5ea-0242ac120002","status":"pending","statusDetails":"In progress","fromAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","toAddress":"0x326a8825472bb0f4719998e708a1eeeb4473ed1b","symbol":"USDT","networkName":"Ethereum","networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","hash":"0xdcfd72635a9b16d3bc0e75311f6fe0612970e9714a1e9e93de0ea5acffc6a454","amount":10,"amountInFiat":10,"totalAmountInFiat":11.1,"completedConfirmations":1,"institutionTransferFee":{"fee":0,"feeCurrency":"USDT","feeInFiat":0},"networkGasFee":{"fee":1.1,"feeCurrency":"USDT","feeInFiat":1.1}}},"status":"ok","message":""}
+                    "value": {"content":{"status":"succeeded","executeTransferResult":{"transferId":"e332336c-de22-11ed-b5ea-0242ac120002","status":"pending","statusDetails":"In progress","fromAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","toAddress":"0x326a8825472bb0f4719998e708a1eeeb4473ed1b","symbol":"USDT","networkName":"Ethereum","networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","hash":"0xdcfd72635a9b16d3bc0e75311f6fe0612970e9714a1e9e93de0ea5acffc6a454","amount":10,"amountInFiat":10,"totalAmountInFiat":11.1,"completedConfirmations":1,"institutionTransferFee":{"fee":0,"feeCurrency":"USDT","feeInFiat":0},"networkGasFee":{"fee":1.1,"feeCurrency":"USDT","feeInFiat":1.1}}},"status":"ok","message":"","errorType":""}
                   },
                   "Transfer preview when MFA is required": {
-                    "value": {"content":{"status":"mfaRequired"},"status":"ok","message":""}
+                    "value": {"content":{"status":"mfaRequired"},"status":"ok","message":"","errorType":""}
                   }
                 }
               }
@@ -1330,7 +1338,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
               }
             }
           },
@@ -1359,7 +1367,7 @@
               "schema": {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/BrokerBaseRequest"
+                    "$ref": "#/components/schemas/PortfolioBrokerBaseRequest"
                   }
                 ]
               },
@@ -1375,7 +1383,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerPortfolioModelIApiResult"
                 },
-                "example": {"content":{"status":"succeeded","equityPositions":[{"symbol":"AAPL","amount":3,"costBasis":109},{"symbol":"F","amount":27,"costBasis":7.05791}],"notSupportedEquityPositions":[{"symbol":"CUSIP38259P508","amount":1}],"notSupportedCryptocurrencyPositions":[],"cryptocurrencyPositions":[{"symbol":"DOGE","amount":1503,"costBasis":0.033},{"symbol":"BTC","amount":3.00016720,"costBasis":18000}],"nftPositions":[],"optionPositions":[],"type":"robinhood","accountId":"5FUVPB0","institutionName":"Robinhood","accountName":"Margin account"},"status":"ok","message":""}
+                "example": {"content":{"status":"succeeded","equityPositions":[{"symbol":"AAPL","amount":3,"costBasis":109},{"symbol":"F","amount":27,"costBasis":7.05791}],"notSupportedEquityPositions":[{"symbol":"CUSIP38259P508","amount":1}],"notSupportedCryptocurrencyPositions":[],"cryptocurrencyPositions":[{"symbol":"DOGE","amount":1503,"costBasis":0.033},{"symbol":"BTC","amount":3.00016720,"costBasis":18000}],"nftPositions":[],"optionPositions":[],"type":"robinhood","accountId":"5FUVPB0","institutionName":"Robinhood","accountName":"Margin account"},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -1386,7 +1394,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
               }
             }
           },
@@ -1415,7 +1423,7 @@
               "schema": {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/BrokerBaseRequest"
+                    "$ref": "#/components/schemas/PortfolioBrokerBaseRequest"
                   }
                 ]
               },
@@ -1431,7 +1439,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/BrokerPortfolioValueModelIApiResult"
                 },
-                "example": {"content":{"totalValue":186.03,"totalPerformance":6.23,"equitiesValue":100.12,"equitiesPerformance":5.3457,"cryptocurrenciesValue":50.37,"cryptocurrenciesPerformance":7.23,"nftsValue":15.34,"fiatValue":20.2},"status":"ok","message":""}
+                "example": {"content":{"totalValue":186.03,"totalPerformance":6.23,"equitiesValue":100.12,"equitiesPerformance":5.3457,"cryptocurrenciesValue":50.37,"cryptocurrenciesPerformance":7.23,"nftsValue":15.34,"fiatValue":20.2},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -1442,7 +1450,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
               }
             }
           },
@@ -1469,6 +1477,7 @@
             "name": "UserId",
             "in": "query",
             "description": "End user ID to get the aggregated portfolio for.",
+            "required": true,
             "schema": {
               "type": "string"
             }
@@ -1491,7 +1500,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BPortfolioModelIApiResult"
                 },
-                "example": {"content":{"portfolioCostBasis":1793.71,"actualPortfolioPerformance":6.9,"equitiesValue":1918.03,"cryptocurrenciesValue":1164.44,"nftsValue":0,"equityPositions":[{"marketValue":13.69,"portfolioPercentage":0.44,"totalReturn":-1.30,"returnPercentage":-8.67,"lastPrice":214.44,"companyName":"Tesla","totalDailyReturn":0.45,"dailyReturnPercentage":3.45,"symbol":"TSLA","amount":0.063,"costBasis":234.80},{"marketValue":1201.67,"portfolioPercentage":38.98,"totalReturn":144.97,"returnPercentage":13.71,"lastPrice":147.27,"companyName":"Apple","totalDailyReturn":31.65,"dailyReturnPercentage":2.70,"symbol":"AAPL","amount":8.15,"costBasis":129.50}],"cryptocurrencyPositions":[{"marketValue":351.4570,"portfolioPercentage":11.4018,"totalReturn":-592.6533,"returnPercentage":-62.7737,"lastPrice":1350.07,"companyName":"Ethereum","totalDailyReturn":-3.6081,"dailyReturnPercentage":-1.0162,"symbol":"ETH","amount":0.260325000,"costBasis":3626.660},{"marketValue":240.5754,"portfolioPercentage":7.80,"totalReturn":-85.45,"returnPercentage":-26.20,"lastPrice":0.05977,"companyName":"Dogecoin","totalDailyReturn":-2.45,"dailyReturnPercentage":-1.0103,"symbol":"DOGE","amount":4025.02,"costBasis":0.081}],"nftPositions":[]},"status":"ok","message":""}
+                "example": {"content":{"portfolioCostBasis":1793.71,"actualPortfolioPerformance":6.9,"equitiesValue":1918.03,"cryptocurrenciesValue":1164.44,"nftsValue":0,"equityPositions":[{"marketValue":13.69,"portfolioPercentage":0.44,"totalReturn":-1.30,"returnPercentage":-8.67,"lastPrice":214.44,"companyName":"Tesla","totalDailyReturn":0.45,"dailyReturnPercentage":3.45,"symbol":"TSLA","amount":0.063,"costBasis":234.80},{"marketValue":1201.67,"portfolioPercentage":38.98,"totalReturn":144.97,"returnPercentage":13.71,"lastPrice":147.27,"companyName":"Apple","totalDailyReturn":31.65,"dailyReturnPercentage":2.70,"symbol":"AAPL","amount":8.15,"costBasis":129.50}],"cryptocurrencyPositions":[{"marketValue":351.4570,"portfolioPercentage":11.4018,"totalReturn":-592.6533,"returnPercentage":-62.7737,"lastPrice":1350.07,"companyName":"Ethereum","totalDailyReturn":-3.6081,"dailyReturnPercentage":-1.0162,"symbol":"ETH","amount":0.260325000,"costBasis":3626.660},{"marketValue":240.5754,"portfolioPercentage":7.80,"totalReturn":-85.45,"returnPercentage":-26.20,"lastPrice":0.05977,"companyName":"Dogecoin","totalDailyReturn":-2.45,"dailyReturnPercentage":-1.0103,"symbol":"DOGE","amount":4025.02,"costBasis":0.081}],"nftPositions":[]},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -1502,7 +1511,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"ok"}
+                "example": {"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -1530,7 +1539,7 @@
               "schema": {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/B2BBrokerOrderListRequest"
+                    "$ref": "#/components/schemas/TransactionsB2BBrokerOrderListRequest"
                   }
                 ]
               },
@@ -1546,7 +1555,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerOrderListResponseIApiResult"
                 },
-                "example": {"content":{"transactions":[{"id":"17EC1243-D91A-48B6-B0CE-ECFDB134F8A0","side":"buy","symbol":"AAPL","name":"APPLE INC","assetType":"option","paymentSymbol":"USD","paymentType":"fiat","amount":1,"price":120,"value":120,"createdTimestamp":1653215676,"updatedTimestamp":1653215697,"status":"success","orderType":"market","timeInForce":"goodForDay","brokerType":"robinhood","transactionType":"order","optionDetails":{"optionType":"call","direction":"buyToOpen","strikePrice":200,"expirationTimestamp":1673215697,"numberOfSharesInContract":100,"complexOrderStrategyType":"NONE"}},{"id":"F9E932AE-A780-42F3-B887-82D888D594E5","side":"sell","symbol":"AAPL","name":"APPLE INC","assetType":"equity","paymentSymbol":"USD","paymentType":"fiat","amount":2,"price":130,"value":260,"createdTimestamp":1651739676,"updatedTimestamp":1651739781,"status":"success","orderType":"market","timeInForce":"goodTillCanceled","brokerType":"robinhood","transactionType":"order"},{"id":"9B5827E4-7D08-4A71-B4C0-B1B4E5562592","side":"buy","symbol":"BTC","name":"Bitcoin","assetType":"cryptocurrency","paymentSymbol":"ETH","paymentType":"cryptocurrency","amount":0.3,"price":18604.8197,"value":5581.44591,"createdTimestamp":1651739676,"updatedTimestamp":1651739781,"status":"success","orderType":"limit","timeInForce":"goodTillCanceled","brokerType":"robinhood","transactionType":"order"}],"cursor":"N2VkZDI0MDMtNmRhYy01NThhLTk5NDUDYzI12M3GQ3ZmQ2","total":3,"earliestTimestamp":1651739676},"status":"ok","message":""}
+                "example": {"content":{"transactions":[{"id":"17EC1243-D91A-48B6-B0CE-ECFDB134F8A0","side":"buy","symbol":"AAPL","name":"APPLE INC","assetType":"option","paymentSymbol":"USD","paymentType":"fiat","amount":1,"price":120,"value":120,"createdTimestamp":1653215676,"updatedTimestamp":1653215697,"status":"success","orderType":"market","timeInForce":"goodForDay","brokerType":"robinhood","transactionType":"order","optionDetails":{"optionType":"call","direction":"buyToOpen","strikePrice":200,"expirationTimestamp":1673215697,"numberOfSharesInContract":100,"complexOrderStrategyType":"NONE"}},{"id":"F9E932AE-A780-42F3-B887-82D888D594E5","side":"sell","symbol":"AAPL","name":"APPLE INC","assetType":"equity","paymentSymbol":"USD","paymentType":"fiat","amount":2,"price":130,"value":260,"createdTimestamp":1651739676,"updatedTimestamp":1651739781,"status":"success","orderType":"market","timeInForce":"goodTillCanceled","brokerType":"robinhood","transactionType":"order"},{"id":"9B5827E4-7D08-4A71-B4C0-B1B4E5562592","side":"buy","symbol":"BTC","name":"Bitcoin","assetType":"cryptocurrency","paymentSymbol":"ETH","paymentType":"cryptocurrency","amount":0.3,"price":18604.8197,"value":5581.44591,"createdTimestamp":1651739676,"updatedTimestamp":1651739781,"status":"success","orderType":"limit","timeInForce":"goodTillCanceled","brokerType":"robinhood","transactionType":"order"}],"cursor":"N2VkZDI0MDMtNmRhYy01NThhLTk5NDUDYzI12M3GQ3ZmQ2","total":3,"earliestTimestamp":1651739676},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -1574,7 +1583,7 @@
               "schema": {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/B2BBrokerOrderRequest"
+                    "$ref": "#/components/schemas/TransactionsB2BBrokerOrderRequest"
                   }
                 ]
               },
@@ -1638,7 +1647,7 @@
               "schema": {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/BrokerBaseRequest"
+                    "$ref": "#/components/schemas/TransactionsBrokerBaseRequest"
                   }
                 ]
               },
@@ -1654,7 +1663,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerTradingFeatureInfoIApiResult"
                 },
-                "example": {"content":{"brokerType":"robinhood","accountId":"5K9N3VO1","cryptocurrencyOrders":{"supported":true,"supportsFiatCurrencyPayment":true,"supportsCryptocurrencyPayment":false,"supportsMarginOrders":true,"supportedCryptocurrencySymbols":["BTC","ETH","SOL","DOGE"],"supportedFiatCurrencies":["USD"],"marketType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":true,"supportsPlacingSellOrdersInBaseSymbolAmount":true},"limitType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":true,"supportsPlacingSellOrdersInBaseSymbolAmount":true},"stopLossType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":true,"supportsPlacingSellOrdersInBaseSymbolAmount":true}},"stockOrders":{"supported":true,"supportsFiatCurrencyPayment":true,"supportsCryptocurrencyPayment":false,"supportsMarginOrders":true,"supportedFiatCurrencies":["USD"],"marketType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":false,"supportsPlacingSellOrdersInBaseSymbolAmount":false},"limitType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":false,"supportsPlacingSellOrdersInBaseSymbolAmount":false},"stopLossType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":false,"supportsPlacingSellOrdersInBaseSymbolAmount":false}},"status":"succeeded","supportsOrderPreview":true,"supportsPriceQuotes":false,"supportsOrderCancellation":true,"isIntegrationUp":true,"isTradingSupported":true,"fiatBalances":[{"cash":1355,"buyingPower":1355,"cryptocurrencyBuyingPower":1355,"currencyCode":"USD"}]},"status":"ok","message":""}
+                "example": {"content":{"brokerType":"robinhood","accountId":"5K9N3VO1","cryptocurrencyOrders":{"supported":true,"supportsFiatCurrencyPayment":true,"supportsCryptocurrencyPayment":false,"supportsMarginOrders":true,"supportedCryptocurrencySymbols":["BTC","ETH","SOL","DOGE"],"supportedFiatCurrencies":["USD"],"marketType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":true,"supportsPlacingSellOrdersInBaseSymbolAmount":true},"limitType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":true,"supportsPlacingSellOrdersInBaseSymbolAmount":true},"stopLossType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":true,"supportsPlacingSellOrdersInBaseSymbolAmount":true}},"stockOrders":{"supported":true,"supportsFiatCurrencyPayment":true,"supportsCryptocurrencyPayment":false,"supportsMarginOrders":true,"supportedFiatCurrencies":["USD"],"marketType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":false,"supportsPlacingSellOrdersInBaseSymbolAmount":false},"limitType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":false,"supportsPlacingSellOrdersInBaseSymbolAmount":false},"stopLossType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":false,"supportsPlacingSellOrdersInBaseSymbolAmount":false}},"status":"succeeded","supportsOrderPreview":true,"supportsPriceQuotes":false,"supportsOrderCancellation":true,"isIntegrationUp":true,"isTradingSupported":true,"fiatBalances":[{"cash":1355,"buyingPower":1355,"cryptocurrencyBuyingPower":1355,"currencyCode":"USD"}]},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -1711,7 +1720,7 @@
               "schema": {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/B2BBrokerCreateOrderRequest"
+                    "$ref": "#/components/schemas/TransactionsB2BBrokerCreateOrderRequest"
                   }
                 ]
               },
@@ -1737,7 +1746,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerPreviewOrderResultIApiResult"
                 },
-                "example": {"content":{"brokerType":"robinhood","fee":1.99,"feeText":"","amount":1,"side":"buy","status":"success","paymentSymbol":"USD","paymentIsCryptocurrency":false,"estimatedUnitPrice":1200},"status":"ok","message":""}
+                "example": {"content":{"brokerType":"robinhood","fee":1.99,"feeText":"","amount":1,"side":"buy","status":"success","paymentSymbol":"USD","paymentIsCryptocurrency":false,"estimatedUnitPrice":1200},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -1794,7 +1803,7 @@
               "schema": {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/B2BBrokerCreateOrderRequest"
+                    "$ref": "#/components/schemas/TransactionsB2BBrokerCreateOrderRequest"
                   }
                 ]
               },
@@ -1820,7 +1829,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerCreateOrderResultIApiResult"
                 },
-                "example": {"content":{"orderId":"6713DCDC-3D2E-46BC-ACB6-CF5FDE431CE2","brokerType":"robinhood","side":"buy","amount":1,"price":1200,"value":1200,"fee":1.99,"timestamp":1661904014,"status":"success","statusDetails":"Executed successfully","timeInForce":"goodTillCanceled"},"status":"ok","message":""}
+                "example": {"content":{"orderId":"6713DCDC-3D2E-46BC-ACB6-CF5FDE431CE2","brokerType":"robinhood","side":"buy","amount":1,"price":1200,"value":1200,"fee":1.99,"timestamp":1661904014,"status":"success","statusDetails":"Executed successfully","timeInForce":"goodTillCanceled"},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -1858,7 +1867,7 @@
               "schema": {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/B2BBrokerOrderRequest"
+                    "$ref": "#/components/schemas/TransactionsB2BBrokerOrderRequest"
                   }
                 ]
               },
@@ -1921,7 +1930,7 @@
               "schema": {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/B2BBrokerSymbolInfoForOrderRequest"
+                    "$ref": "#/components/schemas/TransactionsB2BBrokerSymbolInfoForOrderRequest"
                   }
                 ]
               },
@@ -1937,7 +1946,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerOrderSymbolInfoIApiResult"
                 },
-                "example": {"content":{"fractionalTradingAllowance":"fractionalTradingAllowed","minimumOrderValue":0.001,"precisionScale":6},"status":"ok","message":""}
+                "example": {"content":{"fractionalTradingAllowance":"fractionalTradingAllowed","minimumOrderValue":0.001,"precisionScale":6},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -1976,7 +1985,7 @@
               "schema": {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/BrokerTransactionsListRequest"
+                    "$ref": "#/components/schemas/TransfersBrokerTransactionsListRequest"
                   }
                 ]
               }
@@ -1991,7 +2000,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerTransactionsListModelIApiResult"
                 },
-                "example": {"content":{"transfers":[{"id":"8E25ACB5-A9E2-4D00-8772-A255F010A2A9","status":"succeeded","type":"deposit","fromAddress":"D5PumQwt...","targetAddress":"D641Fmzx...","symbol":"DOGE","hash":"3310c6202aaeb44754a118ce11f255382d012060ade0d6d9f...","amount":15,"transactionAmount":10,"createdTimestamp":1653215600,"updatedTimestamp":1653215600,"networkTransactionFee":{"amount":5,"symbol":"DOGE"},"confirmations":17,"blockchainMethod":"transfer"},{"id":"70E6E3CF-5ACF-49C5-A4E1-5FB85A567F26","status":"succeeded","type":"withdrawal","fromAddress":"0x7BDE8361Fe587daD0e35448E754...","targetAddress":"0x83C8F28c26bF6aaca652Df1DbBE...","symbol":"ETH","hash":"0x77f3a280aa5cfe956a5759c24cf774325504070b32b4159...","amount":0.1,"transactionAmount":0.099,"createdTimestamp":1653211113,"updatedTimestamp":1653211113,"networkTransactionFee":{"amount":0.001,"symbol":"ETH"},"confirmations":18,"blockchainMethod":"transfer"}],"total":2,"cursor":"N2VkZDI0MDMtNmRhYy01NThhLTk5NDUDYzI12M3GQ3ZmQ2","earliestTimestamp":1653211113},"status":"ok","message":""}
+                "example": {"content":{"transfers":[{"id":"8E25ACB5-A9E2-4D00-8772-A255F010A2A9","status":"succeeded","type":"deposit","fromAddress":"D5PumQwt...","targetAddress":"D641Fmzx...","symbol":"DOGE","hash":"3310c6202aaeb44754a118ce11f255382d012060ade0d6d9f...","amount":15,"transactionAmount":10,"createdTimestamp":1653215600,"updatedTimestamp":1653215600,"networkTransactionFee":{"amount":5,"symbol":"DOGE"},"confirmations":17,"blockchainMethod":"transfer"},{"id":"70E6E3CF-5ACF-49C5-A4E1-5FB85A567F26","status":"succeeded","type":"withdrawal","fromAddress":"0x7BDE8361Fe587daD0e35448E754...","targetAddress":"0x83C8F28c26bF6aaca652Df1DbBE...","symbol":"ETH","hash":"0x77f3a280aa5cfe956a5759c24cf774325504070b32b4159...","amount":0.1,"transactionAmount":0.099,"createdTimestamp":1653211113,"updatedTimestamp":1653211113,"networkTransactionFee":{"amount":0.001,"symbol":"ETH"},"confirmations":18,"blockchainMethod":"transfer"}],"total":2,"cursor":"N2VkZDI0MDMtNmRhYy01NThhLTk5NDUDYzI12M3GQ3ZmQ2","earliestTimestamp":1653211113},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -2002,7 +2011,172 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: Client Id or Client Secret are not correct or missing.",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/transfers/mesh": {
+      "get": {
+        "tags": [
+          "Transfers"
+        ],
+        "summary": "Get transfers executed by Mesh Connect",
+        "description": "Get cryptocurrency transfers, such as transfers on a cryptocurrency wallet, or\r\ndeposit/withdrawal transfers on an cryptocurrency exchange account executed via Mesh Connect.",
+        "parameters": [
+          {
+            "name": "Count",
+            "in": "query",
+            "description": "Number of items to return. Default 10, maximum - 100.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Offset",
+            "in": "query",
+            "description": "Number of items to skip.",
+            "schema": {
+              "type": "integer",
+              "format": "int32"
+            }
+          },
+          {
+            "name": "Id",
+            "in": "query",
+            "description": "Mesh transfer identifier.",
+            "schema": {
+              "type": "string",
+              "format": "uuid"
+            }
+          },
+          {
+            "name": "ClientTransactionId",
+            "in": "query",
+            "description": "Client transaction identifier.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "UserId",
+            "in": "query",
+            "description": "Client's user identifier.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "IntegrationIds",
+            "in": "query",
+            "description": "Transfered integration.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "format": "uuid"
+              }
+            }
+          },
+          {
+            "name": "Statuses",
+            "in": "query",
+            "description": "Transfer statuses.",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/components/schemas/TranferStatus"
+              }
+            }
+          },
+          {
+            "name": "FromTimestamp",
+            "in": "query",
+            "description": "Transfer created minimum timestamp.",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "ToTimestamp",
+            "in": "query",
+            "description": "Transfer created maximum timestamp.",
+            "schema": {
+              "type": "integer",
+              "format": "int64"
+            }
+          },
+          {
+            "name": "MinAmountInFiat",
+            "in": "query",
+            "description": "Minimum amount in fiat.",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "MaxAmountInFiat",
+            "in": "query",
+            "description": "Maximum amount in fiat.",
+            "schema": {
+              "type": "number",
+              "format": "double"
+            }
+          },
+          {
+            "name": "OrderBy",
+            "in": "query",
+            "description": "Order by column.",
+            "schema": {
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/TranferOrderByFields"
+                }
+              ]
+            }
+          },
+          {
+            "name": "DescendingOrder",
+            "in": "query",
+            "description": "Value indicating if ordering is descending.",
+            "schema": {
+              "type": "boolean"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Transfers obtained.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TransferModelPaginationResponseApiResult"
+                },
+                "example": {"content":{"items":[{"id":"8e25acb5-a9e2-4d00-8772-a255f010a2a9","clientTransactionId":"123456","userId":"123456798","status":"succeeded","amountInFiat":1000.3,"amountInFiatCurrencyCode":"USD","amount":10.123,"symbol":"ETH","networkName":"Polygon","createdTimestamp":1653211113,"from":{"id":"8e25acb5-a9e2-4d00-8772-a255f010a2a9","type":"robinhood","name":"Robinhood"},"hash":"0x77f3a280aa5cfe956a5759c24cf774325504070b32b4159..."},{"id":"12345678-a9e2-4d00-8772-a255f010a2a9","clientTransactionId":"123456","userId":"123456798","status":"failed","amountInFiat":10.3,"amountInFiatCurrencyCode":"USD","amount":0.123,"symbol":"ETH","networkName":"Polygon","createdTimestamp":1653211113,"from":{"id":"8e25acb5-a9e2-4d00-8772-a255f010a2a9","type":"deFiWallet","name":"MetaMask"},"hash":"0x77f3a280aa5cfe956a5759c24cf774325504070b32b4159..."}],"total":10},"status":"ok","message":"","errorType":""}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResult"
+                },
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
               }
             }
           },
@@ -2030,7 +2204,7 @@
               "schema": {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/BrokerCryptocurrencyTransactionDetailsRequest"
+                    "$ref": "#/components/schemas/TransfersBrokerCryptocurrencyTransactionDetailsRequest"
                   }
                 ]
               },
@@ -2046,7 +2220,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerCryptocurrencyTransactionIApiResult"
                 },
-                "example": {"content":{"id":"8E25ACB5-A9E2-4D00-8772-A255F010A2A9","status":"succeeded","type":"deposit","fromAddress":"D5PumQwt...","targetAddress":"D641Fmzx...","symbol":"DOGE","hash":"3310c6202aaeb44754a118ce11f255382d012060ade0d6d9f...","amount":15,"transactionAmount":10,"createdTimestamp":1653215600,"updatedTimestamp":1653215600,"networkTransactionFee":{"amount":5,"symbol":"DOGE"},"confirmations":17,"blockchainMethod":"transfer"},"status":"ok","message":""}
+                "example": {"content":{"id":"8E25ACB5-A9E2-4D00-8772-A255F010A2A9","status":"succeeded","type":"deposit","fromAddress":"D5PumQwt...","targetAddress":"D641Fmzx...","symbol":"DOGE","hash":"3310c6202aaeb44754a118ce11f255382d012060ade0d6d9f...","amount":15,"transactionAmount":10,"createdTimestamp":1653215600,"updatedTimestamp":1653215600,"networkTransactionFee":{"amount":5,"symbol":"DOGE"},"confirmations":17,"blockchainMethod":"transfer"},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -2057,7 +2231,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
               }
             }
           },
@@ -2076,7 +2250,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message"}
+                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
               }
             }
           }
@@ -2096,7 +2270,7 @@
               "schema": {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/BrokerCreateCryptocurrencyTransactionRequest"
+                    "$ref": "#/components/schemas/TransfersBrokerCreateCryptocurrencyTransactionRequest"
                   }
                 ]
               },
@@ -2119,7 +2293,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerCreateCryptocurrencyTransactionResponseIApiResult"
                 },
-                "example": {"content":{"failed":false,"status":"pending","statusDetails":"Accepted","transaction":{"id":"8E25ACB5-A9E2-4D00-8772-A255F010A2A9","status":"pending","type":"withdrawal","fromAddress":"D5PumQwt...","targetAddress":"D641Fmzx...","symbol":"DOGE","hash":"3310c6202aaeb44754a118ce11f255382d012060ade0d6d9f...","amount":105,"transactionAmount":100,"createdTimestamp":1653215600,"updatedTimestamp":1653215600,"networkTransactionFee":{"amount":5,"symbol":"DOGE"},"confirmations":3,"blockchainMethod":"transfer"}},"status":"ok","message":""}
+                "example": {"content":{"failed":false,"status":"pending","statusDetails":"Accepted","transaction":{"id":"8E25ACB5-A9E2-4D00-8772-A255F010A2A9","status":"pending","type":"withdrawal","fromAddress":"D5PumQwt...","targetAddress":"D641Fmzx...","symbol":"DOGE","hash":"3310c6202aaeb44754a118ce11f255382d012060ade0d6d9f...","amount":105,"transactionAmount":100,"createdTimestamp":1653215600,"updatedTimestamp":1653215600,"networkTransactionFee":{"amount":5,"symbol":"DOGE"},"confirmations":3,"blockchainMethod":"transfer"}},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -2130,7 +2304,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
               }
             }
           },
@@ -2158,7 +2332,7 @@
               "schema": {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/BrokerCryptocurrencyDepositAddressRequest"
+                    "$ref": "#/components/schemas/TransfersBrokerCryptocurrencyDepositAddressRequest"
                   }
                 ]
               },
@@ -2174,7 +2348,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerCryptocurrencyDepositAddressResponseIApiResult"
                 },
-                "example": {"content":{"symbol":"DOGE","address":"D641Fmzx...","chain":"DOGE"},"status":"ok","message":""}
+                "example": {"content":{"symbol":"DOGE","address":"D641Fmzx...","chain":"DOGE"},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -2185,7 +2359,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
               }
             }
           },
@@ -2196,7 +2370,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message"}
+                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
               }
             }
           },
@@ -2224,7 +2398,7 @@
               "schema": {
                 "allOf": [
                   {
-                    "$ref": "#/components/schemas/BrokerCryptocurrencyDepositAddressRequest"
+                    "$ref": "#/components/schemas/TransfersBrokerCryptocurrencyDepositAddressRequest"
                   }
                 ]
               },
@@ -2240,7 +2414,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerCryptocurrencySymbolDetailsResponseIApiResult"
                 },
-                "example": {"content":{"symbol":"ETH","addressTypes":["ethAddress"],"chains":[{"chain":"Ethereum","fee":0.00001}]},"status":"ok","message":""}
+                "example": {"content":{"symbol":"ETH","addressTypes":["ethAddress"],"chains":[{"chain":"Ethereum","fee":0.00001}]},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -2251,7 +2425,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
               }
             }
           },
@@ -2262,7 +2436,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message"}
+                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
               }
             }
           },
@@ -2309,6 +2483,11 @@
           "displayMessage": {
             "type": "string",
             "description": "User-friendly display message that can be presented to the end user",
+            "nullable": true
+          },
+          "errorType": {
+            "type": "string",
+            "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
             "nullable": true
           }
         },
@@ -2407,6 +2586,11 @@
             "readOnly": true
           },
           "displayMessage": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "errorType": {
             "type": "string",
             "nullable": true,
             "readOnly": true
@@ -2576,6 +2760,11 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
+          },
+          "errorType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -2657,6 +2846,11 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
+          },
+          "errorType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -2694,7 +2888,6 @@
               "binanceInternational",
               "bitstamp",
               "gateIo",
-              "celsius",
               "acorns",
               "okx",
               "bitFlyer",
@@ -2871,11 +3064,13 @@
           },
           "accessToken": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "deprecated": true
           },
           "refreshToken": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "deprecated": true
           },
           "expiresInSeconds": {
             "type": "integer",
@@ -2893,7 +3088,8 @@
                 "$ref": "#/components/schemas/BrokerAccount"
               }
             ],
-            "nullable": true
+            "nullable": true,
+            "deprecated": true
           },
           "brokerBrandInfo": {
             "allOf": [
@@ -2957,6 +3153,11 @@
             "readOnly": true
           },
           "displayMessage": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "errorType": {
             "type": "string",
             "nullable": true,
             "readOnly": true
@@ -3076,6 +3277,11 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
+          },
+          "errorType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -3127,7 +3333,6 @@
               "binanceInternational",
               "bitstamp",
               "gateIo",
-              "celsius",
               "acorns",
               "okx",
               "bitFlyer",
@@ -3271,7 +3476,6 @@
               "binanceInternational",
               "bitstamp",
               "gateIo",
-              "celsius",
               "acorns",
               "okx",
               "bitFlyer",
@@ -3435,6 +3639,11 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
+          },
+          "errorType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -3521,6 +3730,11 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
+          },
+          "errorType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -3588,6 +3802,11 @@
             "readOnly": true
           },
           "displayMessage": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "errorType": {
             "type": "string",
             "nullable": true,
             "readOnly": true
@@ -3795,6 +4014,11 @@
             "readOnly": true
           },
           "displayMessage": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "errorType": {
             "type": "string",
             "nullable": true,
             "readOnly": true
@@ -4051,7 +4275,6 @@
               "binanceInternational",
               "bitstamp",
               "gateIo",
-              "celsius",
               "acorns",
               "okx",
               "bitFlyer",
@@ -4150,6 +4373,11 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
+          },
+          "errorType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -4193,7 +4421,6 @@
               "binanceInternational",
               "bitstamp",
               "gateIo",
-              "celsius",
               "acorns",
               "okx",
               "bitFlyer",
@@ -4309,6 +4536,11 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
+          },
+          "errorType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -4361,7 +4593,6 @@
               "binanceInternational",
               "bitstamp",
               "gateIo",
-              "celsius",
               "acorns",
               "okx",
               "bitFlyer",
@@ -4479,6 +4710,11 @@
             "readOnly": true
           },
           "displayMessage": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "errorType": {
             "type": "string",
             "nullable": true,
             "readOnly": true
@@ -4630,7 +4866,6 @@
               "binanceInternational",
               "bitstamp",
               "gateIo",
-              "celsius",
               "acorns",
               "okx",
               "bitFlyer",
@@ -4708,6 +4943,11 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
+          },
+          "errorType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -4742,7 +4982,6 @@
               "binanceInternational",
               "bitstamp",
               "gateIo",
-              "celsius",
               "acorns",
               "okx",
               "bitFlyer",
@@ -4856,6 +5095,11 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
+          },
+          "errorType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -4889,15 +5133,18 @@
                 "$ref": "#/components/schemas/BrokerAccount"
               }
             ],
-            "nullable": true
+            "nullable": true,
+            "deprecated": true
           },
           "accessToken": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "deprecated": true
           },
           "refreshToken": {
             "type": "string",
-            "nullable": true
+            "nullable": true,
+            "deprecated": true
           },
           "expiresInSeconds": {
             "type": "integer",
@@ -4958,6 +5205,11 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
+          },
+          "errorType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -5009,7 +5261,6 @@
               "binanceInternational",
               "bitstamp",
               "gateIo",
-              "celsius",
               "acorns",
               "okx",
               "bitFlyer",
@@ -5219,7 +5470,6 @@
               "binanceInternational",
               "bitstamp",
               "gateIo",
-              "celsius",
               "acorns",
               "okx",
               "bitFlyer",
@@ -5352,6 +5602,11 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
+          },
+          "errorType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -5476,6 +5731,11 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
+          },
+          "errorType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -5510,7 +5770,6 @@
               "binanceInternational",
               "bitstamp",
               "gateIo",
-              "celsius",
               "acorns",
               "okx",
               "bitFlyer",
@@ -5530,6 +5789,11 @@
               }
             ],
             "description": "Type of the integration"
+          },
+          "name": {
+            "type": "string",
+            "description": "Name of the integration",
+            "nullable": true
           },
           "isUp": {
             "type": "boolean",
@@ -5558,6 +5822,15 @@
               "$ref": "#/components/schemas/BrokerFeature"
             },
             "description": "Get products supported by the financial institution",
+            "nullable": true
+          },
+          "deFiWalletData": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeFiWalletHealthStatusInfo"
+              }
+            ],
+            "description": "Short information about DeFiWallet",
             "nullable": true
           }
         },
@@ -5598,6 +5871,11 @@
             "readOnly": true
           },
           "displayMessage": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "errorType": {
             "type": "string",
             "nullable": true,
             "readOnly": true
@@ -5655,6 +5933,11 @@
             "readOnly": true
           },
           "displayMessage": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "errorType": {
             "type": "string",
             "nullable": true,
             "readOnly": true
@@ -5897,6 +6180,11 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
+          },
+          "errorType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -6045,6 +6333,11 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
+          },
+          "errorType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -6065,6 +6358,68 @@
           "conversionFromFiat"
         ],
         "type": "string"
+      },
+      "BalanceBrokerBaseRequest": {
+        "required": [
+          "authToken",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "authToken": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Auth token that allows connecting to the target institution"
+          },
+          "type": {
+            "enum": [
+              "robinhood",
+              "eTrade",
+              "alpaca",
+              "tdAmeritrade",
+              "weBull",
+              "stash",
+              "interactiveBrokers",
+              "public",
+              "coinbase",
+              "kraken",
+              "coinbasePro",
+              "cryptoCom",
+              "openSea",
+              "binanceUs",
+              "gemini",
+              "cryptocurrencyAddress",
+              "cryptocurrencyWallet",
+              "okCoin",
+              "bittrex",
+              "kuCoin",
+              "etoro",
+              "cexIo",
+              "binanceInternational",
+              "bitstamp",
+              "gateIo",
+              "acorns",
+              "okx",
+              "bitFlyer",
+              "coinlist",
+              "huobi",
+              "bitfinex",
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect",
+              "bybit"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerType"
+              }
+            ],
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n"
+          }
+        },
+        "additionalProperties": false
       },
       "BrokerAccount": {
         "type": "object",
@@ -6185,7 +6540,6 @@
               "binanceInternational",
               "bitstamp",
               "gateIo",
-              "celsius",
               "acorns",
               "okx",
               "bitFlyer",
@@ -6290,6 +6644,11 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
+          },
+          "errorType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -6333,7 +6692,6 @@
               "binanceInternational",
               "bitstamp",
               "gateIo",
-              "celsius",
               "acorns",
               "okx",
               "bitFlyer",
@@ -6411,7 +6769,6 @@
               "binanceInternational",
               "bitstamp",
               "gateIo",
-              "celsius",
               "acorns",
               "okx",
               "bitFlyer",
@@ -6571,7 +6928,6 @@
               "binanceInternational",
               "bitstamp",
               "gateIo",
-              "celsius",
               "acorns",
               "okx",
               "bitFlyer",
@@ -6682,7 +7038,6 @@
               "binanceInternational",
               "bitstamp",
               "gateIo",
-              "celsius",
               "acorns",
               "okx",
               "bitFlyer",
@@ -6843,6 +7198,11 @@
             "readOnly": true
           },
           "displayMessage": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "errorType": {
             "type": "string",
             "nullable": true,
             "readOnly": true
@@ -7067,6 +7427,11 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
+          },
+          "errorType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -7105,7 +7470,6 @@
               "binanceInternational",
               "bitstamp",
               "gateIo",
-              "celsius",
               "acorns",
               "okx",
               "bitFlyer",
@@ -7216,7 +7580,6 @@
               "binanceInternational",
               "bitstamp",
               "gateIo",
-              "celsius",
               "acorns",
               "okx",
               "bitFlyer",
@@ -7300,7 +7663,6 @@
           "binanceInternational",
           "bitstamp",
           "gateIo",
-          "celsius",
           "acorns",
           "okx",
           "bitFlyer",
@@ -7373,6 +7735,11 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
+          },
+          "errorType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -7416,7 +7783,6 @@
               "binanceInternational",
               "bitstamp",
               "gateIo",
-              "celsius",
               "acorns",
               "okx",
               "bitFlyer",
@@ -7581,6 +7947,11 @@
             "readOnly": true
           },
           "displayMessage": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "errorType": {
             "type": "string",
             "nullable": true,
             "readOnly": true
@@ -7819,6 +8190,20 @@
         ],
         "type": "string"
       },
+      "DeFiWalletHealthStatusInfo": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ExecuteTransferMfaType": {
         "enum": [
           "unspecified",
@@ -7868,7 +8253,6 @@
               "binanceInternational",
               "bitstamp",
               "gateIo",
-              "celsius",
               "acorns",
               "okx",
               "bitFlyer",
@@ -7984,6 +8368,11 @@
             "readOnly": true
           },
           "displayMessage": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "errorType": {
             "type": "string",
             "nullable": true,
             "readOnly": true
@@ -8117,6 +8506,18 @@
         ],
         "type": "string"
       },
+      "FinancialInstitutionIntegrationType": {
+        "enum": [
+          "brokerage",
+          "bank",
+          "exchange",
+          "wallet",
+          "address",
+          "nftMarketplace",
+          "deFiWallet"
+        ],
+        "type": "string"
+      },
       "GetLinkTokenRequest": {
         "required": [
           "userId"
@@ -8136,13 +8537,8 @@
               }
             ],
             "description": "Type of integration to redirect to. Will redirect to catalog if not provided.\r\nNot supported types: DeFiWallet, CryptocurrencyAddress, CryptocurrencyWallet.",
-            "nullable": true
-          },
-          "configurationId": {
-            "type": "string",
-            "description": "Link Configuration identifier - an optional paramater for used configuration.\r\nIf not provided default configuration with all avaialbe integrations will be used.",
-            "format": "uuid",
-            "nullable": true
+            "nullable": true,
+            "deprecated": true
           },
           "restrictMultipleAccounts": {
             "type": "boolean",
@@ -8155,6 +8551,12 @@
               }
             ],
             "description": "Encapsulates transaction-related parameters, including destination addresses and the amount to transfer in fiat currency.",
+            "nullable": true
+          },
+          "integrationId": {
+            "type": "string",
+            "description": "A unique identifier representing a specific integration obtained from the list of available integrations.",
+            "format": "uuid",
             "nullable": true
           }
         },
@@ -8199,6 +8601,11 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
+          },
+          "errorType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -8218,6 +8625,77 @@
             "type": "number",
             "description": "Amount in USD to transfer. If not provided users can specify amount by themselves.",
             "format": "double",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "IntegrationModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          },
+          "type": {
+            "enum": [
+              "robinhood",
+              "eTrade",
+              "alpaca",
+              "tdAmeritrade",
+              "weBull",
+              "stash",
+              "interactiveBrokers",
+              "public",
+              "coinbase",
+              "kraken",
+              "coinbasePro",
+              "cryptoCom",
+              "openSea",
+              "binanceUs",
+              "gemini",
+              "cryptocurrencyAddress",
+              "cryptocurrencyWallet",
+              "okCoin",
+              "bittrex",
+              "kuCoin",
+              "etoro",
+              "cexIo",
+              "binanceInternational",
+              "bitstamp",
+              "gateIo",
+              "acorns",
+              "okx",
+              "bitFlyer",
+              "coinlist",
+              "huobi",
+              "bitfinex",
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect",
+              "bybit"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerType"
+              }
+            ]
+          },
+          "deFiWalletProviderId": {
+            "type": "string",
+            "nullable": true
+          },
+          "categories": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/FinancialInstitutionIntegrationType"
+            },
             "nullable": true
           }
         },
@@ -8275,6 +8753,11 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
+          },
+          "errorType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -8309,7 +8792,6 @@
               "binanceInternational",
               "bitstamp",
               "gateIo",
-              "celsius",
               "acorns",
               "okx",
               "bitFlyer",
@@ -8345,6 +8827,67 @@
           "supportsIncomingTransfers": {
             "type": "boolean",
             "description": "Specifies if the integration supports incoming transfers."
+          }
+        },
+        "additionalProperties": false
+      },
+      "IntegrationsResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/IntegrationModel"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "IntegrationsResponseIApiResult": {
+        "type": "object",
+        "properties": {
+          "content": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/IntegrationsResponse"
+              }
+            ],
+            "nullable": true,
+            "readOnly": true
+          },
+          "status": {
+            "enum": [
+              "ok",
+              "serverFailure",
+              "permissionDenied",
+              "badRequest",
+              "notFound",
+              "conflict",
+              "tooManyRequest",
+              "locked"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiResultStatus"
+              }
+            ],
+            "readOnly": true
+          },
+          "message": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "displayMessage": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "errorType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -8395,6 +8938,11 @@
             "readOnly": true
           },
           "displayMessage": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
+          },
+          "errorType": {
             "type": "string",
             "nullable": true,
             "readOnly": true
@@ -8494,6 +9042,11 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
+          },
+          "errorType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -8523,6 +9076,11 @@
             },
             "description": "The list of tokens that are currently supported to be transferred using the network.",
             "nullable": true
+          },
+          "nativeSymbol": {
+            "type": "string",
+            "description": "The symbol of the network's native cryptocurrency.",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -8551,6 +9109,11 @@
               "type": "string"
             },
             "description": "The list of tokens that are currently supported to be transferred using the network.",
+            "nullable": true
+          },
+          "nativeSymbol": {
+            "type": "string",
+            "description": "The symbol of the network's native cryptocurrency.",
             "nullable": true
           },
           "supportedBrokerTypes": {
@@ -8776,6 +9339,68 @@
         },
         "additionalProperties": false
       },
+      "PortfolioBrokerBaseRequest": {
+        "required": [
+          "authToken",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "authToken": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Auth token that allows connecting to the target institution"
+          },
+          "type": {
+            "enum": [
+              "robinhood",
+              "eTrade",
+              "alpaca",
+              "tdAmeritrade",
+              "weBull",
+              "stash",
+              "interactiveBrokers",
+              "public",
+              "coinbase",
+              "kraken",
+              "coinbasePro",
+              "cryptoCom",
+              "openSea",
+              "binanceUs",
+              "gemini",
+              "cryptocurrencyAddress",
+              "cryptocurrencyWallet",
+              "okCoin",
+              "bittrex",
+              "kuCoin",
+              "etoro",
+              "cexIo",
+              "binanceInternational",
+              "bitstamp",
+              "gateIo",
+              "acorns",
+              "okx",
+              "bitFlyer",
+              "coinlist",
+              "huobi",
+              "bitfinex",
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect",
+              "bybit"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerType"
+              }
+            ],
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n"
+          }
+        },
+        "additionalProperties": false
+      },
       "PortfolioFiatBalance": {
         "type": "object",
         "properties": {
@@ -8838,7 +9463,6 @@
               "binanceInternational",
               "bitstamp",
               "gateIo",
-              "celsius",
               "acorns",
               "okx",
               "bitFlyer",
@@ -8979,6 +9603,11 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
+          },
+          "errorType": {
+            "type": "string",
+            "nullable": true,
+            "readOnly": true
           }
         },
         "additionalProperties": false
@@ -9111,6 +9740,583 @@
         ],
         "type": "string"
       },
+      "TranferOrderByFields": {
+        "enum": [
+          "id",
+          "clientTransferId",
+          "userId",
+          "fromType",
+          "amountInFiat",
+          "status",
+          "createdTimestamp"
+        ],
+        "type": "string"
+      },
+      "TranferStatus": {
+        "enum": [
+          "pending",
+          "succeeded",
+          "failed"
+        ],
+        "type": "string"
+      },
+      "TransactionsB2BBrokerCreateOrderRequest": {
+        "required": [
+          "amount",
+          "amountIsInPaymentSymbol",
+          "authToken",
+          "isCryptocurrency",
+          "orderType",
+          "paymentIsCryptocurrency",
+          "paymentSymbol",
+          "symbol",
+          "timeInForce",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "authToken": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Auth token that allows connecting to the target institution"
+          },
+          "type": {
+            "enum": [
+              "robinhood",
+              "eTrade",
+              "alpaca",
+              "tdAmeritrade",
+              "weBull",
+              "stash",
+              "interactiveBrokers",
+              "public",
+              "coinbase",
+              "kraken",
+              "coinbasePro",
+              "cryptoCom",
+              "openSea",
+              "binanceUs",
+              "gemini",
+              "cryptocurrencyAddress",
+              "cryptocurrencyWallet",
+              "okCoin",
+              "bittrex",
+              "kuCoin",
+              "etoro",
+              "cexIo",
+              "binanceInternational",
+              "bitstamp",
+              "gateIo",
+              "acorns",
+              "okx",
+              "bitFlyer",
+              "coinlist",
+              "huobi",
+              "bitfinex",
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect",
+              "bybit"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerType"
+              }
+            ],
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```Bybit```\n"
+          },
+          "symbol": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Symbol to trade. For example, `AAPL` or `ETH`"
+          },
+          "paymentSymbol": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Symbol to use for payment, defaults to `USD`."
+          },
+          "amount": {
+            "type": "number",
+            "description": "Amount of purchase.",
+            "format": "double"
+          },
+          "price": {
+            "type": "number",
+            "description": "Price of the unit, used for `Limit` and `StopLoss` orders.",
+            "format": "double"
+          },
+          "isCryptocurrency": {
+            "type": "boolean",
+            "description": "Some Stock and Crypto symbols can intersect, so the type of the asset needs to be specified explicitly."
+          },
+          "paymentIsCryptocurrency": {
+            "type": "boolean",
+            "description": "Indicates whether the `PaymentSymbol` is fiat or cryptocurrency"
+          },
+          "amountIsFiat": {
+            "type": "boolean",
+            "nullable": true,
+            "deprecated": true
+          },
+          "amountInFiat": {
+            "type": "number",
+            "format": "double",
+            "nullable": true,
+            "deprecated": true
+          },
+          "amountIsInPaymentSymbol": {
+            "type": "boolean",
+            "description": "This value indicates if the order should be executed in payment/quote currency amount (e.g. purchase ETH for $10). This can be\r\nperformed only if the current institution supports such orders (`SupportsPlacingSellOrdersInPaymentSymbolAmount` and\r\n`SupportsPlacingBuyOrdersInPaymentSymbolAmount` fields in `get supported order features for institution`) and `AmountInPaymentSymbol`\r\nvalue is passed."
+          },
+          "amountInPaymentSymbol": {
+            "type": "number",
+            "description": "Specifies the target amount in the payment/quote currency. For example, setting this to `10` when the `AmountInPaymentSymbol` = `true`\r\nand `PaymentSymbol` = `USD` will instruct the API to place an order to buy/sell the asset worth $10.",
+            "format": "double",
+            "nullable": true
+          },
+          "extendedHours": {
+            "type": "boolean",
+            "description": "Specifies if the extended trading hours should be used."
+          },
+          "orderType": {
+            "enum": [
+              "market",
+              "limit",
+              "stopLoss"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerOrderPlaceTypeTrade"
+              }
+            ]
+          },
+          "timeInForce": {
+            "enum": [
+              "goodTillCanceled",
+              "immediateOrCancel",
+              "fillOrKill",
+              "goodForDay",
+              "postOnly",
+              "unknown"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerOrderTimeInForceType"
+              }
+            ]
+          },
+          "mfaCode": {
+            "type": "string",
+            "description": "MFA Code to create an order (requested by Kraken if MFA is enabled in user settings)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TransactionsB2BBrokerOrderListRequest": {
+        "required": [
+          "authToken",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "authToken": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Auth token that allows connecting to the target institution"
+          },
+          "type": {
+            "enum": [
+              "robinhood",
+              "eTrade",
+              "alpaca",
+              "tdAmeritrade",
+              "weBull",
+              "stash",
+              "interactiveBrokers",
+              "public",
+              "coinbase",
+              "kraken",
+              "coinbasePro",
+              "cryptoCom",
+              "openSea",
+              "binanceUs",
+              "gemini",
+              "cryptocurrencyAddress",
+              "cryptocurrencyWallet",
+              "okCoin",
+              "bittrex",
+              "kuCoin",
+              "etoro",
+              "cexIo",
+              "binanceInternational",
+              "bitstamp",
+              "gateIo",
+              "acorns",
+              "okx",
+              "bitFlyer",
+              "coinlist",
+              "huobi",
+              "bitfinex",
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect",
+              "bybit"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerType"
+              }
+            ],
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```Bybit```\n"
+          },
+          "cursor": {
+            "type": "string",
+            "description": "The cursor to retrieve the next page of transactions.\r\nProviding it will cause the response to only return changes after this update.\r\nIf this field is not provided, the history of transactions will be returned starting with the first-added transaction.",
+            "nullable": true
+          },
+          "count": {
+            "type": "integer",
+            "description": "Number of records to include in the response. <br />\r\nDefault: `100` <br />\r\nMaximum: `250`",
+            "format": "int32"
+          },
+          "statuses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BrokerOrderStatus"
+            },
+            "description": "Return orders of this statuses only. If this field is not provided, orders with all available statuses will be returned.",
+            "nullable": true
+          },
+          "from": {
+            "type": "integer",
+            "description": "Return orders created after this timestamp.\r\nIf this field is not provided, orders will be returned according to the default of the institution.",
+            "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TransactionsB2BBrokerOrderRequest": {
+        "required": [
+          "authToken",
+          "id",
+          "isCryptocurrency",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "authToken": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Auth token that allows connecting to the target institution"
+          },
+          "type": {
+            "enum": [
+              "robinhood",
+              "eTrade",
+              "alpaca",
+              "tdAmeritrade",
+              "weBull",
+              "stash",
+              "interactiveBrokers",
+              "public",
+              "coinbase",
+              "kraken",
+              "coinbasePro",
+              "cryptoCom",
+              "openSea",
+              "binanceUs",
+              "gemini",
+              "cryptocurrencyAddress",
+              "cryptocurrencyWallet",
+              "okCoin",
+              "bittrex",
+              "kuCoin",
+              "etoro",
+              "cexIo",
+              "binanceInternational",
+              "bitstamp",
+              "gateIo",
+              "acorns",
+              "okx",
+              "bitFlyer",
+              "coinlist",
+              "huobi",
+              "bitfinex",
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect",
+              "bybit"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerType"
+              }
+            ],
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```Bybit```\n"
+          },
+          "id": {
+            "minLength": 1,
+            "type": "string"
+          },
+          "side": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerOrderType"
+              }
+            ],
+            "description": "Should be provided for Coinbase.",
+            "nullable": true
+          },
+          "isCryptocurrency": {
+            "type": "boolean",
+            "description": "Some Stock and Crypto symbols can intersect, so we need to explicitly specify what type of asset is requested to be bought."
+          },
+          "symbolPair": {
+            "type": "string",
+            "description": "Symbol pair of the order (requested by some brokers).",
+            "nullable": true
+          },
+          "mfaCode": {
+            "type": "string",
+            "description": "MFA Code to cancel an order (requested by Kraken if MFA is enabled in user settings)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TransactionsB2BBrokerSymbolInfoForOrderRequest": {
+        "required": [
+          "amount",
+          "amountIsInPaymentSymbol",
+          "authToken",
+          "isCryptocurrency",
+          "orderType",
+          "paymentIsCryptocurrency",
+          "paymentSymbol",
+          "symbol",
+          "timeInForce",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "authToken": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Auth token that allows connecting to the target institution"
+          },
+          "type": {
+            "enum": [
+              "robinhood",
+              "eTrade",
+              "alpaca",
+              "tdAmeritrade",
+              "weBull",
+              "stash",
+              "interactiveBrokers",
+              "public",
+              "coinbase",
+              "kraken",
+              "coinbasePro",
+              "cryptoCom",
+              "openSea",
+              "binanceUs",
+              "gemini",
+              "cryptocurrencyAddress",
+              "cryptocurrencyWallet",
+              "okCoin",
+              "bittrex",
+              "kuCoin",
+              "etoro",
+              "cexIo",
+              "binanceInternational",
+              "bitstamp",
+              "gateIo",
+              "acorns",
+              "okx",
+              "bitFlyer",
+              "coinlist",
+              "huobi",
+              "bitfinex",
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect",
+              "bybit"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerType"
+              }
+            ],
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```Bybit```\n"
+          },
+          "symbol": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Symbol to trade. For example, `AAPL` or `ETH`"
+          },
+          "paymentSymbol": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Symbol to use for payment, defaults to `USD`."
+          },
+          "amount": {
+            "type": "number",
+            "description": "Amount of purchase.",
+            "format": "double"
+          },
+          "price": {
+            "type": "number",
+            "description": "Price of the unit, used for `Limit` and `StopLoss` orders.",
+            "format": "double"
+          },
+          "isCryptocurrency": {
+            "type": "boolean",
+            "description": "Some Stock and Crypto symbols can intersect, so the type of the asset needs to be specified explicitly."
+          },
+          "paymentIsCryptocurrency": {
+            "type": "boolean",
+            "description": "Indicates whether the `PaymentSymbol` is fiat or cryptocurrency"
+          },
+          "amountIsFiat": {
+            "type": "boolean",
+            "nullable": true,
+            "deprecated": true
+          },
+          "amountInFiat": {
+            "type": "number",
+            "format": "double",
+            "nullable": true,
+            "deprecated": true
+          },
+          "amountIsInPaymentSymbol": {
+            "type": "boolean",
+            "description": "This value indicates if the order should be executed in payment/quote currency amount (e.g. purchase ETH for $10). This can be\r\nperformed only if the current institution supports such orders (`SupportsPlacingSellOrdersInPaymentSymbolAmount` and\r\n`SupportsPlacingBuyOrdersInPaymentSymbolAmount` fields in `get supported order features for institution`) and `AmountInPaymentSymbol`\r\nvalue is passed."
+          },
+          "amountInPaymentSymbol": {
+            "type": "number",
+            "description": "Specifies the target amount in the payment/quote currency. For example, setting this to `10` when the `AmountInPaymentSymbol` = `true`\r\nand `PaymentSymbol` = `USD` will instruct the API to place an order to buy/sell the asset worth $10.",
+            "format": "double",
+            "nullable": true
+          },
+          "extendedHours": {
+            "type": "boolean",
+            "description": "Specifies if the extended trading hours should be used."
+          },
+          "orderType": {
+            "enum": [
+              "market",
+              "limit",
+              "stopLoss"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerOrderPlaceTypeTrade"
+              }
+            ]
+          },
+          "timeInForce": {
+            "enum": [
+              "goodTillCanceled",
+              "immediateOrCancel",
+              "fillOrKill",
+              "goodForDay",
+              "postOnly",
+              "unknown"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerOrderTimeInForceType"
+              }
+            ]
+          },
+          "mfaCode": {
+            "type": "string",
+            "description": "MFA Code to create an order (requested by Kraken if MFA is enabled in user settings)",
+            "nullable": true
+          },
+          "side": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerOrderType"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TransactionsBrokerBaseRequest": {
+        "required": [
+          "authToken",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "authToken": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Auth token that allows connecting to the target institution"
+          },
+          "type": {
+            "enum": [
+              "robinhood",
+              "eTrade",
+              "alpaca",
+              "tdAmeritrade",
+              "weBull",
+              "stash",
+              "interactiveBrokers",
+              "public",
+              "coinbase",
+              "kraken",
+              "coinbasePro",
+              "cryptoCom",
+              "openSea",
+              "binanceUs",
+              "gemini",
+              "cryptocurrencyAddress",
+              "cryptocurrencyWallet",
+              "okCoin",
+              "bittrex",
+              "kuCoin",
+              "etoro",
+              "cexIo",
+              "binanceInternational",
+              "bitstamp",
+              "gateIo",
+              "acorns",
+              "okx",
+              "bitFlyer",
+              "coinlist",
+              "huobi",
+              "bitfinex",
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect",
+              "bybit"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerType"
+              }
+            ],
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```Bybit```\n"
+          }
+        },
+        "additionalProperties": false
+      },
       "TransferFee": {
         "type": "object",
         "properties": {
@@ -9132,6 +10338,210 @@
         },
         "additionalProperties": false
       },
+      "TransferIntegrationModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "format": "uuid"
+          },
+          "type": {
+            "enum": [
+              "robinhood",
+              "eTrade",
+              "alpaca",
+              "tdAmeritrade",
+              "weBull",
+              "stash",
+              "interactiveBrokers",
+              "public",
+              "coinbase",
+              "kraken",
+              "coinbasePro",
+              "cryptoCom",
+              "openSea",
+              "binanceUs",
+              "gemini",
+              "cryptocurrencyAddress",
+              "cryptocurrencyWallet",
+              "okCoin",
+              "bittrex",
+              "kuCoin",
+              "etoro",
+              "cexIo",
+              "binanceInternational",
+              "bitstamp",
+              "gateIo",
+              "acorns",
+              "okx",
+              "bitFlyer",
+              "coinlist",
+              "huobi",
+              "bitfinex",
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect",
+              "bybit"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerType"
+              }
+            ]
+          },
+          "name": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TransferModel": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "description": "Mesh transfer identifier.",
+            "format": "uuid"
+          },
+          "clientTransactionId": {
+            "type": "string",
+            "description": "Client transaction identifier.",
+            "nullable": true
+          },
+          "userId": {
+            "type": "string",
+            "description": "Client's user identifier.",
+            "nullable": true
+          },
+          "status": {
+            "enum": [
+              "pending",
+              "succeeded",
+              "failed"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TranferStatus"
+              }
+            ],
+            "description": "Transfer status."
+          },
+          "amountInFiat": {
+            "type": "number",
+            "description": "Tranfer amount in fiat.",
+            "format": "double"
+          },
+          "amountInFiatCurrencyCode": {
+            "type": "string",
+            "description": "Tranfer amount in fiat currency code.",
+            "nullable": true
+          },
+          "amount": {
+            "type": "number",
+            "description": "Tranfer amount.",
+            "format": "double"
+          },
+          "symbol": {
+            "type": "string",
+            "description": "Tranfer cryptocurrency symbol.",
+            "nullable": true
+          },
+          "networkName": {
+            "type": "string",
+            "description": "Tranfer network name.",
+            "nullable": true
+          },
+          "createdTimestamp": {
+            "type": "integer",
+            "description": "Created timestamp.",
+            "format": "int64"
+          },
+          "from": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransferIntegrationModel"
+              }
+            ],
+            "description": "From integration.",
+            "nullable": true
+          },
+          "hash": {
+            "type": "string",
+            "description": "Transfer hash.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TransferModelPaginationResponse": {
+        "type": "object",
+        "properties": {
+          "items": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/TransferModel"
+            },
+            "description": "list of items",
+            "nullable": true
+          },
+          "total": {
+            "type": "integer",
+            "description": "Total number of items",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TransferModelPaginationResponseApiResult": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "ok",
+              "serverFailure",
+              "permissionDenied",
+              "badRequest",
+              "notFound",
+              "conflict",
+              "tooManyRequest",
+              "locked"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiResultStatus"
+              }
+            ],
+            "readOnly": true
+          },
+          "message": {
+            "type": "string",
+            "description": "A message generated by the API",
+            "nullable": true
+          },
+          "displayMessage": {
+            "type": "string",
+            "description": "User-friendly display message that can be presented to the end user",
+            "nullable": true
+          },
+          "errorType": {
+            "type": "string",
+            "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
+            "nullable": true
+          },
+          "content": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransferModelPaginationResponse"
+              }
+            ],
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "TransferToAddress": {
         "type": "object",
         "properties": {
@@ -9148,6 +10558,403 @@
           "address": {
             "type": "string",
             "description": "The address to send the asset to.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TransfersBrokerCreateCryptocurrencyTransactionRequest": {
+        "required": [
+          "authToken",
+          "targetAddress",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "authToken": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Auth token that allows connecting to the target institution"
+          },
+          "type": {
+            "enum": [
+              "robinhood",
+              "eTrade",
+              "alpaca",
+              "tdAmeritrade",
+              "weBull",
+              "stash",
+              "interactiveBrokers",
+              "public",
+              "coinbase",
+              "kraken",
+              "coinbasePro",
+              "cryptoCom",
+              "openSea",
+              "binanceUs",
+              "gemini",
+              "cryptocurrencyAddress",
+              "cryptocurrencyWallet",
+              "okCoin",
+              "bittrex",
+              "kuCoin",
+              "etoro",
+              "cexIo",
+              "binanceInternational",
+              "bitstamp",
+              "gateIo",
+              "acorns",
+              "okx",
+              "bitFlyer",
+              "coinlist",
+              "huobi",
+              "bitfinex",
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect",
+              "bybit"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerType"
+              }
+            ],
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```Bybit```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n"
+          },
+          "data": {
+            "type": "string",
+            "description": "Additional data to send on-chain (optional, depends on an integration)",
+            "nullable": true
+          },
+          "targetAddress": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Target address to transfer the asset to"
+          },
+          "amount": {
+            "type": "number",
+            "description": "Amount to transfer",
+            "format": "double"
+          },
+          "fee": {
+            "type": "number",
+            "description": "On-chain fee (optional, depends on an integration)",
+            "format": "double"
+          },
+          "addressType": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CryptocurrencyAddressType"
+              }
+            ],
+            "description": "Type of the address of symbol to be transferred. Providing `EthAddress` will initiate a transfer of ETH over Ethereum blockchain.\r\nCan be used instead of `Symbol` and `Chain` fields.\r\nTo transfer assets over non-default chains (e.g. sending USDT over ERC20) please `Symbol` and `Chain` fields.",
+            "nullable": true
+          },
+          "mfaCode": {
+            "type": "string",
+            "description": "2 Factor auth code (optional, depends on an integration)",
+            "nullable": true
+          },
+          "mfaType": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/MfaType"
+              }
+            ],
+            "description": "2 Factor auth type (optional, depends on an integration)",
+            "nullable": true
+          },
+          "password": {
+            "type": "string",
+            "description": "Password or pass-phrase, required to send transfers (optional, depends on an integration)",
+            "nullable": true
+          },
+          "chain": {
+            "type": "string",
+            "description": "Custom chain name, required by some of the integrations. E.g. USDT can be sent over USDT-ERC20, USDT-TRC20, and USDT-Omni.\r\nCan be used to transfer assets over non-default chains (e.g. sending USDT over ERC20).\r\nPlease use `symbol/details` endpoint to get the list of all possible chains.",
+            "nullable": true
+          },
+          "memo": {
+            "type": "string",
+            "description": "Memo (also called \"Tag\") - address remark.",
+            "nullable": true
+          },
+          "symbol": {
+            "type": "string",
+            "description": "Symbol to be transferred. Can be provided instead of the `AddressType` field.",
+            "nullable": true
+          },
+          "challengeId": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TransfersBrokerCryptocurrencyDepositAddressRequest": {
+        "required": [
+          "authToken",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "authToken": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Auth token that allows connecting to the target institution"
+          },
+          "type": {
+            "enum": [
+              "robinhood",
+              "eTrade",
+              "alpaca",
+              "tdAmeritrade",
+              "weBull",
+              "stash",
+              "interactiveBrokers",
+              "public",
+              "coinbase",
+              "kraken",
+              "coinbasePro",
+              "cryptoCom",
+              "openSea",
+              "binanceUs",
+              "gemini",
+              "cryptocurrencyAddress",
+              "cryptocurrencyWallet",
+              "okCoin",
+              "bittrex",
+              "kuCoin",
+              "etoro",
+              "cexIo",
+              "binanceInternational",
+              "bitstamp",
+              "gateIo",
+              "acorns",
+              "okx",
+              "bitFlyer",
+              "coinlist",
+              "huobi",
+              "bitfinex",
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect",
+              "bybit"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerType"
+              }
+            ],
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```Bybit```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n"
+          },
+          "symbol": {
+            "type": "string",
+            "description": "Symbol of the required cryptocurrency, e.g. ETH or BTC.\r\nCan be used instead of the `AddressType` field.",
+            "nullable": true
+          },
+          "addressType": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CryptocurrencyAddressType"
+              }
+            ],
+            "description": "Type of the address of symbol to be transferred. Providing `EthAddress` will assume a transfer of ETH over Ethereum blockchain.\r\nCan be used instead of `Symbol` field.",
+            "nullable": true
+          },
+          "chain": {
+            "type": "string",
+            "description": "Chain of the required cryptocurrency, e.g. USDT has USDT-ERC20, USDT-TRC20, and USDT-Omni",
+            "nullable": true
+          },
+          "mfaCode": {
+            "type": "string",
+            "description": "Some of integrations require MFA code to create a deposit address, e.g. KrakenDirect",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TransfersBrokerCryptocurrencyTransactionDetailsRequest": {
+        "required": [
+          "authToken",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "authToken": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Auth token that allows connecting to the target institution"
+          },
+          "type": {
+            "enum": [
+              "robinhood",
+              "eTrade",
+              "alpaca",
+              "tdAmeritrade",
+              "weBull",
+              "stash",
+              "interactiveBrokers",
+              "public",
+              "coinbase",
+              "kraken",
+              "coinbasePro",
+              "cryptoCom",
+              "openSea",
+              "binanceUs",
+              "gemini",
+              "cryptocurrencyAddress",
+              "cryptocurrencyWallet",
+              "okCoin",
+              "bittrex",
+              "kuCoin",
+              "etoro",
+              "cexIo",
+              "binanceInternational",
+              "bitstamp",
+              "gateIo",
+              "acorns",
+              "okx",
+              "bitFlyer",
+              "coinlist",
+              "huobi",
+              "bitfinex",
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect",
+              "bybit"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerType"
+              }
+            ],
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```Bybit```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n"
+          },
+          "addressType": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CryptocurrencyAddressType"
+              }
+            ],
+            "description": "Type of the address of the transferred asset. Can be used instead of the `Symbol` field.",
+            "nullable": true
+          },
+          "transactionId": {
+            "type": "string",
+            "description": "Transaction Id by the financial institution",
+            "nullable": true
+          },
+          "transactionHash": {
+            "type": "string",
+            "description": "Hash of the transaction on the blockchain",
+            "nullable": true
+          },
+          "symbol": {
+            "type": "string",
+            "description": "Symbol of the transferred asset. Can be provided instead of the `AddressType` field.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TransfersBrokerTransactionsListRequest": {
+        "required": [
+          "authToken",
+          "type"
+        ],
+        "type": "object",
+        "properties": {
+          "authToken": {
+            "minLength": 1,
+            "type": "string",
+            "description": "Auth token that allows connecting to the target institution"
+          },
+          "type": {
+            "enum": [
+              "robinhood",
+              "eTrade",
+              "alpaca",
+              "tdAmeritrade",
+              "weBull",
+              "stash",
+              "interactiveBrokers",
+              "public",
+              "coinbase",
+              "kraken",
+              "coinbasePro",
+              "cryptoCom",
+              "openSea",
+              "binanceUs",
+              "gemini",
+              "cryptocurrencyAddress",
+              "cryptocurrencyWallet",
+              "okCoin",
+              "bittrex",
+              "kuCoin",
+              "etoro",
+              "cexIo",
+              "binanceInternational",
+              "bitstamp",
+              "gateIo",
+              "acorns",
+              "okx",
+              "bitFlyer",
+              "coinlist",
+              "huobi",
+              "bitfinex",
+              "deFiWallet",
+              "krakenDirect",
+              "vanguard",
+              "binanceInternationalDirect",
+              "bitfinexDirect",
+              "bybit"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerType"
+              }
+            ],
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```Bybit```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n"
+          },
+          "count": {
+            "type": "integer",
+            "description": "Number of records to include in the response. <br />\r\nDefault: `100` <br />\r\nMaximum: `250`",
+            "format": "int32"
+          },
+          "cursor": {
+            "type": "string",
+            "description": "The cursor to retrieve the next page of transactions.\r\nProviding it will cause the response to only return changes after this update.\r\nIf this field is not provided, the history of transactions will be returned starting with the first-added transaction.",
+            "nullable": true
+          },
+          "statuses": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BrokerCryptocurrencyTransactionStatus"
+            },
+            "description": "If this value is provided, result set is filtered to only include transaction with the provided statuses.",
+            "nullable": true
+          },
+          "cryptocurrencyAddressType": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/CryptocurrencyAddressType"
+              }
+            ],
+            "description": "For cryptocurrency address the type of address is required.",
+            "nullable": true
+          },
+          "from": {
+            "type": "integer",
+            "description": "If this value is provided, result set is filtered to only include transactions created after this timestamp",
+            "format": "int64",
             "nullable": true
           }
         },
@@ -9186,7 +10993,7 @@
     },
     {
       "name": "Portfolio",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```DeFiWallet```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n"
     },
     {
       "name": "Balance",
@@ -9198,7 +11005,7 @@
     },
     {
       "name": "Transfers",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```DeFiWallet```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```Bybit```\n\n\n### Integration-specific notes:\n\n\n#### Robinhood:\n\n\nCryptocurrency transfers should be enabled in Robinhood settings. Transfers are disabled by default, enabling them for end users requires a review from Robinhood.\n\nPlease note:\n * `MfaCode` parameter is required to initiate a transaction in Robinhood.\n * The user's security settings should be configured to use an authenticator application.\n * Robinhood doesn't allow initiation of transactions if the authenticator application is not configured.\n\n\n#### Coinbase:\n\n\n`MfaCode` parameter should be used to initiate transactions in Coinbase.\n * If the end user's Coinbase account is configured to use text messages (SMS) for two factor authentication, the API will return `MfaRequired` status, and a text code will then be sent by Coinbase. The code is expected to be provided in the subsequent call using the `MfaCode` request field\n * If the account is configured to use an authenticator application, the API is expecting to get the code in the `MfaCode` request field.\n\n\n#### Kraken:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n\n\n#### CoinbasePro:\n * CoinbasePro does not provide multiple chains per a symbol, so default chains are used for getting Deposit addresses.\n\n\n#### Binance:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance Us.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### KuCoin:\n\n\nKuCoin requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n\n`Fee` parameter should be used to initiate a transaction in KuCoin.\n\nPlease note:\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * All currencies have their minimum `fee` and `amount` requirements. Please use `symbol/details` endpoint to get this data for a particular symbol.\n * KuCoin requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### BinanceInternational:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance International.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### GateIo:\n\n\nGate.io requires adding IP address to the list of trusted IP addresses to be able to initiate a cryptocurrency transfers.\n\nWithdrawal address should be already verified or added on the Gate.io UI (in mobile application or on the web site).\n * Please reach out to Front to get the static IP address for withdrawals. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * Only verified withdrawal blockchain addresses are allowed for withdrawal with Gate.io API.\n * Gate.io requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### Huobi:\n\n\nWarning: Huobi does not refund executed deposits that are below the `Minimum Deposit Amount`\n * Please check the MinimumDepositAmount in Get Deposit Address response in order to avoid making a deposit below the minimum amount\n * Huobi does not allow withdrawals to addresses that are not white-listed, please add the address that you would like to withdraw to the white list of addresses through the UI so that a withrawal can be processed\n\n\n#### Bitfinex:\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\n\n\n#### KrakenDirect:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```Bybit```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n\n\n### Integration-specific notes:\n\n\n#### Robinhood:\n\n\nCryptocurrency transfers should be enabled in Robinhood settings. Transfers are disabled by default, enabling them for end users requires a review from Robinhood.\n\nPlease note:\n * `MfaCode` parameter is required to initiate a transaction in Robinhood.\n * The user's security settings should be configured to use an authenticator application.\n * Robinhood doesn't allow initiation of transactions if the authenticator application is not configured.\n\n\n#### Coinbase:\n\n\n`MfaCode` parameter should be used to initiate transactions in Coinbase.\n * If the end user's Coinbase account is configured to use text messages (SMS) for two factor authentication, the API will return `MfaRequired` status, and a text code will then be sent by Coinbase. The code is expected to be provided in the subsequent call using the `MfaCode` request field\n * If the account is configured to use an authenticator application, the API is expecting to get the code in the `MfaCode` request field.\n\n\n#### Kraken:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n\n\n#### CoinbasePro:\n * CoinbasePro does not provide multiple chains per a symbol, so default chains are used for getting Deposit addresses.\n\n\n#### Binance:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance Us.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### KuCoin:\n\n\nKuCoin requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n\n`Fee` parameter should be used to initiate a transaction in KuCoin.\n\nPlease note:\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * All currencies have their minimum `fee` and `amount` requirements. Please use `symbol/details` endpoint to get this data for a particular symbol.\n * KuCoin requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### BinanceInternational:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance International.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### GateIo:\n\n\nGate.io requires adding IP address to the list of trusted IP addresses to be able to initiate a cryptocurrency transfers.\n\nWithdrawal address should be already verified or added on the Gate.io UI (in mobile application or on the web site).\n * Please reach out to Front to get the static IP address for withdrawals. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * Only verified withdrawal blockchain addresses are allowed for withdrawal with Gate.io API.\n * Gate.io requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### Huobi:\n\n\nWarning: Huobi does not refund executed deposits that are below the `Minimum Deposit Amount`\n * Please check the MinimumDepositAmount in Get Deposit Address response in order to avoid making a deposit below the minimum amount\n * Huobi does not allow withdrawals to addresses that are not white-listed, please add the address that you would like to withdraw to the white list of addresses through the UI so that a withrawal can be processed\n\n\n#### Bitfinex:\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\n\n\n#### KrakenDirect:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n"
     },
     {
       "name": "Assets"
