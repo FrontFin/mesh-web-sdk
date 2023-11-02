@@ -138,3 +138,8 @@ export interface FrontOptions {
    */
   transferDestinationTokens?: IntegrationAccessToken[]
 }
+
+export interface LinkStyle {
+  ir: number
+  io: number
+}

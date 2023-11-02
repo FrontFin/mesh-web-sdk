@@ -1,3 +1,6 @@
+import { LinkStyle } from './types'
+import { getLinkStyle, getNumber } from './style'
+
 const popupId = 'front-link-popup'
 const backdropId = 'front-link-popup__backdrop'
 const popupContentId = 'front-link-popup__popup-content'
@@ -13,7 +16,7 @@ const getPopupHtml = (link: string) => `
 </div>
 `
 
-const styles = `
+const getStyles = (style?: LinkStyle) => `
 <style id="${stylesId}">
   body {
     position: fixed;
@@ -46,7 +49,7 @@ const styles = `
     right: 0;
     z-index: 10000;
     background: black;
-    opacity: 0.6;
+    opacity: ${getNumber(0.6, style?.io)};
   }
 
   #${popupContentId} {
@@ -61,7 +64,7 @@ const styles = `
     min-width: 380px;
     display: flex;
     flex-direction: column;
-    border-radius: 24px;
+    border-radius: ${getNumber(24, style?.ir)}px;
     background: white;
     flex-grow: 1;
   }
@@ -70,7 +73,7 @@ const styles = `
     border: none;
     width: 100%;
     flex-grow: 1;
-    border-radius: 24px;
+    border-radius: ${getNumber(24, style?.ir)}px;
   }
 
   @media only screen and (max-width: 768px) {
@@ -107,9 +110,10 @@ export function removePopup(): void {
 }
 
 export function addPopup(iframeLink: string): void {
+  const style = getLinkStyle(iframeLink)
   removePopup()
   const popup = getPopupHtml(iframeLink)
-  const stylesElement = htmlToElement(styles)
+  const stylesElement = htmlToElement(getStyles(style))
   if (stylesElement) {
     window.document.head.appendChild(stylesElement)
   }

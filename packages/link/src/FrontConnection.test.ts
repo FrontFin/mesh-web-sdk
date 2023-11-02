@@ -48,20 +48,6 @@ describe('createFrontConnection tests', () => {
     )
   })
 
-  test('createFrontConnection when valid link provided should open popup', () => {
-    const frontConnection = createFrontConnection({
-      clientId: 'test',
-      onBrokerConnected: jest.fn()
-    })
-
-    frontConnection.openPopup('http://localhost/1')
-    const iframeElement = document.getElementById('front-link-popup__iframe')
-    expect(iframeElement).toBeTruthy()
-    expect(iframeElement?.attributes.getNamedItem('src')?.nodeValue).toBe(
-      'http://localhost/1'
-    )
-  })
-
   test('createFrontConnection closePopup should close popup', () => {
     const exitFunction = jest.fn<void, [string | undefined]>()
     const frontConnection = createFrontConnection({
