@@ -28,5 +28,6 @@ describe('Test style utils', () => {
   test('verify function returns correct number', () => {
     expect(getNumber(10, 11)).toBe(11)
     expect(getNumber(10, undefined)).toBe(10)
+    expect(getNumber(1, 0)).toBe(0)
   })
 })

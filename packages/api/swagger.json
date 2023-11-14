@@ -947,7 +947,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/IntegrationsResponseIApiResult"
                 },
-                "example": {"content":{"items":[{"id":"40d1cc2d-fbeb-47f3-8f06-9a898d49e707","name":"CoinbasePro","type":"coinbasePro"},{"id":"3b0595b7-4900-48ab-b903-4c3c8010712a","name":"CoinCircle","type":"deFiWallet","deFiWalletProviderId":"36d8d9c0c7fe2957149ce8e878f3a01...","categories":["deFiWallet"]}]},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"items":[{"id":"2ea116b3-a857-46b6-ad37-d2f7c1b60348","name":"CoinbasePro","type":"coinbasePro"},{"id":"0b093654-c6bc-4267-9c50-63d53d60ffea","name":"CoinCircle","type":"deFiWallet","deFiWalletProviderId":"36d8d9c0c7fe2957149ce8e878f3a01...","categories":["deFiWallet"]}]},"status":"ok","message":"","errorType":""}
               }
             }
           }

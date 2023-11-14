@@ -11,5 +11,5 @@ export function getLinkStyle(url: string): LinkStyle | undefined {
 }
 
 export function getNumber(def: number, value?: number): number {
-  return value && value >= 0 ? value : def
+  return value !== undefined ? value : def
 }
