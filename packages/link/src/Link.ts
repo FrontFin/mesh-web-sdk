@@ -115,9 +115,7 @@ function eventsListener(
   }
 }
 
-export const createLink = (
-  options: LinkOptions
-): Link => {
+export const createLink = (options: LinkOptions): Link => {
   const openPopup = async (iframeUrl: string) => {
     if (!iframeUrl) {
       options?.onExit?.('Invalid link!')

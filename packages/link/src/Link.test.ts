@@ -30,7 +30,7 @@ describe('createLink tests', () => {
     frontConnection.openPopup('')
 
     expect(exitFunction).toBeCalledWith('Invalid link!')
-    const iframeElement = document.getElementById('front-link-popup__iframe')
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeFalsy()
   })
 
@@ -41,7 +41,7 @@ describe('createLink tests', () => {
     })
 
     frontConnection.openPopup('http://localhost/1')
-    const iframeElement = document.getElementById('front-link-popup__iframe')
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeTruthy()
     expect(iframeElement?.attributes.getNamedItem('src')?.nodeValue).toBe(
       'http://localhost/1'
@@ -59,7 +59,7 @@ describe('createLink tests', () => {
     frontConnection.openPopup('http://localhost/1')
     frontConnection.closePopup()
 
-    const iframeElement = document.getElementById('front-link-popup__iframe')
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeFalsy()
 
     expect(exitFunction).toBeCalled()
@@ -85,7 +85,7 @@ describe('createLink tests', () => {
         })
       )
 
-      const iframeElement = document.getElementById('front-link-popup__iframe')
+      const iframeElement = document.getElementById('mesh-link-popup__iframe')
       expect(iframeElement).toBeFalsy()
 
       expect(exitFunction).toBeCalledWith('some msg')
@@ -248,7 +248,7 @@ describe('createLink tests', () => {
     frontConnection.openPopup('http://localhost/1')
 
     const iframeElement = document.getElementById(
-      'front-link-popup__iframe'
+      'mesh-link-popup__iframe'
     ) as HTMLIFrameElement | null
     expect(iframeElement?.contentWindow).toBeTruthy()
 
@@ -366,7 +366,7 @@ describe('createLink tests', () => {
     )
     frontConnection.closeLink()
 
-    const iframeElement = document.getElementById('front-link-popup__iframe')
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeFalsy()
 
     expect(exitFunction).toBeCalled()
