@@ -1,14 +1,14 @@
 {
-  "name": "@front-finance/api",
-  "version": "1.1.9",
-  "description": "Front Finance API lib",
+  "name": "@meshconnect/node-api",
+  "version": "2.0.0",
+  "description": "Mesh Connect API lib",
   "type": "module",
   "main": "./index.ts",
   "module": "./index.ts",
   "types": "./index.ts",
   "license": "MIT",
-  "repository": "https://github.com/FrontFin/front-b2b-link.git",
-  "homepage": "https://github.com/FrontFin/front-b2b-link",
+  "repository": "https://github.com/FrontFin/mesh-web-sdk.git",
+  "homepage": "https://github.com/FrontFin/mesh-web-sdk",
   "devDependencies": {
     "typescript": "^4.6.4",
     "swagger-typescript-api": "^12.0.3"

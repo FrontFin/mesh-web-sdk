@@ -1,11 +1,11 @@
 import { LinkStyle } from './types'
 import { getLinkStyle, getNumber } from './style'
 
-const popupId = 'front-link-popup'
-const backdropId = 'front-link-popup__backdrop'
-const popupContentId = 'front-link-popup__popup-content'
-const stylesId = 'front-link-popup__styles'
-export const iframeId = 'front-link-popup__iframe'
+const popupId = 'mesh-link-popup'
+const backdropId = 'mesh-link-popup__backdrop'
+const popupContentId = 'mesh-link-popup__popup-content'
+const stylesId = 'mesh-link-popup__styles'
+export const iframeId = 'mesh-link-popup__iframe'
 
 const getPopupHtml = (link: string) => `
 <div id="${popupId}">

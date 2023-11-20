@@ -1,10 +1,10 @@
-import { createFrontConnection } from './FrontConnection'
-import { FrontEventType } from './utils/event-types'
+import { createLink } from './Link'
+import { LinkEventType } from './utils/event-types'
 import {
   AccessTokenPayload,
   DelayedAuthPayload,
   EventType,
-  FrontPayload,
+  LinkPayload,
   IntegrationAccessToken,
   TransferFinishedPayload
 } from './utils/types'
@@ -16,14 +16,14 @@ type EventPayload = {
   link?: string
 }
 
-describe('createFrontConnection tests', () => {
+describe('createLink tests', () => {
   window.open = jest.fn()
 
-  test('createFrontConnection when invalid link provided should not open popup', () => {
+  test('createLink when invalid link provided should not open popup', () => {
     const exitFunction = jest.fn<void, [string | undefined]>()
-    const frontConnection = createFrontConnection({
+    const frontConnection = createLink({
       clientId: 'test',
-      onBrokerConnected: jest.fn(),
+      onIntegrationConnected: jest.fn(),
       onExit: exitFunction
     })
 
@@ -34,10 +34,10 @@ describe('createFrontConnection tests', () => {
     expect(iframeElement).toBeFalsy()
   })
 
-  test('createFrontConnection when valid link provided should open popup', () => {
-    const frontConnection = createFrontConnection({
+  test('createLink when valid link provided should open popup', () => {
+    const frontConnection = createLink({
       clientId: 'test',
-      onBrokerConnected: jest.fn()
+      onIntegrationConnected: jest.fn()
     })
 
     frontConnection.openPopup('http://localhost/1')
@@ -48,11 +48,11 @@ describe('createFrontConnection tests', () => {
     )
   })
 
-  test('createFrontConnection closePopup should close popup', () => {
+  test('createLink closePopup should close popup', () => {
     const exitFunction = jest.fn<void, [string | undefined]>()
-    const frontConnection = createFrontConnection({
+    const frontConnection = createLink({
       clientId: 'test',
-      onBrokerConnected: jest.fn(),
+      onIntegrationConnected: jest.fn(),
       onExit: exitFunction
     })
 
@@ -66,12 +66,12 @@ describe('createFrontConnection tests', () => {
   })
 
   test.each(['close', 'done'] as const)(
-    'createFrontConnection "%s" event should close popup',
+    'createLink "%s" event should close popup',
     eventName => {
       const exitFunction = jest.fn<void, [string | undefined]>()
-      const frontConnection = createFrontConnection({
+      const frontConnection = createLink({
         clientId: 'test',
-        onBrokerConnected: jest.fn(),
+        onIntegrationConnected: jest.fn(),
         onExit: exitFunction
       })
 
@@ -92,12 +92,12 @@ describe('createFrontConnection tests', () => {
     }
   )
 
-  test('createFrontConnection "brokerageAccountAccessToken" event should send tokens', () => {
-    const onEventHandler = jest.fn<void, [FrontEventType]>()
-    const onBrokerConnectedHandler = jest.fn<void, [FrontPayload]>()
-    const frontConnection = createFrontConnection({
+  test('createLink "brokerageAccountAccessToken" event should send tokens', () => {
+    const onEventHandler = jest.fn<void, [LinkEventType]>()
+    const onBrokerConnectedHandler = jest.fn<void, [LinkPayload]>()
+    const frontConnection = createLink({
       clientId: 'test',
-      onBrokerConnected: onBrokerConnectedHandler,
+      onIntegrationConnected: onBrokerConnectedHandler,
       onEvent: onEventHandler
     })
 
@@ -125,12 +125,12 @@ describe('createFrontConnection tests', () => {
     expect(onBrokerConnectedHandler).toBeCalledWith({ accessToken: payload })
   })
 
-  test('createFrontConnection "delayedAuthentication" event should send dalayed tokens', () => {
-    const onEventHandler = jest.fn<void, [FrontEventType]>()
-    const onBrokerConnectedHandler = jest.fn<void, [FrontPayload]>()
-    const frontConnection = createFrontConnection({
+  test('createLink "delayedAuthentication" event should send dalayed tokens', () => {
+    const onEventHandler = jest.fn<void, [LinkEventType]>()
+    const onBrokerConnectedHandler = jest.fn<void, [LinkPayload]>()
+    const frontConnection = createLink({
       clientId: 'test',
-      onBrokerConnected: onBrokerConnectedHandler,
+      onIntegrationConnected: onBrokerConnectedHandler,
       onEvent: onEventHandler
     })
 
@@ -158,12 +158,12 @@ describe('createFrontConnection tests', () => {
     expect(onBrokerConnectedHandler).toBeCalledWith({ delayedAuth: payload })
   })
 
-  test('createFrontConnection "transferFinished" event should send transfer payload', () => {
-    const onEventHandler = jest.fn<void, [FrontEventType]>()
+  test('createLink "transferFinished" event should send transfer payload', () => {
+    const onEventHandler = jest.fn<void, [LinkEventType]>()
     const onTransferFinishedHandler = jest.fn<void, [TransferFinishedPayload]>()
-    const frontConnection = createFrontConnection({
+    const frontConnection = createLink({
       clientId: 'test',
-      onBrokerConnected: jest.fn(),
+      onIntegrationConnected: jest.fn(),
       onEvent: onEventHandler,
       onTransferFinished: onTransferFinishedHandler
     })
@@ -195,10 +195,10 @@ describe('createFrontConnection tests', () => {
     expect(onTransferFinishedHandler).toBeCalledWith(payload)
   })
 
-  test('createFrontConnection "oauthLinkOpen" event should open new window', () => {
-    const frontConnection = createFrontConnection({
+  test('createLink "oauthLinkOpen" event should open new window', () => {
+    const frontConnection = createLink({
       clientId: 'test',
-      onBrokerConnected: jest.fn()
+      onIntegrationConnected: jest.fn()
     })
 
     frontConnection.openPopup('http://localhost/1')
@@ -219,7 +219,7 @@ describe('createFrontConnection tests', () => {
     )
   })
 
-  test('createFrontConnection "loaded" event should trigger the passing for tokens', () => {
+  test('createLink "loaded" event should trigger the passing for tokens', () => {
     const tokens: IntegrationAccessToken[] = [
       {
         accessToken: 'at',
@@ -238,9 +238,9 @@ describe('createFrontConnection tests', () => {
         brokerName: 'tbrokername'
       }
     ]
-    const frontConnection = createFrontConnection({
+    const frontConnection = createLink({
       clientId: 'test',
-      onBrokerConnected: jest.fn(),
+      onIntegrationConnected: jest.fn(),
       accessTokens: tokens,
       transferDestinationTokens: destinationTokens
     })
@@ -276,11 +276,11 @@ describe('createFrontConnection tests', () => {
     )
   })
 
-  test('createFrontConnection "integrationConnected" event should send event', () => {
-    const onEventHandler = jest.fn<void, [FrontEventType]>()
-    const frontConnection = createFrontConnection({
+  test('createLink "integrationConnected" event should send event', () => {
+    const onEventHandler = jest.fn<void, [LinkEventType]>()
+    const frontConnection = createLink({
       clientId: 'test',
-      onBrokerConnected: jest.fn(),
+      onIntegrationConnected: jest.fn(),
       onEvent: onEventHandler
     })
 
@@ -297,11 +297,11 @@ describe('createFrontConnection tests', () => {
     expect(onEventHandler).toBeCalled()
   })
 
-  test('createFrontConnection unknown event should not send any events', () => {
-    const onEventHandler = jest.fn<void, [FrontEventType]>()
-    const frontConnection = createFrontConnection({
+  test('createLink unknown event should not send any events', () => {
+    const onEventHandler = jest.fn<void, [LinkEventType]>()
+    const frontConnection = createLink({
       clientId: 'test',
-      onBrokerConnected: jest.fn(),
+      onIntegrationConnected: jest.fn(),
       onEvent: onEventHandler
     })
 
@@ -318,12 +318,12 @@ describe('createFrontConnection tests', () => {
     expect(onEventHandler).not.toBeCalled()
   })
 
-  test('createFrontConnection "brokerageAccountAccessToken" event should send tokens - used with openLink function', () => {
-    const onEventHandler = jest.fn<void, [FrontEventType]>()
-    const onBrokerConnectedHandler = jest.fn<void, [FrontPayload]>()
-    const frontConnection = createFrontConnection({
+  test('createLink "brokerageAccountAccessToken" event should send tokens - used with openLink function', () => {
+    const onEventHandler = jest.fn<void, [LinkEventType]>()
+    const onBrokerConnectedHandler = jest.fn<void, [LinkPayload]>()
+    const frontConnection = createLink({
       clientId: 'test',
-      onBrokerConnected: onBrokerConnectedHandler,
+      onIntegrationConnected: onBrokerConnectedHandler,
       onEvent: onEventHandler
     })
 
@@ -353,11 +353,11 @@ describe('createFrontConnection tests', () => {
     expect(onBrokerConnectedHandler).toBeCalledWith({ accessToken: payload })
   })
 
-  test('createFrontConnection closeLink should close popup', () => {
+  test('createLink closeLink should close popup', () => {
     const exitFunction = jest.fn<void, [string | undefined]>()
-    const frontConnection = createFrontConnection({
+    const frontConnection = createLink({
       clientId: 'test',
-      onBrokerConnected: jest.fn(),
+      onIntegrationConnected: jest.fn(),
       onExit: exitFunction
     })
 

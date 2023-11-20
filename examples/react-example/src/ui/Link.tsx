@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import {
-  FrontConnection,
-  FrontPayload,
+  Link,
+  LinkPayload,
   TransferFinishedPayload,
   createFrontConnection
 } from '@front-finance/link'
@@ -9,18 +9,18 @@ import { clientId } from '../utility/config'
 
 export const FrontComponent: React.FC<{
   linkToken?: string | null
-  onBrokerConnected: (authData: FrontPayload) => void
+  onBrokerConnected: (authData: LinkPayload) => void
   onTransferFinished?: (payload: TransferFinishedPayload) => void
   onExit?: (error?: string) => void
 }> = ({ linkToken, onBrokerConnected, onTransferFinished, onExit }) => {
   const [frontConnection, setFrontConnection] =
-    useState<FrontConnection | null>(null)
+    useState<Link | null>(null)
 
   useEffect(() => {
     setFrontConnection(
       createFrontConnection({
         clientId: clientId,
-        onBrokerConnected: authData => {
+        onIntegrationConnected: authData => {
           console.info('[FRONT SUCCESS]', authData)
           onBrokerConnected(authData)
         },

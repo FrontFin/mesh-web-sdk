@@ -744,36 +744,6 @@
         }
       }
     },
-    "/api/v1/cryptocurrencyWallets": {
-      "get": {
-        "tags": [
-          "Self Managed Account Authentication"
-        ],
-        "summary": "Get supported wallets",
-        "description": "Get supported cryptocurrency wallets and cryptocurrency addresses to perform authentication programmatically (not using\r\nthe Web Catalog UI).",
-        "responses": {
-          "200": {
-            "description": "Success",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/BrokerCryptocurrencyWalletListResponseIApiResult"
-                }
-              }
-            }
-          },
-          "401": {
-            "description": "Unauthorized",
-            "content": {
-              "application/json": {
-                "schema": { }
-              }
-            }
-          }
-        },
-        "deprecated": true
-      }
-    },
     "/api/v1/authenticate": {
       "post": {
         "tags": [
@@ -939,6 +909,7 @@
           "Managed Account Authentication"
         ],
         "summary": "Retrieve the list of all available integrations.",
+        "description": "Returns a list of integrations with details including the integration ID, name, type, \r\nDeFi wallet provider ID, and categories.",
         "responses": {
           "200": {
             "description": "Success",
@@ -947,7 +918,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/IntegrationsResponseIApiResult"
                 },
-                "example": {"content":{"items":[{"id":"2ea116b3-a857-46b6-ad37-d2f7c1b60348","name":"CoinbasePro","type":"coinbasePro"},{"id":"0b093654-c6bc-4267-9c50-63d53d60ffea","name":"CoinCircle","type":"deFiWallet","deFiWalletProviderId":"36d8d9c0c7fe2957149ce8e878f3a01...","categories":["deFiWallet"]}]},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"items":[{"id":"7508cb3d-0f41-4996-b74c-b89df3c13e74","name":"CoinbasePro","type":"coinbasePro"},{"id":"681e95bf-71ad-4634-a56a-335d2f9be5c0","name":"CoinCircle","type":"deFiWallet","deFiWalletProviderId":"36d8d9c0c7fe2957149ce8e878f3a01...","categories":["deFiWallet"]}]},"status":"ok","message":"","errorType":""}
               }
             }
           }
@@ -2963,6 +2934,10 @@
               }
             ]
           },
+          "deviceInfo": {
+            "type": "string",
+            "nullable": true
+          },
           "authFlowStep": {
             "allOf": [
               {
@@ -2985,14 +2960,6 @@
           },
           "confirmationEmail": {
             "type": "string",
-            "nullable": true
-          },
-          "cryptocurrencyWalletAuthData": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/B2BBrokerCryptocurrencyWalletAuthRequest"
-              }
-            ],
             "nullable": true
           }
         },
@@ -4022,35 +3989,6 @@
             "type": "string",
             "nullable": true,
             "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "B2BBrokerCryptocurrencyWalletAuthRequest": {
-        "type": "object",
-        "properties": {
-          "symbol": {
-            "type": "string",
-            "description": "Symbol to connect",
-            "nullable": true
-          },
-          "cryptocurrencyAddressType": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CryptocurrencyAddressType"
-              }
-            ],
-            "description": "Blockchain to connect to",
-            "nullable": true
-          },
-          "cryptocurrencyWalletType": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CryptocurrencyWalletType"
-              }
-            ],
-            "description": "Optional wallet type",
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -7142,74 +7080,6 @@
         ],
         "type": "string"
       },
-      "BrokerCryptocurrencyWalletListResponse": {
-        "type": "object",
-        "properties": {
-          "supportedCryptocurrencyWallets": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CryptocurrencyWalletDescription"
-            },
-            "nullable": true
-          },
-          "supportedCryptocurrencyAddresses": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CryptocurrencyWalletDescription"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "BrokerCryptocurrencyWalletListResponseIApiResult": {
-        "type": "object",
-        "properties": {
-          "content": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BrokerCryptocurrencyWalletListResponse"
-              }
-            ],
-            "nullable": true,
-            "readOnly": true
-          },
-          "status": {
-            "enum": [
-              "ok",
-              "serverFailure",
-              "permissionDenied",
-              "badRequest",
-              "notFound",
-              "conflict",
-              "tooManyRequest",
-              "locked"
-            ],
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/ApiResultStatus"
-              }
-            ],
-            "readOnly": true
-          },
-          "message": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          },
-          "displayMessage": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          },
-          "errorType": {
-            "type": "string",
-            "nullable": true,
-            "readOnly": true
-          }
-        },
-        "additionalProperties": false
-      },
       "BrokerFeature": {
         "enum": [
           "holdings",
@@ -8133,60 +8003,6 @@
           "tronAddress",
           "dogeAddress",
           "opAddress"
-        ],
-        "type": "string"
-      },
-      "CryptocurrencyCoinDescription": {
-        "type": "object",
-        "properties": {
-          "symbol": {
-            "type": "string",
-            "nullable": true
-          },
-          "name": {
-            "type": "string",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "CryptocurrencyWalletDescription": {
-        "type": "object",
-        "properties": {
-          "cryptocurrencyWalletType": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CryptocurrencyWalletType"
-              }
-            ],
-            "nullable": true
-          },
-          "cryptocurrencyAddressType": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/CryptocurrencyAddressType"
-              }
-            ],
-            "nullable": true
-          },
-          "supportedCryptocurrencies": {
-            "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CryptocurrencyCoinDescription"
-            },
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
-      "CryptocurrencyWalletType": {
-        "enum": [
-          "coinbaseWallet",
-          "metamask",
-          "trustWallet",
-          "myEtherWallet",
-          "alphaWallet",
-          "atomicWallet"
         ],
         "type": "string"
       },
@@ -9396,7 +9212,7 @@
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```DeFiWallet```\n"
           }
         },
         "additionalProperties": false
@@ -10317,6 +10133,16 @@
         },
         "additionalProperties": false
       },
+      "TransferCryptocurrencyFundingOptions": {
+        "type": "object",
+        "properties": {
+          "enabled": {
+            "type": "boolean",
+            "description": "Indicates whether the Link is permitted to use the end user's available buying power\r\nand/or payment methods to supplement the cryptocurrency balance if it is insufficient\r\nfor the transfer."
+          }
+        },
+        "additionalProperties": false
+      },
       "TransferFee": {
         "type": "object",
         "properties": {
@@ -10621,7 +10447,7 @@
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```Bybit```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```Bybit```\n```DeFiWallet```\n"
           },
           "data": {
             "type": "string",
@@ -10750,7 +10576,7 @@
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```Bybit```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```Bybit```\n```DeFiWallet```\n"
           },
           "symbol": {
             "type": "string",
@@ -10836,7 +10662,7 @@
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```Bybit```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```Bybit```\n```DeFiWallet```\n"
           },
           "addressType": {
             "allOf": [
@@ -10922,7 +10748,7 @@
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```Bybit```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```Bybit```\n```DeFiWallet```\n"
           },
           "count": {
             "type": "integer",
@@ -10993,7 +10819,7 @@
     },
     {
       "name": "Portfolio",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```TdAmeritrade```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```DeFiWallet```\n"
     },
     {
       "name": "Balance",
@@ -11005,7 +10831,7 @@
     },
     {
       "name": "Transfers",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```Bybit```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n```DeFiWallet```\n\n\n### Integration-specific notes:\n\n\n#### Robinhood:\n\n\nCryptocurrency transfers should be enabled in Robinhood settings. Transfers are disabled by default, enabling them for end users requires a review from Robinhood.\n\nPlease note:\n * `MfaCode` parameter is required to initiate a transaction in Robinhood.\n * The user's security settings should be configured to use an authenticator application.\n * Robinhood doesn't allow initiation of transactions if the authenticator application is not configured.\n\n\n#### Coinbase:\n\n\n`MfaCode` parameter should be used to initiate transactions in Coinbase.\n * If the end user's Coinbase account is configured to use text messages (SMS) for two factor authentication, the API will return `MfaRequired` status, and a text code will then be sent by Coinbase. The code is expected to be provided in the subsequent call using the `MfaCode` request field\n * If the account is configured to use an authenticator application, the API is expecting to get the code in the `MfaCode` request field.\n\n\n#### Kraken:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n\n\n#### CoinbasePro:\n * CoinbasePro does not provide multiple chains per a symbol, so default chains are used for getting Deposit addresses.\n\n\n#### Binance:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance Us.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### KuCoin:\n\n\nKuCoin requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n\n`Fee` parameter should be used to initiate a transaction in KuCoin.\n\nPlease note:\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * All currencies have their minimum `fee` and `amount` requirements. Please use `symbol/details` endpoint to get this data for a particular symbol.\n * KuCoin requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### BinanceInternational:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance International.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### GateIo:\n\n\nGate.io requires adding IP address to the list of trusted IP addresses to be able to initiate a cryptocurrency transfers.\n\nWithdrawal address should be already verified or added on the Gate.io UI (in mobile application or on the web site).\n * Please reach out to Front to get the static IP address for withdrawals. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * Only verified withdrawal blockchain addresses are allowed for withdrawal with Gate.io API.\n * Gate.io requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### Huobi:\n\n\nWarning: Huobi does not refund executed deposits that are below the `Minimum Deposit Amount`\n * Please check the MinimumDepositAmount in Get Deposit Address response in order to avoid making a deposit below the minimum amount\n * Huobi does not allow withdrawals to addresses that are not white-listed, please add the address that you would like to withdraw to the white list of addresses through the UI so that a withrawal can be processed\n\n\n#### Bitfinex:\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\n\n\n#### KrakenDirect:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```Bittrex```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```Bybit```\n```DeFiWallet```\n\n\n### Integration-specific notes:\n\n\n#### Robinhood:\n\n\nCryptocurrency transfers should be enabled in Robinhood settings. Transfers are disabled by default, enabling them for end users requires a review from Robinhood.\n\nPlease note:\n * `MfaCode` parameter is required to initiate a transaction in Robinhood.\n * The user's security settings should be configured to use an authenticator application.\n * Robinhood doesn't allow initiation of transactions if the authenticator application is not configured.\n\n\n#### Coinbase:\n\n\n`MfaCode` parameter should be used to initiate transactions in Coinbase.\n * If the end user's Coinbase account is configured to use text messages (SMS) for two factor authentication, the API will return `MfaRequired` status, and a text code will then be sent by Coinbase. The code is expected to be provided in the subsequent call using the `MfaCode` request field\n * If the account is configured to use an authenticator application, the API is expecting to get the code in the `MfaCode` request field.\n\n\n#### Kraken:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n\n\n#### CoinbasePro:\n * CoinbasePro does not provide multiple chains per a symbol, so default chains are used for getting Deposit addresses.\n\n\n#### Binance:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance Us.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### KuCoin:\n\n\nKuCoin requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n\n`Fee` parameter should be used to initiate a transaction in KuCoin.\n\nPlease note:\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * All currencies have their minimum `fee` and `amount` requirements. Please use `symbol/details` endpoint to get this data for a particular symbol.\n * KuCoin requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### BinanceInternational:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance International.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### GateIo:\n\n\nGate.io requires adding IP address to the list of trusted IP addresses to be able to initiate a cryptocurrency transfers.\n\nWithdrawal address should be already verified or added on the Gate.io UI (in mobile application or on the web site).\n * Please reach out to Front to get the static IP address for withdrawals. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * Only verified withdrawal blockchain addresses are allowed for withdrawal with Gate.io API.\n * Gate.io requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### Huobi:\n\n\nWarning: Huobi does not refund executed deposits that are below the `Minimum Deposit Amount`\n * Please check the MinimumDepositAmount in Get Deposit Address response in order to avoid making a deposit below the minimum amount\n * Huobi does not allow withdrawals to addresses that are not white-listed, please add the address that you would like to withdraw to the white list of addresses through the UI so that a withrawal can be processed\n\n\n#### Bitfinex:\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\n\n\n#### KrakenDirect:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n"
     },
     {
       "name": "Assets"
