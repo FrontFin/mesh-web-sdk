@@ -16,6 +16,8 @@ type EventPayload = {
   link?: string
 }
 
+const BASE64_ENCODED_URL = Buffer.from('http://localhost/1').toString('base64')
+
 describe('createLink tests', () => {
   window.open = jest.fn()
 
@@ -27,9 +29,9 @@ describe('createLink tests', () => {
       onExit: exitFunction
     })
 
-    frontConnection.openPopup('')
+    frontConnection.openLink('')
 
-    expect(exitFunction).toBeCalledWith('Invalid link!')
+    expect(exitFunction).toBeCalledWith('Invalid link token!')
     const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeFalsy()
   })
@@ -40,7 +42,7 @@ describe('createLink tests', () => {
       onIntegrationConnected: jest.fn()
     })
 
-    frontConnection.openPopup('http://localhost/1')
+    frontConnection.openLink(BASE64_ENCODED_URL)
     const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeTruthy()
     expect(iframeElement?.attributes.getNamedItem('src')?.nodeValue).toBe(
@@ -56,8 +58,8 @@ describe('createLink tests', () => {
       onExit: exitFunction
     })
 
-    frontConnection.openPopup('http://localhost/1')
-    frontConnection.closePopup()
+    frontConnection.openLink(BASE64_ENCODED_URL)
+    frontConnection.closeLink()
 
     const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeFalsy()
@@ -75,7 +77,7 @@ describe('createLink tests', () => {
         onExit: exitFunction
       })
 
-      frontConnection.openPopup('http://localhost/1')
+      frontConnection.openLink(BASE64_ENCODED_URL)
       window.dispatchEvent(
         new MessageEvent<EventPayload>('message', {
           data: {
@@ -101,7 +103,7 @@ describe('createLink tests', () => {
       onEvent: onEventHandler
     })
 
-    frontConnection.openPopup('http://localhost/1')
+    frontConnection.openLink(BASE64_ENCODED_URL)
 
     const payload: AccessTokenPayload = {
       accountTokens: [],
@@ -134,7 +136,7 @@ describe('createLink tests', () => {
       onEvent: onEventHandler
     })
 
-    frontConnection.openPopup('http://localhost/1')
+    frontConnection.openLink(BASE64_ENCODED_URL)
 
     const payload: DelayedAuthPayload = {
       brokerBrandInfo: { brokerLogo: '' },
@@ -168,7 +170,7 @@ describe('createLink tests', () => {
       onTransferFinished: onTransferFinishedHandler
     })
 
-    frontConnection.openPopup('http://localhost/1')
+    frontConnection.openLink(BASE64_ENCODED_URL)
 
     const payload: TransferFinishedPayload = {
       status: 'success',
@@ -201,7 +203,7 @@ describe('createLink tests', () => {
       onIntegrationConnected: jest.fn()
     })
 
-    frontConnection.openPopup('http://localhost/1')
+    frontConnection.openLink(BASE64_ENCODED_URL)
 
     window.dispatchEvent(
       new MessageEvent<EventPayload>('message', {
@@ -245,7 +247,7 @@ describe('createLink tests', () => {
       transferDestinationTokens: destinationTokens
     })
 
-    frontConnection.openPopup('http://localhost/1')
+    frontConnection.openLink(BASE64_ENCODED_URL)
 
     const iframeElement = document.getElementById(
       'mesh-link-popup__iframe'
@@ -284,7 +286,7 @@ describe('createLink tests', () => {
       onEvent: onEventHandler
     })
 
-    frontConnection.openPopup('http://localhost/1')
+    frontConnection.openLink(BASE64_ENCODED_URL)
 
     window.dispatchEvent(
       new MessageEvent('message', {
@@ -305,7 +307,7 @@ describe('createLink tests', () => {
       onEvent: onEventHandler
     })
 
-    frontConnection.openPopup('http://localhost/1')
+    frontConnection.openLink(BASE64_ENCODED_URL)
 
     window.dispatchEvent(
       new MessageEvent('message', {

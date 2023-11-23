@@ -1,6 +1,6 @@
 # @meshconnect/web-link-sdk
 
-JS library for integrating with Mesh Connect
+A client-side JS library for integrating with Mesh Connect
 
 ### Install
 
@@ -117,8 +117,6 @@ After successfull authentication on the Link session, the popup will be closed a
 | ------------ | -------------------------------------- | ------------------------------ |
 | `openLink`   | `(linkToken: string) => Promise<void>` | Opens the Link UI popup        |
 | `closeLink`  | `() => Promise<void>`                  | Closes the Link UI popup       |
-| `o̶p̶e̶n̶P̶o̶p̶u̶p̶`  | `(iframeUrl: string) => Promise<void>` | (OBSOLETE) Opens url in popup  |
-| `c̶l̶o̶s̶e̶P̶o̶p̶u̶p̶` | `() => Promise<void>`                  | (OBSOLETE) Closes popup window |
 
 ### Using tokens
 

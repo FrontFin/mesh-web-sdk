@@ -116,20 +116,6 @@ function eventsListener(
 }
 
 export const createLink = (options: LinkOptions): Link => {
-  const openPopup = async (iframeUrl: string) => {
-    if (!iframeUrl) {
-      options?.onExit?.('Invalid link!')
-      return
-    }
-
-    currentOptions = options
-    iframeUrlObject = new URL(iframeUrl)
-
-    window.removeEventListener('message', eventsListener)
-    addPopup(iframeUrl)
-    window.addEventListener('message', eventsListener)
-  }
-
   const openLink = async (linkToken: string) => {
     if (!linkToken) {
       options?.onExit?.('Invalid link token!')
@@ -152,9 +138,7 @@ export const createLink = (options: LinkOptions): Link => {
   }
 
   return {
-    openPopup: openPopup,
     openLink: openLink,
-    closePopup: closeLink,
     closeLink: closeLink
   }
 }

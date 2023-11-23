@@ -1,7 +1,7 @@
 {
   "name": "@meshconnect/web-link-sdk",
   "version": "2.0.0",
-  "description": "Mesh Connect accounts connection client lib",
+  "description": "A client-side JS library for integrating with Mesh Connect",
   "main": "./src/index.ts",
   "module": "./src/index.ts",
   "types": "./src/index.ts",
