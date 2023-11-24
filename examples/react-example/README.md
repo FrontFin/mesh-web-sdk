@@ -4,7 +4,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ## Before run
 
-Need to set upo your Front Finance Client Id and Secret key in .env file.
+Need to set up your Mesh Connect Client Id and Secret key in .env file.
 
 Run `yarn` to install all dependencies.
 

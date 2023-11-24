@@ -1,21 +1,21 @@
 import React, { useState, useCallback } from 'react'
-import { frontApiUrl, clientId, clientSecret } from '../utility/config'
-import { FrontComponent } from './Front'
-import { FrontPayload, TransferFinishedPayload } from '@front-finance/link'
-import { FrontApi } from '@front-finance/api'
+import { linkApiUrl, clientId, clientSecret } from '../utility/config'
+import { LinkComponent } from './Link'
+import { LinkPayload, TransferFinishedPayload } from '@meshconnect/web-link-sdk'
+import { FrontApi } from '@meshconnect/node-api'
 
 export const App: React.FC = () => {
   const [linkToken, setLinkToken] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [payload, setPayload] = useState<FrontPayload | null>(null)
-  const [trasnferFinishedData, setTrasnferFinishedData] =
+  const [payload, setPayload] = useState<LinkPayload | null>(null)
+  const [transferFinishedData, setTransferFinishedData] =
     useState<TransferFinishedPayload | null>(null)
 
   const getAuthLink = useCallback(async () => {
     setError(null)
     setLinkToken(null)
     const api = new FrontApi({
-      baseURL: frontApiUrl,
+      baseURL: linkApiUrl,
       headers: {
         'x-client-id': clientId, // insert your client id here
         'x-client-secret': clientSecret // do not use your clientSecret on the FE
@@ -43,7 +43,7 @@ export const App: React.FC = () => {
     setError(null)
     setLinkToken(null)
     const api = new FrontApi({
-      baseURL: frontApiUrl,
+      baseURL: linkApiUrl,
       headers: {
         'x-client-id': clientId, // insert your client id here
         'x-client-secret': clientSecret // do not use your clientSecret on the FE
@@ -105,14 +105,14 @@ export const App: React.FC = () => {
       )) || (
         <p>
           No accounts connected recently! Please press the button below to use
-          Front and authenticate
+          Link and authenticate
         </p>
       )}
 
-      {trasnferFinishedData && (
+      {transferFinishedData && (
         <div style={{ wordWrap: 'break-word' }}>
           <h1>Transfer finished!</h1>
-          <p>{JSON.stringify(trasnferFinishedData, null, 2)}</p>
+          <p>{JSON.stringify(transferFinishedData, null, 2)}</p>
         </div>
       )}
 
@@ -128,17 +128,17 @@ export const App: React.FC = () => {
         }}
       >
         <button style={{ width: '50%' }} onClick={getAuthLink}>
-          Front Connection
+          Link
         </button>
 
         <button style={{ width: '50%' }} onClick={getTransferLink}>
-          Front Transfer
+          Transfer
         </button>
       </div>
 
-      <FrontComponent
+      <LinkComponent
         linkToken={linkToken}
-        onBrokerConnected={(authData: FrontPayload) => {
+        onIntegrationConnected={(authData: LinkPayload) => {
           setPayload(authData)
           setLinkToken(null)
         }}
@@ -147,7 +147,7 @@ export const App: React.FC = () => {
           setError(err || null)
         }}
         onTransferFinished={data => {
-          setTrasnferFinishedData(data)
+          setTransferFinishedData(data)
         }}
       />
     </div>

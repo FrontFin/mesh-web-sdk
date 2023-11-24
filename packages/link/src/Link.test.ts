@@ -1,10 +1,10 @@
-import { createFrontConnection } from './FrontConnection'
-import { FrontEventType } from './utils/event-types'
+import { createLink } from './Link'
+import { LinkEventType } from './utils/event-types'
 import {
   AccessTokenPayload,
   DelayedAuthPayload,
   EventType,
-  FrontPayload,
+  LinkPayload,
   IntegrationAccessToken,
   TransferFinishedPayload
 } from './utils/types'
@@ -16,66 +16,68 @@ type EventPayload = {
   link?: string
 }
 
-describe('createFrontConnection tests', () => {
+const BASE64_ENCODED_URL = Buffer.from('http://localhost/1').toString('base64')
+
+describe('createLink tests', () => {
   window.open = jest.fn()
 
-  test('createFrontConnection when invalid link provided should not open popup', () => {
+  test('createLink when invalid link provided should not open popup', () => {
     const exitFunction = jest.fn<void, [string | undefined]>()
-    const frontConnection = createFrontConnection({
+    const frontConnection = createLink({
       clientId: 'test',
-      onBrokerConnected: jest.fn(),
+      onIntegrationConnected: jest.fn(),
       onExit: exitFunction
     })
 
-    frontConnection.openPopup('')
+    frontConnection.openLink('')
 
-    expect(exitFunction).toBeCalledWith('Invalid link!')
-    const iframeElement = document.getElementById('front-link-popup__iframe')
+    expect(exitFunction).toBeCalledWith('Invalid link token!')
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeFalsy()
   })
 
-  test('createFrontConnection when valid link provided should open popup', () => {
-    const frontConnection = createFrontConnection({
+  test('createLink when valid link provided should open popup', () => {
+    const frontConnection = createLink({
       clientId: 'test',
-      onBrokerConnected: jest.fn()
+      onIntegrationConnected: jest.fn()
     })
 
-    frontConnection.openPopup('http://localhost/1')
-    const iframeElement = document.getElementById('front-link-popup__iframe')
+    frontConnection.openLink(BASE64_ENCODED_URL)
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeTruthy()
     expect(iframeElement?.attributes.getNamedItem('src')?.nodeValue).toBe(
       'http://localhost/1'
     )
   })
 
-  test('createFrontConnection closePopup should close popup', () => {
+  test('createLink closePopup should close popup', () => {
     const exitFunction = jest.fn<void, [string | undefined]>()
-    const frontConnection = createFrontConnection({
+    const frontConnection = createLink({
       clientId: 'test',
-      onBrokerConnected: jest.fn(),
+      onIntegrationConnected: jest.fn(),
       onExit: exitFunction
     })
 
-    frontConnection.openPopup('http://localhost/1')
-    frontConnection.closePopup()
+    frontConnection.openLink(BASE64_ENCODED_URL)
+    frontConnection.closeLink()
 
-    const iframeElement = document.getElementById('front-link-popup__iframe')
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeFalsy()
 
     expect(exitFunction).toBeCalled()
   })
 
   test.each(['close', 'done'] as const)(
-    'createFrontConnection "%s" event should close popup',
+    'createLink "%s" event should close popup',
     eventName => {
       const exitFunction = jest.fn<void, [string | undefined]>()
-      const frontConnection = createFrontConnection({
+      const frontConnection = createLink({
         clientId: 'test',
-        onBrokerConnected: jest.fn(),
+        onIntegrationConnected: jest.fn(),
         onExit: exitFunction
       })
 
-      frontConnection.openPopup('http://localhost/1')
+      frontConnection.openLink(BASE64_ENCODED_URL)
       window.dispatchEvent(
         new MessageEvent<EventPayload>('message', {
           data: {
@@ -85,23 +87,23 @@ describe('createFrontConnection tests', () => {
         })
       )
 
-      const iframeElement = document.getElementById('front-link-popup__iframe')
+      const iframeElement = document.getElementById('mesh-link-popup__iframe')
       expect(iframeElement).toBeFalsy()
 
       expect(exitFunction).toBeCalledWith('some msg')
     }
   )
 
-  test('createFrontConnection "brokerageAccountAccessToken" event should send tokens', () => {
-    const onEventHandler = jest.fn<void, [FrontEventType]>()
-    const onBrokerConnectedHandler = jest.fn<void, [FrontPayload]>()
-    const frontConnection = createFrontConnection({
+  test('createLink "brokerageAccountAccessToken" event should send tokens', () => {
+    const onEventHandler = jest.fn<void, [LinkEventType]>()
+    const onBrokerConnectedHandler = jest.fn<void, [LinkPayload]>()
+    const frontConnection = createLink({
       clientId: 'test',
-      onBrokerConnected: onBrokerConnectedHandler,
+      onIntegrationConnected: onBrokerConnectedHandler,
       onEvent: onEventHandler
     })
 
-    frontConnection.openPopup('http://localhost/1')
+    frontConnection.openLink(BASE64_ENCODED_URL)
 
     const payload: AccessTokenPayload = {
       accountTokens: [],
@@ -125,16 +127,16 @@ describe('createFrontConnection tests', () => {
     expect(onBrokerConnectedHandler).toBeCalledWith({ accessToken: payload })
   })
 
-  test('createFrontConnection "delayedAuthentication" event should send dalayed tokens', () => {
-    const onEventHandler = jest.fn<void, [FrontEventType]>()
-    const onBrokerConnectedHandler = jest.fn<void, [FrontPayload]>()
-    const frontConnection = createFrontConnection({
+  test('createLink "delayedAuthentication" event should send dalayed tokens', () => {
+    const onEventHandler = jest.fn<void, [LinkEventType]>()
+    const onBrokerConnectedHandler = jest.fn<void, [LinkPayload]>()
+    const frontConnection = createLink({
       clientId: 'test',
-      onBrokerConnected: onBrokerConnectedHandler,
+      onIntegrationConnected: onBrokerConnectedHandler,
       onEvent: onEventHandler
     })
 
-    frontConnection.openPopup('http://localhost/1')
+    frontConnection.openLink(BASE64_ENCODED_URL)
 
     const payload: DelayedAuthPayload = {
       brokerBrandInfo: { brokerLogo: '' },
@@ -158,17 +160,17 @@ describe('createFrontConnection tests', () => {
     expect(onBrokerConnectedHandler).toBeCalledWith({ delayedAuth: payload })
   })
 
-  test('createFrontConnection "transferFinished" event should send transfer payload', () => {
-    const onEventHandler = jest.fn<void, [FrontEventType]>()
+  test('createLink "transferFinished" event should send transfer payload', () => {
+    const onEventHandler = jest.fn<void, [LinkEventType]>()
     const onTransferFinishedHandler = jest.fn<void, [TransferFinishedPayload]>()
-    const frontConnection = createFrontConnection({
+    const frontConnection = createLink({
       clientId: 'test',
-      onBrokerConnected: jest.fn(),
+      onIntegrationConnected: jest.fn(),
       onEvent: onEventHandler,
       onTransferFinished: onTransferFinishedHandler
     })
 
-    frontConnection.openPopup('http://localhost/1')
+    frontConnection.openLink(BASE64_ENCODED_URL)
 
     const payload: TransferFinishedPayload = {
       status: 'success',
@@ -195,13 +197,13 @@ describe('createFrontConnection tests', () => {
     expect(onTransferFinishedHandler).toBeCalledWith(payload)
   })
 
-  test('createFrontConnection "oauthLinkOpen" event should open new window', () => {
-    const frontConnection = createFrontConnection({
+  test('createLink "oauthLinkOpen" event should open new window', () => {
+    const frontConnection = createLink({
       clientId: 'test',
-      onBrokerConnected: jest.fn()
+      onIntegrationConnected: jest.fn()
     })
 
-    frontConnection.openPopup('http://localhost/1')
+    frontConnection.openLink(BASE64_ENCODED_URL)
 
     window.dispatchEvent(
       new MessageEvent<EventPayload>('message', {
@@ -219,7 +221,7 @@ describe('createFrontConnection tests', () => {
     )
   })
 
-  test('createFrontConnection "loaded" event should trigger the passing for tokens', () => {
+  test('createLink "loaded" event should trigger the passing for tokens', () => {
     const tokens: IntegrationAccessToken[] = [
       {
         accessToken: 'at',
@@ -238,17 +240,17 @@ describe('createFrontConnection tests', () => {
         brokerName: 'tbrokername'
       }
     ]
-    const frontConnection = createFrontConnection({
+    const frontConnection = createLink({
       clientId: 'test',
-      onBrokerConnected: jest.fn(),
+      onIntegrationConnected: jest.fn(),
       accessTokens: tokens,
       transferDestinationTokens: destinationTokens
     })
 
-    frontConnection.openPopup('http://localhost/1')
+    frontConnection.openLink(BASE64_ENCODED_URL)
 
     const iframeElement = document.getElementById(
-      'front-link-popup__iframe'
+      'mesh-link-popup__iframe'
     ) as HTMLIFrameElement | null
     expect(iframeElement?.contentWindow).toBeTruthy()
 
@@ -276,15 +278,15 @@ describe('createFrontConnection tests', () => {
     )
   })
 
-  test('createFrontConnection "integrationConnected" event should send event', () => {
-    const onEventHandler = jest.fn<void, [FrontEventType]>()
-    const frontConnection = createFrontConnection({
+  test('createLink "integrationConnected" event should send event', () => {
+    const onEventHandler = jest.fn<void, [LinkEventType]>()
+    const frontConnection = createLink({
       clientId: 'test',
-      onBrokerConnected: jest.fn(),
+      onIntegrationConnected: jest.fn(),
       onEvent: onEventHandler
     })
 
-    frontConnection.openPopup('http://localhost/1')
+    frontConnection.openLink(BASE64_ENCODED_URL)
 
     window.dispatchEvent(
       new MessageEvent('message', {
@@ -297,15 +299,15 @@ describe('createFrontConnection tests', () => {
     expect(onEventHandler).toBeCalled()
   })
 
-  test('createFrontConnection unknown event should not send any events', () => {
-    const onEventHandler = jest.fn<void, [FrontEventType]>()
-    const frontConnection = createFrontConnection({
+  test('createLink unknown event should not send any events', () => {
+    const onEventHandler = jest.fn<void, [LinkEventType]>()
+    const frontConnection = createLink({
       clientId: 'test',
-      onBrokerConnected: jest.fn(),
+      onIntegrationConnected: jest.fn(),
       onEvent: onEventHandler
     })
 
-    frontConnection.openPopup('http://localhost/1')
+    frontConnection.openLink(BASE64_ENCODED_URL)
 
     window.dispatchEvent(
       new MessageEvent('message', {
@@ -318,12 +320,12 @@ describe('createFrontConnection tests', () => {
     expect(onEventHandler).not.toBeCalled()
   })
 
-  test('createFrontConnection "brokerageAccountAccessToken" event should send tokens - used with openLink function', () => {
-    const onEventHandler = jest.fn<void, [FrontEventType]>()
-    const onBrokerConnectedHandler = jest.fn<void, [FrontPayload]>()
-    const frontConnection = createFrontConnection({
+  test('createLink "brokerageAccountAccessToken" event should send tokens - used with openLink function', () => {
+    const onEventHandler = jest.fn<void, [LinkEventType]>()
+    const onBrokerConnectedHandler = jest.fn<void, [LinkPayload]>()
+    const frontConnection = createLink({
       clientId: 'test',
-      onBrokerConnected: onBrokerConnectedHandler,
+      onIntegrationConnected: onBrokerConnectedHandler,
       onEvent: onEventHandler
     })
 
@@ -353,11 +355,11 @@ describe('createFrontConnection tests', () => {
     expect(onBrokerConnectedHandler).toBeCalledWith({ accessToken: payload })
   })
 
-  test('createFrontConnection closeLink should close popup', () => {
+  test('createLink closeLink should close popup', () => {
     const exitFunction = jest.fn<void, [string | undefined]>()
-    const frontConnection = createFrontConnection({
+    const frontConnection = createLink({
       clientId: 'test',
-      onBrokerConnected: jest.fn(),
+      onIntegrationConnected: jest.fn(),
       onExit: exitFunction
     })
 
@@ -366,7 +368,7 @@ describe('createFrontConnection tests', () => {
     )
     frontConnection.closeLink()
 
-    const iframeElement = document.getElementById('front-link-popup__iframe')
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeFalsy()
 
     expect(exitFunction).toBeCalled()

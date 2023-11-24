@@ -1,6 +1,6 @@
-import { FrontPayload, TransferFinishedPayload } from './types'
+import { LinkPayload, TransferFinishedPayload } from './types'
 
-export type FrontEventType =
+export type LinkEventType =
   | IntegrationConnected
   | IntegrationConnectionError
   | TransferCompleted
@@ -12,7 +12,7 @@ export type FrontEventType =
   | TransferExecutionError
   | PageLoaded
 
-const FRONT_EVENT_TYPE_KEYS = [
+const LINK_EVENT_TYPE_KEYS = [
   'integrationConnected',
   'integrationConnectionError',
   'transferCompleted',
@@ -25,38 +25,38 @@ const FRONT_EVENT_TYPE_KEYS = [
   'pageLoaded'
 ] as const
 
-export type FrontEventTypeKeys = (typeof FRONT_EVENT_TYPE_KEYS)[number]
+export type LinkEventTypeKeys = (typeof LINK_EVENT_TYPE_KEYS)[number]
 
-export function isFrontEventTypeKey(key: string): key is FrontEventTypeKeys {
-  return FRONT_EVENT_TYPE_KEYS.includes(key as FrontEventTypeKeys)
+export function isLinkEventTypeKey(key: string): key is LinkEventTypeKeys {
+  return LINK_EVENT_TYPE_KEYS.includes(key as LinkEventTypeKeys)
 }
 
-interface FrontEventBase {
-  type: FrontEventTypeKeys
+interface LinkEventBase {
+  type: LinkEventTypeKeys
 }
 
 export interface PageLoaded {
   type: 'pageLoaded'
 }
 
-export interface IntegrationConnected extends FrontEventBase {
+export interface IntegrationConnected extends LinkEventBase {
   type: 'integrationConnected'
-  payload: FrontPayload
+  payload: LinkPayload
 }
 
-export interface IntegrationConnectionError extends FrontEventBase {
+export interface IntegrationConnectionError extends LinkEventBase {
   type: 'integrationConnectionError'
   payload: {
     errorMessage: string
   }
 }
 
-export interface TransferCompleted extends FrontEventBase {
+export interface TransferCompleted extends LinkEventBase {
   type: 'transferCompleted'
   payload: TransferFinishedPayload
 }
 
-export interface IntegrationSelected extends FrontEventBase {
+export interface IntegrationSelected extends LinkEventBase {
   type: 'integrationSelected'
   payload: {
     integrationType: string
@@ -64,15 +64,15 @@ export interface IntegrationSelected extends FrontEventBase {
   }
 }
 
-export interface CredentialsEntered extends FrontEventBase {
+export interface CredentialsEntered extends LinkEventBase {
   type: 'credentialsEntered'
 }
 
-export interface TransferStarted extends FrontEventBase {
+export interface TransferStarted extends LinkEventBase {
   type: 'transferStarted'
 }
 
-export interface TransferPreviewed extends FrontEventBase {
+export interface TransferPreviewed extends LinkEventBase {
   type: 'transferPreviewed'
   payload: {
     amount: number
@@ -90,14 +90,14 @@ export interface TransferPreviewed extends FrontEventBase {
   }
 }
 
-export interface TransferPreviewError extends FrontEventBase {
+export interface TransferPreviewError extends LinkEventBase {
   type: 'transferPreviewError'
   payload: {
     errorMessage: string
   }
 }
 
-export interface TransferExecutionError extends FrontEventBase {
+export interface TransferExecutionError extends LinkEventBase {
   type: 'transferExecutionError'
   payload: {
     errorMessage: string

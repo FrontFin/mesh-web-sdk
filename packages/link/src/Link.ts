@@ -1,16 +1,16 @@
 import {
-  FrontOptions,
-  FrontConnection,
+  LinkOptions,
+  Link,
   EventType,
   AccessTokenPayload,
   DelayedAuthPayload,
   TransferFinishedPayload,
-  FrontPayload
+  LinkPayload
 } from './utils/types'
 import { addPopup, iframeId, removePopup } from './utils/popup'
-import { FrontEventType, isFrontEventTypeKey } from './utils/event-types'
+import { LinkEventType, isLinkEventTypeKey } from './utils/event-types'
 
-let currentOptions: FrontOptions | undefined
+let currentOptions: LinkOptions | undefined
 let iframeUrlObject: URL | undefined
 
 const iframeElement = () => {
@@ -28,29 +28,29 @@ function eventsListener(
         message?: string
         link?: string
       }>
-    | MessageEvent<FrontEventType>
+    | MessageEvent<LinkEventType>
 ) {
   switch (event.data.type) {
     case 'brokerageAccountAccessToken': {
-      const payload: FrontPayload = {
+      const payload: LinkPayload = {
         accessToken: event.data.payload as AccessTokenPayload
       }
       currentOptions?.onEvent?.({
         type: 'integrationConnected',
         payload: payload
       })
-      currentOptions?.onBrokerConnected?.(payload)
+      currentOptions?.onIntegrationConnected?.(payload)
       break
     }
     case 'delayedAuthentication': {
-      const payload: FrontPayload = {
+      const payload: LinkPayload = {
         delayedAuth: event.data.payload as DelayedAuthPayload
       }
       currentOptions?.onEvent?.({
         type: 'integrationConnected',
         payload: payload
       })
-      currentOptions?.onBrokerConnected?.(payload)
+      currentOptions?.onIntegrationConnected?.(payload)
       break
     }
     case 'transferFinished': {
@@ -90,7 +90,7 @@ function eventsListener(
       if (currentOptions?.accessTokens) {
         iframeElement().contentWindow?.postMessage(
           { type: 'frontAccessTokens', payload: currentOptions.accessTokens },
-          iframeUrlObject?.origin || 'https://web.getfront.com'
+          iframeUrlObject?.origin || 'https://web.meshconnect.com'
         )
       }
       if (currentOptions?.transferDestinationTokens) {
@@ -99,7 +99,7 @@ function eventsListener(
             type: 'frontTransferDestinationTokens',
             payload: currentOptions.transferDestinationTokens
           },
-          iframeUrlObject?.origin || 'https://web.getfront.com'
+          iframeUrlObject?.origin || 'https://web.meshconnect.com'
         )
       }
 
@@ -107,7 +107,7 @@ function eventsListener(
       break
     }
     default: {
-      if (isFrontEventTypeKey(event.data.type)) {
+      if (isLinkEventTypeKey(event.data.type)) {
         currentOptions?.onEvent?.(event.data)
       }
       break
@@ -115,23 +115,7 @@ function eventsListener(
   }
 }
 
-export const createFrontConnection = (
-  options: FrontOptions
-): FrontConnection => {
-  const openPopup = async (iframeUrl: string) => {
-    if (!iframeUrl) {
-      options?.onExit?.('Invalid link!')
-      return
-    }
-
-    currentOptions = options
-    iframeUrlObject = new URL(iframeUrl)
-
-    window.removeEventListener('message', eventsListener)
-    addPopup(iframeUrl)
-    window.addEventListener('message', eventsListener)
-  }
-
+export const createLink = (options: LinkOptions): Link => {
   const openLink = async (linkToken: string) => {
     if (!linkToken) {
       options?.onExit?.('Invalid link token!')
@@ -154,9 +138,7 @@ export const createFrontConnection = (
   }
 
   return {
-    openPopup: openPopup,
     openLink: openLink,
-    closePopup: closeLink,
     closeLink: closeLink
   }
 }

@@ -1,7 +1,7 @@
 {
-  "name": "@front-finance/front-b2b-sdk",
-  "version": "1.0.0",
-  "description": "Front Finance B2B SDK",
+  "name": "@meshconnect/mesh-b2b-sdk",
+  "version": "2.0.0",
+  "description": "Mesh Connect JS SDKs",
   "private": true,
   "type": "module",
   "license": "MIT",
@@ -30,7 +30,7 @@
     "test:cov": "lerna run test:cov",
     "lint:fix": "lerna run lint -- --fix",
     "start:demo": "cd examples/react-example && yarn start",
-    "updateApi": "cd packages/api && yarn updateApi",
+    "updateApi": "cd packages/node-api && yarn updateApi",
     "publish:npm": "lerna run publish:npm"
   }
 }

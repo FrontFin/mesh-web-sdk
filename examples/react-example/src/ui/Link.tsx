@@ -1,28 +1,28 @@
 import React, { useEffect, useState } from 'react'
 import {
-  FrontConnection,
-  FrontPayload,
+  Link,
+  LinkPayload,
   TransferFinishedPayload,
-  createFrontConnection
-} from '@front-finance/link'
+  createLink
+} from '@meshconnect/web-link-sdk'
 import { clientId } from '../utility/config'
 
-export const FrontComponent: React.FC<{
+export const LinkComponent: React.FC<{
   linkToken?: string | null
-  onBrokerConnected: (authData: FrontPayload) => void
+  onIntegrationConnected: (authData: LinkPayload) => void
   onTransferFinished?: (payload: TransferFinishedPayload) => void
   onExit?: (error?: string) => void
-}> = ({ linkToken, onBrokerConnected, onTransferFinished, onExit }) => {
-  const [frontConnection, setFrontConnection] =
-    useState<FrontConnection | null>(null)
+}> = ({ linkToken, onIntegrationConnected, onTransferFinished, onExit }) => {
+  const [linkConnection, setLinkConnection] =
+    useState<Link | null>(null)
 
   useEffect(() => {
-    setFrontConnection(
-      createFrontConnection({
+    setLinkConnection(
+      createLink({
         clientId: clientId,
-        onBrokerConnected: authData => {
+        onIntegrationConnected: (authData) => {
           console.info('[FRONT SUCCESS]', authData)
-          onBrokerConnected(authData)
+          onIntegrationConnected(authData)
         },
         onExit: (error?: string) => {
           if (error) {
@@ -44,9 +44,9 @@ export const FrontComponent: React.FC<{
 
   useEffect(() => {
     if (linkToken) {
-      frontConnection?.openLink(linkToken)
+      linkConnection?.openLink(linkToken)
     }
-  }, [frontConnection, linkToken])
+  }, [linkConnection, linkToken])
 
   return <></>
 }

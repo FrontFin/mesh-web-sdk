@@ -1,5 +1,5 @@
-import type { BrokerType } from '@front-finance/api'
-import { FrontEventType } from './event-types'
+import type { BrokerType } from '../../../node-api'
+import { LinkEventType } from './event-types'
 
 export type EventType =
   | 'brokerageAccountAccessToken'
@@ -10,32 +10,24 @@ export type EventType =
   | 'oauthLinkOpen'
   | 'transferFinished'
 
-export interface FrontConnection {
-  /**
-   * @deprecated (Obsolete) A function that takes iFrameUrl parameter from `/api/v1/cataloglink` endpoint as an input, and opens the Link UI popup
-   */
-  openPopup: (iframeLink: string) => Promise<void>
+export interface Link {
   /**
    * A function that takes linkToken parameter from `/api/v1/linktoken` endpoint as an input, and opens the Link UI popup
    */
   openLink: (linkToken: string) => Promise<void>
-  /**
-   * @deprecated (Obsolete) A function to close Link UI popup
-   */
-  closePopup: () => void
   /**
    * A function to close Link UI popup
    */
   closeLink: () => void
 }
 
-export interface BrokerAccountToken {
-  account: BrokerAccount
+export interface AccountToken {
+  account: Account
   accessToken: string
   refreshToken?: string
 }
 
-export interface BrokerAccount {
+export interface Account {
   accountId: string
   accountName: string
   fund?: number
@@ -43,19 +35,19 @@ export interface BrokerAccount {
   isReconnected?: boolean
 }
 
-export interface BrokerBrandInfo {
+export interface BrandInfo {
   brokerLogo: string
   brokerPrimaryColor?: string
 }
 
-export interface FrontPayload {
+export interface LinkPayload {
   accessToken?: AccessTokenPayload
   delayedAuth?: DelayedAuthPayload
 }
 
 export interface AccessTokenPayload {
-  accountTokens: BrokerAccountToken[]
-  brokerBrandInfo: BrokerBrandInfo
+  accountTokens: AccountToken[]
+  brokerBrandInfo: BrandInfo
   expiresInSeconds?: number
   refreshTokenExpiresInSeconds?: number
   brokerType: BrokerType
@@ -67,7 +59,7 @@ export interface DelayedAuthPayload {
   brokerType: BrokerType
   refreshToken: string
   brokerName: string
-  brokerBrandInfo: BrokerBrandInfo
+  brokerBrandInfo: BrandInfo
 }
 
 export interface TransferFinishedSuccessPayload {
@@ -97,17 +89,17 @@ export interface IntegrationAccessToken {
   brokerName: string
 }
 
-export interface FrontOptions {
+export interface LinkOptions {
   /**
-   * Client ID that can be obtained at https://dashboard.getfront.com/company/keys
+   * Client ID that can be obtained at https://dashboard.meshconnect.com/company/keys
    */
   clientId: string
 
   /**
-   * A callback function that is called when an integration is succesfully connected.
-   * It receives a payload of type `FrontPayload`.
+   * A callback function that is called when an integration is successfully connected.
+   * It receives a payload of type `LinkPayload`.
    */
-  onBrokerConnected: (payload: FrontPayload) => void
+  onIntegrationConnected: (payload: LinkPayload) => void
 
   /**
    * (Optional) A callback function that is called when the Front iframe is closed.
@@ -122,9 +114,9 @@ export interface FrontOptions {
 
   /**
    * (Optional) A callback function that is called when various events occur within the Front iframe.
-   * It receives an object with type `FrontEventTypeKeys` indicating the event, and an optional 'payload' containing additional data.
+   * It receives an object with type `LinkEventTypeKeys` indicating the event, and an optional 'payload' containing additional data.
    */
-  onEvent?: (event: FrontEventType) => void
+  onEvent?: (event: LinkEventType) => void
 
   /**
    * (Optional) An array of integration access tokens.
