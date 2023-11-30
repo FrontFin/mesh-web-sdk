@@ -7,7 +7,7 @@
     "@meshconnect/web-link-sdk": "*",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
-    "axios": "^0.27.2",
+    "axios": "^1.6.0",
     "react": "^18.1.0",
     "react-app-rewired": "^2.2.1",
     "react-dom": "^18.1.0",
