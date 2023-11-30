@@ -1,4 +1,4 @@
-import type { BrokerType } from '../../../node-api'
+import type { BrokerType } from '@meshconnect/node-api'
 import { LinkEventType } from './event-types'
 
 export type EventType =
