@@ -11,10 +11,26 @@ export type LinkEventType =
   | TransferPreviewError
   | TransferExecutionError
   | PageLoaded
+  | IntegrationMfaRequired
+  | IntegrationMfaEntered
+  | IntegrationOAuthStarted
+  | IntegrationAccountSelectionRequired
+  | TransferAssetSelected
+  | TransferNetworkSelected
+  | TransferAmountEntered
+  | TransferMfaRequired
+  | TransferMfaEntered
+  | TransferKycRequired
+  | DoneEvent
+  | CloseEvent
 
 const LINK_EVENT_TYPE_KEYS = [
   'integrationConnected',
   'integrationConnectionError',
+  'integrationMfaRequired',
+  'integrationMfaEntered',
+  'integrationOAuthStarted',
+  'integrationAccountSelectionRequired',
   'transferCompleted',
   'integrationSelected',
   'credentialsEntered',
@@ -22,7 +38,15 @@ const LINK_EVENT_TYPE_KEYS = [
   'transferPreviewed',
   'transferPreviewError',
   'transferExecutionError',
-  'pageLoaded'
+  'pageLoaded',
+  'transferAssetSelected',
+  'transferNetworkSelected',
+  'transferAmountEntered',
+  'transferMfaRequired',
+  'transferMfaEntered',
+  'transferKycRequired',
+  'done',
+  'close'
 ] as const
 
 export type LinkEventTypeKeys = (typeof LINK_EVENT_TYPE_KEYS)[number]
@@ -102,4 +126,101 @@ export interface TransferExecutionError extends LinkEventBase {
   payload: {
     errorMessage: string
   }
+}
+
+export interface IntegrationMfaRequired extends LinkEventBase {
+  type: 'integrationMfaRequired'
+}
+
+export interface IntegrationMfaEntered extends LinkEventBase {
+  type: 'integrationMfaEntered'
+}
+
+export interface IntegrationOAuthStarted extends LinkEventBase {
+  type: 'integrationOAuthStarted'
+}
+
+export interface IntegrationAccountSelectionRequired extends LinkEventBase {
+  type: 'integrationAccountSelectionRequired'
+}
+
+export interface TransferAssetSelected extends LinkEventBase {
+  type: 'transferAssetSelected'
+  payload: {
+    symbol: string
+  }
+}
+
+export interface TransferNetworkSelected extends LinkEventBase {
+  type: 'transferNetworkSelected'
+  payload: {
+    id: string
+    name: string
+  }
+}
+
+export interface TransferAmountEntered extends LinkEventBase {
+  type: 'transferAmountEntered'
+}
+
+export interface TransferMfaRequired extends LinkEventBase {
+  type: 'transferMfaRequired'
+}
+
+export interface TransferMfaEntered extends LinkEventBase {
+  type: 'transferMfaEntered'
+}
+
+export interface TransferKycRequired extends LinkEventBase {
+  type: 'transferKycRequired'
+}
+
+export interface DoneEvent extends LinkEventBase {
+  type: 'done'
+  payload: SessionSymmary
+}
+
+export interface CloseEvent extends LinkEventBase {
+  type: 'close'
+  payload: SessionSymmary
+}
+
+export interface SessionSymmary {
+  /**
+   *   Current page of application. Possible values:
+   * `startPage`
+   * `integrationsCatalogPage`
+   * `integrationLoginPage`
+   * `integrationMfaPage`
+   * `integrationAccountSelectPage`
+   * `integrationConnectedPage`
+   * `errorPage`
+   * `transferKycPage`
+   * `transferHoldingSelectionPage`
+   * `transferNetworkSelectionPage`
+   * `transferAmountSelectionPage`
+   * `transferPreviewPage`
+   * `transferMfaPage`
+   * `transferFundingPage`
+   * `transferExecutedPage`
+   * `termsAndConditionPage`
+   *
+   * This list may change in future.
+   */
+  page: string
+  /** Selected integration */
+  selectedIntegration?: {
+    id?: string
+    name?: string
+  }
+  /** Transfer information */
+  transfer?: {
+    previewId?: string
+    symbol?: string
+    amount?: number
+    amountInFiat?: number
+    transactionId?: string
+    networkId?: string
+  }
+  errorMessage?: string
 }
