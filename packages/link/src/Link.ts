@@ -25,7 +25,6 @@ function eventsListener(
           | AccessTokenPayload
           | DelayedAuthPayload
           | TransferFinishedPayload
-        message?: string
         link?: string
       }>
     | MessageEvent<LinkEventType>
@@ -65,7 +64,8 @@ function eventsListener(
     }
     case 'close':
     case 'done': {
-      currentOptions?.onExit?.(event.data.message)
+      const payload = event.data?.payload
+      currentOptions?.onExit?.(payload.errorMessage, payload)
       removePopup()
       break
     }

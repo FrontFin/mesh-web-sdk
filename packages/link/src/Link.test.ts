@@ -1,5 +1,5 @@
 import { createLink } from './Link'
-import { LinkEventType } from './utils/event-types'
+import { DoneEvent, LinkEventType } from './utils/event-types'
 import {
   AccessTokenPayload,
   DelayedAuthPayload,
@@ -77,12 +77,16 @@ describe('createLink tests', () => {
         onExit: exitFunction
       })
 
+      const payload: DoneEvent['payload'] = {
+        page: 'some page',
+        errorMessage: 'some msg'
+      }
       frontConnection.openLink(BASE64_ENCODED_URL)
       window.dispatchEvent(
-        new MessageEvent<EventPayload>('message', {
+        new MessageEvent<LinkEventType>('message', {
           data: {
             type: eventName,
-            message: 'some msg'
+            payload: payload
           }
         })
       )
@@ -90,7 +94,7 @@ describe('createLink tests', () => {
       const iframeElement = document.getElementById('mesh-link-popup__iframe')
       expect(iframeElement).toBeFalsy()
 
-      expect(exitFunction).toBeCalledWith('some msg')
+      expect(exitFunction).toBeCalledWith('some msg', payload)
     }
   )
 

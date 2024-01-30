@@ -13,20 +13,23 @@ export const LinkComponent: React.FC<{
   onTransferFinished?: (payload: TransferFinishedPayload) => void
   onExit?: (error?: string) => void
 }> = ({ linkToken, onIntegrationConnected, onTransferFinished, onExit }) => {
-  const [linkConnection, setLinkConnection] =
-    useState<Link | null>(null)
+  const [linkConnection, setLinkConnection] = useState<Link | null>(null)
 
   useEffect(() => {
     setLinkConnection(
       createLink({
         clientId: clientId,
-        onIntegrationConnected: (authData) => {
-          console.info('[FRONT SUCCESS]', authData)
+        onIntegrationConnected: authData => {
+          console.info('[FRONT CONNECTED]', authData)
           onIntegrationConnected(authData)
         },
-        onExit: (error?: string) => {
+        onExit: (error, summary) => {
           if (error) {
             console.error(`[FRONT ERROR] ${error}`)
+          }
+
+          if (summary) {
+            console.log('Summary', summary)
           }
 
           onExit?.()

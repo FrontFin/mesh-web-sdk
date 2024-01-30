@@ -5,7 +5,7 @@
       "typescriptreact"
     ],
     "editor.codeActionsOnSave": {
-      "source.fixAll.eslint": true
+      "source.fixAll.eslint": "explicit"
     },
     "files.trimTrailingWhitespace": true,
     "prettier.jsxSingleQuote": true,
@@ -20,4 +20,3 @@
       "**/node_modules": true
     }
   }
-  
