@@ -23,8 +23,7 @@ Link token should be obtained from the GET `/api/v1/linktoken` endpoint. Api ref
 ```json
 {
   "content": {
-   "linkToken": "{linktoken}"
-},
+    "linkToken": "{linktoken}"
   },
   "status": "ok",
   "message": ""
@@ -66,17 +65,11 @@ linkConnection.openLink(linkToken)
 ℹ️ See full source code example at [react-example/src/ui/Link.tsx](../../examples/react-example/src/ui/Link.tsx)
 
 ```tsx
-import {
-  createLink,
-  Link,
-  LinkPayload
-} from '@meshconnect/web-link-sdk'
+import { createLink, Link, LinkPayload } from '@meshconnect/web-link-sdk'
 
 // ...
 
-const [linkConnection, setLinkConnection] = useState<Link | null>(
-  null
-)
+const [linkConnection, setLinkConnection] = useState<Link | null>(null)
 
 useEffect(() => {
   setLinkConnection(createLink(options))
@@ -102,21 +95,21 @@ After successfull authentication on the Link session, the popup will be closed a
 
 #### `createLink` arguments
 
-| key                      | type                                                    | description                                                                          |
-|--------------------------|---------------------------------------------------------| ------------------------------------------------------------------------------------ |
-| `clientId`               | `string`                                                | Keys from https://dashboard.getfront.com/company/keys page                           |
-| `onIntegrationConnected` | `(payload: LinkPayload) => void`                        | Callback called when users connects their accounts                                   |
-| `onExit`                 | `((error?: string \| undefined) => void) \| undefined`  | Called if connection not happened                                                    |
-| `onTransferFinished`     | `(payload: TransferFinishedPayload) => void`            | Callback called when a crypto transfer is executed                                   |
+| key                      | type                                                   | description                                                                          |
+| ------------------------ | ------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `clientId`               | `string`                                               | Keys from https://dashboard.getfront.com/company/keys page                           |
+| `onIntegrationConnected` | `(payload: LinkPayload) => void`                       | Callback called when users connects their accounts                                   |
+| `onExit`                 | `((error?: string \| undefined) => void) \| undefined` | Called if connection not happened                                                    |
+| `onTransferFinished`     | `(payload: TransferFinishedPayload) => void`           | Callback called when a crypto transfer is executed                                   |
 | `onEvent`                | `(payload: LinkEventType) => void`                     | A callback function that is called when various events occur within the Front iframe |
-| `accessTokens`           | `IntegrationAccessToken[]`                              | An array of integration access tokens                                                |
+| `accessTokens`           | `IntegrationAccessToken[]`                             | An array of integration access tokens                                                |
 
 #### `createLink` return value
 
-| key          | type                                   | description                    |
-| ------------ | -------------------------------------- | ------------------------------ |
-| `openLink`   | `(linkToken: string) => Promise<void>` | Opens the Link UI popup        |
-| `closeLink`  | `() => Promise<void>`                  | Closes the Link UI popup       |
+| key         | type                                   | description              |
+| ----------- | -------------------------------------- | ------------------------ |
+| `openLink`  | `(linkToken: string) => Promise<void>` | Opens the Link UI popup  |
+| `closeLink` | `() => Promise<void>`                  | Closes the Link UI popup |
 
 ### Using tokens
 
