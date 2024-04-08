@@ -102,8 +102,8 @@ function eventsListener(
           iframeUrlObject?.origin || 'https://web.meshconnect.com'
         )
       }
-
-      if (currentOptions?.injectedConnectors) {
+      if (currentOptions?.injectedCoreConnectors) {
+        //or use currentOptions?.injectedConnectors
         iframeElement().contentWindow?.postMessage(
           {
             type: 'frontInjectedConnectors',

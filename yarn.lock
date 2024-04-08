@@ -3079,9 +3079,9 @@
     "@sinonjs/commons" "^1.7.0"
 
 "@socket.io/component-emitter@~3.1.0":
-  version "3.1.0"
-  resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.0.tgz#96116f2a912e0c02817345b3c10751069920d553"
-  integrity sha512-+9jVqKhRSpsc591z5vX+X5Yyw+he/HCB4iQ/RYxw35CEPaY1gnsNE43nf9n9AaYjAQrTiI/mOwKUKdUs9vf7Xg==
+  version "3.1.1"
+  resolved "https://registry.yarnpkg.com/@socket.io/component-emitter/-/component-emitter-3.1.1.tgz#621270c02c0a5d4f4669eb1caa9723c91cf201de"
+  integrity sha512-dzJtaDAAoXx4GCOJpbB2eG/Qj8VDpdwkLsWGzGm+0L7E8/434RyMbAHmk9ubXWVAb9nXmc44jUf8GKqVDiKezg==
 
 "@stablelib/aead@^1.0.1":
   version "1.0.1"
@@ -3614,9 +3614,9 @@
     "@types/node" "*"
 
 "@types/node@*":
-  version "20.12.5"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.12.5.tgz#74c4f31ab17955d0b5808cdc8fd2839526ad00b3"
-  integrity sha512-BD+BjQ9LS/D8ST9p5uqBxghlN+S42iuNxjsUGjeZobe/ciXzk2qb1B6IXc6AnRLS+yFJRpN2IPEHMzwspfDJNw==
+  version "20.12.7"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-20.12.7.tgz#04080362fa3dd6c5822061aa3124f5c152cff384"
+  integrity sha512-wq0cICSkRLVaf3UGLMGItu/PtdY7oaXaI/RVU+xliKVOtRna3PRY57ZDfztpDL0n11vfymMUnXv8QwYCO7L1wg==
   dependencies:
     undici-types "~5.26.4"
 
@@ -3663,9 +3663,9 @@
     "@types/react" "*"
 
 "@types/react@*", "@types/react@^18.0.9":
-  version "18.2.74"
-  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.2.74.tgz#2d52eb80e4e7c4ea8812c89181d6d590b53f958c"
-  integrity sha512-9AEqNZZyBx8OdZpxzQlaFEVCSFUM2YXJH46yPOiOpm078k6ZLOCcuAzGum/zK8YBwY+dbahVNbHrbgrAwIRlqw==
+  version "18.2.75"
+  resolved "https://registry.yarnpkg.com/@types/react/-/react-18.2.75.tgz#45d18f384939306d35312def1bf532eb38a68562"
+  integrity sha512-+DNnF7yc5y0bHkBTiLKqXFe+L4B3nvOphiMY3tuA5X10esmjqk7smyBZzbGTy2vsiy/Bnzj8yFIBL8xhRacoOg==
   dependencies:
     "@types/prop-types" "*"
     csstype "^3.0.2"
@@ -3949,7 +3949,7 @@
     "@walletconnect/ethereum-provider" "2.11.2"
     "@walletconnect/modal" "2.6.2"
 
-"@wagmi/core@2.6.16":
+"@wagmi/core@2.6.16", "@wagmi/core@^2.6.16":
   version "2.6.16"
   resolved "https://registry.yarnpkg.com/@wagmi/core/-/core-2.6.16.tgz#7a697aed16ff387b8d684ea64bf9ebb755f537a1"
   integrity sha512-95r+2CCf4Yz4CWG7UZMALIcGSUfpr9YbZ2HOqmz6gJEBaW9Cf9xUEZj2MXOHZIP+Ri/3CZJtbBEclDot4enZWA==
@@ -4077,9 +4077,9 @@
     unstorage "^1.9.0"
 
 "@walletconnect/logger@^2.0.1":
-  version "2.1.1"
-  resolved "https://registry.yarnpkg.com/@walletconnect/logger/-/logger-2.1.1.tgz#518f2a4f7ab1af61a3853f8a85577f0946a72358"
-  integrity sha512-xXM+D6I9Abva2g5x/qcCmZmAVUP0YgUhNquUH0XNhp1kK/Jzp26tJrAHUEHJr1ROjrmbsrdJ2cLEJTVACK6Uvg==
+  version "2.1.2"
+  resolved "https://registry.yarnpkg.com/@walletconnect/logger/-/logger-2.1.2.tgz#813c9af61b96323a99f16c10089bfeb525e2a272"
+  integrity sha512-aAb28I3S6pYXZHQm5ESB+V6rDqIYfsnHaQyzFbwUUBFY4H0OXx/YtTl8lvhUNhMMfb9UxbwEBS253TlXUYJWSw==
   dependencies:
     "@walletconnect/safe-json" "^1.0.2"
     pino "7.11.0"
@@ -5375,9 +5375,9 @@ caniuse-api@^3.0.0:
     lodash.uniq "^4.5.0"
 
 caniuse-lite@^1.0.0, caniuse-lite@^1.0.30001587, caniuse-lite@^1.0.30001599:
-  version "1.0.30001607"
-  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001607.tgz#b91e8e033f6bca4e13d3d45388d87fa88931d9a5"
-  integrity sha512-WcvhVRjXLKFB/kmOFVwELtMxyhq3iM/MvmXcyCe2PNf166c39mptscOc/45TTS96n2gpNV2z7+NakArTWZCQ3w==
+  version "1.0.30001608"
+  resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001608.tgz#7ae6e92ffb300e4b4ec2f795e0abab456ec06cc0"
+  integrity sha512-cjUJTQkk9fQlJR2s4HMuPMvTiRggl0rAVMtthQuyOlDWuqHXqN8azLq+pi8B2TjwKJ32diHjUqRIKeFX4z1FoA==
 
 case-sensitive-paths-webpack-plugin@^2.4.0:
   version "2.4.0"
@@ -6656,9 +6656,9 @@ ejs@^3.1.6, ejs@^3.1.7:
     jake "^10.8.5"
 
 electron-to-chromium@^1.4.668:
-  version "1.4.729"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.729.tgz#8477d21e2a50993781950885b2731d92ad532c00"
-  integrity sha512-bx7+5Saea/qu14kmPTDHQxkp2UnziG3iajUQu3BxFvCOnpAJdDbMV4rSl+EqFDkkpNNVUFlR1kDfpL59xfy1HA==
+  version "1.4.731"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.731.tgz#d3dc19f359045b750a1fb0bc42315a502d950187"
+  integrity sha512-+TqVfZjpRz2V/5SPpmJxq9qK620SC5SqCnxQIOi7i/U08ZDcTpKbT7Xjj9FU5CbXTMUb4fywbIr8C7cGv4hcjw==
 
 elliptic@^6.5.4:
   version "6.5.5"
@@ -12978,9 +12978,9 @@ postcss@^8.3.5, postcss@^8.4.23, postcss@^8.4.33, postcss@^8.4.4:
     source-map-js "^1.2.0"
 
 preact@^10.16.0:
-  version "10.20.1"
-  resolved "https://registry.yarnpkg.com/preact/-/preact-10.20.1.tgz#1bc598ab630d8612978f7533da45809a8298542b"
-  integrity sha512-JIFjgFg9B2qnOoGiYMVBtrcFxHqn+dNXbq76bVmcaHYJFYR4lW67AOcXgAYQQTDYXDOg/kTZrKPNCdRgJ2UJmw==
+  version "10.20.2"
+  resolved "https://registry.yarnpkg.com/preact/-/preact-10.20.2.tgz#0b343299a8c020562311cc25db93b3d832ec5e71"
+  integrity sha512-S1d1ernz3KQ+Y2awUxKakpfOg2CEmJmwOP+6igPx6dgr6pgDvenqYviyokWso2rhHvGtTlWWnJDa7RaPbQerTg==
 
 prelude-ls@^1.2.1:
   version "1.2.1"
@@ -14320,9 +14320,9 @@ socks-proxy-agent@^7.0.0:
     socks "^2.6.2"
 
 socks@^2.6.2:
-  version "2.8.1"
-  resolved "https://registry.yarnpkg.com/socks/-/socks-2.8.1.tgz#22c7d9dd7882649043cba0eafb49ae144e3457af"
-  integrity sha512-B6w7tkwNid7ToxjZ08rQMT8M9BJAf8DKx8Ft4NivzH0zBUfd6jldGcisJn/RLgxcX3FPNDdNQCUEMMT79b+oCQ==
+  version "2.8.3"
+  resolved "https://registry.yarnpkg.com/socks/-/socks-2.8.3.tgz#1ebd0f09c52ba95a09750afe3f3f9f724a800cb5"
+  integrity sha512-l5x7VUUWbjVFbafGLxPWkYsHIhEvmF85tbIeFZWc8ZPtoMyybuEhL7Jye/ooC4/d48FgOjSJXgsF/AJPYCW8Zw==
   dependencies:
     ip-address "^9.0.5"
     smart-buffer "^4.2.0"
@@ -15721,9 +15721,9 @@ viem@^1.0.0, viem@^1.1.4:
     ws "8.13.0"
 
 viem@^2.x:
-  version "2.9.13"
-  resolved "https://registry.yarnpkg.com/viem/-/viem-2.9.13.tgz#3053394a0b3b60e46706951fefba6dd43ed1f50b"
-  integrity sha512-TxNZOWFwr2Pc6CeY4tViFL2NRq9v86HofAPkhBgScP8DUn3EeSbQhmDXbjMZNkZvXoMqWVl0AZM81rEOlaKrbg==
+  version "2.9.15"
+  resolved "https://registry.yarnpkg.com/viem/-/viem-2.9.15.tgz#a176f3c3504a6785333ac0f948666854c3a29e30"
+  integrity sha512-7kcmHqybc3JhpjL8gKY7YxBYpZt1//qhoTZIU5Ez9JdyRCnYMMnJu20s7wd7Gv6a3zPbq8jV8dCp94a/NLJJcA==
   dependencies:
     "@adraffy/ens-normalize" "1.10.0"
     "@noble/curves" "1.2.0"

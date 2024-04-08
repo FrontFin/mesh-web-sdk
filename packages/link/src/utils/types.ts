@@ -137,10 +137,16 @@ export interface LinkOptions {
   transferDestinationTokens?: IntegrationAccessToken[]
 
   /**
-   * (Optional) An array of Wagmi injected connector data.
+   * (Optional) An array of Wagmi injected connector data. React hook
    * It should send this list directly to our iframe.
    */
   injectedConnectors?: WagmiInjectedConnectorData[]
+
+  /**
+   * (Optional) An array of Wagmi injected connector data. VanillaJS
+   * It should send this list directly to our iframe.
+   */
+  injectedCoreConnectors?: WagmiInjectedConnectorData[]
 }
 
 export interface LinkStyle {

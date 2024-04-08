@@ -4,7 +4,8 @@ import {
   LinkPayload,
   TransferFinishedPayload,
   createLink,
-  getWagmiInjectedData
+  getWagmiInjectedData,
+  getWagmiCoreInjectedData
 } from '@meshconnect/web-link-sdk'
 import { clientId } from '../utility/config'
 
@@ -17,11 +18,13 @@ export const LinkComponent: React.FC<{
   const [linkConnection, setLinkConnection] = useState<Link | null>(null)
 
   const injectedConnectors = getWagmiInjectedData()
+  const coreInjectedConnectors = getWagmiCoreInjectedData()
   useEffect(() => {
     setLinkConnection(
       createLink({
         clientId: clientId,
         injectedConnectors: injectedConnectors,
+        injectedCoreConnectors: coreInjectedConnectors,
         onIntegrationConnected: authData => {
           console.info('[FRONT CONNECTED]', authData)
           onIntegrationConnected(authData)

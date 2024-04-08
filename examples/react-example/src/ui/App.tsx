@@ -4,7 +4,8 @@ import { LinkComponent } from './Link'
 import {
   LinkPayload,
   TransferFinishedPayload,
-  WagmiProvider
+  WagmiProvider,
+  WagmiCoreProvider
 } from '@meshconnect/web-link-sdk'
 import { FrontApi } from '@meshconnect/node-api'
 
@@ -139,7 +140,8 @@ export const App: React.FC = () => {
           Transfer
         </button>
       </div>
-      <WagmiProvider>
+      <WagmiCoreProvider>
+        {/* or <WagmiProvider> */}
         <LinkComponent
           linkToken={linkToken}
           onIntegrationConnected={(authData: LinkPayload) => {
@@ -154,7 +156,7 @@ export const App: React.FC = () => {
             setTransferFinishedData(data)
           }}
         />
-      </WagmiProvider>
+      </WagmiCoreProvider>
     </div>
   )
 }
