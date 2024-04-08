@@ -103,6 +103,16 @@ function eventsListener(
         )
       }
 
+      if (currentOptions?.injectedConnectors) {
+        iframeElement().contentWindow?.postMessage(
+          {
+            type: 'frontInjectedConnectors',
+            payload: currentOptions?.injectedConnectors
+          },
+          iframeUrlObject?.origin || 'https://web.meshconnect.com'
+        )
+      }
+
       currentOptions?.onEvent?.({ type: 'pageLoaded' })
       break
     }

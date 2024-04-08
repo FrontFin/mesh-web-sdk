@@ -87,6 +87,14 @@ export interface IntegrationAccessToken {
   brokerName: string
 }
 
+export interface WagmiInjectedConnectorData {
+  id: string
+  name: string
+  type: string
+  icon?: string
+  uid: string
+}
+
 export interface LinkOptions {
   /**
    * Client ID that can be obtained at https://dashboard.meshconnect.com/company/keys
@@ -127,6 +135,12 @@ export interface LinkOptions {
    * Can be used to initialize the crypto transfers flow as an alternative to the target addresses.
    */
   transferDestinationTokens?: IntegrationAccessToken[]
+
+  /**
+   * (Optional) An array of Wagmi injected connector data.
+   * It should send this list directly to our iframe.
+   */
+  injectedConnectors?: WagmiInjectedConnectorData[]
 }
 
 export interface LinkStyle {

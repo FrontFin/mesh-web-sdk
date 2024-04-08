@@ -1,7 +1,11 @@
 import React, { useState, useCallback } from 'react'
 import { linkApiUrl, clientId, clientSecret } from '../utility/config'
 import { LinkComponent } from './Link'
-import { LinkPayload, TransferFinishedPayload } from '@meshconnect/web-link-sdk'
+import {
+  LinkPayload,
+  TransferFinishedPayload,
+  WagmiProvider
+} from '@meshconnect/web-link-sdk'
 import { FrontApi } from '@meshconnect/node-api'
 
 export const App: React.FC = () => {
@@ -135,21 +139,22 @@ export const App: React.FC = () => {
           Transfer
         </button>
       </div>
-
-      <LinkComponent
-        linkToken={linkToken}
-        onIntegrationConnected={(authData: LinkPayload) => {
-          setPayload(authData)
-          setLinkToken(null)
-        }}
-        onExit={err => {
-          setLinkToken(null)
-          setError(err || null)
-        }}
-        onTransferFinished={data => {
-          setTransferFinishedData(data)
-        }}
-      />
+      <WagmiProvider>
+        <LinkComponent
+          linkToken={linkToken}
+          onIntegrationConnected={(authData: LinkPayload) => {
+            setPayload(authData)
+            setLinkToken(null)
+          }}
+          onExit={err => {
+            setLinkToken(null)
+            setError(err || null)
+          }}
+          onTransferFinished={data => {
+            setTransferFinishedData(data)
+          }}
+        />
+      </WagmiProvider>
     </div>
   )
 }

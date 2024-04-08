@@ -1,6 +1,6 @@
 {
   "name": "@meshconnect/web-link-sdk",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "A client-side JS library for integrating with Mesh Connect",
   "main": "./src/index.ts",
   "module": "./src/index.ts",
@@ -24,7 +24,10 @@
     "jest-environment-jsdom": "^29.7.0"
   },
   "dependencies": {
-    "@meshconnect/node-api": "^2.0.0"
+    "@meshconnect/node-api": "^2.0.0",
+    "@tanstack/react-query": "^5.17.9",
+    "viem": "^2.x",
+    "wagmi": "^2.5.7"
   },
   "scripts": {
     "build": "rimraf dist && yarn build:esm && yarn build:cjs && yarn copy",
