@@ -1,9 +1,6 @@
-import packageJson from '../../package.json';
-
-const version = packageJson.version;
-const platform = 'web';
+import { getSDKVersion } from './version'
 
 export const sdkSpecs = {
-  platform,
-  version,
-};
+  platform: 'web',
+  version: getSDKVersion()
+}
