@@ -271,6 +271,21 @@ describe('createLink tests', () => {
       })
     )
 
+    const packageJSONContent = JSON.parse(
+      // eslint-disable-next-line @typescript-eslint/no-var-requires
+      require('fs').readFileSync('package.json', 'utf8')
+    )
+    expect(postMessageSpy).toBeCalledWith(
+      {
+        type: 'meshSDKSpecs',
+        payload: {
+          platform: 'web',
+          version: packageJSONContent.version
+        }
+      },
+      'http://localhost'
+    )
+
     expect(postMessageSpy).toBeCalledWith(
       { type: 'frontAccessTokens', payload: tokens },
       'http://localhost'
