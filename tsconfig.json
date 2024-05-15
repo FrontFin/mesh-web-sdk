@@ -15,6 +15,7 @@
     "strictNullChecks": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "react-jsx",
+    "resolveJsonModule": true
   },
   "exclude": ["**/dist/**", "**/*.test.ts", "**/*.test.tsx"]
 }

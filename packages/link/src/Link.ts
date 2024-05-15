@@ -9,6 +9,7 @@ import {
 } from './utils/types'
 import { addPopup, iframeId, removePopup } from './utils/popup'
 import { LinkEventType, isLinkEventTypeKey } from './utils/event-types'
+import { sdkSpecs } from './utils/sdk-specs'
 
 let currentOptions: LinkOptions | undefined
 let iframeUrlObject: URL | undefined
@@ -88,6 +89,13 @@ function eventsListener(
     }
     case 'loaded': {
       if (currentOptions?.accessTokens) {
+        iframeElement().contentWindow?.postMessage(
+          {
+            type: 'meshSDKSpecs',
+            payload: { ...sdkSpecs }
+          },
+          iframeUrlObject?.origin || 'https://web.meshconnect.com'
+        )
         iframeElement().contentWindow?.postMessage(
           { type: 'frontAccessTokens', payload: currentOptions.accessTokens },
           iframeUrlObject?.origin || 'https://web.meshconnect.com'
