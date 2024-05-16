@@ -59,12 +59,18 @@ export const App: React.FC = () => {
     const response = await api.managedAccountAuthentication.v1LinktokenCreate({
       userId: '7652B44F-9CDB-4519-AC82-4FA5500F7455', // insert your unique user identifier here
       transferOptions: {
-        amountInFiat: 10, // amount to transfer
+        amountInFiat: 0.001, // amount to transfer
         toAddresses: [
           {
             symbol: 'USDC', // cryptocurrency to transfer
             address: '0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6', // address to transfer
             networkId: '7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12' // network id from /api/v1/transfers/managed/networks request
+          },
+          // leaving in for test
+          {
+            symbol: 'AVAX',
+            address: '0xF389820c6b1A034BD4FfF178aC7A7d95e376A27a',
+            networkId: 'bad16371-c22a-4bf4-a311-274d046cd760'
           }
         ]
       }

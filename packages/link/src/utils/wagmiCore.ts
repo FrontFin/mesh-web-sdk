@@ -9,12 +9,13 @@ import {
 } from '@wagmi/core/chains'
 import { walletConnect, coinbaseWallet, injected } from 'wagmi/connectors'
 
+//TODO: Get and set information from the LinkUI instead
 export const config = createConfig({
   chains: [mainnet, bsc, polygon, avalanche, arbitrum, optimism],
   connectors: [
     injected(),
     walletConnect({
-      projectId: 'importWalletConnectId', //import correct walletConnectId
+      projectId: '4b93666990d969bbd0aea931d2a4d4888', //import correct walletConnectId
       showQrModal: false,
       metadata: {
         name: 'Mesh',

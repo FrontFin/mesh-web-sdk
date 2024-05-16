@@ -1,5 +1,6 @@
 import type { BrokerType } from '@meshconnect/node-api'
 import { SessionSymmary, LinkEventType } from './event-types'
+import { type Connector } from '@wagmi/core'
 
 export type EventType =
   | 'brokerageAccountAccessToken'
@@ -7,6 +8,7 @@ export type EventType =
   | 'loaded'
   | 'oauthLinkOpen'
   | 'transferFinished'
+  | 'connectInjectedWallet'
 
 export interface Link {
   /**
@@ -147,6 +149,12 @@ export interface LinkOptions {
    * It should send this list directly to our iframe.
    */
   injectedCoreConnectors?: WagmiInjectedConnectorData[]
+
+  /**
+   * (Optional) An array of full Wagmi injected connector data. VanillaJS
+   * Use this connector data to reconnect during the transfer flow.
+   */
+  allInjectedCoreConnectorData?: Connector[]
 }
 
 export interface LinkStyle {

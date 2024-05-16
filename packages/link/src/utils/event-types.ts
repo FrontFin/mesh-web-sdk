@@ -5,6 +5,8 @@ export type LinkEventType =
   | IntegrationConnectionError
   | TransferCompleted
   | IntegrationSelected
+  | IntegrationInjectedWalletSelected
+  | IntegrationChainSwitchRequest
   | CredentialsEntered
   | TransferStarted
   | TransferPreviewed
@@ -18,6 +20,8 @@ export type LinkEventType =
   | TransferAssetSelected
   | TransferNetworkSelected
   | TransferAmountEntered
+  | TransferBalanceRequest
+  | TransferInjectedRequest
   | TransferMfaRequired
   | TransferMfaEntered
   | TransferKycRequired
@@ -33,6 +37,8 @@ const LINK_EVENT_TYPE_KEYS = [
   'integrationAccountSelectionRequired',
   'transferCompleted',
   'integrationSelected',
+  'integrationInjectedWalletSelected',
+  'integrationChainSwitchRequest',
   'credentialsEntered',
   'transferStarted',
   'transferPreviewed',
@@ -40,6 +46,8 @@ const LINK_EVENT_TYPE_KEYS = [
   'transferExecutionError',
   'pageLoaded',
   'transferAssetSelected',
+  'transferBalanceRequest',
+  'transferInjectedRequest',
   'transferNetworkSelected',
   'transferAmountEntered',
   'transferMfaRequired',
@@ -78,6 +86,40 @@ export interface IntegrationConnectionError extends LinkEventBase {
 export interface TransferCompleted extends LinkEventBase {
   type: 'transferCompleted'
   payload: TransferFinishedPayload
+}
+export interface IntegrationChainSwitchRequest extends LinkEventBase {
+  type: 'integrationChainSwitchRequest'
+  payload: {
+    chainId: number
+  }
+}
+
+export interface TransferInjectedRequest extends LinkEventBase {
+  type: 'transferInjectedRequest'
+  payload: {
+    amount: number
+    toAddress: string
+    decimalPlaces: number
+    chainId: number
+    account: string
+    connectorName: string
+  }
+}
+
+export interface IntegrationInjectedWalletSelected extends LinkEventBase {
+  type: 'integrationInjectedWalletSelected'
+  payload: {
+    integrationType: string
+    integrationName: string
+  }
+}
+
+export interface TransferBalanceRequest extends LinkEventBase {
+  type: 'transferBalanceRequest'
+  payload: {
+    account: string
+    chainId: number
+  }
 }
 
 export interface IntegrationSelected extends LinkEventBase {
