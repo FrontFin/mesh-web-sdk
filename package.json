@@ -31,6 +31,7 @@
     "lint:fix": "lerna run lint -- --fix",
     "start:demo": "cd examples/react-example && yarn start",
     "updateApi": "cd packages/node-api && yarn updateApi",
-    "publish:npm": "lerna run publish:npm"
+    "publish:npm": "lerna run publish:npm",
+    "postinstall": "cd packages/link && yarn updateVersion"
   }
 }

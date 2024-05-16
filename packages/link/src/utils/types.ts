@@ -60,7 +60,7 @@ export interface DelayedAuthPayload {
   brokerBrandInfo: BrandInfo
 }
 
-export interface TransferFinishedSuccessPayload {
+export interface TransferFinishedPayload {
   status: 'success'
   txId: string
   fromAddress: string
@@ -69,15 +69,6 @@ export interface TransferFinishedSuccessPayload {
   amount: number
   networkId: string
 }
-
-export interface TransferFinishedErrorPayload {
-  status: 'error'
-  errorMessage: string
-}
-
-export type TransferFinishedPayload =
-  | TransferFinishedSuccessPayload
-  | TransferFinishedErrorPayload
 
 export interface IntegrationAccessToken {
   accountId: string
