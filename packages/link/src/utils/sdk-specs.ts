@@ -1,6 +1,6 @@
-import { getSDKVersion } from './version'
+import { sdkVersion } from './version'
 
 export const sdkSpecs = {
   platform: 'web',
-  version: getSDKVersion()
+  version: sdkVersion
 }

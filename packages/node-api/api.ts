@@ -285,6 +285,7 @@ export interface B2BBrokerAuthRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   phone?: string | null
   username?: string | null
   password?: string | null
@@ -490,6 +491,7 @@ export interface B2BBrokerCreateOrderRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -586,6 +588,7 @@ export interface B2BBrokerCreateOrderResult {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /** Side of the order. */
   side?: 'unknown' | 'buy' | 'sell'
   /**
@@ -999,6 +1002,7 @@ export interface B2BBrokerOrder {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /** Type of the transaction */
   transactionType?:
     | 'order'
@@ -1089,6 +1093,7 @@ export interface B2BBrokerOrderListRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /**
    * The cursor to retrieve the next page of transactions.
    * Providing it will cause the response to only return changes after this update.
@@ -1201,6 +1206,7 @@ export interface B2BBrokerOrderRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /** @minLength 1 */
   id: string
   /** Should be provided for Coinbase. */
@@ -1309,6 +1315,7 @@ export interface B2BBrokerPreviewOrderResult {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /** @format double */
   fee?: number | null
   feeText?: string | null
@@ -1433,6 +1440,7 @@ export interface B2BBrokerSymbolInfoForOrderRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -1541,6 +1549,7 @@ export interface B2BBrokerTradingFeatureInfo {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /** Account Id of the integration. */
   accountId?: string | null
   /** Model, describing the ability to place cryptocurrency orders. */
@@ -1718,6 +1727,7 @@ export interface B2BBrokersHealthStatus {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /** Name of the integration */
   name?: string | null
   /** Is the communication with the integration up */
@@ -2045,6 +2055,7 @@ export interface BalanceBrokerBaseRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
 }
 
 export interface BrokerAccount {
@@ -2140,6 +2151,7 @@ export interface BrokerAuthenticationScheme {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /** Type of authentication for the integration. */
   authenticationSchemeType?: 'usernamePassword' | 'oAuth' | 'apiKey' | 'blockchainAddress'
   /** Set of fields that should be provided in the initial POST `authenticate` request. */
@@ -2222,6 +2234,7 @@ export interface BrokerBaseRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
 }
 
 export interface BrokerBrandInfo {
@@ -2276,6 +2289,7 @@ export interface BrokerCreateCryptocurrencyTransactionRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /** Additional data to send on-chain (optional, depends on an integration) */
   data?: string | null
   /**
@@ -2382,6 +2396,7 @@ export interface BrokerCryptocurrencyDepositAddressRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
    * Can be used instead of the `AddressType` field.
@@ -2466,6 +2481,7 @@ export interface BrokerCryptocurrencyTransactionDetailsRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /** Type of the address of the transferred asset. Can be used instead of the `Symbol` field. */
   addressType?: CryptocurrencyAddressType | null
   /** Transaction Id by the financial institution */
@@ -2701,6 +2717,7 @@ export interface BrokerRefreshTokenRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /** @minLength 1 */
   refreshToken: string
   /**
@@ -2772,6 +2789,7 @@ export interface BrokerTransactionsListRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /**
    * Number of records to include in the response. <br />
    * Default: `100` <br />
@@ -2836,6 +2854,7 @@ export type BrokerType =
   | 'bybit'
   | 'paxos'
   | 'coinbasePrime'
+  | 'btcTurkDirect'
 
 export interface CatalogLink {
   /**
@@ -2920,6 +2939,7 @@ export interface ConfigureTransferRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /**
    * The authentication token of the target integration. Can be used alternatively to the list of requested address (`toAddresses`).
    * If used, `toType` should also be provided.
@@ -3210,6 +3230,7 @@ export interface ExecuteTransferRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /**
    * Id of the Preview of the transfer.
    * @format uuid
@@ -3458,6 +3479,7 @@ export interface HoldingsModel {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /** External institution's account id (returned by the institution) */
   accountId?: string | null
   /** Friendly name of the connected institution */
@@ -3540,6 +3562,7 @@ export interface HoldingsRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   includeMarketValue?: boolean
 }
 
@@ -3646,6 +3669,7 @@ export interface IntegrationModel {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /** DeFi wallet provider identifier. */
   deFiWalletProviderId?: string | null
   /** Integration categories. */
@@ -3702,6 +3726,7 @@ export interface IntegrationNetwork {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
 }
 
 export interface IntegrationNetworkResponse {
@@ -3773,6 +3798,7 @@ export interface IntegrationNetworksModelResponse {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /** The list of supported networks and corresponding tokens for the integration. */
   networks?: NetworkResponse[] | null
   /** Specifies if the integration supports outgoing transfers. */
@@ -3931,6 +3957,7 @@ export interface ManagedBrokerCryptocurrencyDepositAddressRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
    * Can be used instead of the `AddressType` field.
@@ -4211,6 +4238,7 @@ export interface PortfolioBrokerBaseRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
 }
 
 export interface PortfolioFiatBalance {
@@ -4315,6 +4343,7 @@ export interface PortfolioHoldingsRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   includeMarketValue?: boolean
 }
 
@@ -4458,6 +4487,7 @@ export interface PreviewTransferRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /**
    * The authentication token of the target integration. Can be used alternatively to the address in the `ToAddress` field.
    * If used, `toType` should also be provided.
@@ -4837,6 +4867,7 @@ export interface QuoteTransferRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /**
    * Flat fee in crypto to be charged as a partner fee
    * @format double
@@ -4907,6 +4938,7 @@ export interface QuoteTransferResponse {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /** Is the transaction is possible based on the minimum transfer amount of the selected exchange */
   isEligible?: boolean
   /**
@@ -5122,6 +5154,7 @@ export interface TransactionsB2BBrokerCreateOrderRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -5255,6 +5288,7 @@ export interface TransactionsB2BBrokerOrderListRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /**
    * The cursor to retrieve the next page of transactions.
    * Providing it will cause the response to only return changes after this update.
@@ -5359,6 +5393,7 @@ export interface TransactionsB2BBrokerOrderRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /** @minLength 1 */
   id: string
   /** Should be provided for Coinbase. */
@@ -5452,6 +5487,7 @@ export interface TransactionsB2BBrokerSymbolInfoForOrderRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -5586,6 +5622,7 @@ export interface TransactionsBrokerBaseRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
 }
 
 export interface TransferBalanceFundingAvailability {
@@ -5645,9 +5682,49 @@ export interface TransferFee {
   feeInFiat?: number
 }
 
+/** Funding method model. */
+export interface TransferFundingModel {
+  /** Type of the funding method. */
+  type?:
+    | 'existingCryptocurrencyBalance'
+    | 'buyingPowerPurchase'
+    | 'paymentMethodDepositUsage'
+    | 'cryptocurrencyConversion'
+    | 'stableCoinNoFeeConversion'
+    | 'cryptocurrencyBuyingPowerConversion'
+  /**
+   * Amount funded.
+   * @format double
+   */
+  amount?: number
+  /**
+   * Amount in fiat.
+   * @format double
+   */
+  amountInFiat?: number
+  /** Symbol purchased. */
+  toSymbol?: string | null
+  /**
+   * Amount used.
+   * @format double
+   */
+  fromAmount?: number
+  /** Symbol used. */
+  fromSymbol?: string | null
+  /** Payment method type */
+  paymentMethodType?: BrokerPaymentMethodType | null
+  /** Fee of funding. */
+  fee?: TransferFee | null
+}
+
+/** Integration model. */
 export interface TransferIntegrationModel {
-  /** @format uuid */
+  /**
+   * Unique identifier of integration.
+   * @format uuid
+   */
   id?: string
+  /** Type of integration. */
   type?:
     | 'robinhood'
     | 'eTrade'
@@ -5688,6 +5765,8 @@ export interface TransferIntegrationModel {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
+  /** Name of integration. */
   name?: string | null
 }
 
@@ -5706,20 +5785,20 @@ export interface TransferModel {
   /** Transfer status. */
   status?: 'pending' | 'succeeded' | 'failed'
   /**
-   * Tranfer amount in fiat.
+   * Transfer amount in fiat.
    * @format double
    */
   amountInFiat?: number
-  /** Tranfer amount in fiat currency code. */
+  /** Transfer amount in fiat currency code. */
   amountInFiatCurrencyCode?: string | null
   /**
-   * Tranfer amount.
+   * Transfer amount.
    * @format double
    */
   amount?: number
-  /** Tranfer cryptocurrency symbol. */
+  /** Transfer cryptocurrency symbol. */
   symbol?: string | null
-  /** Tranfer network name. */
+  /** Transfer network name. */
   networkName?: string | null
   /**
    * Created timestamp.
@@ -5734,13 +5813,17 @@ export interface TransferModel {
   gasFee?: TransferFee | null
   /** Financial insitution withdrawal fee. */
   withdrawalFee?: TransferFee | null
-  /** Tranfer processing fee. */
+  /** Transfer processing fee. */
   processingFee?: TransferFee | null
   /**
    * Transfer executed Unix timestamp.
    * @format int64
    */
   executedTimestamp?: number | null
+  /** Type of a transfer. */
+  transferType?: TransferTypeEnum | null
+  /** Is fee included. */
+  isFeeIncluded?: boolean
   /**
    * Amount what was actually transferred from source account.
    * @format double
@@ -5751,6 +5834,18 @@ export interface TransferModel {
    * @format double
    */
   destinationAmount?: number | null
+  /**
+   * Total fees paid by user to execute this transaction.
+   * @format double
+   */
+  readonly totalFeesAmountInFiat?: number
+  /**
+   * Total fiat transaction amount in origin integration.
+   * @format double
+   */
+  readonly totalTransactionAmountInFiat?: number
+  /** The funding methods that were used to fund the transaction. */
+  fundingMethods?: TransferFundingModel[] | null
 }
 
 export interface TransferModelPaginationResponse {
@@ -5794,6 +5889,8 @@ export type TransferOrderByFields =
   | 'amountInFiat'
   | 'status'
   | 'createdTimestamp'
+  | 'symbol'
+  | 'networkName'
 
 export type TransferStatus = 'pending' | 'succeeded' | 'failed'
 
@@ -5944,6 +6041,7 @@ export interface TransfersBrokerCreateCryptocurrencyTransactionRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /** Additional data to send on-chain (optional, depends on an integration) */
   data?: string | null
   /**
@@ -6059,6 +6157,7 @@ export interface TransfersBrokerCryptocurrencyDepositAddressRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
    * Can be used instead of the `AddressType` field.
@@ -6147,6 +6246,7 @@ export interface TransfersBrokerCryptocurrencyTransactionDetailsRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /** Type of the address of the transferred asset. Can be used instead of the `Symbol` field. */
   addressType?: CryptocurrencyAddressType | null
   /** Transaction Id by the financial institution */
@@ -6229,6 +6329,7 @@ export interface TransfersBrokerTransactionsListRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /**
    * Number of records to include in the response. <br />
    * Default: `100` <br />
@@ -6332,6 +6433,7 @@ export interface UpdateTransferStatusRequest {
     | 'bybit'
     | 'paxos'
     | 'coinbasePrime'
+    | 'btcTurkDirect'
   /**
    * Id of the executed transfer.
    * @minLength 1
@@ -6937,7 +7039,8 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         | 'bitfinexDirect'
         | 'bybit'
         | 'paxos'
-        | 'coinbasePrime',
+        | 'coinbasePrime'
+        | 'btcTurkDirect',
       query: {
         /** Id of the end-user */
         userId: string

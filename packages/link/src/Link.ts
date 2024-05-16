@@ -66,7 +66,7 @@ function eventsListener(
     case 'close':
     case 'done': {
       const payload = event.data?.payload
-      currentOptions?.onExit?.(payload.errorMessage, payload)
+      currentOptions?.onExit?.(payload?.errorMessage, payload)
       removePopup()
       break
     }
