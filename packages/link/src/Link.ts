@@ -12,10 +12,24 @@ import { LinkEventType, isLinkEventTypeKey } from './utils/event-types'
 import { sdkSpecs } from './utils/sdk-specs'
 
 let currentOptions: LinkOptions | undefined
-let iframeUrlObject: URL | undefined
+const possibleOrigins = new Set<string>([
+  'https://web.meshconnect.com',
+  'https://web.getfront.com'
+])
 
 const iframeElement = () => {
   return document.getElementById(iframeId) as HTMLIFrameElement
+}
+
+function sendMessageToIframe(message: unknown) {
+  possibleOrigins.forEach(origin => {
+    try {
+      iframeElement().contentWindow?.postMessage(message, origin)
+    } catch (e) {
+      console.error('Mesh SDK: Failed to deliver message to the iframe')
+      console.error(e)
+    }
+  })
 }
 
 function eventsListener(
@@ -88,28 +102,22 @@ function eventsListener(
       break
     }
     case 'loaded': {
-      iframeElement().contentWindow?.postMessage(
-        {
-          type: 'meshSDKSpecs',
-          payload: { ...sdkSpecs }
-        },
-        iframeUrlObject?.origin || 'https://web.meshconnect.com'
-      )
+      sendMessageToIframe({
+        type: 'meshSDKSpecs',
+        payload: { ...sdkSpecs }
+      })
 
       if (currentOptions?.accessTokens) {
-        iframeElement().contentWindow?.postMessage(
-          { type: 'frontAccessTokens', payload: currentOptions.accessTokens },
-          iframeUrlObject?.origin || 'https://web.meshconnect.com'
-        )
+        sendMessageToIframe({
+          type: 'frontAccessTokens',
+          payload: currentOptions.accessTokens
+        })
       }
       if (currentOptions?.transferDestinationTokens) {
-        iframeElement().contentWindow?.postMessage(
-          {
-            type: 'frontTransferDestinationTokens',
-            payload: currentOptions.transferDestinationTokens
-          },
-          iframeUrlObject?.origin || 'https://web.meshconnect.com'
-        )
+        sendMessageToIframe({
+          type: 'frontTransferDestinationTokens',
+          payload: currentOptions.transferDestinationTokens
+        })
       }
 
       currentOptions?.onEvent?.({ type: 'pageLoaded' })
@@ -133,7 +141,10 @@ export const createLink = (options: LinkOptions): Link => {
 
     currentOptions = options
     const linkUrl = window.atob(linkToken)
-    iframeUrlObject = new URL(linkUrl)
+    const iframeUrlObject = new URL(linkUrl)
+    if (iframeUrlObject.origin) {
+      possibleOrigins.add(iframeUrlObject.origin)
+    }
 
     window.removeEventListener('message', eventsListener)
     addPopup(linkUrl)
