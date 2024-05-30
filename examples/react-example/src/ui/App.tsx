@@ -1,21 +1,21 @@
 import React, { useState, useCallback } from 'react'
-import { frontApiUrl, clientId, clientSecret } from '../utility/config'
-import { FrontComponent } from './Front'
-import { FrontPayload, TransferFinishedPayload } from '@front-finance/link'
-import { FrontApi } from '@front-finance/api'
+import { linkApiUrl, clientId, clientSecret } from '../utility/config'
+import { LinkComponent } from './Link'
+import { LinkPayload, TransferFinishedPayload } from '@meshconnect/web-link-sdk'
+import { FrontApi } from '@meshconnect/node-api'
 
 export const App: React.FC = () => {
   const [linkToken, setLinkToken] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
-  const [payload, setPayload] = useState<FrontPayload | null>(null)
-  const [trasnferFinishedData, setTrasnferFinishedData] =
+  const [payload, setPayload] = useState<LinkPayload | null>(null)
+  const [transferFinishedData, setTransferFinishedData] =
     useState<TransferFinishedPayload | null>(null)
 
   const getAuthLink = useCallback(async () => {
     setError(null)
     setLinkToken(null)
     const api = new FrontApi({
-      baseURL: frontApiUrl,
+      baseURL: linkApiUrl,
       headers: {
         'x-client-id': clientId, // insert your client id here
         'x-client-secret': clientSecret // do not use your clientSecret on the FE
@@ -24,7 +24,8 @@ export const App: React.FC = () => {
 
     // this request should be performed from the backend side
     const response = await api.managedAccountAuthentication.v1LinktokenCreate({
-      userId: '7652B44F-9CDB-4519-AC82-4FA5500F7455' // insert your unique user identifier here
+      userId: '2b743d87-c11a-498d-94fb-08dc4769788d'
+      //userId: '7652B44F-9CDB-4519-AC82-4FA5500F7455' // insert your unique user identifier here
     })
 
     const data = response.data
@@ -43,7 +44,7 @@ export const App: React.FC = () => {
     setError(null)
     setLinkToken(null)
     const api = new FrontApi({
-      baseURL: frontApiUrl,
+      baseURL: linkApiUrl,
       headers: {
         'x-client-id': clientId, // insert your client id here
         'x-client-secret': clientSecret // do not use your clientSecret on the FE
@@ -54,14 +55,26 @@ export const App: React.FC = () => {
     const response = await api.managedAccountAuthentication.v1LinktokenCreate({
       userId: '7652B44F-9CDB-4519-AC82-4FA5500F7455', // insert your unique user identifier here
       transferOptions: {
-        amountInFiat: 10, // amount to transfer
+        amountInFiat: 1.0, // amount to transfer
+        clientFee: 0.1,
         toAddresses: [
           {
             symbol: 'USDC', // cryptocurrency to transfer
             address: '0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6', // address to transfer
             networkId: '7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12' // network id from /api/v1/transfers/managed/networks request
+          },
+          // leaving in for test
+          {
+            symbol: 'AVAX',
+            // symbol: 'AVAX',
+            address: '0xF389820c6b1A034BD4FfF178aC7A7d95e376A27a',
+            //address: '0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6', //try to deposit to self
+            networkId: 'bad16371-c22a-4bf4-a311-274d046cd760'
           }
         ]
+        // transferType: 'deposit', // Set the transfer type to 'deposit'
+        // depositFeeInFiat: 0.0,
+        // depositFeeTargetAddress: '0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6'
       }
     })
 
@@ -105,14 +118,14 @@ export const App: React.FC = () => {
       )) || (
         <p>
           No accounts connected recently! Please press the button below to use
-          Front and authenticate
+          Link and authenticate
         </p>
       )}
 
-      {trasnferFinishedData && (
+      {transferFinishedData && (
         <div style={{ wordWrap: 'break-word' }}>
           <h1>Transfer finished!</h1>
-          <p>{JSON.stringify(trasnferFinishedData, null, 2)}</p>
+          <p>{JSON.stringify(transferFinishedData, null, 2)}</p>
         </div>
       )}
 
@@ -128,17 +141,18 @@ export const App: React.FC = () => {
         }}
       >
         <button style={{ width: '50%' }} onClick={getAuthLink}>
-          Front Connection
+          Link
         </button>
 
         <button style={{ width: '50%' }} onClick={getTransferLink}>
-          Front Transfer
+          Transfer
         </button>
       </div>
-
-      <FrontComponent
+      {/* <WagmiCoreProvider> */}
+      {/* or <WagmiProvider> */}
+      <LinkComponent
         linkToken={linkToken}
-        onBrokerConnected={(authData: FrontPayload) => {
+        onIntegrationConnected={(authData: LinkPayload) => {
           setPayload(authData)
           setLinkToken(null)
         }}
@@ -147,9 +161,10 @@ export const App: React.FC = () => {
           setError(err || null)
         }}
         onTransferFinished={data => {
-          setTrasnferFinishedData(data)
+          setTransferFinishedData(data)
         }}
       />
+      {/* </WagmiCoreProvider> */}
     </div>
   )
 }

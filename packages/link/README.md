@@ -1,19 +1,19 @@
-# @front-finance/link
+# @meshconnect/web-link-sdk
 
-JS library for integrating with Front Finance
+A client-side JS library for integrating with Mesh Connect
 
 ### Install
 
 With `npm`:
 
 ```
-npm install --save @front-finance/link
+npm install --save @meshconnect/web-link-sdk
 ```
 
 With `yarn`
 
 ```
-yarn add @front-finance/link
+yarn add @meshconnect/web-link-sdk
 ```
 
 ### Getting Link token
@@ -23,8 +23,7 @@ Link token should be obtained from the GET `/api/v1/linktoken` endpoint. Api ref
 ```json
 {
   "content": {
-   "linkToken": "{linktoken}"
-},
+    "linkToken": "{linktoken}"
   },
   "status": "ok",
   "message": ""
@@ -36,13 +35,13 @@ You can use `linkToken` value from this response to open the popup window with `
 ### Generating connection method
 
 ```tsx
-import { createFrontConnection } from '@front-finance/link';
+import { createLink } from '@meshconnect/web-link-sdk';
 
 // ...
 
-const frontConnection = createFrontConnection({
-  clientId: '<Your Front Finance Client Id>',
-  onBrokerConnected: (brokerData: FrontPayload) => {
+const linkConnection = createLink({
+  clientId: '<Your Mesh Connect Client Id>',
+  onIntegrationConnected: (data: LinkPayload) => {
     // use broker account data
   },
   onExit: (error?: string) => {
@@ -60,70 +59,62 @@ const frontConnection = createFrontConnection({
 To open authentication link provided by Front Finance Integration API you need to call `openLink` method:
 
 ```tsx
-frontConnection.openLink(linkToken)
+linkConnection.openLink(linkToken)
 ```
 
-ℹ️ See full source code example at [react-example/src/ui/Front.tsx](../../examples/react-example/src/ui/Front.tsx)
+ℹ️ See full source code example at [react-example/src/ui/Link.tsx](../../examples/react-example/src/ui/Link.tsx)
 
 ```tsx
-import {
-  createFrontConnection,
-  FrontConnection,
-  FrontPayload
-} from '@front-finance/link'
+import { createLink, Link, LinkPayload } from '@meshconnect/web-link-sdk'
 
 // ...
 
-const [frontConnection, setFrontConnection] = useState<FrontConnection | null>(
-  null
-)
+const [linkConnection, setLinkConnection] = useState<Link | null>(null)
 
 useEffect(() => {
-  setFrontConnection(createFrontConnection(options))
+  setLinkConnection(createLink(options))
 }, [])
 
 useEffect(() => {
   if (authLink) {
-    frontConnection?.openLink(linkToken)
+    linkConnection?.openLink(linkToken)
   }
-}, [frontConnection, authLink])
+}, [linkConnection, authLink])
 
 return <></>
 ```
 
 ### Getting tokens
 
-After successfull authentication on the Link session, the popup will be closed and the broker tokens will be passed to the `onBrokerConnected` function.
-`FrontConnection` instance will check if URL contains query parameters, load broker tokens and fire the events.
+After successfull authentication on the Link session, the popup will be closed and the broker tokens will be passed to the `onIntegrationConnected` function.
+`Link` instance will check if URL contains query parameters, load broker tokens and fire the events.
 
 ### Available Connection configuration options
 
 ℹ️ See [src/types/index.ts](src/utils/types.ts) for exported types.
 
-#### `createFrontConnection` arguments
+#### `createLink` arguments
 
-| key                  | type                                                   | description                                                                          |
-| -------------------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------ |
-| `clientId`           | `string`                                               | Keys from https://dashboard.getfront.com/company/keys page                           |
-| `onBrokerConnected`  | `(payload: FrontPayload) => void`                      | Callback called when users connects their accounts                                   |
-| `onExit`             | `((error?: string \| undefined) => void) \| undefined` | Called if connection not happened                                                    |
-| `onTransferFinished` | `(payload: TransferFinishedPayload) => void`           | Callback called when a crypto transfer is executed                                   |
-| `onEvent`            | `(payload: FrontEventType) => void`                    | A callback function that is called when various events occur within the Front iframe |
-| `accessTokens`       | `IntegrationAccessToken[]`                             | An array of integration access tokens                                                |
+| key                      | type                                                   | description                                                                          |
+| ------------------------ | ------------------------------------------------------ | ------------------------------------------------------------------------------------ |
+| `clientId`               | `string`                                               | Keys from https://dashboard.getfront.com/company/keys page                           |
+| `onIntegrationConnected` | `(payload: LinkPayload) => void`                       | Callback called when users connects their accounts                                   |
+| `onExit`                 | `((error?: string \| undefined) => void) \| undefined` | Called if connection not happened                                                    |
+| `onTransferFinished`     | `(payload: TransferFinishedPayload) => void`           | Callback called when a crypto transfer is executed                                   |
+| `onEvent`                | `(payload: LinkEventType) => void`                     | A callback function that is called when various events occur within the Front iframe |
+| `accessTokens`           | `IntegrationAccessToken[]`                             | An array of integration access tokens                                                |
 
-#### `createFrontConnection` return value
+#### `createLink` return value
 
-| key          | type                                   | description                    |
-| ------------ | -------------------------------------- | ------------------------------ |
-| `openLink`   | `(linkToken: string) => Promise<void>` | Opens the Link UI popup        |
-| `closeLink`  | `() => Promise<void>`                  | Closes the Link UI popup       |
-| `o̶p̶e̶n̶P̶o̶p̶u̶p̶`  | `(iframeUrl: string) => Promise<void>` | (OBSOLETE) Opens url in popup  |
-| `c̶l̶o̶s̶e̶P̶o̶p̶u̶p̶` | `() => Promise<void>`                  | (OBSOLETE) Closes popup window |
+| key         | type                                   | description              |
+| ----------- | -------------------------------------- | ------------------------ |
+| `openLink`  | `(linkToken: string) => Promise<void>` | Opens the Link UI popup  |
+| `closeLink` | `() => Promise<void>`                  | Closes the Link UI popup |
 
 ### Using tokens
 
-You can use broker tokens to perform requests to get current balance, assets and execute transactions. Full API reference can be found [here](https://integration-api.getfront.com/apireference).
+You can use broker tokens to perform requests to get current balance, assets and execute transactions. Full API reference can be found [here](https://integration-api.meshconnect.com/apireference).
 
 ## Typescript support
 
-TypeScript definitions for `@front-finance/link` are built into the npm package.
+TypeScript definitions for `@meshconnect/web-link-sdk` are built into the npm package.

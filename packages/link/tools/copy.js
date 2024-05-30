@@ -12,6 +12,11 @@ packageModel.main = 'cjs/index.js'
 packageModel.module = 'index.js'
 packageModel.types = 'index.d.ts'
 
+const versionFromNodeApi = fs.readFileSync('../node-api/package.json')
+const version = JSON.parse(versionFromNodeApi).version
+
+packageModel.dependencies['@meshconnect/node-api'] = `^${version}`
+
 const data = JSON.stringify(packageModel, null, 2)
 fs.writeFileSync('dist/package.json', data)
 console.log('package.json.dist was copied to ./dist folder')

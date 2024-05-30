@@ -1,4 +1,4 @@
-import { isFrontEventTypeKey } from './event-types'
+import { isLinkEventTypeKey } from './event-types'
 
 describe('Event types tests', () => {
   test.each([
@@ -12,13 +12,13 @@ describe('Event types tests', () => {
     'transferPreviewError',
     'transferExecutionError'
   ])(
-    'isFrontEventTypeKey should return true if parameter is "%s"',
+    'isLinkEventTypeKey should return true if parameter is "%s"',
     eventType => {
-      expect(isFrontEventTypeKey(eventType)).toBe(true)
+      expect(isLinkEventTypeKey(eventType)).toBe(true)
     }
   )
 
-  test('isFrontEventTypeKey should return false if parameter is not event', () => {
-    expect(isFrontEventTypeKey('test')).toBe(false)
+  test('isLinkEventTypeKey should return false if parameter is not event', () => {
+    expect(isLinkEventTypeKey('test')).toBe(false)
   })
 })

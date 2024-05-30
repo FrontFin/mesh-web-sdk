@@ -2,32 +2,32 @@ import { addPopup, removePopup } from './popup'
 
 describe('Popup tests', () => {
   test('addPopup should add correct popup', () => {
-    addPopup('http://localhost/1')
+    const link = 'https://some.domain?link_style=eyJpciI6IDIsICJpbyI6IDAuOH0='
+    addPopup(link)
 
-    const stylesElement = document.getElementById('front-link-popup__styles')
+    const stylesElement = document.getElementById('mesh-link-popup__styles')
     expect(stylesElement).toBeTruthy()
+    expect(stylesElement).toMatchSnapshot()
 
-    const popupElement = document.getElementById('front-link-popup')
+    const popupElement = document.getElementById('mesh-link-popup')
     expect(popupElement).toBeTruthy()
 
-    const iframeElement = document.getElementById('front-link-popup__iframe')
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeTruthy()
-    expect(iframeElement?.attributes.getNamedItem('src')?.nodeValue).toBe(
-      'http://localhost/1'
-    )
+    expect(iframeElement?.attributes.getNamedItem('src')?.nodeValue).toBe(link)
   })
 
   test('addPopup when popup already added should replace popup', () => {
     addPopup('http://localhost/1')
     addPopup('http://localhost/2')
 
-    const stylesElement = document.getElementById('front-link-popup__styles')
+    const stylesElement = document.getElementById('mesh-link-popup__styles')
     expect(stylesElement).toBeTruthy()
 
-    const popupElement = document.getElementById('front-link-popup')
+    const popupElement = document.getElementById('mesh-link-popup')
     expect(popupElement).toBeTruthy()
 
-    const iframeElement = document.getElementById('front-link-popup__iframe')
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeTruthy()
     expect(iframeElement?.attributes.getNamedItem('src')?.nodeValue).toBe(
       'http://localhost/2'
@@ -38,13 +38,13 @@ describe('Popup tests', () => {
     addPopup('http://localhost/1')
     removePopup()
 
-    const stylesElement = document.getElementById('front-link-popup__styles')
+    const stylesElement = document.getElementById('mesh-link-popup__styles')
     expect(stylesElement).toBeFalsy()
 
-    const popupElement = document.getElementById('front-link-popup')
+    const popupElement = document.getElementById('mesh-link-popup')
     expect(popupElement).toBeFalsy()
 
-    const iframeElement = document.getElementById('front-link-popup__iframe')
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeFalsy()
   })
 })
