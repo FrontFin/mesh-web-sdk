@@ -8,26 +8,45 @@ import {
   LinkPayload
 } from './utils/types'
 import { addPopup, iframeId, removePopup } from './utils/popup'
-import { LinkEventType, isLinkEventTypeKey } from './utils/event-types'
+import {
+  LinkEventType,
+  isLinkEventTypeKey,
+  WalletBrowserEventType,
+  isWalletBrowserEventTypeKey
+} from './utils/event-types'
+import { sdkSpecs } from './utils/sdk-specs'
 import {
   connectToSpecificWallet,
-  signedMessage,
   walletBalance,
   sendTransactionFromSDK,
   switchChainFromSDK,
-  checkActiveAccounts,
-  checkActiveConnections
+  getWagmiCoreInjectedData,
+  sendNonNativeTransactionFromSDK,
+  disconnectAllAccounts
 } from './utils/wagmiCoreConnectorsUtils'
-import { type Connection } from '@wagmi/core'
 
 let currentOptions: LinkOptions | undefined
-let iframeUrlObject: URL | undefined
+const possibleOrigins = new Set<string>([
+  'https://web.meshconnect.com',
+  'https://web.getfront.com'
+])
 
 const iframeElement = () => {
   return document.getElementById(iframeId) as HTMLIFrameElement
 }
 
-async function eventsListener(
+function sendMessageToIframe(message: unknown) {
+  possibleOrigins.forEach(origin => {
+    try {
+      iframeElement().contentWindow?.postMessage(message, origin)
+    } catch (e) {
+      console.error('Mesh SDK: Failed to deliver message to the iframe')
+      console.error(e)
+    }
+  })
+}
+
+async function handleLinkEvent(
   event:
     | MessageEvent<{
         type: EventType
@@ -75,7 +94,7 @@ async function eventsListener(
     case 'close':
     case 'done': {
       const payload = event.data?.payload
-      currentOptions?.onExit?.(payload.errorMessage, payload)
+      currentOptions?.onExit?.(payload?.errorMessage, payload)
       removePopup()
       break
     }
@@ -96,129 +115,30 @@ async function eventsListener(
 
       break
     }
-
-    case 'integrationInjectedWalletSelected': {
-      const payload = event.data.payload
-      console.log('Integration selected:', payload.integrationName)
-      console.log('Integration type', payload.integrationType)
-      const result: Connection = await connectToSpecificWallet(
-        payload.integrationName
-      )
-      console.log('result', result)
-      if (result) {
-        console.log('Connected to wallet')
-      }
-      const txSigned = await signedMessage()
-      // Check if the connection was successful and accounts are available
-      if (
-        result &&
-        Array.isArray(result.accounts) &&
-        result.accounts.length > 0
-      ) {
-        console.log('currentOptions', currentOptions)
-        console.log('result accounts', result.accounts)
-        console.log('result chainId', result.chainId)
-        iframeElement().contentWindow?.postMessage(
-          {
-            type: 'SDKInjectedConnected',
-            payload: {
-              accounts: result.accounts,
-              chainId: result.chainId,
-              signedTxHash: txSigned
-            }
-          },
-          iframeUrlObject?.origin || 'https://web.meshconnect.com'
-        )
-
-        console.log('sent SDKInjectedConnected to iframe')
-      } else {
-        console.error('Failed to connect to wallet or no accounts found.')
-      }
-      // console.log('signedMessage', signedMessage)
-      // sign message only when connection is succesful and accounts available
-
-      break
-    }
-    case 'transferBalanceRequest': {
-      console.log('transferBalanceRequest', event.data)
-      const balance = await walletBalance(
-        event.data.payload.account,
-        event.data.payload.chainId
-      )
-      console.log('balance', balance)
-      break
-    }
-    case 'integrationChainSwitchRequest': {
-      const payload = event.data.payload
-      console.log('integrationChainSwitchRequestInSDK', payload)
-      const result = await switchChainFromSDK(payload.chainId)
-      console.log('switchChainFromSDK', result)
-      const activeAccounts = await checkActiveAccounts()
-      console.log('activeAccounts', activeAccounts)
-      const activeConnections = await checkActiveConnections()
-      console.log('activeConnections', activeConnections)
-      // TODO: send success message and handle if we fail
-      break
-    }
-    case 'transferInjectedRequest': {
-      const payload = event.data.payload
-      console.log('transferInjectedRequest', payload)
-      console.log('decimalPlaces', payload.decimalPlaces)
-      // TODO: make sure that we only handle this once we don't want to double send
-      const result = await sendTransactionFromSDK(
-        payload.toAddress,
-        payload.amount,
-        payload.decimalPlaces,
-        payload.chainId,
-        payload.account,
-        payload.connectorName,
-        currentOptions?.allInjectedCoreConnectorData || []
-      )
-      console.log('resultSendTransfer', result)
-      // TODO: wrap this in if result
-      iframeElement().contentWindow?.postMessage(
-        {
-          type: 'transferInjectedCompleted',
-          payload: result
-        },
-        iframeUrlObject?.origin || 'https://web.meshconnect.com'
-      )
-      break
-    }
     case 'loaded': {
+      sendMessageToIframe({
+        type: 'meshSDKSpecs',
+        payload: { ...sdkSpecs }
+      })
       if (currentOptions?.accessTokens) {
-        iframeElement().contentWindow?.postMessage(
-          { type: 'frontAccessTokens', payload: currentOptions.accessTokens },
-          iframeUrlObject?.origin || 'https://web.meshconnect.com'
-        )
+        sendMessageToIframe({
+          type: 'frontAccessTokens',
+          payload: currentOptions.accessTokens
+        })
       }
       if (currentOptions?.transferDestinationTokens) {
-        iframeElement().contentWindow?.postMessage(
-          {
-            type: 'frontTransferDestinationTokens',
-            payload: currentOptions.transferDestinationTokens
-          },
-          iframeUrlObject?.origin || 'https://web.meshconnect.com'
-        )
+        sendMessageToIframe({
+          type: 'frontTransferDestinationTokens',
+          payload: currentOptions.transferDestinationTokens
+        })
       }
-      if (currentOptions?.injectedCoreConnectors) {
-        console.log(
-          'injectedCoreConnectors',
-          currentOptions?.injectedCoreConnectors
-        )
-        // console.log(
-        //   'allInjectedCoreConnectorData',
-        //   currentOptions?.allInjectedCoreConnectorData
-        // )
-        iframeElement().contentWindow?.postMessage(
-          {
-            type: 'frontInjectedConnectors',
-            payload: currentOptions?.injectedCoreConnectors
-          },
-          iframeUrlObject?.origin || 'https://web.meshconnect.com'
-        )
+      const injectedConnectors = await getWagmiCoreInjectedData()
+      if (injectedConnectors) {
+        sendMessageToIframe({
+          type: 'SDKinjectedWagmiConnectorsData',
+          payload: injectedConnectors
+        })
       }
-
       currentOptions?.onEvent?.({ type: 'pageLoaded' })
       break
     }
@@ -231,6 +151,204 @@ async function eventsListener(
   }
 }
 
+async function handleWalletBrowserEvent(
+  event: MessageEvent<WalletBrowserEventType>
+) {
+  switch (event.data.type) {
+    case 'walletBrowserInjectedWalletSelected': {
+      const payload = event.data.payload
+      try {
+        const result = await connectToSpecificWallet(payload.integrationName)
+        sendMessageToIframe({
+          type: 'SDKinjectedConnected',
+          payload: {
+            accounts: result.accounts,
+            chainId: result.chainId,
+            signedTxHash: result.txSigned
+          }
+        })
+      } catch (error) {
+        sendMessageToIframe({
+          type: 'SDKinjectedDisconnected',
+          payload: {
+            error: error.message
+          }
+        })
+      }
+      break
+    }
+    case 'walletBrowserChainSwitchRequest': {
+      const payload = event.data.payload
+      try {
+        const result = await switchChainFromSDK(payload.chainId)
+        if (result instanceof Error) {
+          throw result
+        }
+        sendMessageToIframe({
+          type: 'SDKswitchChainSuccess',
+          payload: result
+        })
+      } catch (error) {
+        console.error('Error switching chain:', error)
+        sendMessageToIframe({
+          type: 'SDKswitchChainFailed',
+          payload: {
+            error: error.message
+          }
+        })
+      }
+      break
+    }
+    // not being used but may be used in the future
+    case 'walletBrowserTransferBalanceRequest': {
+      const payload = event.data.payload
+      const balance = await walletBalance(
+        payload.account,
+        event.data.payload.chainId
+      )
+      break
+    }
+    case 'walletBrowserNativeTransferRequest': {
+      const payload = event.data.payload
+      try {
+        const result = await sendTransactionFromSDK(
+          payload.toAddress,
+          payload.amount,
+          payload.decimalPlaces,
+          payload.chainId,
+          payload.account
+        )
+        if (result instanceof Error) {
+          throw result
+        }
+        sendMessageToIframe({
+          type: 'SDKnativeTransferCompleted',
+          payload: result
+        })
+      } catch (error) {
+        console.error('Error sending native transaction:', error)
+        sendMessageToIframe({
+          type: 'SDKnativeTransferCompleted',
+          payload: {
+            error: error.message
+          }
+        })
+      }
+      break
+    }
+    case 'walletBrowserNonNativeTransferRequest': {
+      const payload = event.data.payload
+      try {
+        const result = await sendNonNativeTransactionFromSDK(
+          payload.address,
+          JSON.parse(payload.abi),
+          payload.functionName,
+          payload.args
+        )
+        if (result instanceof Error) {
+          throw result
+        }
+        sendMessageToIframe({
+          type: 'SDKnonNativeTransferCompleted',
+          payload: result
+        })
+      } catch (error) {
+        console.error('Error sending non-native transaction:', error)
+        sendMessageToIframe({
+          type: 'SDKnonNativeTransferCompleted',
+          payload: {
+            error: error.message
+          }
+        })
+      }
+      break
+    }
+    case 'walletBrowserNativeSmartDeposit': {
+      const payload = event.data.payload
+      try {
+        const result = await sendNonNativeTransactionFromSDK(
+          payload.address,
+          JSON.parse(payload.abi),
+          payload.functionName,
+          payload.args,
+          payload.value
+        )
+        if (result instanceof Error) {
+          throw result
+        }
+        sendMessageToIframe({
+          type: 'SDKnativeSmartDepositCompleted',
+          payload: {
+            txHash: result
+          }
+        })
+      } catch (error) {
+        console.error('Error sending native sc transaction:', error)
+        sendMessageToIframe({
+          type: 'SDKnativeSmartDepositCompleted',
+          payload: {
+            error: error.message
+          }
+        })
+      }
+      break
+    }
+    case 'walletBrowserNonNativeSmartDeposit': {
+      const payload = event.data.payload
+      try {
+        const result = await sendNonNativeTransactionFromSDK(
+          payload.address,
+          JSON.parse(payload.abi),
+          payload.functionName,
+          payload.args
+        )
+        if (result) {
+          sendMessageToIframe({
+            type: 'SDKnonNativeSmartDepositCompleted',
+            payload: {
+              txHash: result
+            }
+          })
+        } else {
+          throw new Error('Transfer failed')
+        }
+      } catch (error) {
+        console.error('Error sending non-native sc transaction:', error)
+        sendMessageToIframe({
+          type: 'SDKnonNativeSmartDepositCompleted',
+          payload: {
+            error: error.message
+          }
+        })
+      }
+      break
+    }
+    case 'walletBrowserDisconnect': {
+      disconnectAllAccounts()
+      sendMessageToIframe({
+        type: 'SDKdisconnectSuccess'
+      })
+      break
+    }
+  }
+}
+
+async function eventsListener(
+  event: MessageEvent<
+    LinkEventType | WalletBrowserEventType | { type: EventType }
+  >
+) {
+  if (isLinkEventTypeKey(event.data.type)) {
+    await handleLinkEvent(event as MessageEvent<LinkEventType>)
+  } else if (isWalletBrowserEventTypeKey(event.data.type)) {
+    await handleWalletBrowserEvent(
+      event as MessageEvent<WalletBrowserEventType>
+    )
+  } else {
+    await handleLinkEvent(event as MessageEvent<{ type: EventType }>)
+  }
+}
+
 export const createLink = (options: LinkOptions): Link => {
   const openLink = async (linkToken: string) => {
     if (!linkToken) {
@@ -240,7 +358,10 @@ export const createLink = (options: LinkOptions): Link => {
 
     currentOptions = options
     const linkUrl = window.atob(linkToken)
-    iframeUrlObject = new URL(linkUrl)
+    const iframeUrlObject = new URL(linkUrl)
+    if (iframeUrlObject.origin) {
+      possibleOrigins.add(iframeUrlObject.origin)
+    }
 
     window.removeEventListener('message', eventsListener)
     addPopup(linkUrl)
@@ -251,6 +372,7 @@ export const createLink = (options: LinkOptions): Link => {
     removePopup()
     window.removeEventListener('message', eventsListener)
     options.onExit?.()
+    disconnectAllAccounts()
   }
 
   return {

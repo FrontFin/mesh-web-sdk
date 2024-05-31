@@ -1,12 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import { linkApiUrl, clientId, clientSecret } from '../utility/config'
 import { LinkComponent } from './Link'
-import {
-  LinkPayload,
-  TransferFinishedPayload,
-  WagmiProvider,
-  WagmiCoreProvider
-} from '@meshconnect/web-link-sdk'
+import { LinkPayload, TransferFinishedPayload } from '@meshconnect/web-link-sdk'
 import { FrontApi } from '@meshconnect/node-api'
 
 export const App: React.FC = () => {
@@ -27,9 +22,8 @@ export const App: React.FC = () => {
       }
     })
 
-    // this request should be performed from the backend side
     const response = await api.managedAccountAuthentication.v1LinktokenCreate({
-      userId: '7652B44F-9CDB-4519-AC82-4FA5500F7455' // insert your unique user identifier here
+      userId: '2b743d87-c11a-498d-94fb-08dc4769788d'
     })
 
     const data = response.data
@@ -59,12 +53,15 @@ export const App: React.FC = () => {
     const response = await api.managedAccountAuthentication.v1LinktokenCreate({
       userId: '7652B44F-9CDB-4519-AC82-4FA5500F7455', // insert your unique user identifier here
       transferOptions: {
-        amountInFiat: 0.001, // amount to transfer
+        amountInFiat: 0.01,
+        // flip when using smart deposit
+        //amountInFiat: 1.0,
+        // clientFee: 0.001,
         toAddresses: [
           {
-            symbol: 'USDC', // cryptocurrency to transfer
-            address: '0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6', // address to transfer
-            networkId: '7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12' // network id from /api/v1/transfers/managed/networks request
+            symbol: 'USDC',
+            address: '0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6',
+            networkId: '7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12'
           },
           // leaving in for test
           {
@@ -146,23 +143,23 @@ export const App: React.FC = () => {
           Transfer
         </button>
       </div>
-      <WagmiCoreProvider>
-        {/* or <WagmiProvider> */}
-        <LinkComponent
-          linkToken={linkToken}
-          onIntegrationConnected={(authData: LinkPayload) => {
-            setPayload(authData)
-            setLinkToken(null)
-          }}
-          onExit={err => {
-            setLinkToken(null)
-            setError(err || null)
-          }}
-          onTransferFinished={data => {
-            setTransferFinishedData(data)
-          }}
-        />
-      </WagmiCoreProvider>
+      {/* <WagmiCoreProvider> */}
+      {/* or <WagmiProvider> */}
+      <LinkComponent
+        linkToken={linkToken}
+        onIntegrationConnected={(authData: LinkPayload) => {
+          setPayload(authData)
+          setLinkToken(null)
+        }}
+        onExit={err => {
+          setLinkToken(null)
+          setError(err || null)
+        }}
+        onTransferFinished={data => {
+          setTransferFinishedData(data)
+        }}
+      />
+      {/* </WagmiCoreProvider> */}
     </div>
   )
 }

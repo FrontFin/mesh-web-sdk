@@ -1,6 +1,5 @@
 import type { BrokerType } from '@meshconnect/node-api'
 import { SessionSymmary, LinkEventType } from './event-types'
-import { type Connector } from '@wagmi/core'
 
 export type EventType =
   | 'brokerageAccountAccessToken'
@@ -8,7 +7,6 @@ export type EventType =
   | 'loaded'
   | 'oauthLinkOpen'
   | 'transferFinished'
-  | 'connectInjectedWallet'
 
 export interface Link {
   /**
@@ -62,7 +60,7 @@ export interface DelayedAuthPayload {
   brokerBrandInfo: BrandInfo
 }
 
-export interface TransferFinishedSuccessPayload {
+export interface TransferFinishedPayload {
   status: 'success'
   txId: string
   fromAddress: string
@@ -71,15 +69,6 @@ export interface TransferFinishedSuccessPayload {
   amount: number
   networkId: string
 }
-
-export interface TransferFinishedErrorPayload {
-  status: 'error'
-  errorMessage: string
-}
-
-export type TransferFinishedPayload =
-  | TransferFinishedSuccessPayload
-  | TransferFinishedErrorPayload
 
 export interface IntegrationAccessToken {
   accountId: string
@@ -137,24 +126,6 @@ export interface LinkOptions {
    * Can be used to initialize the crypto transfers flow as an alternative to the target addresses.
    */
   transferDestinationTokens?: IntegrationAccessToken[]
-
-  /**
-   * (Optional) An array of Wagmi injected connector data. React hook
-   * It should send this list directly to our iframe.
-   */
-  injectedConnectors?: WagmiInjectedConnectorData[]
-
-  /**
-   * (Optional) An array of Wagmi injected connector data. VanillaJS
-   * It should send this list directly to our iframe.
-   */
-  injectedCoreConnectors?: WagmiInjectedConnectorData[]
-
-  /**
-   * (Optional) An array of full Wagmi injected connector data. VanillaJS
-   * Use this connector data to reconnect during the transfer flow.
-   */
-  allInjectedCoreConnectorData?: Connector[]
 }
 
 export interface LinkStyle {

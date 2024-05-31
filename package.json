@@ -1,6 +1,6 @@
 {
   "name": "@meshconnect/mesh-b2b-sdk",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "Mesh Connect JS SDKs",
   "private": true,
   "type": "module",
@@ -31,6 +31,7 @@
     "lint:fix": "lerna run lint -- --fix",
     "start:demo": "cd examples/react-example && yarn start",
     "updateApi": "cd packages/node-api && yarn updateApi",
-    "publish:npm": "lerna run publish:npm"
+    "publish:npm": "lerna run publish:npm",
+    "postinstall": "cd packages/link && yarn updateVersion"
   }
 }

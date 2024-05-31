@@ -1,7 +1,4 @@
 export * from './utils/types'
 export * from './utils/event-types'
-export * from './utils/wagmiConnectorsUtils'
-export * from './providers/WagmiProvider'
-export * from './providers/WagmiCoreProvider'
 export * from './utils/wagmiCoreConnectorsUtils'
 export { createLink } from './Link'
