@@ -1,5 +1,6 @@
 import type { BrokerType } from '@meshconnect/node-api'
 import { SessionSymmary, LinkEventType } from './event-types'
+import { Hash, Chain } from 'viem'
 
 export type EventType =
   | 'brokerageAccountAccessToken'
@@ -85,6 +86,27 @@ export interface WagmiInjectedConnectorData {
   icon?: string
   uid: string
 }
+
+export interface ConnectReturnTypeAndTxHash {
+  accounts: string[]
+  chainId: number
+  txSigned: Hash
+}
+
+export interface IncomingConfig {
+  chains: Chain[]
+  transports: Record<number, string | string[]>
+}
+
+export interface AbiItem {
+  name: string
+  type: string
+  inputs: { name: string; type: string }[]
+  outputs?: { name: string; type: string }[]
+  stateMutability?: string
+}
+
+export type Abi = AbiItem[]
 
 export interface LinkOptions {
   /**

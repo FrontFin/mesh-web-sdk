@@ -24,7 +24,7 @@ export const App: React.FC = () => {
 
     // this request should be performed from the backend side
     const response = await api.managedAccountAuthentication.v1LinktokenCreate({
-      userId: '2b743d87-c11a-498d-94fb-08dc4769788d'
+      userId: '7652B44F-9CDB-4519-AC82-4FA5500F7455' // insert your unique user identifier here
     })
 
     const data = response.data
@@ -54,21 +54,12 @@ export const App: React.FC = () => {
     const response = await api.managedAccountAuthentication.v1LinktokenCreate({
       userId: '7652B44F-9CDB-4519-AC82-4FA5500F7455', // insert your unique user identifier here
       transferOptions: {
-        amountInFiat: 0.01,
-        // flip when using smart deposit
-        //amountInFiat: 1.0,
-        // clientFee: 0.001,
+        amountInFiat: 10, // amount to transfer
         toAddresses: [
           {
-            symbol: 'USDC',
-            address: '0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6',
-            networkId: '7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12'
-          },
-          // leaving in for test
-          {
-            symbol: 'AVAX',
-            address: '0xF389820c6b1A034BD4FfF178aC7A7d95e376A27a',
-            networkId: 'bad16371-c22a-4bf4-a311-274d046cd760'
+            symbol: 'USDC', // cryptocurrency to transfer
+            address: '0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6', // address to transfer
+            networkId: '7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12' // network id from /api/v1/transfers/managed/networks request
           }
         ]
       }
@@ -144,8 +135,7 @@ export const App: React.FC = () => {
           Transfer
         </button>
       </div>
-      {/* <WagmiCoreProvider> */}
-      {/* or <WagmiProvider> */}
+
       <LinkComponent
         linkToken={linkToken}
         onIntegrationConnected={(authData: LinkPayload) => {
@@ -160,7 +150,6 @@ export const App: React.FC = () => {
           setTransferFinishedData(data)
         }}
       />
-      {/* </WagmiCoreProvider> */}
     </div>
   )
 }

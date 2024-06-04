@@ -8,16 +8,14 @@ import {
   LinkPayload
 } from './utils/types'
 import { addPopup, iframeId, removePopup } from './utils/popup'
+import { LinkEventType, isLinkEventTypeKey } from './utils/event-types'
 import {
-  LinkEventType,
-  isLinkEventTypeKey,
   WalletBrowserEventType,
   isWalletBrowserEventTypeKey
-} from './utils/event-types'
+} from './utils/wallet-browser-event-types'
 import { sdkSpecs } from './utils/sdk-specs'
 import {
   connectToSpecificWallet,
-  walletBalance,
   sendTransactionFromSDK,
   switchChainFromSDK,
   getWagmiCoreInjectedData,
@@ -133,7 +131,6 @@ async function handleLinkEvent(
         })
       }
       const injectedConnectors = await getWagmiCoreInjectedData()
-      console.log('injectedConnectors', injectedConnectors)
       if (injectedConnectors) {
         sendMessageToIframe({
           type: 'SDKinjectedWagmiConnectorsData',
@@ -160,8 +157,11 @@ async function handleWalletBrowserEvent(
       const payload = event.data.payload
       try {
         const result = await connectToSpecificWallet(payload.integrationName)
+        if (result instanceof Error) {
+          throw result
+        }
         sendMessageToIframe({
-          type: 'SDKinjectedConnected',
+          type: 'SDKinjectedConnectionCompleted',
           payload: {
             accounts: result.accounts,
             chainId: result.chainId,
@@ -170,7 +170,7 @@ async function handleWalletBrowserEvent(
         })
       } catch (error) {
         sendMessageToIframe({
-          type: 'SDKinjectedDisconnected',
+          type: 'SDKinjectedConnectionCompleted',
           payload: {
             error: error.message
           }
@@ -186,13 +186,12 @@ async function handleWalletBrowserEvent(
           throw result
         }
         sendMessageToIframe({
-          type: 'SDKswitchChainSuccess',
+          type: 'SDKswitchChainCompleted',
           payload: result
         })
       } catch (error) {
-        console.error('Error switching chain:', error)
         sendMessageToIframe({
-          type: 'SDKswitchChainFailed',
+          type: 'SDKswitchChainCompleted',
           payload: {
             error: error.message
           }
@@ -200,8 +199,11 @@ async function handleWalletBrowserEvent(
       }
       break
     }
-    // not being used but may be used in the future
-    case 'walletBrowserTransferBalanceRequest': {
+    /**
+     *
+     *  not being used but may be used in the future
+     *
+     * case 'walletBrowserTransferBalanceRequest': {
       const payload = event.data.payload
       const balance = await walletBalance(
         payload.account,
@@ -209,6 +211,7 @@ async function handleWalletBrowserEvent(
       )
       break
     }
+     */
     case 'walletBrowserNativeTransferRequest': {
       const payload = event.data.payload
       try {
@@ -227,7 +230,6 @@ async function handleWalletBrowserEvent(
           payload: result
         })
       } catch (error) {
-        console.error('Error sending native transaction:', error)
         sendMessageToIframe({
           type: 'SDKnativeTransferCompleted',
           payload: {
@@ -254,7 +256,6 @@ async function handleWalletBrowserEvent(
           payload: result
         })
       } catch (error) {
-        console.error('Error sending non-native transaction:', error)
         sendMessageToIframe({
           type: 'SDKnonNativeTransferCompleted',
           payload: {
@@ -284,7 +285,6 @@ async function handleWalletBrowserEvent(
           }
         })
       } catch (error) {
-        console.error('Error sending native sc transaction:', error)
         sendMessageToIframe({
           type: 'SDKnativeSmartDepositCompleted',
           payload: {
@@ -314,7 +314,6 @@ async function handleWalletBrowserEvent(
           throw new Error('Transfer failed')
         }
       } catch (error) {
-        console.error('Error sending non-native sc transaction:', error)
         sendMessageToIframe({
           type: 'SDKnonNativeSmartDepositCompleted',
           payload: {

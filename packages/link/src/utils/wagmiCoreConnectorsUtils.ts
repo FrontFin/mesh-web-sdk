@@ -2,7 +2,6 @@ import {
   getConnectors,
   connect,
   disconnect,
-  getConnections,
   getAccount,
   signMessage,
   getBalance,
@@ -12,10 +11,12 @@ import {
   writeContract,
   createConfig,
   http,
+  fallback,
   type Connector,
   type GetAccountReturnType,
   type Config,
   type GetBalanceReturnType,
+  type Transport,
   BaseError,
   ChainNotConfiguredError,
   ConnectorAccountNotFoundError,
@@ -27,34 +28,43 @@ import {
 } from '@wagmi/core'
 
 import { injected } from '@wagmi/connectors'
-import { WagmiInjectedConnectorData } from './types'
+import {
+  WagmiInjectedConnectorData,
+  ConnectReturnTypeAndTxHash,
+  IncomingConfig,
+  Abi
+} from './types'
 import { parseUnits, Hash, Chain } from 'viem'
 
-// setting up config is necessary for the injected connector to work
-// handle this outside of the walletBrowserListener
-let dynamicConfig: Config | null = null
 let resolveConfigReady: (value: Config | PromiseLike<Config>) => void
 
 const configReady = new Promise<Config>(resolve => {
   resolveConfigReady = resolve
 })
 
-const setConfig = (config: Config) => {
+const setConfig = (config: IncomingConfig) => {
   try {
-    const transports = Object.fromEntries(
-      Object.entries(config.transports).map(([chainId, url]) => {
-        return [chainId, http(url)]
-      })
-    )
+    const transports: Record<number, Transport> = {}
 
-    const reconstructedConfig: Config = {
-      chains: config.chains,
+    for (const chainId in config.transports) {
+      const urls = config.transports[chainId]
+      if (Array.isArray(urls)) {
+        // If the URL is an array, create a fallback transport with multiple transports
+        transports[chainId] = fallback(urls.map(url => http(url)))
+      } else {
+        // If the URL is a string, create a single HTTP transport
+        transports[chainId] = http(urls)
+      }
+    }
+    const chainsTuple = [...config.chains] as [Chain, ...Chain[]]
+
+    const dynamicConfig = createConfig({
+      chains: chainsTuple,
       multiInjectedProviderDiscovery: true,
       transports: transports,
       connectors: [injected()]
-    }
+    })
 
-    dynamicConfig = createConfig(reconstructedConfig)
     resolveConfigReady(dynamicConfig)
   } catch (error) {
     console.error('Error setting configuration:', error)
@@ -64,7 +74,7 @@ const setConfig = (config: Config) => {
 window.addEventListener('message', event => {
   if (event.data.type === 'walletBrowserConfigInitialize') {
     try {
-      const parsedConfig = JSON.parse(event.data.payload)
+      const parsedConfig = JSON.parse(event.data.payload) as IncomingConfig
       setConfig(parsedConfig)
     } catch (error) {
       console.error('Error parsing configuration:', error)
@@ -94,11 +104,6 @@ export const getWagmiCoreInjectedData = async (): Promise<
   })
 }
 
-type ConnectReturnTypeAndTxHash = {
-  accounts: string[]
-  chainId: number
-  txSigned: Hash
-}
 export const connectToSpecificWallet = async (
   walletName: string
 ): Promise<ConnectReturnTypeAndTxHash | Error> => {
@@ -196,9 +201,9 @@ const formatAddress = (address: string) =>
 
 export const sendNonNativeTransactionFromSDK = async (
   address: string,
-  abi: any,
+  abi: Abi,
   functionName: string,
-  args: any[],
+  args: any[], // eslint-disable-line @typescript-eslint/no-explicit-any
   value?: bigint
 ): Promise<Hash | Error> => {
   return await withWagmiErrorHandling(async () => {
