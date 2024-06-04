@@ -133,6 +133,7 @@ async function handleLinkEvent(
         })
       }
       const injectedConnectors = await getWagmiCoreInjectedData()
+      console.log('injectedConnectors', injectedConnectors)
       if (injectedConnectors) {
         sendMessageToIframe({
           type: 'SDKinjectedWagmiConnectorsData',
@@ -338,9 +339,7 @@ async function eventsListener(
     LinkEventType | WalletBrowserEventType | { type: EventType }
   >
 ) {
-  if (isLinkEventTypeKey(event.data.type)) {
-    await handleLinkEvent(event as MessageEvent<LinkEventType>)
-  } else if (isWalletBrowserEventTypeKey(event.data.type)) {
+  if (isWalletBrowserEventTypeKey(event.data.type)) {
     await handleWalletBrowserEvent(
       event as MessageEvent<WalletBrowserEventType>
     )

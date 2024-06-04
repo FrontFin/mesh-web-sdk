@@ -22,6 +22,7 @@ export const App: React.FC = () => {
       }
     })
 
+    // this request should be performed from the backend side
     const response = await api.managedAccountAuthentication.v1LinktokenCreate({
       userId: '2b743d87-c11a-498d-94fb-08dc4769788d'
     })
