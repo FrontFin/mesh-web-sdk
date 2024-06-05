@@ -15,7 +15,7 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit --skipLibCheck"
   },
   "browserslist": {
     "production": [
@@ -40,7 +40,6 @@
     "eslint-plugin-react": "^7.23.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "prettier": "^2.2.1",
-    "typescript": "^4.6.4",
     "vite": "^5.2.11"
   }
 }
