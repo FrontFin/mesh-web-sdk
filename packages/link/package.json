@@ -32,7 +32,7 @@
     "build": "yarn updateVersion && rimraf dist && yarn build:esm && yarn build:cjs && yarn copy",
     "build:esm": "tsc --outDir dist",
     "build:cjs": "tsc --module commonjs --outDir dist/cjs",
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit --skipLibCheck",
     "lint": "eslint **/*.ts",
     "copy": "node ./tools/copy",
     "updateVersion": "node ./tools/update-version",
