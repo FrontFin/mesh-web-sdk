@@ -169,12 +169,7 @@ async function handleWalletBrowserEvent(
           }
         })
       } catch (error) {
-        sendMessageToIframe({
-          type: 'SDKinjectedConnectionCompleted',
-          payload: {
-            error: error.message
-          }
-        })
+        handleErrorAndSendMessage(error, 'SDKinjectedConnectionCompleted')
       }
       break
     }
@@ -190,28 +185,10 @@ async function handleWalletBrowserEvent(
           payload: result
         })
       } catch (error) {
-        sendMessageToIframe({
-          type: 'SDKswitchChainCompleted',
-          payload: {
-            error: error.message
-          }
-        })
+        handleErrorAndSendMessage(error, 'SDKswitchChainCompleted')
       }
       break
     }
-    /**
-     *
-     *  not being used but may be used in the future
-     *
-     * case 'walletBrowserTransferBalanceRequest': {
-      const payload = event.data.payload
-      const balance = await walletBalance(
-        payload.account,
-        event.data.payload.chainId
-      )
-      break
-    }
-     */
     case 'walletBrowserNativeTransferRequest': {
       const payload = event.data.payload
       try {
@@ -230,12 +207,7 @@ async function handleWalletBrowserEvent(
           payload: result
         })
       } catch (error) {
-        sendMessageToIframe({
-          type: 'SDKnativeTransferCompleted',
-          payload: {
-            error: error.message
-          }
-        })
+        handleErrorAndSendMessage(error, 'SDKnativeTransferCompleted')
       }
       break
     }
@@ -256,12 +228,7 @@ async function handleWalletBrowserEvent(
           payload: result
         })
       } catch (error) {
-        sendMessageToIframe({
-          type: 'SDKnonNativeTransferCompleted',
-          payload: {
-            error: error.message
-          }
-        })
+        handleErrorAndSendMessage(error, 'SDKnonNativeTransferCompleted')
       }
       break
     }
@@ -285,12 +252,7 @@ async function handleWalletBrowserEvent(
           }
         })
       } catch (error) {
-        sendMessageToIframe({
-          type: 'SDKnativeSmartDepositCompleted',
-          payload: {
-            error: error.message
-          }
-        })
+        handleErrorAndSendMessage(error, 'SDKnativeSmartDepositCompleted')
       }
       break
     }
@@ -314,12 +276,7 @@ async function handleWalletBrowserEvent(
           throw new Error('Transfer failed')
         }
       } catch (error) {
-        sendMessageToIframe({
-          type: 'SDKnonNativeSmartDepositCompleted',
-          payload: {
-            error: error.message
-          }
-        })
+        handleErrorAndSendMessage(error, 'SDKnonNativeSmartDepositCompleted')
       }
       break
     }
@@ -345,6 +302,21 @@ async function eventsListener(
   } else {
     await handleLinkEvent(event as MessageEvent<{ type: EventType }>)
   }
+}
+
+function handleErrorAndSendMessage(error: unknown, messageType: string) {
+  let errorMessage = 'An unexpected error occurred'
+  if (error instanceof Error) {
+    errorMessage = error.message
+  } else {
+    console.error('An unexpected error occurred', error)
+  }
+  sendMessageToIframe({
+    type: messageType,
+    payload: {
+      error: errorMessage
+    }
+  })
 }
 
 export const createLink = (options: LinkOptions): Link => {
