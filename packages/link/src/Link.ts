@@ -308,8 +308,6 @@ function handleErrorAndSendMessage(error: unknown, messageType: string) {
   let errorMessage = 'An unexpected error occurred'
   if (error instanceof Error) {
     errorMessage = error.message
-  } else {
-    console.error('An unexpected error occurred', error)
   }
   sendMessageToIframe({
     type: messageType,

@@ -252,7 +252,11 @@ async function withWagmiErrorHandling<T>(
     if (error instanceof BaseError) {
       return handleWagmiError(error)
     } else {
-      throw new Error('An unexpected error has occurred')
+      if (error instanceof Error) {
+        throw new Error(error.message)
+      } else {
+        throw new Error('An unexpected error has occurred')
+      }
     }
   }
 }
@@ -276,58 +280,53 @@ const handleWagmiError = (error: unknown): Error => {
     return handleBaseError(error)
   } else {
     // Handle unknown error types
-    console.error('Unhandled Wagmi Error:', error)
-    throw new Error('An unexpected error occurred')
+    if (error instanceof Error) {
+      throw new Error(error.message)
+    } else {
+      throw new Error('An unexpected error has occurred')
+    }
   }
 }
 
 // All errors extend base error
 const handleBaseError = (error: BaseError): Error => {
-  console.error('Base Error:', error.message)
   throw new Error(error.message)
 }
 
 const handleChainNotConfiguredError = (
   error: ChainNotConfiguredError
 ): Error => {
-  console.error('Chain Not Configured Error:', error.message)
   throw new Error(`Chain not configured: ${error.message}`)
 }
 
 const handleConnectorAccountNotFoundError = (
   error: ConnectorAccountNotFoundError
 ): Error => {
-  console.error('Connector Account Not Found Error:', error.message)
   throw new Error(`Connector account not found: ${error.message}`)
 }
 
 const handleConnectorAlreadyConnectedError = (
   error: ConnectorAlreadyConnectedError
 ): Error => {
-  console.error('Connector Already Connected Error:', error.message)
   throw new Error(`Connector already connected: ${error.message}`)
 }
 
 const handleConnectorNotConnectedError = (
   error: ConnectorNotConnectedError
 ): Error => {
-  console.error('Connector Not Connected Error:', error.message)
   throw new Error(`Connector not connected: ${error.message}`)
 }
 
 const handleConnectorNotFoundError = (error: ConnectorNotFoundError): Error => {
-  console.error('Connector Not Found Error:', error.message)
   throw new Error(`Connector not found: ${error.message}`)
 }
 
 const handleProviderNotFoundError = (error: ProviderNotFoundError): Error => {
-  console.error('Provider Not Found Error:', error.message)
   throw new Error(`Provider not found: ${error.message}`)
 }
 
 const handleSwitchChainNotSupportedError = (
   error: SwitchChainNotSupportedError
 ): Error => {
-  console.error('Switch Chain Not Supported Error:', error.message)
   throw new Error(`Switch chain not supported: ${error.message}`)
 }
