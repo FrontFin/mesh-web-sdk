@@ -87,9 +87,7 @@ export interface WagmiInjectedConnectorData {
   uid: string
 }
 
-export interface ConnectReturnTypeAndTxHash {
-  accounts: string[]
-  chainId: number
+export interface WalletConnectSignedTxHash {
   txSigned: Hash
 }
 

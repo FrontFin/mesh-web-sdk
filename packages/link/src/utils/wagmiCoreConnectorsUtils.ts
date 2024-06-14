@@ -13,10 +13,10 @@ import {
   http,
   fallback,
   type Connector,
-  type GetAccountReturnType,
   type Config,
   type GetBalanceReturnType,
   type Transport,
+  type ConnectReturnType,
   BaseError,
   ChainNotConfiguredError,
   ConnectorAccountNotFoundError,
@@ -28,12 +28,7 @@ import {
 } from '@wagmi/core'
 
 import { injected } from '@wagmi/connectors'
-import {
-  WagmiInjectedConnectorData,
-  ConnectReturnTypeAndTxHash,
-  IncomingConfig,
-  Abi
-} from './types'
+import { WagmiInjectedConnectorData, IncomingConfig, Abi } from './types'
 import { parseUnits, Hash, Chain } from 'viem'
 
 let resolveConfigReady: (value: Config | PromiseLike<Config>) => void
@@ -106,7 +101,7 @@ export const getWagmiCoreInjectedData = async (): Promise<
 
 export const connectToSpecificWallet = async (
   walletName: string
-): Promise<ConnectReturnTypeAndTxHash | Error> => {
+): Promise<ConnectReturnType | Error> => {
   return withWagmiErrorHandling(async () => {
     const config = await configPromise
     const connectors = getConnectors(config)
@@ -124,28 +119,20 @@ export const connectToSpecificWallet = async (
 
     const result = await connect(config, { connector: selectedConnector })
 
-    const accountInfo = await getAccount(config)
-    const txSigned = await signedMessage(config, accountInfo)
-
     return {
       accounts: [...result.accounts],
-      chainId: result.chainId,
-      txSigned: txSigned as `0x${string}`
+      chainId: result.chainId
     }
   })
 }
 
 export const signedMessage = async (
-  config: Config,
-  accountInfo: GetAccountReturnType
+  address: `0x${string}`
 ): Promise<Hash | Error> => {
-  if (!accountInfo.address) {
-    return new Error('Address not found')
-  }
-
   return withWagmiErrorHandling(async () => {
+    const config = await configPromise
     const signedMessage = await signMessage(config, {
-      account: accountInfo.address,
+      account: address,
       message: 'Sign to verify ownership of wallet'
     })
 
@@ -218,6 +205,7 @@ export const sendNonNativeTransactionFromSDK = async (
       connector
     })
     const result = await writeContract(config, request)
+
     return result
   })
 }
@@ -252,11 +240,7 @@ async function withWagmiErrorHandling<T>(
     if (error instanceof BaseError) {
       return handleWagmiError(error)
     } else {
-      if (error instanceof Error) {
-        throw new Error(error.message)
-      } else {
-        throw new Error('An unexpected error has occurred')
-      }
+      throw error
     }
   }
 }
@@ -279,12 +263,7 @@ const handleWagmiError = (error: unknown): Error => {
   } else if (error instanceof BaseError) {
     return handleBaseError(error)
   } else {
-    // Handle unknown error types
-    if (error instanceof Error) {
-      throw new Error(error.message)
-    } else {
-      throw new Error('An unexpected error has occurred')
-    }
+    throw error
   }
 }
 

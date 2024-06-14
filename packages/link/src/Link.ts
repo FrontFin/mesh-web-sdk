@@ -16,6 +16,7 @@ import {
 import { sdkSpecs } from './utils/sdk-specs'
 import {
   connectToSpecificWallet,
+  signedMessage,
   sendTransactionFromSDK,
   switchChainFromSDK,
   getWagmiCoreInjectedData,
@@ -164,12 +165,30 @@ async function handleWalletBrowserEvent(
           type: 'SDKinjectedConnectionCompleted',
           payload: {
             accounts: result.accounts,
-            chainId: result.chainId,
-            signedTxHash: result.txSigned
+            chainId: result.chainId
           }
         })
       } catch (error) {
-        handleErrorAndSendMessage(error, 'SDKinjectedConnectionCompleted')
+        handleErrorAndSendMessage(
+          error as Error,
+          'SDKinjectedConnectionCompleted'
+        )
+      }
+      break
+    }
+    case 'walletBrowserSignRequest': {
+      const payload = event.data.payload
+      try {
+        const result = await signedMessage(payload.address)
+        if (result instanceof Error) {
+          throw result
+        }
+        sendMessageToIframe({
+          type: 'SDKsignRequestCompleted',
+          payload: result
+        })
+      } catch (error) {
+        handleErrorAndSendMessage(error as Error, 'SDKsignRequestCompleted')
       }
       break
     }
@@ -185,7 +204,7 @@ async function handleWalletBrowserEvent(
           payload: result
         })
       } catch (error) {
-        handleErrorAndSendMessage(error, 'SDKswitchChainCompleted')
+        handleErrorAndSendMessage(error as Error, 'SDKswitchChainCompleted')
       }
       break
     }
@@ -207,7 +226,7 @@ async function handleWalletBrowserEvent(
           payload: result
         })
       } catch (error) {
-        handleErrorAndSendMessage(error, 'SDKnativeTransferCompleted')
+        handleErrorAndSendMessage(error as Error, 'SDKnativeTransferCompleted')
       }
       break
     }
@@ -228,7 +247,10 @@ async function handleWalletBrowserEvent(
           payload: result
         })
       } catch (error) {
-        handleErrorAndSendMessage(error, 'SDKnonNativeTransferCompleted')
+        handleErrorAndSendMessage(
+          error as Error,
+          'SDKnonNativeTransferCompleted'
+        )
       }
       break
     }
@@ -252,7 +274,10 @@ async function handleWalletBrowserEvent(
           }
         })
       } catch (error) {
-        handleErrorAndSendMessage(error, 'SDKnativeSmartDepositCompleted')
+        handleErrorAndSendMessage(
+          error as Error,
+          'SDKnativeSmartDepositCompleted'
+        )
       }
       break
     }
@@ -276,7 +301,10 @@ async function handleWalletBrowserEvent(
           throw new Error('Transfer failed')
         }
       } catch (error) {
-        handleErrorAndSendMessage(error, 'SDKnonNativeSmartDepositCompleted')
+        handleErrorAndSendMessage(
+          error as Error,
+          'SDKnonNativeSmartDepositCompleted'
+        )
       }
       break
     }
@@ -304,15 +332,11 @@ async function eventsListener(
   }
 }
 
-function handleErrorAndSendMessage(error: unknown, messageType: string) {
-  let errorMessage = 'An unexpected error occurred'
-  if (error instanceof Error) {
-    errorMessage = error.message
-  }
+function handleErrorAndSendMessage(error: Error, messageType: string) {
   sendMessageToIframe({
     type: messageType,
     payload: {
-      error: errorMessage
+      error: error
     }
   })
 }
