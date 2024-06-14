@@ -16,6 +16,7 @@ import {
 import { sdkSpecs } from './utils/sdk-specs'
 import {
   connectToSpecificWallet,
+  signedMessage,
   sendTransactionFromSDK,
   switchChainFromSDK,
   getWagmiCoreInjectedData,
@@ -26,7 +27,8 @@ import {
 let currentOptions: LinkOptions | undefined
 const possibleOrigins = new Set<string>([
   'https://web.meshconnect.com',
-  'https://web.getfront.com'
+  'https://web.getfront.com',
+  'https://localhost:3006'
 ])
 
 const iframeElement = () => {
@@ -164,12 +166,27 @@ async function handleWalletBrowserEvent(
           type: 'SDKinjectedConnectionCompleted',
           payload: {
             accounts: result.accounts,
-            chainId: result.chainId,
-            signedTxHash: result.txSigned
+            chainId: result.chainId
           }
         })
       } catch (error) {
         handleErrorAndSendMessage(error, 'SDKinjectedConnectionCompleted')
+      }
+      break
+    }
+    case 'walletBrowserSignRequest': {
+      const payload = event.data.payload
+      try {
+        const result = await signedMessage(payload.address)
+        if (result instanceof Error) {
+          throw result
+        }
+        sendMessageToIframe({
+          type: 'SDKsignRequestCompleted',
+          payload: result
+        })
+      } catch (error) {
+        handleErrorAndSendMessage(error, 'SDKsignRequestCompleted')
       }
       break
     }
@@ -305,10 +322,8 @@ async function eventsListener(
 }
 
 function handleErrorAndSendMessage(error: unknown, messageType: string) {
-  let errorMessage = 'An unexpected error occurred'
-  if (error instanceof Error) {
-    errorMessage = error.message
-  }
+  const errorMessage =
+    error instanceof Error ? error.message : 'Unexpected Error please try again'
   sendMessageToIframe({
     type: messageType,
     payload: {

@@ -1,5 +1,6 @@
 export type WalletBrowserEventType =
   | WalletBrowserInjectedWalletSelected
+  | WalletBrowserSignRequest
   | WalletBrowserChainSwitchRequest
   | WalletBrowserTransferBalanceRequest
   | WalletBrowserNativeTransferRequest
@@ -10,6 +11,7 @@ export type WalletBrowserEventType =
 
 const WALLET_BROWSER_EVENT_TYPE_KEYS = [
   'walletBrowserInjectedWalletSelected',
+  'walletBrowserSignRequest',
   'walletBrowserChainSwitchRequest',
   'walletBrowserTransferBalanceRequest',
   'walletBrowserNativeTransferRequest',
@@ -39,6 +41,13 @@ export interface WalletBrowserInjectedWalletSelected
   type: 'walletBrowserInjectedWalletSelected'
   payload: {
     integrationName: string
+  }
+}
+
+export interface WalletBrowserSignRequest extends WalletBrowserEventBase {
+  type: 'walletBrowserSignRequest'
+  payload: {
+    address: `0x${string}`
   }
 }
 
