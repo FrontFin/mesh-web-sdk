@@ -1,6 +1,6 @@
 {
   "name": "@meshconnect/web-link-sdk",
-  "version": "2.1.0-rc.4",
+  "version": "2.1.0",
   "description": "A client-side JS library for integrating with Mesh Connect",
   "main": "./src/index.ts",
   "module": "./src/index.ts",
@@ -38,7 +38,7 @@
     "lint": "eslint **/*.ts",
     "copy": "node ./tools/copy",
     "updateVersion": "node ./tools/update-version",
-    "publish:npm": "yarn build && cd dist && yarn publish --access public --tag rc",
+    "publish:npm": "yarn build && cd dist && yarn publish --access public",
     "test": "jest",
     "test:cov": "jest --ci --coverage"
   },
