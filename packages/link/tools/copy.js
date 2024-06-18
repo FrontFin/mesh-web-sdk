@@ -8,8 +8,9 @@ delete packageModel.types
 delete packageModel.scripts
 delete packageModel.type
 
-packageModel.main = './cjs/index.js'
+packageModel.exports = './index.js'
 packageModel.module = './index.js'
+packageModel.main = './index.js'
 packageModel.types = './index.d.ts'
 
 const versionFromNodeApi = fs.readFileSync('../node-api/package.json')

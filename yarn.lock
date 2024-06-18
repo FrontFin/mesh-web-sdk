@@ -1612,9 +1612,9 @@
     "@lit-labs/ssr-dom-shim" "^1.0.0"
 
 "@meshconnect/web-link-sdk@*":
-  version "2.0.6"
-  resolved "https://registry.yarnpkg.com/@meshconnect/web-link-sdk/-/web-link-sdk-2.0.6.tgz#60a1cc528681d9e40754f1d96b602de5bd61815e"
-  integrity sha512-js8ZzXmFBXXj733PkeRleD3fAUPG2rRY4uzeO8rZ3Cym2iShWGA09eM1R4+hoxK9XVr9O3ycjuBAJasFYkWCRw==
+  version "2.1.1"
+  resolved "https://registry.yarnpkg.com/@meshconnect/web-link-sdk/-/web-link-sdk-2.1.1.tgz#4d7c01afb8afc171d351d1d7f3660f1c2733638f"
+  integrity sha512-GldBwju1kV7x5dcaTG4WpMM7v+npp5jDFRplVN1cwtdhZad0DiR23W181OFLwYGil6BJLScPZj+bOMQ6HuvXcw==
   dependencies:
     "@meshconnect/node-api" "^2.0.5"
 
