@@ -15,7 +15,7 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
-    "typecheck": "tsc --noEmit --skipLibCheck"
+    "typecheck": "tsc --noEmit"
   },
   "browserslist": {
     "production": [
@@ -30,6 +30,8 @@
     ]
   },
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.21.0",
+    "@typescript-eslint/parser": "^4.21.0",
     "@vitejs/plugin-react": "^4.2.1",
     "eslint": "^7.23.0",
     "eslint-config-prettier": "^8.1.0",
@@ -38,6 +40,7 @@
     "eslint-plugin-react": "^7.23.1",
     "eslint-plugin-react-hooks": "^4.2.0",
     "prettier": "^2.2.1",
+    "typescript": "^4.6.4",
     "vite": "^5.2.11"
   }
 }
