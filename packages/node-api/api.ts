@@ -82,7 +82,7 @@ export interface AssetPaginationResponseApiResult {
 
 export type AssetType = 'equity' | 'cryptocurrency'
 
-export type AuthFlowStep = 'loginPassword' | 'mfaFlow' | 'faceVerification'
+export type AuthFlowStep = 'loginPassword' | 'mfaFlow' | 'faceVerification' | 'createAPIKey'
 
 export interface AuthenticationFieldDescription {
   /** Name of the field, as expected from the API */
@@ -286,6 +286,8 @@ export interface B2BBrokerAuthRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   phone?: string | null
   username?: string | null
   password?: string | null
@@ -293,6 +295,7 @@ export interface B2BBrokerAuthRequest {
   countryInfo?: CountryInfo | null
   challengeId?: string | null
   challengeCode?: string | null
+  challengeType?: string | null
   /** Used to provide answers to security questions */
   challengeAnswer?: string | null
   mfaCode?: string | null
@@ -303,6 +306,21 @@ export interface B2BBrokerAuthRequest {
   authToken?: string | null
   redirectLink?: string | null
   confirmationEmail?: string | null
+  /**
+   * Indicates whether the sensitive fields in this request are encrypted.
+   * When set to true, the following fields should be encrypted using Base64 encoding:
+   * - Username
+   * - Password
+   * - Phone
+   * - TradePin
+   * - ChallengeAnswer
+   * - MfaCode
+   * - DeviceInfo
+   * - ConfirmationEmail
+   *
+   * Base64 encoding is used to encode these fields into a format that can be safely transmitted and stored.
+   */
+  isSensitiveFieldsEncrypted?: boolean
 }
 
 export interface B2BBrokerAuthResponse {
@@ -320,6 +338,8 @@ export interface B2BBrokerAuthResponse {
     | 'emailReceived'
     | 'captchaChallenge'
     | 'faceVerification'
+    | 'apiKeyLimitationExceeded'
+    | 'bindMfaRequired'
   mfaType?: MfaType | null
   /** The AuthFlowStep is used to determine which state the authentication is in, for initial requests without MFA verification the value should be LoginPassword and when calling with MFA code it should be MfaFlow (currently used for BinanceInternationalDirect only). */
   authFlowStep?: AuthFlowStep | null
@@ -346,7 +366,6 @@ export interface B2BBrokerAuthResponse {
   refreshTokenExpiresInSeconds?: number | null
   /** @deprecated */
   account?: BrokerAccount | null
-  brokerBrandInfo?: BrokerBrandInfo | null
   accountTokens?: BrokerAccountTokens[] | null
   requiresReauthentication?: boolean | null
   email?: string | null
@@ -415,6 +434,7 @@ export interface B2BBrokerCreateCryptocurrencyTransactionResponse {
     | 'mfaFailed'
     | 'addressWhitelistRequired'
     | 'secondMfaRequired'
+    | 'emailConfirmationApprovalRequired'
   /** Details of the current status of the transfer, as provided by the financial institution */
   statusDetails?: string | null
   /** Details of the created transaction */
@@ -492,6 +512,8 @@ export interface B2BBrokerCreateOrderRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -589,6 +611,8 @@ export interface B2BBrokerCreateOrderResult {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /** Side of the order. */
   side?: 'unknown' | 'buy' | 'sell'
   /**
@@ -785,6 +809,7 @@ export interface B2BBrokerCryptocurrencyTransaction {
     | 'mfaFailed'
     | 'addressWhitelistRequired'
     | 'secondMfaRequired'
+    | 'emailConfirmationApprovalRequired'
   /** Details of the current status of the transfer, as provided by the financial institution */
   statusDetails?: string | null
   /** The direction of the transaction */
@@ -1003,6 +1028,8 @@ export interface B2BBrokerOrder {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /** Type of the transaction */
   transactionType?:
     | 'order'
@@ -1094,6 +1121,8 @@ export interface B2BBrokerOrderListRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /**
    * The cursor to retrieve the next page of transactions.
    * Providing it will cause the response to only return changes after this update.
@@ -1207,6 +1236,8 @@ export interface B2BBrokerOrderRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /** @minLength 1 */
   id: string
   /** Should be provided for Coinbase. */
@@ -1316,6 +1347,8 @@ export interface B2BBrokerPreviewOrderResult {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /** @format double */
   fee?: number | null
   feeText?: string | null
@@ -1441,6 +1474,8 @@ export interface B2BBrokerSymbolInfoForOrderRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -1550,6 +1585,8 @@ export interface B2BBrokerTradingFeatureInfo {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /** Account Id of the integration. */
   accountId?: string | null
   /** Model, describing the ability to place cryptocurrency orders. */
@@ -1728,6 +1765,8 @@ export interface B2BBrokersHealthStatus {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /** Name of the integration */
   name?: string | null
   /** Is the communication with the integration up */
@@ -2014,6 +2053,8 @@ export interface BalanceBrokerBaseRequest {
    * ```Bybit```
    * ```Paxos```
    * ```CoinbasePrime```
+   * ```BtcTurkDirect```
+   * ```KuCoinDirect```
    */
   type:
     | 'robinhood'
@@ -2056,6 +2097,8 @@ export interface BalanceBrokerBaseRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
 }
 
 export interface BrokerAccount {
@@ -2109,6 +2152,8 @@ export type BrokerAuthStatus =
   | 'emailReceived'
   | 'captchaChallenge'
   | 'faceVerification'
+  | 'apiKeyLimitationExceeded'
+  | 'bindMfaRequired'
 
 export interface BrokerAuthenticationScheme {
   brokerType?:
@@ -2152,6 +2197,8 @@ export interface BrokerAuthenticationScheme {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /** Type of authentication for the integration. */
   authenticationSchemeType?: 'usernamePassword' | 'oAuth' | 'apiKey' | 'blockchainAddress'
   /** Set of fields that should be provided in the initial POST `authenticate` request. */
@@ -2235,11 +2282,8 @@ export interface BrokerBaseRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
-}
-
-export interface BrokerBrandInfo {
-  brokerLogo?: string | null
-  brokerPrimaryColor?: string | null
+    | 'kuCoinDirect'
+    | 'okxOAuth'
 }
 
 export interface BrokerCreateCryptocurrencyTransactionRequest {
@@ -2290,6 +2334,8 @@ export interface BrokerCreateCryptocurrencyTransactionRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /** Additional data to send on-chain (optional, depends on an integration) */
   data?: string | null
   /**
@@ -2397,6 +2443,8 @@ export interface BrokerCryptocurrencyDepositAddressRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
    * Can be used instead of the `AddressType` field.
@@ -2482,6 +2530,8 @@ export interface BrokerCryptocurrencyTransactionDetailsRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /** Type of the address of the transferred asset. Can be used instead of the `Symbol` field. */
   addressType?: CryptocurrencyAddressType | null
   /** Transaction Id by the financial institution */
@@ -2523,6 +2573,7 @@ export type BrokerCryptocurrencyTransactionStatus =
   | 'mfaFailed'
   | 'addressWhitelistRequired'
   | 'secondMfaRequired'
+  | 'emailConfirmationApprovalRequired'
 
 export type BrokerCryptocurrencyTransactionType = 'unknown' | 'deposit' | 'withdrawal'
 
@@ -2718,6 +2769,8 @@ export interface BrokerRefreshTokenRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /** @minLength 1 */
   refreshToken: string
   /**
@@ -2790,6 +2843,8 @@ export interface BrokerTransactionsListRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /**
    * Number of records to include in the response. <br />
    * Default: `100` <br />
@@ -2855,6 +2910,8 @@ export type BrokerType =
   | 'paxos'
   | 'coinbasePrime'
   | 'btcTurkDirect'
+  | 'kuCoinDirect'
+  | 'okxOAuth'
 
 export interface CatalogLink {
   /**
@@ -2940,6 +2997,8 @@ export interface ConfigureTransferRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /**
    * The authentication token of the target integration. Can be used alternatively to the list of requested address (`toAddresses`).
    * If used, `toType` should also be provided.
@@ -3231,6 +3290,8 @@ export interface ExecuteTransferRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /**
    * Id of the Preview of the transfer.
    * @format uuid
@@ -3252,6 +3313,7 @@ export interface ExecuteTransferResponse {
     | 'addressWhitelistRequired'
     | 'secondMfaRequired'
     | 'deFiWalletConfirmationRequired'
+    | 'emailConfirmationApprovalRequired'
   /** The type of the MFA when the status is `MfaRequired`. */
   mfaType?: ExecuteTransferMfaType | null
   /** The type of the MFA when the status is `MfaRequired`. */
@@ -3312,6 +3374,7 @@ export interface ExecuteTransferResultResponse {
     | 'mfaFailed'
     | 'addressWhitelistRequired'
     | 'secondMfaRequired'
+    | 'emailConfirmationApprovalRequired'
   /** Details of the current status of the transfer, as provided by the integration. */
   statusDetails?: string | null
   /** The address of the source account or wallet. */
@@ -3370,6 +3433,7 @@ export type ExecuteTransferStatus =
   | 'addressWhitelistRequired'
   | 'secondMfaRequired'
   | 'deFiWalletConfirmationRequired'
+  | 'emailConfirmationApprovalRequired'
 
 export type FailureReason =
   | 'notSupportedOnIntegration'
@@ -3413,6 +3477,11 @@ export interface GetLinkTokenRequest {
    * @format uuid
    */
   integrationId?: string | null
+  /**
+   * For direct integrations that also support API keys, Link presents the user with the option to generate an API key for seamless access.
+   * If this param is true, this feature will be disabled.
+   */
+  disableApiKeyGeneration?: boolean
 }
 
 export type HoldingTransferIneligibilityReason =
@@ -3480,6 +3549,8 @@ export interface HoldingsModel {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /** External institution's account id (returned by the institution) */
   accountId?: string | null
   /** Friendly name of the connected institution */
@@ -3563,6 +3634,8 @@ export interface HoldingsRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   includeMarketValue?: boolean
 }
 
@@ -3605,6 +3678,10 @@ export interface InitializeTransfersForLinkRequest {
 
 /** Integreation logos. */
 export interface IntegrationLogo {
+  /** Light logo url. */
+  logoLightUrl?: string | null
+  /** Dark logo url. */
+  logoDarkUrl?: string | null
   /** White logo url. */
   logoWhiteUrl?: string | null
   /** Black logo url. */
@@ -3612,11 +3689,17 @@ export interface IntegrationLogo {
   /** Colored logo url. */
   logoColorUrl?: string | null
   /** White icon url. */
+  iconLightUrl?: string | null
+  /** Light icon url. */
+  iconDarkUrl?: string | null
+  /** Dark icon url. */
   iconWhiteUrl?: string | null
   /** Balck icon url. */
   iconBlackUrl?: string | null
   /** Colored logo url. */
   iconColorUrl?: string | null
+  /** Base64 PNG logo. */
+  base64Logo?: string | null
 }
 
 /** Integration model. */
@@ -3670,12 +3753,18 @@ export interface IntegrationModel {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /** DeFi wallet provider identifier. */
   deFiWalletProviderId?: string | null
   /** Integration categories. */
   categories?: FinancialInstitutionIntegrationType[] | null
+  /** Style object. */
+  style?: IntegrationStyle | null
   /** Logo object. */
   logo?: IntegrationLogo | null
+  /** Forgot Password Link. */
+  forgotPasswordLink?: string | null
   /** Indicates if crypto transfers supported by integration. */
   cryptoTransfersSupported?: boolean
 }
@@ -3727,6 +3816,8 @@ export interface IntegrationNetwork {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
 }
 
 export interface IntegrationNetworkResponse {
@@ -3799,12 +3890,38 @@ export interface IntegrationNetworksModelResponse {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /** The list of supported networks and corresponding tokens for the integration. */
   networks?: NetworkResponse[] | null
   /** Specifies if the integration supports outgoing transfers. */
   supportsOutgoingTransfers?: boolean
   /** Specifies if the integration supports incoming transfers. */
   supportsIncomingTransfers?: boolean
+}
+
+/** Integration style */
+export interface IntegrationStyle {
+  /** Field Active Light Hex Color */
+  fieldActiveLight?: string | null
+  /** Button Primary Light Hex Color */
+  buttonPrimaryLight?: string | null
+  /** Button Hover Light Hex Color */
+  buttonHoverLight?: string | null
+  /** Button Text Light Hex Color */
+  buttonTextLight?: string | null
+  /** Button Text Hover Light Hex Color */
+  buttonTextHoverLight?: string | null
+  /** Field Active Dark Hex Color */
+  fieldActiveDark?: string | null
+  /** Button Primary Dark Hex Color */
+  buttonPrimaryDark?: string | null
+  /** Button Hover Dark Hex Color */
+  buttonHoverDark?: string | null
+  /** Button Text Dark Hex Color */
+  buttonTextDark?: string | null
+  /** Button Text Hover Dark Hex Color */
+  buttonTextHoverDark?: string | null
 }
 
 /** Integration response. */
@@ -3958,6 +4075,8 @@ export interface ManagedBrokerCryptocurrencyDepositAddressRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
    * Can be used instead of the `AddressType` field.
@@ -4196,6 +4315,8 @@ export interface PortfolioBrokerBaseRequest {
    * ```Bybit```
    * ```Paxos```
    * ```CoinbasePrime```
+   * ```BtcTurkDirect```
+   * ```KuCoinDirect```
    * ```DeFiWallet```
    */
   type:
@@ -4239,6 +4360,8 @@ export interface PortfolioBrokerBaseRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
 }
 
 export interface PortfolioFiatBalance {
@@ -4301,6 +4424,8 @@ export interface PortfolioHoldingsRequest {
    * ```Bybit```
    * ```Paxos```
    * ```CoinbasePrime```
+   * ```BtcTurkDirect```
+   * ```KuCoinDirect```
    * ```DeFiWallet```
    */
   type:
@@ -4344,6 +4469,8 @@ export interface PortfolioHoldingsRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   includeMarketValue?: boolean
 }
 
@@ -4488,6 +4615,8 @@ export interface PreviewTransferRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /**
    * The authentication token of the target integration. Can be used alternatively to the address in the `ToAddress` field.
    * If used, `toType` should also be provided.
@@ -4518,6 +4647,12 @@ export interface PreviewTransferRequest {
   amountInFiat?: number | null
   /** Fiat currency that is to get corresponding converted fiat values of transfer and fee amounts. If not provided, defaults to `USD`. */
   fiatCurrency?: string | null
+  /**
+   * Transaction ID Provided by client to track transaction in future calls.
+   * @minLength 0
+   * @maxLength 128
+   */
+  transactionId?: string | null
   /** Specifies if all the fees are included in the amount to transfer. */
   isInclusiveFeeEnabled?: boolean
 }
@@ -4586,6 +4721,11 @@ export interface PreviewTransferResult {
    * @format double
    */
   amountInFiat?: number
+  /**
+   * Total estimated amount of the transfer including all fees, in cryptocurrency.
+   * @format double
+   */
+  totalEstimatedAmount?: number
   /**
    * Total estimated amount of the transfer including all fees, converted to fiat.
    * @format double
@@ -4673,6 +4813,11 @@ export interface PreviewTransferResult {
    * @format double
    */
   amountToReceiveInFiat?: number
+  /**
+   * Exact amount in cryptocurrency requested to transfer to the destination address using the target integration.
+   * @format double
+   */
+  transferAmountToRequest?: number
 }
 
 export type PreviewTransferStatus = 'succeeded' | 'failed' | 'requiresFunding'
@@ -4868,6 +5013,8 @@ export interface QuoteTransferRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /**
    * Flat fee in crypto to be charged as a partner fee
    * @format double
@@ -4939,6 +5086,8 @@ export interface QuoteTransferResponse {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /** Is the transaction is possible based on the minimum transfer amount of the selected exchange */
   isEligible?: boolean
   /**
@@ -5155,6 +5304,8 @@ export interface TransactionsB2BBrokerCreateOrderRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -5289,6 +5440,8 @@ export interface TransactionsB2BBrokerOrderListRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /**
    * The cursor to retrieve the next page of transactions.
    * Providing it will cause the response to only return changes after this update.
@@ -5394,6 +5547,8 @@ export interface TransactionsB2BBrokerOrderRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /** @minLength 1 */
   id: string
   /** Should be provided for Coinbase. */
@@ -5488,6 +5643,8 @@ export interface TransactionsB2BBrokerSymbolInfoForOrderRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -5623,6 +5780,8 @@ export interface TransactionsBrokerBaseRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
 }
 
 export interface TransferBalanceFundingAvailability {
@@ -5766,8 +5925,66 @@ export interface TransferIntegrationModel {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /** Name of integration. */
   name?: string | null
+}
+
+export interface TransferIntegrationWithLogoModel {
+  /**
+   * Unique identifier of integration.
+   * @format uuid
+   */
+  id?: string
+  /** Type of integration. */
+  type?:
+    | 'robinhood'
+    | 'eTrade'
+    | 'alpaca'
+    | 'tdAmeritrade'
+    | 'weBull'
+    | 'stash'
+    | 'interactiveBrokers'
+    | 'public'
+    | 'coinbase'
+    | 'kraken'
+    | 'coinbasePro'
+    | 'cryptoCom'
+    | 'openSea'
+    | 'binanceUs'
+    | 'gemini'
+    | 'cryptocurrencyAddress'
+    | 'cryptocurrencyWallet'
+    | 'okCoin'
+    | 'bittrex'
+    | 'kuCoin'
+    | 'etoro'
+    | 'cexIo'
+    | 'binanceInternational'
+    | 'bitstamp'
+    | 'gateIo'
+    | 'acorns'
+    | 'okx'
+    | 'bitFlyer'
+    | 'coinlist'
+    | 'huobi'
+    | 'bitfinex'
+    | 'deFiWallet'
+    | 'krakenDirect'
+    | 'vanguard'
+    | 'binanceInternationalDirect'
+    | 'bitfinexDirect'
+    | 'bybit'
+    | 'paxos'
+    | 'coinbasePrime'
+    | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
+  /** Name of integration. */
+  name?: string | null
+  /** Integration logo URL. */
+  logoUrl?: string | null
 }
 
 export interface TransferModel {
@@ -5800,15 +6017,22 @@ export interface TransferModel {
   symbol?: string | null
   /** Transfer network name. */
   networkName?: string | null
+  /** Network logo URL. */
+  networkLogoUrl?: string | null
   /**
    * Created timestamp.
    * @format int64
    */
   createdTimestamp?: number
   /** From integration. */
-  from?: TransferIntegrationModel | null
+  from?: TransferIntegrationWithLogoModel | null
   /** Transfer hash. */
   hash?: string | null
+  /**
+   * Transfer info url on blockchain explorer.
+   * @format uri
+   */
+  infoUrl?: string | null
   /** Transfer network gas fee. */
   gasFee?: TransferFee | null
   /** Financial insitution withdrawal fee. */
@@ -5834,6 +6058,11 @@ export interface TransferModel {
    * @format double
    */
   destinationAmount?: number | null
+  /**
+   * Amount in fiat what destination actually received.
+   * @format double
+   */
+  destinationAmountInFiat?: number | null
   /**
    * Total fees paid by user to execute this transaction.
    * @format double
@@ -5996,6 +6225,7 @@ export interface TransfersBrokerCreateCryptocurrencyTransactionRequest {
    * ```Bitfinex```
    * ```KrakenDirect```
    * ```BinanceInternationalDirect```
+   * ```BitfinexDirect```
    * ```Bybit```
    * ```Paxos```
    * ```CoinbasePrime```
@@ -6042,6 +6272,8 @@ export interface TransfersBrokerCreateCryptocurrencyTransactionRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /** Additional data to send on-chain (optional, depends on an integration) */
   data?: string | null
   /**
@@ -6112,6 +6344,7 @@ export interface TransfersBrokerCryptocurrencyDepositAddressRequest {
    * ```Bitfinex```
    * ```KrakenDirect```
    * ```BinanceInternationalDirect```
+   * ```BitfinexDirect```
    * ```Bybit```
    * ```Paxos```
    * ```CoinbasePrime```
@@ -6158,6 +6391,8 @@ export interface TransfersBrokerCryptocurrencyDepositAddressRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
    * Can be used instead of the `AddressType` field.
@@ -6201,6 +6436,7 @@ export interface TransfersBrokerCryptocurrencyTransactionDetailsRequest {
    * ```Bitfinex```
    * ```KrakenDirect```
    * ```BinanceInternationalDirect```
+   * ```BitfinexDirect```
    * ```Bybit```
    * ```Paxos```
    * ```CoinbasePrime```
@@ -6247,6 +6483,8 @@ export interface TransfersBrokerCryptocurrencyTransactionDetailsRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /** Type of the address of the transferred asset. Can be used instead of the `Symbol` field. */
   addressType?: CryptocurrencyAddressType | null
   /** Transaction Id by the financial institution */
@@ -6284,6 +6522,7 @@ export interface TransfersBrokerTransactionsListRequest {
    * ```Bitfinex```
    * ```KrakenDirect```
    * ```BinanceInternationalDirect```
+   * ```BitfinexDirect```
    * ```Bybit```
    * ```Paxos```
    * ```CoinbasePrime```
@@ -6330,6 +6569,8 @@ export interface TransfersBrokerTransactionsListRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /**
    * Number of records to include in the response. <br />
    * Default: `100` <br />
@@ -6354,13 +6595,59 @@ export interface TransfersBrokerTransactionsListRequest {
   from?: number | null
 }
 
+export interface UpdateTransferModel {
+  /**
+   * Mesh transfer identifier.
+   * @format uuid
+   */
+  id?: string
+  /** Client transaction identifier. */
+  clientTransactionId?: string | null
+  /** Integration transaction identifier. */
+  institutionTransactionId?: string | null
+  /** Client's user identifier. */
+  userId?: string | null
+  /** Transfer status. */
+  status?: 'pending' | 'succeeded' | 'failed'
+  /**
+   * Transfer amount in fiat.
+   * @format double
+   */
+  amountInFiat?: number
+  /** Transfer amount in fiat currency code. */
+  amountInFiatCurrencyCode?: string | null
+  /**
+   * Transfer amount.
+   * @format double
+   */
+  amount?: number
+  /** Transfer cryptocurrency symbol. */
+  symbol?: string | null
+  /** Transfer network name. */
+  networkName?: string | null
+  /**
+   * Created timestamp.
+   * @format int64
+   */
+  createdTimestamp?: number
+  /** From integration. */
+  from?: TransferIntegrationModel | null
+  /** Transfer hash. */
+  hash?: string | null
+  /**
+   * Transfer executed Unix timestamp.
+   * @format int64
+   */
+  executedTimestamp?: number | null
+}
+
 export interface UpdateTransferResponse {
   /** The status of the transfer. */
   status?: 'pending' | 'succeeded' | 'failed'
   /** Error message, if the operation did not complete successfully. */
   errorMessage?: string | null
   /** Result of the transfer initiation. */
-  transferResult?: TransferModel | null
+  transferResult?: UpdateTransferModel | null
 }
 
 export interface UpdateTransferResponseApiResult {
@@ -6434,6 +6721,8 @@ export interface UpdateTransferStatusRequest {
     | 'paxos'
     | 'coinbasePrime'
     | 'btcTurkDirect'
+    | 'kuCoinDirect'
+    | 'okxOAuth'
   /**
    * Id of the executed transfer.
    * @minLength 1
@@ -6489,7 +6778,7 @@ export class HttpClient<SecurityDataType = unknown> {
   constructor({ securityWorker, secure, format, ...axiosConfig }: ApiConfig<SecurityDataType> = {}) {
     this.instance = axios.create({
       ...axiosConfig,
-      baseURL: axiosConfig.baseURL || 'https://integration-api.getfront.com'
+      baseURL: axiosConfig.baseURL || 'https://integration-api.meshconnect.com'
     })
     this.secure = secure
     this.format = format
@@ -6579,7 +6868,7 @@ export class HttpClient<SecurityDataType = unknown> {
 /**
  * @title Mesh Connect Integration API
  * @version 1.0
- * @baseUrl https://integration-api.getfront.com
+ * @baseUrl https://integration-api.meshconnect.com
  *
  *
  * Mesh allows users to connect accounts of financial institutions,
@@ -6761,6 +7050,11 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
          * If this param is present then this button will be hidden.
          */
         RestrictMultipleAccounts?: boolean
+        /**
+         * For direct integrations that also support API keys, Link presents the user with the option to generate an API key for seamless access.
+         * If this param is true, this feature will be disabled.
+         */
+        DisableApiKeyGeneration?: boolean
       },
       params: RequestParams = {}
     ) =>
@@ -6811,6 +7105,11 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
          * If this param is present then this button will be hidden.
          */
         RestrictMultipleAccounts?: boolean
+        /**
+         * For direct integrations that also support API keys, Link presents the user with the option to generate an API key for seamless access.
+         * If this param is true, this feature will be disabled.
+         */
+        DisableApiKeyGeneration?: boolean
       },
       data: InitializeTransfersForLinkRequest,
       params: RequestParams = {}
@@ -7040,7 +7339,9 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         | 'bybit'
         | 'paxos'
         | 'coinbasePrime'
-        | 'btcTurkDirect',
+        | 'btcTurkDirect'
+        | 'kuCoinDirect'
+        | 'okxOAuth',
       query: {
         /** Id of the end-user */
         userId: string
