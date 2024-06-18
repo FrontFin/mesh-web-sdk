@@ -287,7 +287,6 @@ export interface B2BBrokerAuthRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   phone?: string | null
   username?: string | null
   password?: string | null
@@ -513,7 +512,6 @@ export interface B2BBrokerCreateOrderRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -612,7 +610,6 @@ export interface B2BBrokerCreateOrderResult {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /** Side of the order. */
   side?: 'unknown' | 'buy' | 'sell'
   /**
@@ -1029,7 +1026,6 @@ export interface B2BBrokerOrder {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /** Type of the transaction */
   transactionType?:
     | 'order'
@@ -1122,7 +1118,6 @@ export interface B2BBrokerOrderListRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /**
    * The cursor to retrieve the next page of transactions.
    * Providing it will cause the response to only return changes after this update.
@@ -1237,7 +1232,6 @@ export interface B2BBrokerOrderRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /** @minLength 1 */
   id: string
   /** Should be provided for Coinbase. */
@@ -1348,7 +1342,6 @@ export interface B2BBrokerPreviewOrderResult {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /** @format double */
   fee?: number | null
   feeText?: string | null
@@ -1475,7 +1468,6 @@ export interface B2BBrokerSymbolInfoForOrderRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -1586,7 +1578,6 @@ export interface B2BBrokerTradingFeatureInfo {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /** Account Id of the integration. */
   accountId?: string | null
   /** Model, describing the ability to place cryptocurrency orders. */
@@ -1766,7 +1757,6 @@ export interface B2BBrokersHealthStatus {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /** Name of the integration */
   name?: string | null
   /** Is the communication with the integration up */
@@ -2098,7 +2088,6 @@ export interface BalanceBrokerBaseRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
 }
 
 export interface BrokerAccount {
@@ -2198,7 +2187,6 @@ export interface BrokerAuthenticationScheme {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /** Type of authentication for the integration. */
   authenticationSchemeType?: 'usernamePassword' | 'oAuth' | 'apiKey' | 'blockchainAddress'
   /** Set of fields that should be provided in the initial POST `authenticate` request. */
@@ -2283,7 +2271,6 @@ export interface BrokerBaseRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
 }
 
 export interface BrokerCreateCryptocurrencyTransactionRequest {
@@ -2335,7 +2322,6 @@ export interface BrokerCreateCryptocurrencyTransactionRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /** Additional data to send on-chain (optional, depends on an integration) */
   data?: string | null
   /**
@@ -2444,7 +2430,6 @@ export interface BrokerCryptocurrencyDepositAddressRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
    * Can be used instead of the `AddressType` field.
@@ -2531,7 +2516,6 @@ export interface BrokerCryptocurrencyTransactionDetailsRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /** Type of the address of the transferred asset. Can be used instead of the `Symbol` field. */
   addressType?: CryptocurrencyAddressType | null
   /** Transaction Id by the financial institution */
@@ -2770,7 +2754,6 @@ export interface BrokerRefreshTokenRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /** @minLength 1 */
   refreshToken: string
   /**
@@ -2844,7 +2827,6 @@ export interface BrokerTransactionsListRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /**
    * Number of records to include in the response. <br />
    * Default: `100` <br />
@@ -2911,7 +2893,6 @@ export type BrokerType =
   | 'coinbasePrime'
   | 'btcTurkDirect'
   | 'kuCoinDirect'
-  | 'okxOAuth'
 
 export interface CatalogLink {
   /**
@@ -2998,7 +2979,6 @@ export interface ConfigureTransferRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /**
    * The authentication token of the target integration. Can be used alternatively to the list of requested address (`toAddresses`).
    * If used, `toType` should also be provided.
@@ -3291,7 +3271,6 @@ export interface ExecuteTransferRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /**
    * Id of the Preview of the transfer.
    * @format uuid
@@ -3550,7 +3529,6 @@ export interface HoldingsModel {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /** External institution's account id (returned by the institution) */
   accountId?: string | null
   /** Friendly name of the connected institution */
@@ -3635,7 +3613,6 @@ export interface HoldingsRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   includeMarketValue?: boolean
 }
 
@@ -3754,7 +3731,6 @@ export interface IntegrationModel {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /** DeFi wallet provider identifier. */
   deFiWalletProviderId?: string | null
   /** Integration categories. */
@@ -3817,7 +3793,6 @@ export interface IntegrationNetwork {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
 }
 
 export interface IntegrationNetworkResponse {
@@ -3891,7 +3866,6 @@ export interface IntegrationNetworksModelResponse {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /** The list of supported networks and corresponding tokens for the integration. */
   networks?: NetworkResponse[] | null
   /** Specifies if the integration supports outgoing transfers. */
@@ -4076,7 +4050,6 @@ export interface ManagedBrokerCryptocurrencyDepositAddressRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
    * Can be used instead of the `AddressType` field.
@@ -4361,7 +4334,6 @@ export interface PortfolioBrokerBaseRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
 }
 
 export interface PortfolioFiatBalance {
@@ -4470,7 +4442,6 @@ export interface PortfolioHoldingsRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   includeMarketValue?: boolean
 }
 
@@ -4616,7 +4587,6 @@ export interface PreviewTransferRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /**
    * The authentication token of the target integration. Can be used alternatively to the address in the `ToAddress` field.
    * If used, `toType` should also be provided.
@@ -5014,7 +4984,6 @@ export interface QuoteTransferRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /**
    * Flat fee in crypto to be charged as a partner fee
    * @format double
@@ -5087,7 +5056,6 @@ export interface QuoteTransferResponse {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /** Is the transaction is possible based on the minimum transfer amount of the selected exchange */
   isEligible?: boolean
   /**
@@ -5305,7 +5273,6 @@ export interface TransactionsB2BBrokerCreateOrderRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -5441,7 +5408,6 @@ export interface TransactionsB2BBrokerOrderListRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /**
    * The cursor to retrieve the next page of transactions.
    * Providing it will cause the response to only return changes after this update.
@@ -5548,7 +5514,6 @@ export interface TransactionsB2BBrokerOrderRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /** @minLength 1 */
   id: string
   /** Should be provided for Coinbase. */
@@ -5644,7 +5609,6 @@ export interface TransactionsB2BBrokerSymbolInfoForOrderRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -5781,7 +5745,6 @@ export interface TransactionsBrokerBaseRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
 }
 
 export interface TransferBalanceFundingAvailability {
@@ -5926,7 +5889,6 @@ export interface TransferIntegrationModel {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /** Name of integration. */
   name?: string | null
 }
@@ -5980,7 +5942,6 @@ export interface TransferIntegrationWithLogoModel {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /** Name of integration. */
   name?: string | null
   /** Integration logo URL. */
@@ -6273,7 +6234,6 @@ export interface TransfersBrokerCreateCryptocurrencyTransactionRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /** Additional data to send on-chain (optional, depends on an integration) */
   data?: string | null
   /**
@@ -6392,7 +6352,6 @@ export interface TransfersBrokerCryptocurrencyDepositAddressRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
    * Can be used instead of the `AddressType` field.
@@ -6484,7 +6443,6 @@ export interface TransfersBrokerCryptocurrencyTransactionDetailsRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /** Type of the address of the transferred asset. Can be used instead of the `Symbol` field. */
   addressType?: CryptocurrencyAddressType | null
   /** Transaction Id by the financial institution */
@@ -6570,7 +6528,6 @@ export interface TransfersBrokerTransactionsListRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /**
    * Number of records to include in the response. <br />
    * Default: `100` <br />
@@ -6722,7 +6679,6 @@ export interface UpdateTransferStatusRequest {
     | 'coinbasePrime'
     | 'btcTurkDirect'
     | 'kuCoinDirect'
-    | 'okxOAuth'
   /**
    * Id of the executed transfer.
    * @minLength 1
@@ -7340,8 +7296,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         | 'paxos'
         | 'coinbasePrime'
         | 'btcTurkDirect'
-        | 'kuCoinDirect'
-        | 'okxOAuth',
+        | 'kuCoinDirect',
       query: {
         /** Id of the end-user */
         userId: string

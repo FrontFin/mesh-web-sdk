@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "strict": true,
     "outDir": "dist",
     "module": "esnext",
     "target": "es5",
@@ -15,7 +16,8 @@
     "strictNullChecks": true,
     "allowSyntheticDefaultImports": true,
     "jsx": "react-jsx",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "skipLibCheck": true
   },
   "exclude": ["**/dist/**", "**/*.test.ts", "**/*.test.tsx"]
 }

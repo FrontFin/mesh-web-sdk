@@ -961,8 +961,7 @@
                 "paxos",
                 "coinbasePrime",
                 "btcTurkDirect",
-                "kuCoinDirect",
-                "okxOAuth"
+                "kuCoinDirect"
               ],
               "allOf": [
                 {
@@ -3561,8 +3560,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -4073,8 +4071,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -4221,8 +4218,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -5090,8 +5086,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -5244,8 +5239,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -5424,8 +5418,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -5634,8 +5627,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -5924,8 +5916,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -6138,8 +6129,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -6471,8 +6461,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -7025,8 +7014,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -7181,8 +7169,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -7341,8 +7328,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -7409,8 +7395,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -7590,8 +7575,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -7705,8 +7689,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -8098,8 +8081,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -8213,8 +8195,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -8301,8 +8282,7 @@
           "paxos",
           "coinbasePrime",
           "btcTurkDirect",
-          "kuCoinDirect",
-          "okxOAuth"
+          "kuCoinDirect"
         ],
         "type": "string"
       },
@@ -8429,8 +8409,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -8908,8 +8887,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -9367,8 +9345,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -9516,8 +9493,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -9692,8 +9668,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -9807,8 +9782,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -9928,8 +9902,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -10253,8 +10226,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -10785,8 +10757,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -10875,8 +10846,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -11070,8 +11040,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -11693,8 +11662,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -11788,8 +11756,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -12120,8 +12087,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -12272,8 +12238,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -12365,8 +12330,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -12467,8 +12431,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -12627,8 +12590,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -12865,8 +12827,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -12934,8 +12895,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -13457,8 +13417,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -13598,8 +13557,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -13689,8 +13647,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -13780,8 +13737,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
@@ -14054,8 +14010,7 @@
               "paxos",
               "coinbasePrime",
               "btcTurkDirect",
-              "kuCoinDirect",
-              "okxOAuth"
+              "kuCoinDirect"
             ],
             "allOf": [
               {
