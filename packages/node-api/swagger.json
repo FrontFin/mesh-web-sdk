@@ -7,10 +7,7 @@
   },
   "servers": [
     {
-      "url": "https://integration-api.meshconnect.com"
-    },
-    {
-      "url": "https://sandbox-integration-api.meshconnect.com"
+      "url": "https://integration-api.getfront.com"
     }
   ],
   "paths": {
@@ -375,14 +372,6 @@
             "schema": {
               "type": "boolean"
             }
-          },
-          {
-            "name": "DisableApiKeyGeneration",
-            "in": "query",
-            "description": "For direct integrations that also support API keys, Link presents the user with the option to generate an API key for seamless access.\r\nIf this param is true, this feature will be disabled.",
-            "schema": {
-              "type": "boolean"
-            }
           }
         ],
         "responses": {
@@ -471,14 +460,6 @@
             "name": "RestrictMultipleAccounts",
             "in": "query",
             "description": "The final screen of Link allows users to “continue” back to your app or “Link another account.”\r\nIf this param is present then this button will be hidden.",
-            "schema": {
-              "type": "boolean"
-            }
-          },
-          {
-            "name": "DisableApiKeyGeneration",
-            "in": "query",
-            "description": "For direct integrations that also support API keys, Link presents the user with the option to generate an API key for seamless access.\r\nIf this param is true, this feature will be disabled.",
             "schema": {
               "type": "boolean"
             }
@@ -583,7 +564,7 @@
                   }
                 ]
               },
-              "example": {"userId":"UserId","configurationId":"18a20b11-e47f-43b9-8546-94284e9ee547","restrictMultipleAccounts":true,"transferOptions":{"toAddresses":[{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"ETH","address":"0x00000000000000000000000"},{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"USDC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"MATIC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDC","address":"0x00000000000000000000000"}],"amountInFiat":10,"isInclusiveFeeEnabled":false},"disableApiKeyGeneration":false}
+              "example": {"userId":"UserId","configurationId":"18a20b11-e47f-43b9-8546-94284e9ee547","restrictMultipleAccounts":true,"transferOptions":{"toAddresses":[{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"ETH","address":"0x00000000000000000000000"},{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"USDC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"MATIC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDC","address":"0x00000000000000000000000"}],"amountInFiat":10,"isInclusiveFeeEnabled":false}}
             },
             "text/json": {
               "schema": {
@@ -593,7 +574,7 @@
                   }
                 ]
               },
-              "example": {"userId":"UserId","configurationId":"18a20b11-e47f-43b9-8546-94284e9ee547","restrictMultipleAccounts":true,"transferOptions":{"toAddresses":[{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"ETH","address":"0x00000000000000000000000"},{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"USDC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"MATIC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDC","address":"0x00000000000000000000000"}],"amountInFiat":10,"isInclusiveFeeEnabled":false},"disableApiKeyGeneration":false}
+              "example": {"userId":"UserId","configurationId":"18a20b11-e47f-43b9-8546-94284e9ee547","restrictMultipleAccounts":true,"transferOptions":{"toAddresses":[{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"ETH","address":"0x00000000000000000000000"},{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"USDC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"MATIC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDC","address":"0x00000000000000000000000"}],"amountInFiat":10,"isInclusiveFeeEnabled":false}}
             },
             "application/*+json": {
               "schema": {
@@ -603,7 +584,7 @@
                   }
                 ]
               },
-              "example": {"userId":"UserId","configurationId":"18a20b11-e47f-43b9-8546-94284e9ee547","restrictMultipleAccounts":true,"transferOptions":{"toAddresses":[{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"ETH","address":"0x00000000000000000000000"},{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"USDC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"MATIC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDC","address":"0x00000000000000000000000"}],"amountInFiat":10,"isInclusiveFeeEnabled":false},"disableApiKeyGeneration":false}
+              "example": {"userId":"UserId","configurationId":"18a20b11-e47f-43b9-8546-94284e9ee547","restrictMultipleAccounts":true,"transferOptions":{"toAddresses":[{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"ETH","address":"0x00000000000000000000000"},{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"USDC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"MATIC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDC","address":"0x00000000000000000000000"}],"amountInFiat":10,"isInclusiveFeeEnabled":false}}
             }
           }
         },
@@ -871,7 +852,7 @@
                   }
                 ]
               },
-              "example": {"username":"username","password":"password","mfaCode":"000000","mfaType":"phone","isSensitiveFieldsEncrypted":false,"type":"robinhood"}
+              "example": {"username":"username","password":"password","mfaCode":"000000","mfaType":"phone","type":"robinhood"}
             }
           }
         },
@@ -960,8 +941,7 @@
                 "bybit",
                 "paxos",
                 "coinbasePrime",
-                "btcTurkDirect",
-                "kuCoinDirect"
+                "btcTurkDirect"
               ],
               "allOf": [
                 {
@@ -1020,7 +1000,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/IntegrationsResponseApiResult"
                 },
-                "example": {"content":{"items":[{"id":"b7efa542-0b16-4a2a-8f89-00143298e615","name":"CoinbasePro","type":"coinbasePro","style":{"fieldActiveLight":"0052FF","buttonPrimaryLight":"0052FF","buttonHoverLight":"014CEC","buttonTextLight":"FFFFFF","buttonTextHoverLight":"FFFFFF","fieldActiveDark":"578BFA","buttonPrimaryDark":"578BFA","buttonHoverDark":"507FE5","buttonTextDark":"0A0B0D","buttonTextHoverDark":"0A0B0D"},"logo":{"logoLightUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Logo_Light.svg","logoDarkUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Logo_Dark.svg","logoWhiteUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Logo_White.svg","logoBlackUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Logo_Black.svg","logoColorUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Logo_Color.svg","iconLightUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Icon_Light.svg","iconDarkUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Icon_Dark.svg","iconWhiteUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Icon_White.svg","iconBlackUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Icon_Black.svg","iconColorUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Icon_Color.svg","base64Logo":"iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAA1VBMVEUAAAAAgP8AVf8AM/8AVdUAROgAQ+kAROkAROkAQ+oAQuoAROoAQ+gAROkAQ+kAQ+kAROkAQ+kAQ+kAROkAQugAQ+kAQ+kAROkAQ+kAQ+kAQ+kAQ+kAQ+kXVesOTuoAQ+kBROkERukFR+kNTeoOTeoUUusZVeshW+wpYe0qYu0uZe0yaO00ae05be5fifFgivGMqvWSr/amvfeqwPi7zfnE0/rO2/vU3/vY4vzc5fze5/zh6fzi6vzl7P3m7f3p7/3u8v7x9f73+f75+/76+//+/v////94Z10/AAAAH3RSTlMAAgMFBk9QUlNUVVZXiImKi4ykptfY2dvc3fHz9Pr8ZrpFhQAAAAFiS0dERhe6+e0AAADPSURBVBgZncHXVsJAFAXQExM6UhJCwEGPYsfesKCiAvf/P8m5swIhPLI3thbUo3gwiKNagJxyn6leCZmdNte0PCy1mdNAqswNRThBn+r0/n3+/XRAKwmg6lTnnyI/s2c6VaiI6kVerzg8phNCdWmNZHHBlRjK0LqVCTMGytC6kwkze1BdWteyGHElhopoHY7l7YZHJ3RCqBrV5VTk9288pKpABT2qs4eP2dfjPq3Eh1PihgJSLebsYslrck3DQ6aYMJUUkONXw44xnbDiY1v/vNIqVzlyMewAAAAASUVORK5CYII="},"cryptoTransfersSupported":true},{"id":"3d8f5c31-9fc0-4b61-bdfb-00fb18cbb9ad","name":"CoinCircle","type":"deFiWallet","deFiWalletProviderId":"36d8d9c0c7fe2957149ce8e878f3a01...","categories":["deFiWallet"],"style":{"fieldActiveLight":"0052FF","buttonPrimaryLight":"0052FF","buttonHoverLight":"014CEC","buttonTextLight":"FFFFFF","buttonTextHoverLight":"FFFFFF","fieldActiveDark":"578BFA","buttonPrimaryDark":"578BFA","buttonHoverDark":"507FE5","buttonTextDark":"0A0B0D","buttonTextHoverDark":"0A0B0D"},"logo":{"logoColorUrl":"https://frontuserfilecdn.azureedge.net/public/logos/CoinCircle_Logo_Color.svg","iconColorUrl":"https://frontuserfilecdn.azureedge.net/public/logos/CoinCircle_Icon_Color.svg"},"cryptoTransfersSupported":true}]},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"items":[{"id":"b7efa542-0b16-4a2a-8f89-00143298e615","name":"CoinbasePro","type":"coinbasePro","logo":{"logoWhiteUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Logo_White.svg","logoBlackUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Logo_Black.svg","logoColorUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Logo_Color.svg","iconWhiteUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Icon_White.svg","iconBlackUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Icon_Black.svg","iconColorUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Icon_Color.svg"},"cryptoTransfersSupported":true},{"id":"3d8f5c31-9fc0-4b61-bdfb-00fb18cbb9ad","name":"CoinCircle","type":"deFiWallet","deFiWalletProviderId":"36d8d9c0c7fe2957149ce8e878f3a01...","categories":["deFiWallet"],"logo":{"logoColorUrl":"https://frontuserfilecdn.azureedge.net/public/logos/CoinCircle_Logo_Color.svg","iconColorUrl":"https://frontuserfilecdn.azureedge.net/public/logos/CoinCircle_Icon_Color.svg"},"cryptoTransfersSupported":true}]},"status":"ok","message":"","errorType":""}
               }
             }
           }
@@ -1376,7 +1356,7 @@
                 },
                 "examples": {
                   "Successful transfer preview": {
-                    "value": {"content":{"status":"succeeded","previewResult":{"previewId":"29b185b1-2305-40fb-a0e2-929d61451568","previewExpiresIn":300,"fromAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","toAddress":"0x326a8825472bb0f4719998e708a1eeeb4473ed1b","symbol":"USDT","amount":10,"amountInFiat":10,"totalEstimatedAmount":11.21,"totalEstimatedAmountInFiat":11.21,"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","institutionTransferFee":{"fee":0,"feeCurrency":"USDT","feeInFiat":0},"estimatedNetworkGasFee":{"fee":1.1,"feeCurrency":"USDT","feeInFiat":1.1},"unitPrice":0,"customClientFee":{"fee":0.011,"feeCurrency":"USDT","feeInFiat":0.011},"isCustomClientFeeProvided":false,"amountWithCustomClientFee":0,"isFeeIncluded":false,"amountToReceive":0,"amountToReceiveInFiat":0,"transferAmountToRequest":0}},"status":"ok","message":"","errorType":""}
+                    "value": {"content":{"status":"succeeded","previewResult":{"previewId":"29b185b1-2305-40fb-a0e2-929d61451568","previewExpiresIn":300,"fromAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","toAddress":"0x326a8825472bb0f4719998e708a1eeeb4473ed1b","symbol":"USDT","amount":10,"amountInFiat":10,"totalEstimatedAmountInFiat":11.21,"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","institutionTransferFee":{"fee":0,"feeCurrency":"USDT","feeInFiat":0},"estimatedNetworkGasFee":{"fee":1.1,"feeCurrency":"USDT","feeInFiat":1.1},"unitPrice":0,"customClientFee":{"fee":0.011,"feeCurrency":"USDT","feeInFiat":0.011},"isCustomClientFeeProvided":false,"amountWithCustomClientFee":0,"isFeeIncluded":false,"amountToReceive":0,"amountToReceiveInFiat":0}},"status":"ok","message":"","errorType":""}
                   },
                   "Failed transfer preview": {
                     "value": {"status":"badRequest","message":"The\u00A0specified amount is greater than the maximum amount allowed.","displayMessage":"The\u00A0specified amount is greater than the maximum amount allowed.","errorType":"invalidField"}
@@ -1800,7 +1780,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/TransferModelPaginationResponseApiResult"
                 },
-                "example": {"content":{"items":[{"id":"8e25acb5-a9e2-4d00-8772-a255f010a2a9","clientTransactionId":"123456","institutionTransactionId":"456789","userId":"123456798","status":"succeeded","amountInFiat":1000.3,"amountInFiatCurrencyCode":"USD","amount":10.123,"symbol":"ETH","networkName":"Polygon","networkLogoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/networks/Polygon.svg","createdTimestamp":1653211113,"from":{"logoUrl":"https://logo.com/logo.jpg","id":"8e25acb5-a9e2-4d00-8772-a255f010a2a9","type":"robinhood","name":"Robinhood"},"hash":"0x77f3a280aa5cfe956a5759c24cf774325504070b32b4159...","infoUrl":"https://polygonscan.com/tx/0x5b0ac59e43b63f2985d78994b6270d747f1019777201ca18ebb36ad1e1a8693e","gasFee":{"fee":0.0001,"feeCurrency":"MATIC","feeInFiat":0.1},"withdrawalFee":{"fee":0.0001,"feeCurrency":"ETH","feeInFiat":0.1},"processingFee":{"fee":0.0001,"feeCurrency":"ETH","feeInFiat":0.1},"executedTimestamp":1707462614,"transferType":"payment","isFeeIncluded":false,"sourceAmount":10.122,"destinationAmount":10,"totalFeesAmountInFiat":0.5,"totalTransactionAmountInFiat":1000.5,"fundingMethods":[{"type":"cryptocurrencyConversion","amount":2,"amountInFiat":20,"toSymbol":"ETH","fromAmount":1,"fromSymbol":"BTC","fee":{"fee":0.0001,"feeCurrency":"ETH","feeInFiat":0.1}},{"type":"paymentMethodDepositUsage","amount":3,"amountInFiat":30,"toSymbol":"ETH","fromAmount":1,"fromSymbol":"USD","paymentMethodType":"bankAccount","fee":{"fee":0.0001,"feeCurrency":"USD","feeInFiat":0.1}},{"type":"existingCryptocurrencyBalance","amount":5,"amountInFiat":50,"toSymbol":"ETH","fromAmount":5,"fromSymbol":"ETH"}]},{"id":"12345678-a9e2-4d00-8772-a255f010a2a9","clientTransactionId":"123456","institutionTransactionId":"456789","userId":"123456798","status":"failed","amountInFiat":10.3,"amountInFiatCurrencyCode":"USD","amount":0.123,"symbol":"ETH","networkName":"Polygon","createdTimestamp":1653211113,"from":{"logoUrl":"https://logo.com/logo.jpg","id":"8e25acb5-a9e2-4d00-8772-a255f010a2a9","type":"deFiWallet","name":"MetaMask"},"hash":"0x77f3a280aa5cfe956a5759c24cf774325504070b32b4159...","isFeeIncluded":false,"totalFeesAmountInFiat":0,"totalTransactionAmountInFiat":10.3,"fundingMethods":[]}],"total":10},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"items":[{"id":"8e25acb5-a9e2-4d00-8772-a255f010a2a9","clientTransactionId":"123456","institutionTransactionId":"456789","userId":"123456798","status":"succeeded","amountInFiat":1000.3,"amountInFiatCurrencyCode":"USD","amount":10.123,"symbol":"ETH","networkName":"Polygon","createdTimestamp":1653211113,"from":{"id":"8e25acb5-a9e2-4d00-8772-a255f010a2a9","type":"robinhood","name":"Robinhood"},"hash":"0x77f3a280aa5cfe956a5759c24cf774325504070b32b4159...","gasFee":{"fee":0.0001,"feeCurrency":"MATIC","feeInFiat":0.1},"withdrawalFee":{"fee":0.0001,"feeCurrency":"ETH","feeInFiat":0.1},"processingFee":{"fee":0.0001,"feeCurrency":"ETH","feeInFiat":0.1},"executedTimestamp":1707462614,"isFeeIncluded":false,"totalFeesAmountInFiat":0.3,"totalTransactionAmountInFiat":1000.3,"fundingMethods":[]},{"id":"12345678-a9e2-4d00-8772-a255f010a2a9","clientTransactionId":"123456","institutionTransactionId":"456789","userId":"123456798","status":"failed","amountInFiat":10.3,"amountInFiatCurrencyCode":"USD","amount":0.123,"symbol":"ETH","networkName":"Polygon","createdTimestamp":1653211113,"from":{"id":"8e25acb5-a9e2-4d00-8772-a255f010a2a9","type":"deFiWallet","name":"MetaMask"},"hash":"0x77f3a280aa5cfe956a5759c24cf774325504070b32b4159...","isFeeIncluded":false,"totalFeesAmountInFiat":0,"totalTransactionAmountInFiat":10.3,"fundingMethods":[]}],"total":10},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -1889,7 +1869,7 @@
                 },
                 "examples": {
                   "Successful transfer update": {
-                    "value": {"content":{"status":"succeeded","transferResult":{"id":"e332336c-de22-11ed-b5ea-0242ac120002","clientTransactionId":"client-transaction-id","status":"succeeded","amountInFiat":10,"amount":10,"symbol":"USDT","networkName":"Ethereum","createdTimestamp":0,"hash":"0xdcfd72635a9b16d3bc0e75311f6fe0612970e9714a1e9e93de0ea5acffc6a454"}},"status":"ok","message":"","errorType":""}
+                    "value": {"content":{"status":"succeeded","transferResult":{"id":"e332336c-de22-11ed-b5ea-0242ac120002","clientTransactionId":"client-transaction-id","status":"succeeded","amountInFiat":10,"amount":10,"symbol":"USDT","networkName":"Ethereum","createdTimestamp":0,"hash":"0xdcfd72635a9b16d3bc0e75311f6fe0612970e9714a1e9e93de0ea5acffc6a454","isFeeIncluded":false,"totalFeesAmountInFiat":0,"totalTransactionAmountInFiat":10,"fundingMethods":[]}},"status":"ok","message":"","errorType":""}
                   }
                 }
               }
@@ -3111,8 +3091,7 @@
         "enum": [
           "loginPassword",
           "mfaFlow",
-          "faceVerification",
-          "createAPIKey"
+          "faceVerification"
         ],
         "type": "string"
       },
@@ -3559,8 +3538,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -3597,10 +3575,6 @@
             "nullable": true
           },
           "challengeCode": {
-            "type": "string",
-            "nullable": true
-          },
-          "challengeType": {
             "type": "string",
             "nullable": true
           },
@@ -3656,10 +3630,6 @@
           "confirmationEmail": {
             "type": "string",
             "nullable": true
-          },
-          "isSensitiveFieldsEncrypted": {
-            "type": "boolean",
-            "description": "Indicates whether the sensitive fields in this request are encrypted.\r\nWhen set to true, the following fields should be encrypted using Base64 encoding:\r\n- Username\r\n- Password\r\n- Phone\r\n- TradePin\r\n- ChallengeAnswer\r\n- MfaCode\r\n- DeviceInfo\r\n- ConfirmationEmail\r\n            \r\nBase64 encoding is used to encode these fields into a format that can be safely transmitted and stored."
           }
         },
         "additionalProperties": false
@@ -3680,9 +3650,7 @@
               "emailVerification",
               "emailReceived",
               "captchaChallenge",
-              "faceVerification",
-              "apiKeyLimitationExceeded",
-              "bindMfaRequired"
+              "faceVerification"
             ],
             "allOf": [
               {
@@ -3768,6 +3736,14 @@
             ],
             "nullable": true,
             "deprecated": true
+          },
+          "brokerBrandInfo": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerBrandInfo"
+              }
+            ],
+            "nullable": true
           },
           "accountTokens": {
             "type": "array",
@@ -3931,8 +3907,7 @@
               "deviceConfirmationRequired",
               "mfaFailed",
               "addressWhitelistRequired",
-              "secondMfaRequired",
-              "emailConfirmationApprovalRequired"
+              "secondMfaRequired"
             ],
             "allOf": [
               {
@@ -4070,8 +4045,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -4217,8 +4191,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -4663,8 +4636,7 @@
               "deviceConfirmationRequired",
               "mfaFailed",
               "addressWhitelistRequired",
-              "secondMfaRequired",
-              "emailConfirmationApprovalRequired"
+              "secondMfaRequired"
             ],
             "allOf": [
               {
@@ -5085,8 +5057,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -5238,8 +5209,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -5417,8 +5387,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -5626,8 +5595,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -5915,8 +5883,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -6128,8 +6095,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -6460,8 +6426,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -7013,15 +6978,14 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n"
           }
         },
         "additionalProperties": false
@@ -7118,9 +7082,7 @@
           "emailVerification",
           "emailReceived",
           "captchaChallenge",
-          "faceVerification",
-          "apiKeyLimitationExceeded",
-          "bindMfaRequired"
+          "faceVerification"
         ],
         "type": "string"
       },
@@ -7168,8 +7130,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -7327,8 +7288,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -7336,6 +7296,20 @@
               }
             ],
             "description": "Type of the institution to connect"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BrokerBrandInfo": {
+        "type": "object",
+        "properties": {
+          "brokerLogo": {
+            "type": "string",
+            "nullable": true
+          },
+          "brokerPrimaryColor": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -7394,8 +7368,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -7574,8 +7547,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -7688,8 +7660,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -7771,8 +7742,7 @@
           "deviceConfirmationRequired",
           "mfaFailed",
           "addressWhitelistRequired",
-          "secondMfaRequired",
-          "emailConfirmationApprovalRequired"
+          "secondMfaRequired"
         ],
         "type": "string"
       },
@@ -8080,8 +8050,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -8194,8 +8163,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -8281,8 +8249,7 @@
           "bybit",
           "paxos",
           "coinbasePrime",
-          "btcTurkDirect",
-          "kuCoinDirect"
+          "btcTurkDirect"
         ],
         "type": "string"
       },
@@ -8408,8 +8375,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -8886,8 +8852,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -8922,8 +8887,7 @@
               "mfaFailed",
               "addressWhitelistRequired",
               "secondMfaRequired",
-              "deFiWalletConfirmationRequired",
-              "emailConfirmationApprovalRequired"
+              "deFiWalletConfirmationRequired"
             ],
             "allOf": [
               {
@@ -9054,8 +9018,7 @@
               "deviceConfirmationRequired",
               "mfaFailed",
               "addressWhitelistRequired",
-              "secondMfaRequired",
-              "emailConfirmationApprovalRequired"
+              "secondMfaRequired"
             ],
             "allOf": [
               {
@@ -9160,8 +9123,7 @@
           "mfaFailed",
           "addressWhitelistRequired",
           "secondMfaRequired",
-          "deFiWalletConfirmationRequired",
-          "emailConfirmationApprovalRequired"
+          "deFiWalletConfirmationRequired"
         ],
         "type": "string"
       },
@@ -9226,10 +9188,6 @@
             "description": "A unique identifier representing a specific integration obtained from the list of available integrations.",
             "format": "uuid",
             "nullable": true
-          },
-          "disableApiKeyGeneration": {
-            "type": "boolean",
-            "description": "For direct integrations that also support API keys, Link presents the user with the option to generate an API key for seamless access.\r\nIf this param is true, this feature will be disabled."
           }
         },
         "additionalProperties": false
@@ -9344,8 +9302,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -9492,8 +9449,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -9554,16 +9510,6 @@
       "IntegrationLogo": {
         "type": "object",
         "properties": {
-          "logoLightUrl": {
-            "type": "string",
-            "description": "Light logo url.",
-            "nullable": true
-          },
-          "logoDarkUrl": {
-            "type": "string",
-            "description": "Dark logo url.",
-            "nullable": true
-          },
           "logoWhiteUrl": {
             "type": "string",
             "description": "White logo url.",
@@ -9579,19 +9525,9 @@
             "description": "Colored logo url.",
             "nullable": true
           },
-          "iconLightUrl": {
-            "type": "string",
-            "description": "White icon url.",
-            "nullable": true
-          },
-          "iconDarkUrl": {
-            "type": "string",
-            "description": "Light icon url.",
-            "nullable": true
-          },
           "iconWhiteUrl": {
             "type": "string",
-            "description": "Dark icon url.",
+            "description": "White icon url.",
             "nullable": true
           },
           "iconBlackUrl": {
@@ -9602,11 +9538,6 @@
           "iconColorUrl": {
             "type": "string",
             "description": "Colored logo url.",
-            "nullable": true
-          },
-          "base64Logo": {
-            "type": "string",
-            "description": "Base64 PNG logo.",
             "nullable": true
           }
         },
@@ -9667,8 +9598,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -9690,15 +9620,6 @@
             "description": "Integration categories.",
             "nullable": true
           },
-          "style": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/IntegrationStyle"
-              }
-            ],
-            "description": "Style object.",
-            "nullable": true
-          },
           "logo": {
             "allOf": [
               {
@@ -9706,11 +9627,6 @@
               }
             ],
             "description": "Logo object.",
-            "nullable": true
-          },
-          "forgotPasswordLink": {
-            "type": "string",
-            "description": "Forgot Password Link.",
             "nullable": true
           },
           "cryptoTransfersSupported": {
@@ -9781,8 +9697,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -9901,8 +9816,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -9929,63 +9843,6 @@
           }
         },
         "additionalProperties": false
-      },
-      "IntegrationStyle": {
-        "type": "object",
-        "properties": {
-          "fieldActiveLight": {
-            "type": "string",
-            "description": "Field Active Light Hex Color",
-            "nullable": true
-          },
-          "buttonPrimaryLight": {
-            "type": "string",
-            "description": "Button Primary Light Hex Color",
-            "nullable": true
-          },
-          "buttonHoverLight": {
-            "type": "string",
-            "description": "Button Hover Light Hex Color",
-            "nullable": true
-          },
-          "buttonTextLight": {
-            "type": "string",
-            "description": "Button Text Light Hex Color",
-            "nullable": true
-          },
-          "buttonTextHoverLight": {
-            "type": "string",
-            "description": "Button Text Hover Light Hex Color",
-            "nullable": true
-          },
-          "fieldActiveDark": {
-            "type": "string",
-            "description": "Field Active Dark Hex Color",
-            "nullable": true
-          },
-          "buttonPrimaryDark": {
-            "type": "string",
-            "description": "Button Primary Dark Hex Color",
-            "nullable": true
-          },
-          "buttonHoverDark": {
-            "type": "string",
-            "description": "Button Hover Dark Hex Color",
-            "nullable": true
-          },
-          "buttonTextDark": {
-            "type": "string",
-            "description": "Button Text Dark Hex Color",
-            "nullable": true
-          },
-          "buttonTextHoverDark": {
-            "type": "string",
-            "description": "Button Text Hover Dark Hex Color",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false,
-        "description": "Integration style"
       },
       "IntegrationsResponse": {
         "type": "object",
@@ -10225,8 +10082,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -10756,15 +10612,14 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```DeFiWallet```\n"
           }
         },
         "additionalProperties": false
@@ -10845,15 +10700,14 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```DeFiWallet```\n"
           },
           "includeMarketValue": {
             "type": "boolean"
@@ -11039,8 +10893,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -11098,13 +10951,6 @@
           "fiatCurrency": {
             "type": "string",
             "description": "Fiat currency that is to get corresponding converted fiat values of transfer and fee amounts. If not provided, defaults to `USD`.",
-            "nullable": true
-          },
-          "transactionId": {
-            "maxLength": 128,
-            "minLength": 0,
-            "type": "string",
-            "description": "Transaction ID Provided by client to track transaction in future calls.",
             "nullable": true
           },
           "isInclusiveFeeEnabled": {
@@ -11249,11 +11095,6 @@
             "description": "Transfer amount in fiat. If the transfer was requested in crypto amount using the `Amount` field,\r\nthis field contains the corresponding converted to fiat value.",
             "format": "double"
           },
-          "totalEstimatedAmount": {
-            "type": "number",
-            "description": "Total estimated amount of the transfer including all fees, in cryptocurrency.",
-            "format": "double"
-          },
           "totalEstimatedAmountInFiat": {
             "type": "number",
             "description": "Total estimated amount of the transfer including all fees, converted to fiat.",
@@ -11364,11 +11205,6 @@
           "amountToReceiveInFiat": {
             "type": "number",
             "description": "Indicates the final amount in fiat to receive after all fees are applied. In case fees are not inclusive (`IsFeeIncluded` is `false`),\r\nthis field will be equal to the `AmountInFiat` field.",
-            "format": "double"
-          },
-          "transferAmountToRequest": {
-            "type": "number",
-            "description": "Exact amount in cryptocurrency requested to transfer to the destination address using the target integration.",
             "format": "double"
           }
         },
@@ -11661,8 +11497,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -11755,8 +11590,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -12086,8 +11920,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -12237,8 +12070,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -12329,8 +12161,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -12430,8 +12261,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -12589,8 +12419,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -12826,8 +12655,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -12844,78 +12672,6 @@
         },
         "additionalProperties": false,
         "description": "Integration model."
-      },
-      "TransferIntegrationWithLogoModel": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "Unique identifier of integration.",
-            "format": "uuid"
-          },
-          "type": {
-            "enum": [
-              "robinhood",
-              "eTrade",
-              "alpaca",
-              "tdAmeritrade",
-              "weBull",
-              "stash",
-              "interactiveBrokers",
-              "public",
-              "coinbase",
-              "kraken",
-              "coinbasePro",
-              "cryptoCom",
-              "openSea",
-              "binanceUs",
-              "gemini",
-              "cryptocurrencyAddress",
-              "cryptocurrencyWallet",
-              "okCoin",
-              "bittrex",
-              "kuCoin",
-              "etoro",
-              "cexIo",
-              "binanceInternational",
-              "bitstamp",
-              "gateIo",
-              "acorns",
-              "okx",
-              "bitFlyer",
-              "coinlist",
-              "huobi",
-              "bitfinex",
-              "deFiWallet",
-              "krakenDirect",
-              "vanguard",
-              "binanceInternationalDirect",
-              "bitfinexDirect",
-              "bybit",
-              "paxos",
-              "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
-            ],
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/BrokerType"
-              }
-            ],
-            "description": "Type of integration."
-          },
-          "name": {
-            "type": "string",
-            "description": "Name of integration.",
-            "nullable": true
-          },
-          "logoUrl": {
-            "type": "string",
-            "description": "Integration logo URL.",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
       },
       "TransferModel": {
         "type": "object",
@@ -12978,11 +12734,6 @@
             "description": "Transfer network name.",
             "nullable": true
           },
-          "networkLogoUrl": {
-            "type": "string",
-            "description": "Network logo URL.",
-            "nullable": true
-          },
           "createdTimestamp": {
             "type": "integer",
             "description": "Created timestamp.",
@@ -12991,7 +12742,7 @@
           "from": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/TransferIntegrationWithLogoModel"
+                "$ref": "#/components/schemas/TransferIntegrationModel"
               }
             ],
             "description": "From integration.",
@@ -13000,12 +12751,6 @@
           "hash": {
             "type": "string",
             "description": "Transfer hash.",
-            "nullable": true
-          },
-          "infoUrl": {
-            "type": "string",
-            "description": "Transfer info url on blockchain explorer.",
-            "format": "uri",
             "nullable": true
           },
           "gasFee": {
@@ -13063,12 +12808,6 @@
           "destinationAmount": {
             "type": "number",
             "description": "Amount what destination actually received.",
-            "format": "double",
-            "nullable": true
-          },
-          "destinationAmountInFiat": {
-            "type": "number",
-            "description": "Amount in fiat what destination actually received.",
             "format": "double",
             "nullable": true
           },
@@ -13416,15 +13155,14 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```DeFiWallet```\n"
           },
           "data": {
             "type": "string",
@@ -13556,15 +13294,14 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```DeFiWallet```\n"
           },
           "symbol": {
             "type": "string",
@@ -13646,15 +13383,14 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```DeFiWallet```\n"
           },
           "addressType": {
             "allOf": [
@@ -13736,15 +13472,14 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```DeFiWallet```\n"
           },
           "count": {
             "type": "integer",
@@ -13782,95 +13517,6 @@
         },
         "additionalProperties": false
       },
-      "UpdateTransferModel": {
-        "type": "object",
-        "properties": {
-          "id": {
-            "type": "string",
-            "description": "Mesh transfer identifier.",
-            "format": "uuid"
-          },
-          "clientTransactionId": {
-            "type": "string",
-            "description": "Client transaction identifier.",
-            "nullable": true
-          },
-          "institutionTransactionId": {
-            "type": "string",
-            "description": "Integration transaction identifier.",
-            "nullable": true
-          },
-          "userId": {
-            "type": "string",
-            "description": "Client's user identifier.",
-            "nullable": true
-          },
-          "status": {
-            "enum": [
-              "pending",
-              "succeeded",
-              "failed"
-            ],
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TransferStatus"
-              }
-            ],
-            "description": "Transfer status."
-          },
-          "amountInFiat": {
-            "type": "number",
-            "description": "Transfer amount in fiat.",
-            "format": "double"
-          },
-          "amountInFiatCurrencyCode": {
-            "type": "string",
-            "description": "Transfer amount in fiat currency code.",
-            "nullable": true
-          },
-          "amount": {
-            "type": "number",
-            "description": "Transfer amount.",
-            "format": "double"
-          },
-          "symbol": {
-            "type": "string",
-            "description": "Transfer cryptocurrency symbol.",
-            "nullable": true
-          },
-          "networkName": {
-            "type": "string",
-            "description": "Transfer network name.",
-            "nullable": true
-          },
-          "createdTimestamp": {
-            "type": "integer",
-            "description": "Created timestamp.",
-            "format": "int64"
-          },
-          "from": {
-            "allOf": [
-              {
-                "$ref": "#/components/schemas/TransferIntegrationModel"
-              }
-            ],
-            "description": "From integration.",
-            "nullable": true
-          },
-          "hash": {
-            "type": "string",
-            "description": "Transfer hash.",
-            "nullable": true
-          },
-          "executedTimestamp": {
-            "type": "integer",
-            "description": "Transfer executed Unix timestamp.",
-            "format": "int64",
-            "nullable": true
-          }
-        },
-        "additionalProperties": false
-      },
       "UpdateTransferResponse": {
         "type": "object",
         "properties": {
@@ -13895,7 +13541,7 @@
           "transferResult": {
             "allOf": [
               {
-                "$ref": "#/components/schemas/UpdateTransferModel"
+                "$ref": "#/components/schemas/TransferModel"
               }
             ],
             "description": "Result of the transfer initiation.",
@@ -14009,8 +13655,7 @@
               "bybit",
               "paxos",
               "coinbasePrime",
-              "btcTurkDirect",
-              "kuCoinDirect"
+              "btcTurkDirect"
             ],
             "allOf": [
               {
@@ -14040,13 +13685,13 @@
     "securitySchemes": {
       "Client-Secret": {
         "type": "apiKey",
-        "description": "Contact Mesh to get client Secret",
+        "description": "Contact Front to get client Secret",
         "name": "X-Client-Secret",
         "in": "header"
       },
       "Client-Id": {
         "type": "apiKey",
-        "description": "Contact Mesh to get client Id",
+        "description": "Contact Front to get client Id",
         "name": "X-Client-Id",
         "in": "header"
       }
@@ -14072,11 +13717,11 @@
     },
     {
       "name": "Portfolio",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```DeFiWallet```\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```DeFiWallet```\n"
     },
     {
       "name": "Balance",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n"
     },
     {
       "name": "Transactions",
@@ -14084,7 +13729,7 @@
     },
     {
       "name": "Transfers",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```DeFiWallet```\n\n\n### Integration-specific notes:\n\n\n#### Robinhood:\n\n\nCryptocurrency transfers should be enabled in Robinhood settings. Transfers are disabled by default, enabling them for end users requires a review from Robinhood.\n\nPlease note:\n * `MfaCode` parameter is required to initiate a transaction in Robinhood.\n * The user's security settings should be configured to use an authenticator application.\n * Robinhood doesn't allow initiation of transactions if the authenticator application is not configured.\n\n\n#### Coinbase:\n\n\n`MfaCode` parameter should be used to initiate transactions in Coinbase.\n * If the end user's Coinbase account is configured to use text messages (SMS) for two factor authentication, the API will return `MfaRequired` status, and a text code will then be sent by Coinbase. The code is expected to be provided in the subsequent call using the `MfaCode` request field\n * If the account is configured to use an authenticator application, the API is expecting to get the code in the `MfaCode` request field.\n\n\n#### Kraken:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n\n\n#### CoinbasePro:\n * CoinbasePro does not provide multiple chains per a symbol, so default chains are used for getting Deposit addresses.\n\n\n#### Binance:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance Us.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### KuCoin:\n\n\nKuCoin requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n\n`Fee` parameter should be used to initiate a transaction in KuCoin.\n\nPlease note:\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * All currencies have their minimum `fee` and `amount` requirements. Please use `symbol/details` endpoint to get this data for a particular symbol.\n * KuCoin requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### BinanceInternational:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance International.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### GateIo:\n\n\nGate.io requires adding IP address to the list of trusted IP addresses to be able to initiate a cryptocurrency transfers.\n\nWithdrawal address should be already verified or added on the Gate.io UI (in mobile application or on the web site).\n * Please reach out to Front to get the static IP address for withdrawals. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * Only verified withdrawal blockchain addresses are allowed for withdrawal with Gate.io API.\n * Gate.io requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### Huobi:\n\n\nWarning: Huobi does not refund executed deposits that are below the `Minimum Deposit Amount`\n * Please check the MinimumDepositAmount in Get Deposit Address response in order to avoid making a deposit below the minimum amount\n * Huobi does not allow withdrawals to addresses that are not white-listed, please add the address that you would like to withdraw to the white list of addresses through the UI so that a withrawal can be processed\n\n\n#### Bitfinex:\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\n\n\n#### KrakenDirect:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n\n\n#### BitfinexDirect:\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```DeFiWallet```\n\n\n### Integration-specific notes:\n\n\n#### Robinhood:\n\n\nCryptocurrency transfers should be enabled in Robinhood settings. Transfers are disabled by default, enabling them for end users requires a review from Robinhood.\n\nPlease note:\n * `MfaCode` parameter is required to initiate a transaction in Robinhood.\n * The user's security settings should be configured to use an authenticator application.\n * Robinhood doesn't allow initiation of transactions if the authenticator application is not configured.\n\n\n#### Coinbase:\n\n\n`MfaCode` parameter should be used to initiate transactions in Coinbase.\n * If the end user's Coinbase account is configured to use text messages (SMS) for two factor authentication, the API will return `MfaRequired` status, and a text code will then be sent by Coinbase. The code is expected to be provided in the subsequent call using the `MfaCode` request field\n * If the account is configured to use an authenticator application, the API is expecting to get the code in the `MfaCode` request field.\n\n\n#### Kraken:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n\n\n#### CoinbasePro:\n * CoinbasePro does not provide multiple chains per a symbol, so default chains are used for getting Deposit addresses.\n\n\n#### Binance:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance Us.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### KuCoin:\n\n\nKuCoin requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n\n`Fee` parameter should be used to initiate a transaction in KuCoin.\n\nPlease note:\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * All currencies have their minimum `fee` and `amount` requirements. Please use `symbol/details` endpoint to get this data for a particular symbol.\n * KuCoin requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### BinanceInternational:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance International.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### GateIo:\n\n\nGate.io requires adding IP address to the list of trusted IP addresses to be able to initiate a cryptocurrency transfers.\n\nWithdrawal address should be already verified or added on the Gate.io UI (in mobile application or on the web site).\n * Please reach out to Front to get the static IP address for withdrawals. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * Only verified withdrawal blockchain addresses are allowed for withdrawal with Gate.io API.\n * Gate.io requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### Huobi:\n\n\nWarning: Huobi does not refund executed deposits that are below the `Minimum Deposit Amount`\n * Please check the MinimumDepositAmount in Get Deposit Address response in order to avoid making a deposit below the minimum amount\n * Huobi does not allow withdrawals to addresses that are not white-listed, please add the address that you would like to withdraw to the white list of addresses through the UI so that a withrawal can be processed\n\n\n#### Bitfinex:\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\n\n\n#### KrakenDirect:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n"
     },
     {
       "name": "Assets"
