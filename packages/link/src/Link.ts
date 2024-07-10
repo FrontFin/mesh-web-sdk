@@ -179,7 +179,7 @@ async function handleWalletBrowserEvent(
     case 'walletBrowserSignRequest': {
       const payload = event.data.payload
       try {
-        const result = await signedMessage(payload.address)
+        const result = await signedMessage(payload.address, payload.message)
         if (result instanceof Error) {
           throw result
         }
