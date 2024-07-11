@@ -658,7 +658,7 @@
           "Managed Account Authentication"
         ],
         "summary": "Refresh auth token",
-        "description": "Refresh auth token of the connected institution.\r\nSome institutions do not require tokens to be refreshed.\r\n            \r\nThe following institutions require custom flows:\r\n            \r\nWeBull: AuthToken should be provided along with the RefreshToken\r\n            \r\nVanguard: security settings may activate MFA, requiring user action.\r\nIf MFA is triggered, a second refresh request should be sent.\r\nSecond request should contain MFA code and access token obtained from initial response.\r\n            \r\nBitfinex Direct: Expired Access Token is used as Refresh token. Use this endpoint to\r\ntrade it for a new one",
+        "description": "Refresh auth token of the connected institution.\r\nSome institutions do not require tokens to be refreshed.\r\n            \r\nThe following institutions require custom flows:\r\n            \r\nWeBull: AuthToken should be provided along with the RefreshToken\r\n            \r\nVanguard: security settings may activate MFA, requiring user action.\r\nIf MFA is triggered, a second refresh request should be sent.\r\nSecond request should contain MFA code and access token obtained from initial response",
         "requestBody": {
           "content": {
             "application/json": {
@@ -962,7 +962,9 @@
                 "coinbasePrime",
                 "btcTurkDirect",
                 "kuCoinDirect",
-                "okxOAuth"
+                "okxOAuth",
+                "paribuDirect",
+                "robinhoodConnect"
               ],
               "allOf": [
                 {
@@ -1377,7 +1379,7 @@
                 },
                 "examples": {
                   "Successful transfer preview": {
-                    "value": {"content":{"status":"succeeded","previewResult":{"previewId":"29b185b1-2305-40fb-a0e2-929d61451568","previewExpiresIn":300,"fromAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","toAddress":"0x326a8825472bb0f4719998e708a1eeeb4473ed1b","symbol":"USDT","amount":10,"amountInFiat":10,"totalEstimatedAmount":11.21,"totalEstimatedAmountInFiat":11.21,"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","institutionTransferFee":{"fee":0,"feeCurrency":"USDT","feeInFiat":0},"estimatedNetworkGasFee":{"fee":1.1,"feeCurrency":"USDT","feeInFiat":1.1},"unitPrice":0,"customClientFee":{"fee":0.011,"feeCurrency":"USDT","feeInFiat":0.011},"isCustomClientFeeProvided":false,"amountWithCustomClientFee":0,"isFeeIncluded":false,"amountToReceive":0,"amountToReceiveInFiat":0,"transferAmountToRequest":0}},"status":"ok","message":"","errorType":""}
+                    "value": {"content":{"status":"succeeded","previewResult":{"previewId":"29b185b1-2305-40fb-a0e2-929d61451568","previewExpiresIn":300,"fromAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","toAddress":"0x326a8825472bb0f4719998e708a1eeeb4473ed1b","symbol":"USDT","amount":10,"amountInFiat":10,"totalEstimatedAmount":11.21,"totalEstimatedAmountInFiat":11.21,"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","institutionTransferFee":{"fee":0,"feeCurrency":"USDT","feeInFiat":0},"estimatedNetworkGasFee":{"fee":1.1,"feeCurrency":"USDT","feeInFiat":1.1},"unitPrice":0,"customClientFee":{"fee":0.011,"feeCurrency":"USDT","feeInFiat":0.011},"isCustomClientFeeProvided":false,"amountWithCustomClientFee":"0","isFeeIncluded":false,"amountToReceive":0,"amountToReceiveInFiat":0,"transferAmountToRequest":0}},"status":"ok","message":"","errorType":""}
                   },
                   "Failed transfer preview": {
                     "value": {"status":"badRequest","message":"The\u00A0specified amount is greater than the maximum amount allowed.","displayMessage":"The\u00A0specified amount is greater than the maximum amount allowed.","errorType":"invalidField"}
@@ -2607,6 +2609,93 @@
         }
       }
     },
+    "/api/v1/transactions/status/{brokerType}": {
+      "get": {
+        "tags": [
+          "Transactions"
+        ],
+        "parameters": [
+          {
+            "name": "brokerType",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "enum": [
+                "robinhood",
+                "eTrade",
+                "alpaca",
+                "tdAmeritrade",
+                "weBull",
+                "stash",
+                "interactiveBrokers",
+                "public",
+                "coinbase",
+                "kraken",
+                "coinbasePro",
+                "cryptoCom",
+                "openSea",
+                "binanceUs",
+                "gemini",
+                "cryptocurrencyAddress",
+                "cryptocurrencyWallet",
+                "okCoin",
+                "bittrex",
+                "kuCoin",
+                "etoro",
+                "cexIo",
+                "binanceInternational",
+                "bitstamp",
+                "gateIo",
+                "acorns",
+                "okx",
+                "bitFlyer",
+                "coinlist",
+                "huobi",
+                "bitfinex",
+                "deFiWallet",
+                "krakenDirect",
+                "vanguard",
+                "binanceInternationalDirect",
+                "bitfinexDirect",
+                "bybit",
+                "paxos",
+                "coinbasePrime",
+                "btcTurkDirect",
+                "kuCoinDirect",
+                "okxOAuth",
+                "paribuDirect",
+                "robinhoodConnect"
+              ],
+              "allOf": [
+                {
+                  "$ref": "#/components/schemas/BrokerType"
+                }
+              ]
+            }
+          },
+          {
+            "name": "orderId",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/B2BBrokerOrderStatusApiResult"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/transfers/list": {
       "post": {
         "tags": [
@@ -3113,7 +3202,8 @@
           "loginPassword",
           "mfaFlow",
           "faceVerification",
-          "createAPIKey"
+          "createAPIKey",
+          "loginQrCode"
         ],
         "type": "string"
       },
@@ -3562,7 +3652,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -3623,7 +3715,9 @@
               "phoneAndEmail",
               "requireNextSecurityQuestion",
               "readEmail",
-              "face"
+              "face",
+              "tradingPin",
+              "qrCode"
             ],
             "allOf": [
               {
@@ -3632,6 +3726,10 @@
             ]
           },
           "deviceInfo": {
+            "type": "string",
+            "nullable": true
+          },
+          "webData": {
             "type": "string",
             "nullable": true
           },
@@ -3683,8 +3781,10 @@
               "emailReceived",
               "captchaChallenge",
               "faceVerification",
-              "apiKeyLimitationExceeded",
-              "bindMfaRequired"
+              "bindMfaRequired",
+              "apiKeyGenerationError",
+              "qrCodeRequired",
+              "qrCodeExpired"
             ],
             "allOf": [
               {
@@ -4074,7 +4174,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -4222,7 +4324,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -5091,7 +5195,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -5245,7 +5351,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -5425,7 +5533,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -5459,6 +5569,67 @@
           "mfaCode": {
             "type": "string",
             "description": "MFA Code to cancel an order (requested by Kraken if MFA is enabled in user settings)",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "B2BBrokerOrderStatus": {
+        "type": "object",
+        "properties": {
+          "orderStatus": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "B2BBrokerOrderStatusApiResult": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "ok",
+              "serverFailure",
+              "permissionDenied",
+              "badRequest",
+              "notFound",
+              "conflict",
+              "tooManyRequest",
+              "locked"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiResultStatus"
+              }
+            ],
+            "readOnly": true
+          },
+          "message": {
+            "type": "string",
+            "description": "A message generated by the API",
+            "nullable": true
+          },
+          "displayMessage": {
+            "type": "string",
+            "description": "User-friendly display message that can be presented to the end user",
+            "nullable": true
+          },
+          "errorType": {
+            "type": "string",
+            "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
+            "nullable": true
+          },
+          "errorData": {
+            "nullable": true,
+            "readOnly": true
+          },
+          "content": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/B2BBrokerOrderStatus"
+              }
+            ],
             "nullable": true
           }
         },
@@ -5635,7 +5806,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -5925,7 +6098,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -6139,7 +6314,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -6472,7 +6649,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -7026,14 +7205,16 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n"
           }
         },
         "additionalProperties": false
@@ -7131,8 +7312,10 @@
           "emailReceived",
           "captchaChallenge",
           "faceVerification",
-          "apiKeyLimitationExceeded",
-          "bindMfaRequired"
+          "bindMfaRequired",
+          "apiKeyGenerationError",
+          "qrCodeRequired",
+          "qrCodeExpired"
         ],
         "type": "string"
       },
@@ -7182,7 +7365,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -7342,7 +7527,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -7410,7 +7597,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -7591,7 +7780,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -7706,7 +7897,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -8099,7 +8292,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -8214,7 +8409,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -8302,7 +8499,9 @@
           "coinbasePrime",
           "btcTurkDirect",
           "kuCoinDirect",
-          "okxOAuth"
+          "okxOAuth",
+          "paribuDirect",
+          "robinhoodConnect"
         ],
         "type": "string"
       },
@@ -8430,7 +8629,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -8849,7 +9050,8 @@
           "phone",
           "email",
           "totp",
-          "face"
+          "face",
+          "tradingPin"
         ],
         "type": "string"
       },
@@ -8909,7 +9111,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -9368,7 +9572,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -9517,7 +9723,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -9693,7 +9901,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -9808,7 +10018,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -9929,7 +10141,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -10254,7 +10468,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -10307,7 +10523,9 @@
           "phoneAndEmail",
           "requireNextSecurityQuestion",
           "readEmail",
-          "face"
+          "face",
+          "tradingPin",
+          "qrCode"
         ],
         "type": "string"
       },
@@ -10786,14 +11004,16 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```DeFiWallet```\n"
           }
         },
         "additionalProperties": false
@@ -10876,14 +11096,16 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```DeFiWallet```\n"
           },
           "includeMarketValue": {
             "type": "boolean"
@@ -11071,7 +11293,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -11694,7 +11918,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -11789,7 +12015,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -12121,7 +12349,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -12273,7 +12503,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -12366,7 +12598,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -12468,7 +12702,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -12628,7 +12864,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -12866,7 +13104,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -12935,7 +13175,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -13458,14 +13700,16 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```DeFiWallet```\n"
           },
           "data": {
             "type": "string",
@@ -13599,14 +13843,16 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```DeFiWallet```\n"
           },
           "symbol": {
             "type": "string",
@@ -13690,14 +13936,16 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```DeFiWallet```\n"
           },
           "addressType": {
             "allOf": [
@@ -13781,14 +14029,16 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```DeFiWallet```\n"
           },
           "count": {
             "type": "integer",
@@ -14055,7 +14305,9 @@
               "coinbasePrime",
               "btcTurkDirect",
               "kuCoinDirect",
-              "okxOAuth"
+              "okxOAuth",
+              "paribuDirect",
+              "robinhoodConnect"
             ],
             "allOf": [
               {
@@ -14117,11 +14369,11 @@
     },
     {
       "name": "Portfolio",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```DeFiWallet```\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```DeFiWallet```\n"
     },
     {
       "name": "Balance",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n"
     },
     {
       "name": "Transactions",
@@ -14129,7 +14381,7 @@
     },
     {
       "name": "Transfers",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```DeFiWallet```\n\n\n### Integration-specific notes:\n\n\n#### Robinhood:\n\n\nCryptocurrency transfers should be enabled in Robinhood settings. Transfers are disabled by default, enabling them for end users requires a review from Robinhood.\n\nPlease note:\n * `MfaCode` parameter is required to initiate a transaction in Robinhood.\n * The user's security settings should be configured to use an authenticator application.\n * Robinhood doesn't allow initiation of transactions if the authenticator application is not configured.\n\n\n#### Coinbase:\n\n\n`MfaCode` parameter should be used to initiate transactions in Coinbase.\n * If the end user's Coinbase account is configured to use text messages (SMS) for two factor authentication, the API will return `MfaRequired` status, and a text code will then be sent by Coinbase. The code is expected to be provided in the subsequent call using the `MfaCode` request field\n * If the account is configured to use an authenticator application, the API is expecting to get the code in the `MfaCode` request field.\n\n\n#### Kraken:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n\n\n#### CoinbasePro:\n * CoinbasePro does not provide multiple chains per a symbol, so default chains are used for getting Deposit addresses.\n\n\n#### Binance:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance Us.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### KuCoin:\n\n\nKuCoin requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n\n`Fee` parameter should be used to initiate a transaction in KuCoin.\n\nPlease note:\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * All currencies have their minimum `fee` and `amount` requirements. Please use `symbol/details` endpoint to get this data for a particular symbol.\n * KuCoin requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### BinanceInternational:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance International.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### GateIo:\n\n\nGate.io requires adding IP address to the list of trusted IP addresses to be able to initiate a cryptocurrency transfers.\n\nWithdrawal address should be already verified or added on the Gate.io UI (in mobile application or on the web site).\n * Please reach out to Front to get the static IP address for withdrawals. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * Only verified withdrawal blockchain addresses are allowed for withdrawal with Gate.io API.\n * Gate.io requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### Huobi:\n\n\nWarning: Huobi does not refund executed deposits that are below the `Minimum Deposit Amount`\n * Please check the MinimumDepositAmount in Get Deposit Address response in order to avoid making a deposit below the minimum amount\n * Huobi does not allow withdrawals to addresses that are not white-listed, please add the address that you would like to withdraw to the white list of addresses through the UI so that a withrawal can be processed\n\n\n#### Bitfinex:\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\n\n\n#### KrakenDirect:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n\n\n#### BitfinexDirect:\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```DeFiWallet```\n\n\n### Integration-specific notes:\n\n\n#### Robinhood:\n\n\nCryptocurrency transfers should be enabled in Robinhood settings. Transfers are disabled by default, enabling them for end users requires a review from Robinhood.\n\nPlease note:\n * `MfaCode` parameter is required to initiate a transaction in Robinhood.\n * The user's security settings should be configured to use an authenticator application.\n * Robinhood doesn't allow initiation of transactions if the authenticator application is not configured.\n\n\n#### Coinbase:\n\n\n`MfaCode` parameter should be used to initiate transactions in Coinbase.\n * If the end user's Coinbase account is configured to use text messages (SMS) for two factor authentication, the API will return `MfaRequired` status, and a text code will then be sent by Coinbase. The code is expected to be provided in the subsequent call using the `MfaCode` request field\n * If the account is configured to use an authenticator application, the API is expecting to get the code in the `MfaCode` request field.\n\n\n#### Kraken:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n\n\n#### CoinbasePro:\n * CoinbasePro does not provide multiple chains per a symbol, so default chains are used for getting Deposit addresses.\n\n\n#### Binance:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance Us.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### KuCoin:\n\n\nKuCoin requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n\n`Fee` parameter should be used to initiate a transaction in KuCoin.\n\nPlease note:\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * All currencies have their minimum `fee` and `amount` requirements. Please use `symbol/details` endpoint to get this data for a particular symbol.\n * KuCoin requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### BinanceInternational:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance International.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### GateIo:\n\n\nGate.io requires adding IP address to the list of trusted IP addresses to be able to initiate a cryptocurrency transfers.\n\nWithdrawal address should be already verified or added on the Gate.io UI (in mobile application or on the web site).\n * Please reach out to Front to get the static IP address for withdrawals. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * Only verified withdrawal blockchain addresses are allowed for withdrawal with Gate.io API.\n * Gate.io requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### Huobi:\n\n\nWarning: Huobi does not refund executed deposits that are below the `Minimum Deposit Amount`\n * Please check the MinimumDepositAmount in Get Deposit Address response in order to avoid making a deposit below the minimum amount\n * Huobi does not allow withdrawals to addresses that are not white-listed, please add the address that you would like to withdraw to the white list of addresses through the UI so that a withrawal can be processed\n\n\n#### Bitfinex:\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\n\n\n#### KrakenDirect:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n\n\n#### BitfinexDirect:\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\n"
     },
     {
       "name": "Assets"

@@ -127,13 +127,14 @@ export const connectToSpecificWallet = async (
 }
 
 export const signedMessage = async (
-  address: `0x${string}`
+  address: `0x${string}`,
+  message: string
 ): Promise<Hash | Error> => {
   return withWagmiErrorHandling(async () => {
     const config = await configPromise
     const signedMessage = await signMessage(config, {
       account: address,
-      message: 'Sign to verify ownership of wallet'
+      message: message
     })
 
     return signedMessage

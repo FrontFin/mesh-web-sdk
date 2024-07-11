@@ -48,6 +48,7 @@ export interface WalletBrowserSignRequest extends WalletBrowserEventBase {
   type: 'walletBrowserSignRequest'
   payload: {
     address: `0x${string}`
+    message: string
   }
 }
 
