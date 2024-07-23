@@ -52,7 +52,6 @@ exports[`Popup tests addPopup should add correct popup 1`] = `
     display: flex;
     flex-direction: column;
     border-radius: 2px;
-    background: white;
     flex-grow: 1;
   }
 
