@@ -65,7 +65,6 @@ const getStyles = (style?: LinkStyle) => `
     display: flex;
     flex-direction: column;
     border-radius: ${getNumber(24, style?.ir)}px;
-    background: white;
     flex-grow: 1;
   }
 
