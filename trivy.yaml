@@ -1,0 +1,16 @@
+config: trivy.yaml
+exit-code: 1
+format: table
+ignorefile: .trivyignore.yaml
+scan:
+    scanners:
+        - vuln
+        - secret
+severity:
+    - HIGH
+    - CRITICAL
+vulnerability:
+    ignore-unfixed: true
+    type:
+        - os
+        - library
