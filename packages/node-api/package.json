@@ -24,6 +24,9 @@
     "publish:npm": "yarn build && cd dist && yarn publish --access public"
   },
   "dependencies": {
-    "axios": "^1.2.5"
+    "axios": "^1.7.4"
+  },
+  "resolutions": {
+    "axios": "^1.74"
   }
 }

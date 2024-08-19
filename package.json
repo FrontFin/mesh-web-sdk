@@ -33,5 +33,9 @@
     "updateApi": "cd packages/node-api && yarn updateApi",
     "publish:npm": "lerna run publish:npm",
     "postinstall": "cd packages/link && yarn updateVersion"
+  },
+  "resolutions": {
+    "axios": "^1.7.4",
+    "semver": "^7.6.2"
   }
 }
