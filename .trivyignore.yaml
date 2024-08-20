@@ -4,10 +4,10 @@ vulnerabilities:
        - "node_modules/@esbuild/darwin-arm64/bin/esbuild"
        - "node_modules/@esbuild/linux-x64/bin/esbuild"
       statement: Accept the risk until Vite updates their dependency on esbuild to 0.22.0
-      expired_at: 2024-10-01
+      
     - id: CVE-2023-45288
       paths:
         - "node_modules/@esbuild/darwin-arm64/bin/esbuild"
         - "node_modules/@esbuild/linux-x64/bin/esbuild"
       statement: Accept the risk until Vite updates their dependency on esbuild to 0.22.0
-      expired_at: 2024-10-01
+      
