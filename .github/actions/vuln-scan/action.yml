@@ -1,0 +1,37 @@
+name: Run vulnerability scan
+description: A custom action that will run vulnerability scans
+
+inputs:
+  src-dir:
+    description: The directory of the source code
+    required: true
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Trivy Vulnerability Scan
+      uses: aquasecurity/trivy-action@0.24.0
+      id: trivy
+      continue-on-error: true
+      with:
+        scan-type: 'rootfs'
+        scan-ref: ${{ inputs.src-dir }}
+        trivy-config: trivy.yaml
+    - name: Publish Trivy Output To Summary
+      shell: bash
+      if: ${{ steps.trivy.outcome == 'failure' }}
+      run: |
+        {
+        echo "### Security Scan for ${{ inputs.pretty-name }}"
+        echo "<details><summary>Click to expand</summary>"
+        echo ""
+        echo '```'
+        cat trivy.txt
+        echo '```'
+        echo "</details>"
+        } >> $GITHUB_STEP_SUMMARY
+    - name: Fail on Vulnerabilities
+      shell: bash
+      if: ${{ steps.trivy.outcome == 'failure' }}
+      run: |
+        exit 1
