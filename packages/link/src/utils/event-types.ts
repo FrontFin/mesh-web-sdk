@@ -45,6 +45,7 @@ const LINK_EVENT_TYPE_KEYS = [
   'transferMfaRequired',
   'transferMfaEntered',
   'transferKycRequired',
+  'transferExecuted',
   'done',
   'close'
 ] as const
