@@ -21,6 +21,8 @@ export type LinkEventType =
   | TransferMfaRequired
   | TransferMfaEntered
   | TransferKycRequired
+  | TransferInitiated
+  | TransferExecuted
   | DoneEvent
   | CloseEvent
 
@@ -46,6 +48,7 @@ const LINK_EVENT_TYPE_KEYS = [
   'transferMfaEntered',
   'transferKycRequired',
   'transferExecuted',
+  'transferInitiated',
   'done',
   'close'
 ] as const
@@ -95,6 +98,28 @@ export interface CredentialsEntered extends LinkEventBase {
 
 export interface TransferStarted extends LinkEventBase {
   type: 'transferStarted'
+}
+
+export interface TransferInitiated extends LinkEventBase {
+  type: 'transferInitiated'
+  payload: {
+    integrationType?: string
+    integrationName: string
+    status: 'pending'
+  }
+}
+
+export interface TransferExecuted extends LinkEventBase {
+  type: 'transferExecuted'
+  payload: {
+    status: 'success' | 'pending'
+    txId: string
+    fromAddress: string
+    toAddress: string
+    symbol: string
+    amount: number
+    networkId: string
+  }
 }
 
 export interface TransferPreviewed extends LinkEventBase {
