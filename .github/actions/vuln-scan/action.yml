@@ -33,7 +33,6 @@ runs:
         scan-type: 'rootfs'
         scan-ref: ${{ inputs.src-dir }}
         trivy-config: trivy.yaml
-        cache-dir: .trivy
     - name: Publish Trivy Output To Summary
       shell: bash
       if: ${{ steps.trivy.outcome == 'failure' }}
