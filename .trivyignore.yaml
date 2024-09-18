@@ -1,13 +1,18 @@
 vulnerabilities:
-    - id: CVE-2024-24790
-      paths:
-       - "node_modules/@esbuild/darwin-arm64/bin/esbuild"
-       - "node_modules/@esbuild/linux-x64/bin/esbuild"
-      statement: Accept the risk until Vite updates their dependency on esbuild to 0.22.0
-      
-    - id: CVE-2023-45288
-      paths:
-        - "node_modules/@esbuild/darwin-arm64/bin/esbuild"
-        - "node_modules/@esbuild/linux-x64/bin/esbuild"
-      statement: Accept the risk until Vite updates their dependency on esbuild to 0.22.0
-      
+  - id: CVE-2024-24790
+    paths:
+      - 'node_modules/@esbuild/darwin-arm64/bin/esbuild'
+      - 'node_modules/@esbuild/linux-x64/bin/esbuild'
+    statement: Accept the risk until Vite updates their dependency on esbuild to 0.22.0
+
+  - id: CVE-2023-45288
+    paths:
+      - 'node_modules/@esbuild/darwin-arm64/bin/esbuild'
+      - 'node_modules/@esbuild/linux-x64/bin/esbuild'
+    statement: Accept the risk until Vite updates their dependency on esbuild to 0.22.0
+
+  - id: CVE-2024-34156
+    paths:
+      - 'node_modules/@esbuild/darwin-arm64/bin/esbuild'
+      - 'node_modules/@esbuild/linux-x64/bin/esbuild'
+    statement: Accept the risk until Vite updates their dependency on esbuild to 0.22.0
