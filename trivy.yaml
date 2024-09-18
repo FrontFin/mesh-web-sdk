@@ -1,7 +1,9 @@
+cache-dir: .trivy
 config: trivy.yaml
 exit-code: 1
 format: table
 ignorefile: .trivyignore.yaml
+output: trivy.txt
 scan:
     scanners:
         - vuln

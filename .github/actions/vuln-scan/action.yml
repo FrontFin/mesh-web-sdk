@@ -9,6 +9,22 @@ inputs:
 runs:
   using: 'composite'
   steps:
+    - id: trivy-db
+      name: Check trivy db sha
+      env:
+        GH_TOKEN: ${{ github.token }}
+      shell: bash
+      run: |
+        endpoint='/orgs/aquasecurity/packages/container/trivy-db/versions'
+        headers='Accept: application/vnd.github+json'
+        jqFilter='.[] | select(.metadata.container.tags[] | contains("latest")) | .name | sub("sha256:";"")'
+        sha=$(gh api -H "${headers}" "${endpoint}" | jq --raw-output "${jqFilter}")
+        echo "Trivy DB sha256:${sha}"
+        echo "sha=${sha}" >> $GITHUB_OUTPUT
+    - uses: actions/cache@v3
+      with:
+        path: .trivy
+        key: ${{ runner.os }}-trivy-db-${{ steps.trivy-db.outputs.sha }}
     - name: Trivy Vulnerability Scan
       uses: aquasecurity/trivy-action@0.24.0
       id: trivy
@@ -30,6 +46,9 @@ runs:
         echo '```'
         echo "</details>"
         } >> $GITHUB_STEP_SUMMARY
+    - name: Fix .trivy permissions
+      shell: bash
+      run: sudo chown -R $(stat . -c %u:%g) .trivy
     - name: Fail on Vulnerabilities
       shell: bash
       if: ${{ steps.trivy.outcome == 'failure' }}
