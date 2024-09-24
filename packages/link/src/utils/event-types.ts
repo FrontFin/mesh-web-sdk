@@ -23,6 +23,7 @@ export type LinkEventType =
   | TransferKycRequired
   | TransferInitiated
   | TransferExecuted
+  | TransferNoEligibleAssets
   | DoneEvent
   | CloseEvent
 
@@ -49,6 +50,7 @@ const LINK_EVENT_TYPE_KEYS = [
   'transferKycRequired',
   'transferExecuted',
   'transferInitiated',
+  'transferNoEligibleAssets',
   'done',
   'close'
 ] as const
@@ -120,6 +122,21 @@ export interface TransferExecuted extends LinkEventBase {
     amount: number
     networkId: string
   }
+}
+
+export interface TransferNoEligibleAssets extends LinkEventBase {
+  type: 'transferNoEligibleAssets';
+  payload: {
+    integrationType?: string;
+    integrationName: string;
+    noAssetsType?: string;
+    arrayOfTokensHeld: {
+      symbol: string;
+      amount: number;
+      amountInFiat?: number;
+      ineligibilityReason?: string;
+    }[];
+  };
 }
 
 export interface TransferPreviewed extends LinkEventBase {
