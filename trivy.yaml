@@ -1,4 +1,4 @@
-cache-dir: .trivy
+cache-dir: $HOME/.cache/trivy
 config: trivy.yaml
 exit-code: 1
 format: table

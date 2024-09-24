@@ -23,7 +23,7 @@ runs:
         echo "sha=${sha}" >> $GITHUB_OUTPUT
     - uses: actions/cache/restore@v4
       with:
-        path: .trivy
+        path: ${{ runner.env.HOME }}/.cache/trivy
         key: ${{ runner.os }}-trivy-db-${{ steps.trivy-db.outputs.sha }}
     - name: Trivy Vulnerability Scan
       uses: aquasecurity/trivy-action@0.24.0
@@ -35,7 +35,7 @@ runs:
         trivy-config: trivy.yaml
     - uses: actions/cache/save@v4
       with:
-        path: .trivy
+        path: ${{ runner.env.HOME }}/.cache/trivy
         key: ${{ runner.os }}-trivy-db-${{ steps.trivy-db.outputs.sha }}
     - name: Publish Trivy Output To Summary
       shell: bash
