@@ -23,7 +23,7 @@ runs:
       if: ${{ steps.trivy.outcome == 'failure' }}
       run: |
         {
-        echo "### Security Scan for Web SDK
+        echo "### Security Scan for Web SDK"
         echo "<details><summary>Click to expand</summary>"
         echo ""
         echo '```'
