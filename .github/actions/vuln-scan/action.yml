@@ -17,12 +17,13 @@ runs:
         scan-type: 'rootfs'
         scan-ref: ${{ inputs.src-dir }}
         trivy-config: trivy.yaml
+        output: trivy.txt
     - name: Publish Trivy Output To Summary
       shell: bash
       if: ${{ steps.trivy.outcome == 'failure' }}
       run: |
         {
-        echo "### Security Scan for ${{ inputs.pretty-name }}"
+        echo "### Security Scan for Web SDK
         echo "<details><summary>Click to expand</summary>"
         echo ""
         echo '```'
