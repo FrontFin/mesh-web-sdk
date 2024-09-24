@@ -21,7 +21,7 @@ runs:
         sha=$(gh api -H "${headers}" "${endpoint}" | jq --raw-output "${jqFilter}")
         echo "Trivy DB sha256:${sha}"
         echo "sha=${sha}" >> $GITHUB_OUTPUT
-    - uses: actions/cache@v3
+    - uses: actions/cache/restore@v4
       with:
         path: .trivy
         key: ${{ runner.os }}-trivy-db-${{ steps.trivy-db.outputs.sha }}
@@ -33,6 +33,10 @@ runs:
         scan-type: 'rootfs'
         scan-ref: ${{ inputs.src-dir }}
         trivy-config: trivy.yaml
+    - uses: actions/cache/save@v4
+      with:
+        path: .trivy
+        key: ${{ runner.os }}-trivy-db-${{ steps.trivy-db.outputs.sha }}
     - name: Publish Trivy Output To Summary
       shell: bash
       if: ${{ steps.trivy.outcome == 'failure' }}
