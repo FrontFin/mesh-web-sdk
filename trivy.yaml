@@ -1,16 +1,18 @@
+cache-dir: .trivy
 config: trivy.yaml
 exit-code: 1
 format: table
 ignorefile: .trivyignore.yaml
+output: trivy.txt
 scan:
-    scanners:
-        - vuln
-        - secret
+  scanners:
+    - vuln
+    - secret
 severity:
-    - HIGH
-    - CRITICAL
+  - HIGH
+  - CRITICAL
 vulnerability:
-    ignore-unfixed: true
-    type:
-        - os
-        - library
+  ignore-unfixed: true
+  type:
+    - os
+    - library
