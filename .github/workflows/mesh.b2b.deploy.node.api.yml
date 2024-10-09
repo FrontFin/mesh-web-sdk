@@ -1,6 +1,5 @@
 name: B2B Web SDK - Test & Deploy Node-API
-on:
-  workflow_dispatch:
+on: workflow_dispatch
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
