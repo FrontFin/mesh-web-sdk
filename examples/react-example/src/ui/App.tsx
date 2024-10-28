@@ -24,7 +24,10 @@ export const App: React.FC = () => {
 
     // this request should be performed from the backend side
     const response = await api.managedAccountAuthentication.v1LinktokenCreate({
-      userId: '7652B44F-9CDB-4519-AC82-4FA5500F7455' // insert your unique user identifier here
+      userId: '7652B44F-9CDB-4519-AC82-4FA5500F7455', // insert your unique user identifier here
+      verifyWalletOptions: {
+        message: 'Test message to sing'
+      }
     })
 
     const data = response.data
@@ -62,6 +65,9 @@ export const App: React.FC = () => {
             networkId: '7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12' // network id from /api/v1/transfers/managed/networks request
           }
         ]
+      },
+      verifyWalletOptions: {
+        message: 'Test message to sing for the transfer'
       }
     })
 
