@@ -34,12 +34,22 @@ const iframeElement = () => {
   return document.getElementById(iframeId) as HTMLIFrameElement
 }
 
-function sendMessageToIframe(message: unknown) {
+function sendMessageToIframe<T extends { type: string }>(message: T) {
   possibleOrigins.forEach(origin => {
+    const iframe = iframeElement()
+    if (!iframe) {
+      console.warn(
+        `Mesh SDK: Failed to deliver ${message.type} message to the iframe - no iframe element found`
+      )
+      return
+    }
+
     try {
-      iframeElement().contentWindow?.postMessage(message, origin)
+      iframe.contentWindow?.postMessage(message, origin)
     } catch (e) {
-      console.error('Mesh SDK: Failed to deliver message to the iframe')
+      console.error(
+        `Mesh SDK: Failed to deliver ${message.type} message to the iframe`
+      )
       console.error(e)
     }
   })

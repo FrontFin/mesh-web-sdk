@@ -1,6 +1,6 @@
 {
   "name": "@meshconnect/web-link-sdk",
-  "version": "3.0.5",
+  "version": "3.0.6",
   "description": "A client-side JS library for integrating with Mesh Connect",
   "main": "./src/index.ts",
   "module": "./src/index.ts",
@@ -30,7 +30,7 @@
     "@wagmi/core": "^2.12.2",
     "viem": "^2.x",
     "@wagmi/connectors": "^5.1.0"
-    },
+  },
   "scripts": {
     "build": "yarn updateVersion && rimraf dist && yarn build:esm && yarn copy",
     "build:esm": "tsc --outDir dist",
@@ -45,7 +45,9 @@
   "jest": {
     "preset": "ts-jest",
     "testEnvironment": "jsdom",
-    "setupFiles": ["./jest.setup.ts"],
+    "setupFiles": [
+      "./jest.setup.ts"
+    ],
     "testPathIgnorePatterns": [
       "/node_modules/",
       "/dist/"

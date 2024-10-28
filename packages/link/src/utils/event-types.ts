@@ -24,6 +24,7 @@ export type LinkEventType =
   | TransferInitiated
   | TransferExecuted
   | TransferNoEligibleAssets
+  | WalletMessageSigned
   | DoneEvent
   | CloseEvent
 
@@ -51,6 +52,7 @@ const LINK_EVENT_TYPE_KEYS = [
   'transferExecuted',
   'transferInitiated',
   'transferNoEligibleAssets',
+  'walletMessageSigned',
   'done',
   'close'
 ] as const
@@ -125,18 +127,18 @@ export interface TransferExecuted extends LinkEventBase {
 }
 
 export interface TransferNoEligibleAssets extends LinkEventBase {
-  type: 'transferNoEligibleAssets';
+  type: 'transferNoEligibleAssets'
   payload: {
-    integrationType?: string;
-    integrationName: string;
-    noAssetsType?: string;
+    integrationType?: string
+    integrationName: string
+    noAssetsType?: string
     arrayOfTokensHeld: {
-      symbol: string;
-      amount: number;
-      amountInFiat?: number;
-      ineligibilityReason?: string;
-    }[];
-  };
+      symbol: string
+      amount: number
+      amountInFiat?: number
+      ineligibilityReason?: string
+    }[]
+  }
 }
 
 export interface TransferPreviewed extends LinkEventBase {
@@ -226,6 +228,17 @@ export interface DoneEvent extends LinkEventBase {
 export interface CloseEvent extends LinkEventBase {
   type: 'close'
   payload: SessionSymmary
+}
+
+export interface WalletMessageSigned extends LinkEventBase {
+  type: 'walletMessageSigned'
+  payload: {
+    signedMessageHash: string | undefined
+    message: string | undefined
+    address: string
+    timeStamp: number
+    isVerified: boolean
+  }
 }
 
 export interface SessionSymmary {
