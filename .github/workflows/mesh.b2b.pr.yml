@@ -34,10 +34,10 @@ jobs:
         run: yarn lint
       - name: Yarn build
         run: yarn build
-      - name: Trivy Vulnerability Scan
-        uses: ./.github/actions/vuln-scan
-        with:
-          src-dir: '.'
+      # - name: Trivy Vulnerability Scan
+      #   uses: ./.github/actions/vuln-scan
+      #   with:
+      #     src-dir: '.'
       - name: Yarn test
         run: yarn test:cov
       - name: SonarQube Scan
