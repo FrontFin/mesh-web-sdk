@@ -18,7 +18,7 @@ yarn add @meshconnect/web-link-sdk
 
 ### Getting Link token
 
-Link token should be obtained from the GET `/api/v1/linktoken` endpoint. Api reference for this request is available [here](https://integration-api.getfront.com/apireference#tag/Managed-Account-Authentication/paths/~1api~1v1~1linktoken/post). Request must be preformed from the server side because it requires the client secret. You will get the response in the following format:
+Link token should be obtained from the GET `/api/v1/linktoken` endpoint. Api reference for this request is available [here](https://docs.meshconnect.com/api-reference/managed-account-authentication/get-link-token-with-parameters). Request must be preformed from the server side because it requires the client secret. You will get the response in the following format:
 
 ```json
 {
@@ -97,7 +97,7 @@ After successfull authentication on the Link session, the popup will be closed a
 
 | key                      | type                                                   | description                                                                          |
 | ------------------------ | ------------------------------------------------------ | ------------------------------------------------------------------------------------ |
-| `clientId`               | `string`                                               | Keys from https://dashboard.getfront.com/company/keys page                           |
+| `clientId`               | `string`                                               | Keys from https://dashboard.meshconnect.com/company/keys page                        |
 | `onIntegrationConnected` | `(payload: LinkPayload) => void`                       | Callback called when users connects their accounts                                   |
 | `onExit`                 | `((error?: string \| undefined) => void) \| undefined` | Called if connection not happened                                                    |
 | `onTransferFinished`     | `(payload: TransferFinishedPayload) => void`           | Callback called when a crypto transfer is executed                                   |
