@@ -7626,10 +7626,6 @@
           },
           "tryAnotherMfa": {
             "type": "boolean"
-          },
-          "targetFinancialInstitutionWebsiteUrl": {
-            "type": "string",
-            "nullable": true
           }
         },
         "additionalProperties": false
@@ -9454,6 +9450,12 @@
               }
             ],
             "description": "Encapsulates verify DeFi wallet parameters.",
+            "nullable": true
+          },
+          "subClientId": {
+            "type": "string",
+            "description": "Sub Client ID, for B2B2B clients to tailor Link experience for their clients.",
+            "format": "uuid",
             "nullable": true
           }
         },
@@ -13907,10 +13909,6 @@
           },
           "tryAnotherMfa": {
             "type": "boolean"
-          },
-          "targetFinancialInstitutionWebsiteUrl": {
-            "type": "string",
-            "nullable": true
           }
         },
         "additionalProperties": false

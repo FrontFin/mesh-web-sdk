@@ -2509,7 +2509,6 @@ export interface BrokerCreateCryptocurrencyTransactionRequest {
   symbol?: string | null
   challengeId?: string | null
   tryAnotherMfa?: boolean
-  targetFinancialInstitutionWebsiteUrl?: string | null
 }
 
 export interface BrokerCryptocurrencyChain {
@@ -3661,6 +3660,11 @@ export interface GetLinkTokenRequest {
   disableApiKeyGeneration?: boolean
   /** Encapsulates verify DeFi wallet parameters. */
   verifyWalletOptions?: VerifyWalletOptions | null
+  /**
+   * Sub Client ID, for B2B2B clients to tailor Link experience for their clients.
+   * @format uuid
+   */
+  subClientId?: string | null
 }
 
 export type HoldingTransferIneligibilityReason =
@@ -6647,7 +6651,6 @@ export interface TransfersBrokerCreateCryptocurrencyTransactionRequest {
   symbol?: string | null
   challengeId?: string | null
   tryAnotherMfa?: boolean
-  targetFinancialInstitutionWebsiteUrl?: string | null
 }
 
 export interface TransfersBrokerCryptocurrencyDepositAddressRequest {
