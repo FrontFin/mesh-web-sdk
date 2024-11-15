@@ -968,7 +968,8 @@
                 "robinhoodConnect",
                 "blockchainCom",
                 "bitsoDirect",
-                "binanceConnect"
+                "binanceConnect",
+                "revolutConnect"
               ],
               "allOf": [
                 {
@@ -3580,7 +3581,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -4126,7 +4128,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -4279,7 +4282,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -5157,7 +5161,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -5317,7 +5322,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -5503,7 +5509,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -5719,7 +5726,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -6016,7 +6024,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -6235,7 +6244,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -6575,7 +6585,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -7138,7 +7149,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -7302,7 +7314,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -7468,7 +7481,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -7541,7 +7555,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -7730,7 +7745,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -7850,7 +7866,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -8249,7 +8266,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -8369,7 +8387,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -8462,7 +8481,8 @@
           "robinhoodConnect",
           "blockchainCom",
           "bitsoDirect",
-          "binanceConnect"
+          "binanceConnect",
+          "revolutConnect"
         ],
         "type": "string"
       },
@@ -8596,7 +8616,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -9083,7 +9104,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -9579,7 +9601,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -9734,7 +9757,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -9915,7 +9939,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -10035,7 +10060,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -10162,7 +10188,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -10494,7 +10521,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -11038,7 +11066,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -11133,7 +11162,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -11333,7 +11363,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -11979,7 +12010,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -12079,7 +12111,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -12418,7 +12451,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -12575,7 +12609,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -12673,7 +12708,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -12780,7 +12816,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -12945,7 +12982,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -13205,7 +13243,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -13279,7 +13318,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -13824,7 +13864,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -13973,7 +14014,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -14069,7 +14111,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -14165,7 +14208,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
@@ -14445,7 +14489,8 @@
               "robinhoodConnect",
               "blockchainCom",
               "bitsoDirect",
-              "binanceConnect"
+              "binanceConnect",
+              "revolutConnect"
             ],
             "allOf": [
               {
