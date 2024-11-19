@@ -20,12 +20,12 @@ export const LinkComponent: React.FC<{
       createLink({
         clientId: clientId,
         onIntegrationConnected: authData => {
-          console.info('[FRONT CONNECTED]', authData)
+          console.info('[MESH CONNECTED]', authData)
           onIntegrationConnected(authData)
         },
         onExit: (error, summary) => {
           if (error) {
-            console.error(`[FRONT ERROR] ${error}`)
+            console.error(`[MESH ERROR] ${error}`)
           }
 
           if (summary) {
@@ -35,11 +35,11 @@ export const LinkComponent: React.FC<{
           onExit?.()
         },
         onTransferFinished: transferData => {
-          console.info('[FRONT TRANSFER FINISHED]', transferData)
+          console.info('[MESH TRANSFER FINISHED]', transferData)
           onTransferFinished?.(transferData)
         },
         onEvent: ev => {
-          console.info('[FRONT Event]', ev)
+          console.info('[MESH Event]', ev)
         }
       })
     )
