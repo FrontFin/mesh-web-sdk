@@ -1,161 +1,150 @@
 import React, { useState, useCallback } from 'react'
-import { linkApiUrl, clientId, clientSecret } from '../utility/config'
-import { LinkComponent } from './Link'
-import { LinkPayload, TransferFinishedPayload } from '@meshconnect/web-link-sdk'
-import { FrontApi } from '@meshconnect/node-api'
+import {
+  createLink,
+  LinkPayload,
+  TransferFinishedPayload
+} from '@meshconnect/web-link-sdk'
+import { Section, Button, Input, theme } from '../components/StyledComponents'
 
 export const App: React.FC = () => {
-  const [linkToken, setLinkToken] = useState<string | null>(null)
   const [error, setError] = useState<string | null>(null)
   const [payload, setPayload] = useState<LinkPayload | null>(null)
   const [transferFinishedData, setTransferFinishedData] =
     useState<TransferFinishedPayload | null>(null)
+  const [directLinkToken, setDirectLinkToken] = useState('')
 
-  const getAuthLink = useCallback(async () => {
-    setError(null)
-    setLinkToken(null)
-    const api = new FrontApi({
-      baseURL: linkApiUrl,
-      headers: {
-        'x-client-id': clientId, // insert your client id here
-        'x-client-secret': clientSecret // do not use your clientSecret on the FE
-      }
-    })
-
-    // this request should be performed from the backend side
-    const response = await api.managedAccountAuthentication.v1LinktokenCreate({
-      userId: '7652B44F-9CDB-4519-AC82-4FA5500F7455', // insert your unique user identifier here
-      verifyWalletOptions: {
-        message: 'Test message to sing'
-      }
-    })
-
-    const data = response.data
-    if (response.status !== 200 || !data?.content) {
-      const error = (data && data.message) || response.statusText
-      console.error('Error!', error)
-      setError(error)
-    } else if (!data.content.linkToken) {
-      setError('Iframe url is empty')
-    } else {
-      setLinkToken(data.content.linkToken)
+  const handleDirectTokenLaunch = useCallback(() => {
+    if (!directLinkToken) {
+      setError('Please enter a link token')
+      return
     }
-  }, [])
 
-  const getTransferLink = useCallback(async () => {
+    setPayload(null)
+    setTransferFinishedData(null)
     setError(null)
-    setLinkToken(null)
-    const api = new FrontApi({
-      baseURL: linkApiUrl,
-      headers: {
-        'x-client-id': clientId, // insert your client id here
-        'x-client-secret': clientSecret // do not use your clientSecret on the FE
-      }
-    })
 
-    // this request should be performed from the backend side
-    const response = await api.managedAccountAuthentication.v1LinktokenCreate({
-      userId: '7652B44F-9CDB-4519-AC82-4FA5500F7455', // insert your unique user identifier here
-      transferOptions: {
-        amountInFiat: 10, // amount to transfer
-        toAddresses: [
-          {
-            symbol: 'USDC', // cryptocurrency to transfer
-            address: '0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6', // address to transfer
-            networkId: '7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12' // network id from /api/v1/transfers/managed/networks request
-          }
-        ]
+    const meshLink = createLink({
+      clientId: 'directLinkToken',
+      onIntegrationConnected: payload => {
+        setPayload(payload)
+        console.info('[MESH CONNECTED]', payload)
       },
-      verifyWalletOptions: {
-        message: 'Test message to sing for the transfer'
+      onExit: (error, summary) => {
+        if (error) {
+          console.error(`[MESH ERROR] ${error}`)
+        }
+        if (summary) {
+          console.log('Summary', summary)
+        }
+        setError(error || null)
+      },
+      onTransferFinished: transferData => {
+        console.info('[MESH TRANSFER FINISHED]', transferData)
+        setTransferFinishedData(transferData)
+      },
+      onEvent: ev => {
+        console.info('[MESH Event]', ev)
+        if (ev.type === 'transferExecuted' && ev.payload) {
+          setTransferFinishedData(ev.payload as TransferFinishedPayload)
+        }
       }
     })
 
-    const data = response.data
-    if (response.status !== 200 || !data?.content) {
-      const error = (data && data.message) || response.statusText
-      console.error('Error!', error)
-      setError(error)
-    } else if (!data.content.linkToken) {
-      setError('Iframe url is empty')
-    } else {
-      setLinkToken(data.content.linkToken)
-    }
-  }, [])
+    meshLink.openLink(directLinkToken)
+  }, [directLinkToken])
 
   return (
-    <div style={{ padding: '15px' }}>
-      {(payload && (
-        <div style={{ wordWrap: 'break-word' }}>
-          <h1>Connected!</h1>
-          <p>
-            <b>Broker:</b> {payload.accessToken?.brokerName}
-            <br />
-            <b>Token:</b> {payload.accessToken?.accountTokens[0].accessToken}
-            <br />
-            <b>Refresh Token:</b>{' '}
-            {payload.accessToken?.accountTokens[0].refreshToken}
-            <br />
-            <b>Token expires in seconds:</b>{' '}
-            {payload.accessToken?.expiresInSeconds}
-            <br />
-            <b>ID:</b> {payload.accessToken?.accountTokens[0].account.accountId}
-            <br />
-            <b>Name: </b>
-            {payload.accessToken?.accountTokens[0].account.accountName}
-            <br />
-            <b>Cash:</b> ${payload.accessToken?.accountTokens[0].account.cash}
-            <br />
-          </p>
-        </div>
-      )) || (
-        <p>
-          No accounts connected recently! Please press the button below to use
-          Link and authenticate
-        </p>
+    <div
+      style={{
+        padding: theme.spacing.xl,
+        maxWidth: '1000px',
+        margin: '0 auto',
+        backgroundColor: theme.colors.background,
+        minHeight: '100vh'
+      }}
+    >
+      <Section title="Direct Link Token Launch">
+        <Input
+          label="Link Token:"
+          value={directLinkToken}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setDirectLinkToken(e.target.value)
+          }
+          placeholder="Enter your link token"
+        />
+        <Button onClick={handleDirectTokenLaunch}>
+          Launch with Link Token
+        </Button>
+      </Section>
+
+      {error && (
+        <Section title="Error" style={{ backgroundColor: '#fff3f3' }}>
+          <p style={{ color: theme.colors.error }}>{error}</p>
+        </Section>
+      )}
+
+      {payload && (
+        <Section title="Connection Results">
+          <div>
+            <p>
+              <strong>Broker:</strong> {payload.accessToken?.brokerName}
+            </p>
+            <p>
+              <strong>Broker Type:</strong> {payload.accessToken?.brokerType}
+            </p>
+            <p>
+              <strong>Account Name:</strong>{' '}
+              {payload.accessToken?.accountTokens[0]?.account.accountName}
+            </p>
+            <p>
+              <strong>Account ID:</strong>{' '}
+              {payload.accessToken?.accountTokens[0]?.account.accountId}
+            </p>
+            <p>
+              <strong>Cash:</strong> $
+              {payload.accessToken?.accountTokens[0]?.account.cash}
+            </p>
+            <p>
+              <strong>Fund:</strong> $
+              {payload.accessToken?.accountTokens[0]?.account.fund}
+            </p>
+            <p>
+              <strong>Access Token:</strong>{' '}
+              {payload.accessToken?.accountTokens[0]?.accessToken}
+            </p>
+            <p>
+              <strong>Refresh Token:</strong>{' '}
+              {payload.accessToken?.accountTokens[0]?.refreshToken}
+            </p>
+          </div>
+        </Section>
       )}
 
       {transferFinishedData && (
-        <div style={{ wordWrap: 'break-word' }}>
-          <h1>Transfer finished!</h1>
-          <p>{JSON.stringify(transferFinishedData, null, 2)}</p>
-        </div>
+        <Section title="Transfer Results">
+          <div>
+            <p>
+              <strong>Status:</strong> {transferFinishedData.status}
+            </p>
+            <p>
+              <strong>Amount:</strong> {transferFinishedData.amount}{' '}
+              {transferFinishedData.symbol}
+            </p>
+            <p>
+              <strong>Symbol:</strong> {transferFinishedData.symbol}
+            </p>
+            <p>
+              <strong>Network ID:</strong> {transferFinishedData.networkId}
+            </p>
+            <p>
+              <strong>To Address:</strong> {transferFinishedData.toAddress}
+            </p>
+            <p>
+              <strong>Transaction ID:</strong> {transferFinishedData.txId}
+            </p>
+          </div>
+        </Section>
       )}
-
-      {error && <p style={{ color: 'red' }}>Error: {error}</p>}
-
-      <div
-        style={{
-          width: '100%',
-          display: 'flex',
-          justifyContent: 'center',
-          flexDirection: 'column',
-          gap: '20px'
-        }}
-      >
-        <button style={{ width: '50%' }} onClick={getAuthLink}>
-          Link
-        </button>
-
-        <button style={{ width: '50%' }} onClick={getTransferLink}>
-          Transfer
-        </button>
-      </div>
-
-      <LinkComponent
-        linkToken={linkToken}
-        onIntegrationConnected={(authData: LinkPayload) => {
-          setPayload(authData)
-          setLinkToken(null)
-        }}
-        onExit={err => {
-          setLinkToken(null)
-          setError(err || null)
-        }}
-        onTransferFinished={data => {
-          setTransferFinishedData(data)
-        }}
-      />
     </div>
   )
 }
