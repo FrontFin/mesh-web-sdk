@@ -1,6 +1,6 @@
 {
   "name": "@meshconnect/node-api",
-  "version": "2.0.10",
+  "version": "2.0.12",
   "description": "A node.js client library for the Mesh API",
   "type": "module",
   "main": "./index.ts",
