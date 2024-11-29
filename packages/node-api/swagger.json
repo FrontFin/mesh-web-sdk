@@ -969,6 +969,7 @@
                 "blockchainCom",
                 "bitsoDirect",
                 "binanceConnect",
+                "binanceOAuth",
                 "revolutConnect"
               ],
               "allOf": [
@@ -1050,7 +1051,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/NetworkModelResponseApiResult"
                 },
-                "example": {"content":{"networks":[{"tokens":[{"symbol":"ETH","logoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/tokens/ETH.svg"},{"symbol":"USDC","logoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/tokens/USDC.svg"},{"symbol":"USDT","logoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/tokens/USDT.svg"}],"supportedBrokerTypes":["deFiWallet","robinhood","coinbase","kraken","binanceInternational","binanceUs"],"supportedTokens":["ETH","USDC","USDT"],"nativeSymbol":"ETH","id":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","name":"Ethereum","chainId":"1","logoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/networks/Ethereum.svg"}]},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"networks":[{"networkType":"evm","tokens":[{"symbol":"ETH","logoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/tokens/ETH.svg"},{"symbol":"USDC","logoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/tokens/USDC.svg"},{"symbol":"USDT","logoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/tokens/USDT.svg"}],"supportedBrokerTypes":["deFiWallet","robinhood","coinbase","kraken","binanceInternational","binanceUs"],"supportedTokens":["ETH","USDC","USDT"],"nativeSymbol":"ETH","id":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","name":"Ethereum","chainId":"1","logoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/networks/Ethereum.svg"}]},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -1709,6 +1710,8 @@
             "in": "query",
             "description": "Client transaction identifier.",
             "schema": {
+              "maxLength": 128,
+              "minLength": 0,
               "type": "string"
             }
           },
@@ -1717,6 +1720,8 @@
             "in": "query",
             "description": "Client's user identifier.",
             "schema": {
+              "maxLength": 50,
+              "minLength": 0,
               "type": "string"
             }
           },
@@ -1725,6 +1730,7 @@
             "in": "query",
             "description": "Transfered integration.",
             "schema": {
+              "maxItems": 100,
               "type": "array",
               "items": {
                 "type": "string",
@@ -1737,6 +1743,7 @@
             "in": "query",
             "description": "Transfer statuses.",
             "schema": {
+              "maxItems": 5,
               "type": "array",
               "items": {
                 "$ref": "#/components/schemas/TransferStatus"
@@ -3582,6 +3589,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -4129,6 +4137,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -4283,6 +4292,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -5162,6 +5172,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -5323,6 +5334,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -5510,6 +5522,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -5727,6 +5740,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -6025,6 +6039,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -6245,6 +6260,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -6586,6 +6602,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -7150,6 +7167,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -7315,6 +7333,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -7482,6 +7501,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -7556,6 +7576,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -7746,6 +7767,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -7867,6 +7889,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -8267,6 +8290,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -8388,6 +8412,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -8482,6 +8507,7 @@
           "blockchainCom",
           "bitsoDirect",
           "binanceConnect",
+          "binanceOAuth",
           "revolutConnect"
         ],
         "type": "string"
@@ -8617,6 +8643,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -9105,6 +9132,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -9602,6 +9630,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -9758,6 +9787,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -9940,6 +9970,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -10061,6 +10092,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -10189,6 +10221,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -10522,6 +10555,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -10766,6 +10800,31 @@
             "description": "The symbol of the network's native cryptocurrency.",
             "nullable": true
           },
+          "networkType": {
+            "enum": [
+              "unknown",
+              "evm",
+              "solana",
+              "bitcoin",
+              "cardano",
+              "tron",
+              "avalancheX",
+              "tezos",
+              "dogecoin",
+              "ripple",
+              "stellar",
+              "litecoin",
+              "sui",
+              "aptos",
+              "tvm"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NetworkType"
+              }
+            ],
+            "description": "Network type."
+          },
           "tokens": {
             "type": "array",
             "items": {
@@ -10800,6 +10859,26 @@
           "requestedAmountBelowClientMinimum",
           "requestedAmountAboveClientMaximum",
           "noPrice"
+        ],
+        "type": "string"
+      },
+      "NetworkType": {
+        "enum": [
+          "unknown",
+          "evm",
+          "solana",
+          "bitcoin",
+          "cardano",
+          "tron",
+          "avalancheX",
+          "tezos",
+          "dogecoin",
+          "ripple",
+          "stellar",
+          "litecoin",
+          "sui",
+          "aptos",
+          "tvm"
         ],
         "type": "string"
       },
@@ -11067,6 +11146,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -11074,7 +11154,7 @@
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n```BinanceOAuth```\n```DeFiWallet```\n"
           }
         },
         "additionalProperties": false
@@ -11163,6 +11243,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -11170,7 +11251,7 @@
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n```BinanceOAuth```\n```DeFiWallet```\n"
           },
           "includeMarketValue": {
             "type": "boolean"
@@ -11181,6 +11262,11 @@
       "Position": {
         "type": "object",
         "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the asset",
+            "nullable": true
+          },
           "symbol": {
             "type": "string",
             "description": "Symbol of the asset",
@@ -11203,6 +11289,11 @@
       "PositionWithMarketValue": {
         "type": "object",
         "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the asset",
+            "nullable": true
+          },
           "symbol": {
             "type": "string",
             "description": "Symbol of the asset",
@@ -11237,6 +11328,11 @@
       "PositionWithReturn": {
         "type": "object",
         "properties": {
+          "name": {
+            "type": "string",
+            "description": "Name of the asset",
+            "nullable": true
+          },
           "symbol": {
             "type": "string",
             "description": "Symbol of the asset",
@@ -11364,6 +11460,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -11712,6 +11809,11 @@
           "isMaximumAmount": {
             "type": "boolean",
             "description": "Indicates if the transfer's intention is to transfer all available assets using the requested network and symbol."
+          },
+          "fiatCurrency": {
+            "type": "string",
+            "description": "Indicates the fiat currency that is used to calculate transfer amounts.",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -11943,12 +12045,14 @@
             "format": "double"
           },
           "fiatCurrency": {
-            "minLength": 1,
+            "maxLength": 3,
+            "minLength": 0,
             "type": "string",
             "description": "3 character currency code, e.g. USD"
           },
           "symbol": {
-            "minLength": 1,
+            "maxLength": 10,
+            "minLength": 0,
             "type": "string",
             "description": "Symbol of destination cryptocurrency, e.g. ETH"
           },
@@ -11958,7 +12062,8 @@
             "format": "uuid"
           },
           "toAddress": {
-            "minLength": 1,
+            "maxLength": 1024,
+            "minLength": 0,
             "type": "string",
             "description": "The designated destination for sending the asset."
           },
@@ -12011,6 +12116,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -12112,6 +12218,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -12452,6 +12559,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -12610,6 +12718,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -12709,6 +12818,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -12817,6 +12927,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -12983,6 +13094,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -13244,6 +13356,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -13319,6 +13432,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -13865,6 +13979,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -14015,6 +14130,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -14112,6 +14228,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -14209,6 +14326,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -14490,6 +14608,7 @@
               "blockchainCom",
               "bitsoDirect",
               "binanceConnect",
+              "binanceOAuth",
               "revolutConnect"
             ],
             "allOf": [
@@ -14521,7 +14640,7 @@
         "properties": {
           "message": {
             "type": "string",
-            "description": "Verification message to sign.\r\nRequired if `signMessage` is provided in <paramref name=\"VerificationMethods\">VerificationMethods</paramref> list.",
+            "description": "Verification message to sign.\r\nRequired if `signedMessage` is provided in <paramref name=\"VerificationMethods\">VerificationMethods</paramref> list.",
             "nullable": true
           },
           "verificationMethods": {
@@ -14531,6 +14650,20 @@
             },
             "description": "List or required verification methods. By default - sign message with wallet key.",
             "nullable": true
+          },
+          "addresses": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Addresses list to verify. If user verifies another address then verification will be failed.",
+            "nullable": true
+          },
+          "networkId": {
+            "type": "string",
+            "description": "Network to verify.If user verifies another network then verification will be failed.",
+            "format": "uuid",
+            "nullable": true
           }
         },
         "additionalProperties": false,
@@ -14538,7 +14671,7 @@
       },
       "WalletVerificationMethod": {
         "enum": [
-          "signMessage"
+          "signedMessage"
         ],
         "type": "string",
         "description": "Verification method."
@@ -14579,7 +14712,7 @@
     },
     {
       "name": "Portfolio",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n```DeFiWallet```\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n```BinanceOAuth```\n```DeFiWallet```\n"
     },
     {
       "name": "Balance",

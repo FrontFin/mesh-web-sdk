@@ -299,6 +299,7 @@ export interface B2BBrokerAuthRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   phone?: string | null
   username?: string | null
@@ -562,6 +563,7 @@ export interface B2BBrokerCreateOrderRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
@@ -667,6 +669,7 @@ export interface B2BBrokerCreateOrderResult {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /** Side of the order. */
   side?: 'unknown' | 'buy' | 'sell'
@@ -1094,6 +1097,7 @@ export interface B2BBrokerOrder {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /** Type of the transaction */
   transactionType?:
@@ -1194,6 +1198,7 @@ export interface B2BBrokerOrderListRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /**
    * The cursor to retrieve the next page of transactions.
@@ -1316,6 +1321,7 @@ export interface B2BBrokerOrderRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /** @minLength 1 */
   id: string
@@ -1434,6 +1440,7 @@ export interface B2BBrokerPreviewOrderResult {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /** @format double */
   fee?: number | null
@@ -1569,6 +1576,7 @@ export interface B2BBrokerSymbolInfoForOrderRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
@@ -1686,6 +1694,7 @@ export interface B2BBrokerTradingFeatureInfo {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /** Account Id of the integration. */
   accountId?: string | null
@@ -1874,6 +1883,7 @@ export interface B2BBrokersHealthStatus {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /** Name of the integration */
   name?: string | null
@@ -2221,6 +2231,7 @@ export interface BalanceBrokerBaseRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
 }
 
@@ -2330,6 +2341,7 @@ export interface BrokerAuthenticationScheme {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /** Type of authentication for the integration. */
   authenticationSchemeType?: 'usernamePassword' | 'oAuth' | 'apiKey' | 'blockchainAddress'
@@ -2422,6 +2434,7 @@ export interface BrokerBaseRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
 }
 
@@ -2480,6 +2493,7 @@ export interface BrokerCreateCryptocurrencyTransactionRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /** Additional data to send on-chain (optional, depends on an integration) */
   data?: string | null
@@ -2596,6 +2610,7 @@ export interface BrokerCryptocurrencyDepositAddressRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
@@ -2689,6 +2704,7 @@ export interface BrokerCryptocurrencyTransactionDetailsRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /** Type of the address of the transferred asset. Can be used instead of the `Symbol` field. */
   addressType?: CryptocurrencyAddressType | null
@@ -2935,6 +2951,7 @@ export interface BrokerRefreshTokenRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /** @minLength 1 */
   refreshToken: string
@@ -3015,6 +3032,7 @@ export interface BrokerTransactionsListRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /**
    * Number of records to include in the response. <br />
@@ -3088,6 +3106,7 @@ export type BrokerType =
   | 'blockchainCom'
   | 'bitsoDirect'
   | 'binanceConnect'
+  | 'binanceOAuth'
   | 'revolutConnect'
 
 export interface CatalogLink {
@@ -3182,6 +3201,7 @@ export interface ConfigureTransferRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /**
    * The authentication token of the target integration. Can be used alternatively to the list of requested address (`toAddresses`).
@@ -3482,6 +3502,7 @@ export interface ExecuteTransferRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /**
    * Id of the Preview of the transfer.
@@ -3761,6 +3782,7 @@ export interface HoldingsModel {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /** External institution's account id (returned by the institution) */
   accountId?: string | null
@@ -3853,6 +3875,7 @@ export interface HoldingsRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   includeMarketValue?: boolean
 }
@@ -3978,6 +4001,7 @@ export interface IntegrationModel {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /** DeFi wallet provider identifier. */
   deFiWalletProviderId?: string | null
@@ -4047,6 +4071,7 @@ export interface IntegrationNetwork {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
 }
 
@@ -4128,6 +4153,7 @@ export interface IntegrationNetworksModelResponse {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /** The list of supported networks and corresponding tokens for the integration. */
   networks?: NetworkResponse[] | null
@@ -4321,6 +4347,7 @@ export interface ManagedBrokerCryptocurrencyDepositAddressRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
@@ -4441,6 +4468,23 @@ export interface NetworkResponseWithIntegrations {
   supportedTokens?: string[] | null
   /** The symbol of the network's native cryptocurrency. */
   nativeSymbol?: string | null
+  /** Network type. */
+  networkType?:
+    | 'unknown'
+    | 'evm'
+    | 'solana'
+    | 'bitcoin'
+    | 'cardano'
+    | 'tron'
+    | 'avalancheX'
+    | 'tezos'
+    | 'dogecoin'
+    | 'ripple'
+    | 'stellar'
+    | 'litecoin'
+    | 'sui'
+    | 'aptos'
+    | 'tvm'
   /** The list of tokens that are currently supported to be transferred using the network. */
   tokens?: NetworkResponseToken[] | null
   /** The list of types of integrations that are currently supported to perform transfers over the network. */
@@ -4460,6 +4504,23 @@ export type NetworkTransferIneligibilityReason =
   | 'requestedAmountBelowClientMinimum'
   | 'requestedAmountAboveClientMaximum'
   | 'noPrice'
+
+export type NetworkType =
+  | 'unknown'
+  | 'evm'
+  | 'solana'
+  | 'bitcoin'
+  | 'cardano'
+  | 'tron'
+  | 'avalancheX'
+  | 'tezos'
+  | 'dogecoin'
+  | 'ripple'
+  | 'stellar'
+  | 'litecoin'
+  | 'sui'
+  | 'aptos'
+  | 'tvm'
 
 export type NftBlockchain = 'ethereum' | 'polygon' | 'klaytn'
 
@@ -4574,6 +4635,7 @@ export interface PortfolioBrokerBaseRequest {
    * ```RobinhoodConnect```
    * ```BlockchainCom```
    * ```BitsoDirect```
+   * ```BinanceOAuth```
    * ```DeFiWallet```
    */
   type:
@@ -4624,6 +4686,7 @@ export interface PortfolioBrokerBaseRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
 }
 
@@ -4694,6 +4757,7 @@ export interface PortfolioHoldingsRequest {
    * ```RobinhoodConnect```
    * ```BlockchainCom```
    * ```BitsoDirect```
+   * ```BinanceOAuth```
    * ```DeFiWallet```
    */
   type:
@@ -4744,11 +4808,14 @@ export interface PortfolioHoldingsRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   includeMarketValue?: boolean
 }
 
 export interface Position {
+  /** Name of the asset */
+  name?: string | null
   /** Symbol of the asset */
   symbol?: string | null
   /**
@@ -4764,6 +4831,8 @@ export interface Position {
 }
 
 export interface PositionWithMarketValue {
+  /** Name of the asset */
+  name?: string | null
   /** Symbol of the asset */
   symbol?: string | null
   /**
@@ -4789,6 +4858,8 @@ export interface PositionWithMarketValue {
 }
 
 export interface PositionWithReturn {
+  /** Name of the asset */
+  name?: string | null
   /** Symbol of the asset */
   symbol?: string | null
   /**
@@ -4896,6 +4967,7 @@ export interface PreviewTransferRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /**
    * The authentication token of the target integration. Can be used alternatively to the address in the `ToAddress` field.
@@ -5103,6 +5175,8 @@ export interface PreviewTransferResult {
   transferAmountToRequest?: number
   /** Indicates if the transfer's intention is to transfer all available assets using the requested network and symbol. */
   isMaximumAmount?: boolean
+  /** Indicates the fiat currency that is used to calculate transfer amounts. */
+  fiatCurrency?: string | null
 }
 
 export type PreviewTransferStatus = 'succeeded' | 'failed' | 'requiresFunding'
@@ -5238,12 +5312,14 @@ export interface QuoteTransferRequest {
   amountInFiat: number
   /**
    * 3 character currency code, e.g. USD
-   * @minLength 1
+   * @minLength 0
+   * @maxLength 3
    */
   fiatCurrency: string
   /**
    * Symbol of destination cryptocurrency, e.g. ETH
-   * @minLength 1
+   * @minLength 0
+   * @maxLength 10
    */
   symbol: string
   /**
@@ -5253,7 +5329,8 @@ export interface QuoteTransferRequest {
   networkId: string
   /**
    * The designated destination for sending the asset.
-   * @minLength 1
+   * @minLength 0
+   * @maxLength 1024
    */
   toAddress: string
   /** The type of the integration to send the asset from */
@@ -5305,6 +5382,7 @@ export interface QuoteTransferRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /**
    * Flat fee in crypto to be charged as a partner fee
@@ -5384,6 +5462,7 @@ export interface QuoteTransferResponse {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /** Is the transaction is possible based on the minimum transfer amount of the selected exchange */
   isEligible?: boolean
@@ -5611,6 +5690,7 @@ export interface TransactionsB2BBrokerCreateOrderRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
@@ -5754,6 +5834,7 @@ export interface TransactionsB2BBrokerOrderListRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /**
    * The cursor to retrieve the next page of transactions.
@@ -5868,6 +5949,7 @@ export interface TransactionsB2BBrokerOrderRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /** @minLength 1 */
   id: string
@@ -5971,6 +6053,7 @@ export interface TransactionsB2BBrokerSymbolInfoForOrderRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
@@ -6115,6 +6198,7 @@ export interface TransactionsBrokerBaseRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
 }
 
@@ -6273,6 +6357,7 @@ export interface TransferIntegrationModel {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /** Name of integration. */
   name?: string | null
@@ -6333,6 +6418,7 @@ export interface TransferIntegrationWithLogoModel {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /** Name of integration. */
   name?: string | null
@@ -6648,6 +6734,7 @@ export interface TransfersBrokerCreateCryptocurrencyTransactionRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /** Additional data to send on-chain (optional, depends on an integration) */
   data?: string | null
@@ -6779,6 +6866,7 @@ export interface TransfersBrokerCryptocurrencyDepositAddressRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
@@ -6882,6 +6970,7 @@ export interface TransfersBrokerCryptocurrencyTransactionDetailsRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /** Type of the address of the transferred asset. Can be used instead of the `Symbol` field. */
   addressType?: CryptocurrencyAddressType | null
@@ -6979,6 +7068,7 @@ export interface TransfersBrokerTransactionsListRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /**
    * Number of records to include in the response. <br />
@@ -7138,6 +7228,7 @@ export interface UpdateTransferStatusRequest {
     | 'blockchainCom'
     | 'bitsoDirect'
     | 'binanceConnect'
+    | 'binanceOAuth'
     | 'revolutConnect'
   /**
    * Id of the executed transfer.
@@ -7152,15 +7243,22 @@ export type UserIdentificationType = 'none' | 'idCard' | 'driversLicense' | 'pas
 export interface VerifyWalletOptions {
   /**
    * Verification message to sign.
-   * Required if `signMessage` is provided in <paramref name="VerificationMethods">VerificationMethods</paramref> list.
+   * Required if `signedMessage` is provided in <paramref name="VerificationMethods">VerificationMethods</paramref> list.
    */
   message?: string | null
   /** List or required verification methods. By default - sign message with wallet key. */
   verificationMethods?: WalletVerificationMethod[] | null
+  /** Addresses list to verify. If user verifies another address then verification will be failed. */
+  addresses?: string[] | null
+  /**
+   * Network to verify.If user verifies another network then verification will be failed.
+   * @format uuid
+   */
+  networkId?: string | null
 }
 
 /** Verification method. */
-export type WalletVerificationMethod = 'signMessage'
+export type WalletVerificationMethod = 'signedMessage'
 
 import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from 'axios'
 
@@ -7780,6 +7878,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         | 'blockchainCom'
         | 'bitsoDirect'
         | 'binanceConnect'
+        | 'binanceOAuth'
         | 'revolutConnect',
       query: {
         /** Id of the end-user */
@@ -8030,13 +8129,27 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
          * @format uuid
          */
         Id?: string
-        /** Client transaction identifier. */
+        /**
+         * Client transaction identifier.
+         * @minLength 0
+         * @maxLength 128
+         */
         ClientTransactionId?: string
-        /** Client's user identifier. */
+        /**
+         * Client's user identifier.
+         * @minLength 0
+         * @maxLength 50
+         */
         UserId?: string
-        /** Transfered integration. */
+        /**
+         * Transfered integration.
+         * @maxItems 100
+         */
         IntegrationIds?: string[]
-        /** Transfer statuses. */
+        /**
+         * Transfer statuses.
+         * @maxItems 5
+         */
         Statuses?: TransferStatus[]
         /**
          * Transfer created minimum timestamp.
