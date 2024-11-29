@@ -27,6 +27,8 @@ export type LinkEventType =
   | WalletMessageSigned
   | DoneEvent
   | CloseEvent
+  | VerifyWalletRejected
+  | VerifyDonePage
 
 const LINK_EVENT_TYPE_KEYS = [
   'integrationConnected',
@@ -53,6 +55,8 @@ const LINK_EVENT_TYPE_KEYS = [
   'transferInitiated',
   'transferNoEligibleAssets',
   'walletMessageSigned',
+  'verifyDonePage',
+  'verifyWalletRejected',
   'done',
   'close'
 ] as const
@@ -239,6 +243,14 @@ export interface WalletMessageSigned extends LinkEventBase {
     timeStamp: number
     isVerified: boolean
   }
+}
+
+export interface VerifyDonePage extends LinkEventBase {
+  type: 'verifyDonePage'
+}
+
+export interface VerifyWalletRejected extends LinkEventBase {
+  type: 'verifyWalletRejected'
 }
 
 export interface SessionSymmary {
