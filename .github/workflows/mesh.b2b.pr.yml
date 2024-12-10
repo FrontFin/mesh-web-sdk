@@ -41,7 +41,7 @@ jobs:
       - name: Yarn test
         run: yarn test:cov
       - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@master
+        uses: sonarsource/sonarqube-scan-action@7b13cfe1951a233d6406c96b24d31771d68eba1d
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
           SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
