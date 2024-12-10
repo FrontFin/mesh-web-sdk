@@ -57,6 +57,10 @@ const LINK_EVENT_TYPE_KEYS = [
   'walletMessageSigned',
   'verifyDonePage',
   'verifyWalletRejected',
+  'connectionDeclined',
+  'transferConfigureError',
+  'connectionUnavailable',
+  'transferDeclined',
   'done',
   'close'
 ] as const
