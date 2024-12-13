@@ -69,6 +69,11 @@ export interface TransferFinishedPayload {
   symbol: string
   amount: number
   networkId: string
+  amountInFiat?: number
+  totalAmountInFiat?: number
+  networkName?: string
+  txHash?: string
+  transferId?: string
 }
 
 export interface IntegrationAccessToken {

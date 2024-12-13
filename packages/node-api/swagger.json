@@ -970,7 +970,8 @@
                 "bitsoDirect",
                 "binanceConnect",
                 "binanceOAuth",
-                "revolutConnect"
+                "revolutConnect",
+                "binancePay"
               ],
               "allOf": [
                 {
@@ -1815,7 +1816,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/TransferModelPaginationResponseApiResult"
                 },
-                "example": {"content":{"items":[{"id":"8e25acb5-a9e2-4d00-8772-a255f010a2a9","clientTransactionId":"123456","institutionTransactionId":"456789","userId":"123456798","status":"succeeded","amountInFiat":1000.3,"amountInFiatCurrencyCode":"USD","amount":10.123,"symbol":"WETH","tokenAddress":"0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619","networkName":"Polygon","networkId":"00000000-0000-0000-0000-000000000000","networkLogoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/networks/Polygon.svg","createdTimestamp":1653211113,"from":{"logoUrl":"https://logo.com/logo.jpg","id":"8e25acb5-a9e2-4d00-8772-a255f010a2a9","type":"robinhood","name":"Robinhood"},"hash":"0x77f3a280aa5cfe956a5759c24cf774325504070b32b4159...","infoUrl":"https://polygonscan.com/tx/0x5b0ac59e43b63f2985d78994b6270d747f1019777201ca18ebb36ad1e1a8693e","gasFee":{"fee":0.0001,"feeCurrency":"MATIC","feeInFiat":0.1},"withdrawalFee":{"fee":0.0001,"feeCurrency":"WETH","feeInFiat":0.1},"processingFee":{"fee":0.0001,"feeCurrency":"WETH","feeInFiat":0.1},"executedTimestamp":1707462614,"transferType":"payment","isFeeIncluded":false,"sourceAmount":10.122,"destinationAmount":10,"totalFeesAmountInFiat":0.5,"totalTransactionAmountInFiat":1000.5,"fundingMethods":[{"type":"cryptocurrencyConversion","amount":2,"amountInFiat":20,"toSymbol":"WETH","fromAmount":1,"fromSymbol":"BTC","fee":{"fee":0.0001,"feeCurrency":"ETH","feeInFiat":0.1}},{"type":"paymentMethodDepositUsage","amount":3,"amountInFiat":30,"toSymbol":"WETH","fromAmount":1,"fromSymbol":"USD","paymentMethodType":"bankAccount","fee":{"fee":0.0001,"feeCurrency":"USD","feeInFiat":0.1}},{"type":"existingCryptocurrencyBalance","amount":5,"amountInFiat":50,"toSymbol":"WETH","fromAmount":5,"fromSymbol":"ETH"}]},{"id":"12345678-a9e2-4d00-8772-a255f010a2a9","clientTransactionId":"123456","institutionTransactionId":"456789","userId":"123456798","status":"failed","amountInFiat":10.3,"amountInFiatCurrencyCode":"USD","amount":0.123,"symbol":"WETH","tokenAddress":"0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619","networkName":"Polygon","networkId":"00000000-0000-0000-0000-000000000000","createdTimestamp":1653211113,"from":{"logoUrl":"https://logo.com/logo.jpg","id":"8e25acb5-a9e2-4d00-8772-a255f010a2a9","type":"deFiWallet","name":"MetaMask"},"hash":"0x77f3a280aa5cfe956a5759c24cf774325504070b32b4159...","isFeeIncluded":false,"totalFeesAmountInFiat":0,"totalTransactionAmountInFiat":10.3,"fundingMethods":[]}],"total":10},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"items":[{"id":"8e25acb5-a9e2-4d00-8772-a255f010a2a9","clientTransactionId":"123456","institutionTransactionId":"456789","userId":"123456798","status":"succeeded","amountInFiat":1000.3,"amountToReceiveInFiat":0,"amountInFiatCurrencyCode":"USD","amount":10.123,"amountToReceive":0,"symbol":"WETH","tokenAddress":"0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619","networkName":"Polygon","networkId":"00000000-0000-0000-0000-000000000000","networkLogoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/networks/Polygon.svg","createdTimestamp":1653211113,"from":{"logoUrl":"https://logo.com/logo.jpg","id":"8e25acb5-a9e2-4d00-8772-a255f010a2a9","type":"robinhood","name":"Robinhood"},"hash":"0x77f3a280aa5cfe956a5759c24cf774325504070b32b4159...","infoUrl":"https://polygonscan.com/tx/0x5b0ac59e43b63f2985d78994b6270d747f1019777201ca18ebb36ad1e1a8693e","gasFee":{"fee":0.0001,"feeCurrency":"MATIC","feeInFiat":0.1},"withdrawalFee":{"fee":0.0001,"feeCurrency":"WETH","feeInFiat":0.1},"processingFee":{"fee":0.0001,"feeCurrency":"WETH","feeInFiat":0.1},"executedTimestamp":1707462614,"transferType":"payment","isFeeIncluded":false,"sourceAmount":10.122,"destinationAmount":10,"totalFeesAmountInFiat":0.5,"totalTransactionAmountInFiat":1000.5,"fundingMethods":[{"type":"cryptocurrencyConversion","amount":2,"amountInFiat":20,"toSymbol":"WETH","fromAmount":1,"fromSymbol":"BTC","fee":{"fee":0.0001,"feeCurrency":"ETH","feeInFiat":0.1}},{"type":"paymentMethodDepositUsage","amount":3,"amountInFiat":30,"toSymbol":"WETH","fromAmount":1,"fromSymbol":"USD","paymentMethodType":"bankAccount","fee":{"fee":0.0001,"feeCurrency":"USD","feeInFiat":0.1}},{"type":"existingCryptocurrencyBalance","amount":5,"amountInFiat":50,"toSymbol":"WETH","fromAmount":5,"fromSymbol":"ETH"}]},{"id":"12345678-a9e2-4d00-8772-a255f010a2a9","clientTransactionId":"123456","institutionTransactionId":"456789","userId":"123456798","status":"failed","amountInFiat":10.3,"amountToReceiveInFiat":0,"amountInFiatCurrencyCode":"USD","amount":0.123,"amountToReceive":0,"symbol":"WETH","tokenAddress":"0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619","networkName":"Polygon","networkId":"00000000-0000-0000-0000-000000000000","createdTimestamp":1653211113,"from":{"logoUrl":"https://logo.com/logo.jpg","id":"8e25acb5-a9e2-4d00-8772-a255f010a2a9","type":"deFiWallet","name":"MetaMask"},"hash":"0x77f3a280aa5cfe956a5759c24cf774325504070b32b4159...","isFeeIncluded":false,"totalFeesAmountInFiat":0,"totalTransactionAmountInFiat":10.3,"fundingMethods":[]}],"total":10},"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -2960,6 +2961,64 @@
           }
         }
       }
+    },
+    "/api/v1/wallets/verify": {
+      "get": {
+        "tags": [
+          "Wallets"
+        ],
+        "summary": "Get wallet verifications for user and address.",
+        "parameters": [
+          {
+            "name": "UserId",
+            "in": "query",
+            "description": "User identifier.",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "Address",
+            "in": "query",
+            "description": "Address of the wallet.",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Verifications obtained.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeFiWalletVerificationResponseApiResult"
+                },
+                "example": {"content":{"verifications":[{"userId":"user-1","address":"address-1","networkType":"evm","verificationMethod":"signedMessage","message":"Some test message","signedMessageHash":"signature-1","timestamp":1733896980},{"userId":"user-1","address":"address-2","networkType":"evm","verificationMethod":"signedMessage","message":"Some test message","signedMessageHash":"signature-2","timestamp":1733896980}]},"status":"ok","message":"","errorType":""}
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ApiResult"
+                },
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized: Client Id or Client Secret are not correct or missing.",
+            "content": {
+              "application/json": {
+                "schema": { }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -3590,7 +3649,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -4138,7 +4198,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -4293,7 +4354,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -5173,7 +5235,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -5335,7 +5398,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -5523,7 +5587,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -5741,7 +5806,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -6040,7 +6106,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -6261,7 +6328,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -6603,7 +6671,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -7168,7 +7237,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -7334,7 +7404,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -7502,7 +7573,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -7577,7 +7649,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -7662,6 +7735,14 @@
           },
           "tryAnotherMfa": {
             "type": "boolean"
+          },
+          "travelRuleOptions": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransferTravelRuleOptions"
+              }
+            ],
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -7768,7 +7849,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -7890,7 +7972,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -8122,7 +8205,8 @@
         "enum": [
           "immediateOrCancel",
           "goodTillCanceled",
-          "goodTillDate"
+          "goodTillDate",
+          "fillOrKill"
         ],
         "type": "string"
       },
@@ -8291,7 +8375,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -8413,7 +8498,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -8508,7 +8594,8 @@
           "bitsoDirect",
           "binanceConnect",
           "binanceOAuth",
-          "revolutConnect"
+          "revolutConnect",
+          "binancePay"
         ],
         "type": "string"
       },
@@ -8582,6 +8669,17 @@
         },
         "additionalProperties": false
       },
+      "ClientType": {
+        "enum": [
+          "undefined",
+          "wallet",
+          "exchange",
+          "vasp",
+          "merchant",
+          "other"
+        ],
+        "type": "string"
+      },
       "ConfigureTransferRequest": {
         "required": [
           "fromAuthToken",
@@ -8644,7 +8742,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -8746,13 +8845,18 @@
           },
           "amountInFiat": {
             "type": "number",
-            "description": "Amount in USD to transfer. If not provided users can specify amount by themselves.",
+            "description": "Amount in USD to transfer.",
             "format": "double",
+            "nullable": true
+          },
+          "fiatCurrency": {
+            "type": "string",
+            "description": "Used fiat currency.",
             "nullable": true
           },
           "minimumTransferAmountInFiat": {
             "type": "number",
-            "description": "Minimum transfer amount in fiat",
+            "description": "Minimum transfer amount in fiat.",
             "format": "double",
             "nullable": true
           },
@@ -8760,6 +8864,14 @@
             "type": "number",
             "description": "Maximum transfer amount in fiat",
             "format": "double",
+            "nullable": true
+          },
+          "supportedFiatCurrencies": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "Supported fiat currencies for this transfer",
             "nullable": true
           },
           "transferBalanceFundingAvailability": {
@@ -9058,6 +9170,147 @@
         },
         "additionalProperties": false
       },
+      "DeFiWalletVerification": {
+        "type": "object",
+        "properties": {
+          "userId": {
+            "type": "string",
+            "description": "User identifier.",
+            "nullable": true
+          },
+          "address": {
+            "type": "string",
+            "description": "Wallet address.",
+            "nullable": true
+          },
+          "xPubKey": {
+            "type": "string",
+            "description": "Wallet Xpub key for Bitcon wallets.",
+            "nullable": true
+          },
+          "networkType": {
+            "enum": [
+              "unknown",
+              "evm",
+              "solana",
+              "bitcoin",
+              "cardano",
+              "tron",
+              "avalancheX",
+              "tezos",
+              "dogecoin",
+              "ripple",
+              "stellar",
+              "litecoin",
+              "sui",
+              "aptos",
+              "tvm"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NetworkType"
+              }
+            ],
+            "description": "Wallet network type."
+          },
+          "verificationMethod": {
+            "enum": [
+              "signedMessage"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/WalletVerificationMethod"
+              }
+            ],
+            "description": "Verification method."
+          },
+          "message": {
+            "type": "string",
+            "description": "Original message.",
+            "nullable": true
+          },
+          "signedMessageHash": {
+            "type": "string",
+            "description": "Message signature.",
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "integer",
+            "description": "Verification created timestamp.",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Verifications data."
+      },
+      "DeFiWalletVerificationResponse": {
+        "type": "object",
+        "properties": {
+          "verifications": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DeFiWalletVerification"
+            },
+            "description": "List of found verifications.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false,
+        "description": "Verifications response."
+      },
+      "DeFiWalletVerificationResponseApiResult": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "ok",
+              "serverFailure",
+              "permissionDenied",
+              "badRequest",
+              "notFound",
+              "conflict",
+              "tooManyRequest",
+              "locked",
+              "unavailableForLegalReasons"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiResultStatus"
+              }
+            ],
+            "readOnly": true
+          },
+          "message": {
+            "type": "string",
+            "description": "A message generated by the API",
+            "nullable": true
+          },
+          "displayMessage": {
+            "type": "string",
+            "description": "User-friendly display message that can be presented to the end user",
+            "nullable": true
+          },
+          "errorType": {
+            "type": "string",
+            "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
+            "nullable": true
+          },
+          "errorData": {
+            "nullable": true,
+            "readOnly": true
+          },
+          "content": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeFiWalletVerificationResponse"
+              }
+            ],
+            "description": "Verifications response.",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "ExecuteTransferMfaType": {
         "enum": [
           "unspecified",
@@ -9133,7 +9386,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -9631,7 +9885,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -9788,7 +10043,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -9971,7 +10227,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -10093,7 +10350,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -10222,7 +10480,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -10556,7 +10815,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -11147,7 +11407,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -11244,7 +11505,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -11461,7 +11723,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -12117,7 +12380,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -12219,7 +12483,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -12560,7 +12825,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -12719,7 +12985,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -12819,7 +13086,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -12928,7 +13196,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -13095,7 +13364,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -13357,7 +13627,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -13433,7 +13704,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -13496,6 +13768,11 @@
             "description": "Transfer amount in fiat.",
             "format": "double"
           },
+          "amountToReceiveInFiat": {
+            "type": "number",
+            "description": "Actual transfer amount without fees in fiat.",
+            "format": "double"
+          },
           "amountInFiatCurrencyCode": {
             "type": "string",
             "description": "Transfer amount in fiat currency code.",
@@ -13504,6 +13781,11 @@
           "amount": {
             "type": "number",
             "description": "Transfer amount.",
+            "format": "double"
+          },
+          "amountToReceive": {
+            "type": "number",
+            "description": "Actual transfer amount without fees.",
             "format": "double"
           },
           "symbol": {
@@ -13799,6 +14081,39 @@
         },
         "additionalProperties": false
       },
+      "TransferTravelRuleOptions": {
+        "type": "object",
+        "properties": {
+          "clientName": {
+            "type": "string",
+            "nullable": true
+          },
+          "transferType": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransferTypeEnum"
+              }
+            ],
+            "nullable": true
+          },
+          "clientType": {
+            "enum": [
+              "undefined",
+              "wallet",
+              "exchange",
+              "vasp",
+              "merchant",
+              "other"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ClientType"
+              }
+            ]
+          }
+        },
+        "additionalProperties": false
+      },
       "TransferTypeEnum": {
         "enum": [
           "deposit",
@@ -13980,14 +14295,15 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BinanceConnect```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BinanceConnect```\n```BinancePay```\n```DeFiWallet```\n"
           },
           "data": {
             "type": "string",
@@ -14065,6 +14381,14 @@
           },
           "tryAnotherMfa": {
             "type": "boolean"
+          },
+          "travelRuleOptions": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransferTravelRuleOptions"
+              }
+            ],
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -14131,14 +14455,15 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BinanceConnect```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BinanceConnect```\n```BinancePay```\n```DeFiWallet```\n"
           },
           "symbol": {
             "type": "string",
@@ -14229,14 +14554,15 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BinanceConnect```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BinanceConnect```\n```BinancePay```\n```DeFiWallet```\n"
           },
           "addressType": {
             "allOf": [
@@ -14327,14 +14653,15 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BinanceConnect```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BinanceConnect```\n```BinancePay```\n```DeFiWallet```\n"
           },
           "count": {
             "type": "integer",
@@ -14609,7 +14936,8 @@
               "bitsoDirect",
               "binanceConnect",
               "binanceOAuth",
-              "revolutConnect"
+              "revolutConnect",
+              "binancePay"
             ],
             "allOf": [
               {
@@ -14661,8 +14989,17 @@
           },
           "networkId": {
             "type": "string",
-            "description": "Network to verify.If user verifies another network then verification will be failed.",
+            "description": "Network to verify. If user verifies another network address then verification will be failed.\r\nChecked only if Addresses is provided.",
             "format": "uuid",
+            "nullable": true
+          },
+          "networkType": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/NetworkType"
+              }
+            ],
+            "description": "Network type to verify. If user verifies another network address then verification will be failed.\r\nChecked only if Addresses is provided.",
             "nullable": true
           }
         },
@@ -14724,13 +15061,16 @@
     },
     {
       "name": "Transfers",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BinanceConnect```\n```DeFiWallet```\n\n\n### Integration-specific notes:\n\n\n#### Robinhood:\n\n\nCryptocurrency transfers should be enabled in Robinhood settings. Transfers are disabled by default, enabling them for end users requires a review from Robinhood.\n\nPlease note:\n * `MfaCode` parameter is required to initiate a transaction in Robinhood.\n * The user's security settings should be configured to use an authenticator application.\n * Robinhood doesn't allow initiation of transactions if the authenticator application is not configured.\n\n\n#### Coinbase:\n\n\n`MfaCode` parameter should be used to initiate transactions in Coinbase.\n * If the end user's Coinbase account is configured to use text messages (SMS) for two factor authentication, the API will return `MfaRequired` status, and a text code will then be sent by Coinbase. The code is expected to be provided in the subsequent call using the `MfaCode` request field\n * If the account is configured to use an authenticator application, the API is expecting to get the code in the `MfaCode` request field.\n\n\n#### Kraken:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n\n\n#### CoinbasePro:\n * CoinbasePro does not provide multiple chains per a symbol, so default chains are used for getting Deposit addresses.\n\n\n#### Binance:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance Us.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### KuCoin:\n\n\nKuCoin requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n\n`Fee` parameter should be used to initiate a transaction in KuCoin.\n\nPlease note:\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * All currencies have their minimum `fee` and `amount` requirements. Please use `symbol/details` endpoint to get this data for a particular symbol.\n * KuCoin requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### BinanceInternational:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance International.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### GateIo:\n\n\nGate.io requires adding IP address to the list of trusted IP addresses to be able to initiate a cryptocurrency transfers.\n\nWithdrawal address should be already verified or added on the Gate.io UI (in mobile application or on the web site).\n * Please reach out to Front to get the static IP address for withdrawals. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * Only verified withdrawal blockchain addresses are allowed for withdrawal with Gate.io API.\n * Gate.io requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### Huobi:\n\n\nWarning: Huobi does not refund executed deposits that are below the `Minimum Deposit Amount`\n * Please check the MinimumDepositAmount in Get Deposit Address response in order to avoid making a deposit below the minimum amount\n * Huobi does not allow withdrawals to addresses that are not white-listed, please add the address that you would like to withdraw to the white list of addresses through the UI so that a withrawal can be processed\n\n\n#### Bitfinex:\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\n\n\n#### KrakenDirect:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n\n\n#### BitfinexDirect:\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BinanceConnect```\n```BinancePay```\n```DeFiWallet```\n\n\n### Integration-specific notes:\n\n\n#### Robinhood:\n\n\nCryptocurrency transfers should be enabled in Robinhood settings. Transfers are disabled by default, enabling them for end users requires a review from Robinhood.\n\nPlease note:\n * `MfaCode` parameter is required to initiate a transaction in Robinhood.\n * The user's security settings should be configured to use an authenticator application.\n * Robinhood doesn't allow initiation of transactions if the authenticator application is not configured.\n\n\n#### Coinbase:\n\n\n`MfaCode` parameter should be used to initiate transactions in Coinbase.\n * If the end user's Coinbase account is configured to use text messages (SMS) for two factor authentication, the API will return `MfaRequired` status, and a text code will then be sent by Coinbase. The code is expected to be provided in the subsequent call using the `MfaCode` request field\n * If the account is configured to use an authenticator application, the API is expecting to get the code in the `MfaCode` request field.\n\n\n#### Kraken:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n\n\n#### CoinbasePro:\n * CoinbasePro does not provide multiple chains per a symbol, so default chains are used for getting Deposit addresses.\n\n\n#### Binance:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance Us.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### KuCoin:\n\n\nKuCoin requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n\n`Fee` parameter should be used to initiate a transaction in KuCoin.\n\nPlease note:\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * All currencies have their minimum `fee` and `amount` requirements. Please use `symbol/details` endpoint to get this data for a particular symbol.\n * KuCoin requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### BinanceInternational:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance International.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### GateIo:\n\n\nGate.io requires adding IP address to the list of trusted IP addresses to be able to initiate a cryptocurrency transfers.\n\nWithdrawal address should be already verified or added on the Gate.io UI (in mobile application or on the web site).\n * Please reach out to Front to get the static IP address for withdrawals. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * Only verified withdrawal blockchain addresses are allowed for withdrawal with Gate.io API.\n * Gate.io requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### Huobi:\n\n\nWarning: Huobi does not refund executed deposits that are below the `Minimum Deposit Amount`\n * Please check the MinimumDepositAmount in Get Deposit Address response in order to avoid making a deposit below the minimum amount\n * Huobi does not allow withdrawals to addresses that are not white-listed, please add the address that you would like to withdraw to the white list of addresses through the UI so that a withrawal can be processed\n\n\n#### Bitfinex:\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\n\n\n#### KrakenDirect:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n\n\n#### BitfinexDirect:\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\n"
     },
     {
       "name": "Assets"
     },
     {
       "name": "Managed Transfers"
+    },
+    {
+      "name": "Wallets"
     }
   ]
 }
