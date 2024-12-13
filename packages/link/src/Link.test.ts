@@ -183,7 +183,12 @@ describe('createLink tests', () => {
       toAddress: 'ta',
       symbol: 'BTC',
       amount: 0.001,
-      networkId: 'nid'
+      networkId: 'nid',
+      amountInFiat: 9.77,
+      totalAmountInFiat: 10.02,
+      networkName: 'Bitcoin',
+      txHash: 'txHash',
+      transferId: 'trid'
     }
     window.dispatchEvent(
       new MessageEvent<EventPayload>('message', {
