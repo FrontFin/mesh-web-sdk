@@ -115,7 +115,7 @@ export interface LinkOptions {
   /**
    * Client ID that can be obtained at https://dashboard.meshconnect.com/company/keys
    */
-  clientId: string
+  clientId?: string
 
   /**
    * A callback function that is called when an integration is successfully connected.
