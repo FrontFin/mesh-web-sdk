@@ -302,6 +302,7 @@ export interface B2BBrokerAuthRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   phone?: string | null
   username?: string | null
   password?: string | null
@@ -567,6 +568,7 @@ export interface B2BBrokerCreateOrderRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -674,6 +676,7 @@ export interface B2BBrokerCreateOrderResult {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /** Side of the order. */
   side?: 'unknown' | 'buy' | 'sell'
   /**
@@ -1103,6 +1106,7 @@ export interface B2BBrokerOrder {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /** Type of the transaction */
   transactionType?:
     | 'order'
@@ -1205,6 +1209,7 @@ export interface B2BBrokerOrderListRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /**
    * The cursor to retrieve the next page of transactions.
    * Providing it will cause the response to only return changes after this update.
@@ -1329,6 +1334,7 @@ export interface B2BBrokerOrderRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /** @minLength 1 */
   id: string
   /** Should be provided for Coinbase. */
@@ -1449,6 +1455,7 @@ export interface B2BBrokerPreviewOrderResult {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /** @format double */
   fee?: number | null
   feeText?: string | null
@@ -1586,6 +1593,7 @@ export interface B2BBrokerSymbolInfoForOrderRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -1705,6 +1713,7 @@ export interface B2BBrokerTradingFeatureInfo {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /** Account Id of the integration. */
   accountId?: string | null
   /** Model, describing the ability to place cryptocurrency orders. */
@@ -1895,6 +1904,7 @@ export interface B2BBrokersHealthStatus {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /** Name of the integration */
   name?: string | null
   /** Is the communication with the integration up */
@@ -2192,6 +2202,7 @@ export interface BalanceBrokerBaseRequest {
    * ```RobinhoodConnect```
    * ```BlockchainCom```
    * ```BitsoDirect```
+   * ```BybitDirect```
    */
   type:
     | 'robinhood'
@@ -2244,6 +2255,7 @@ export interface BalanceBrokerBaseRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
 }
 
 export interface BrokerAccount {
@@ -2355,6 +2367,7 @@ export interface BrokerAuthenticationScheme {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /** Type of authentication for the integration. */
   authenticationSchemeType?: 'usernamePassword' | 'oAuth' | 'apiKey' | 'blockchainAddress'
   /** Set of fields that should be provided in the initial POST `authenticate` request. */
@@ -2449,6 +2462,7 @@ export interface BrokerBaseRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
 }
 
 export interface BrokerCreateCryptocurrencyTransactionRequest {
@@ -2509,6 +2523,7 @@ export interface BrokerCreateCryptocurrencyTransactionRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /** Additional data to send on-chain (optional, depends on an integration) */
   data?: string | null
   /**
@@ -2534,6 +2549,11 @@ export interface BrokerCreateCryptocurrencyTransactionRequest {
   addressType?: CryptocurrencyAddressType | null
   /** 2 Factor auth code (optional, depends on an integration) */
   mfaCode?: string | null
+  /**
+   * Travel rule transaction id (optional, depends on an integration)
+   * @format int32
+   */
+  travelRuleTransactionId?: number | null
   /** 2 Factor auth type (optional, depends on an integration) */
   mfaType?: MfaType | null
   verificationSteps?: MfaType[] | null
@@ -2628,6 +2648,7 @@ export interface BrokerCryptocurrencyDepositAddressRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
    * Can be used instead of the `AddressType` field.
@@ -2723,6 +2744,7 @@ export interface BrokerCryptocurrencyTransactionDetailsRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /** Type of the address of the transferred asset. Can be used instead of the `Symbol` field. */
   addressType?: CryptocurrencyAddressType | null
   /** Transaction Id by the financial institution */
@@ -2971,6 +2993,7 @@ export interface BrokerRefreshTokenRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /** @minLength 1 */
   refreshToken: string
   /**
@@ -3053,6 +3076,7 @@ export interface BrokerTransactionsListRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /**
    * Number of records to include in the response. <br />
    * Default: `100` <br />
@@ -3128,6 +3152,7 @@ export type BrokerType =
   | 'binanceOAuth'
   | 'revolutConnect'
   | 'binancePay'
+  | 'bybitDirect'
 
 export interface CatalogLink {
   /**
@@ -3226,6 +3251,7 @@ export interface ConfigureTransferRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /**
    * The authentication token of the target integration. Can be used alternatively to the list of requested address (`toAddresses`).
    * If used, `toType` should also be provided.
@@ -3465,6 +3491,7 @@ export type CryptocurrencyFundingOptionType =
   | 'cryptocurrencyConversion'
   | 'stableCoinNoFeeConversion'
   | 'cryptocurrencyBuyingPowerConversion'
+  | 'cryptocurrencyMultiStepConversion'
 
 export interface DeFiWalletHealthStatusInfo {
   /** @format uuid */
@@ -3601,6 +3628,7 @@ export interface ExecuteTransferRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /**
    * Id of the Preview of the transfer.
    * @format uuid
@@ -3630,6 +3658,11 @@ export interface ExecuteTransferResponse {
   mfaType?: ExecuteTransferMfaType | null
   /** The type of the MFA when the status is `MfaRequired`. */
   verificationSteps?: ExecuteTransferMfaType[] | null
+  /**
+   * The transaction number for Travel rule required clients (optional, depends on an integration).
+   * @format int32
+   */
+  travelRuleTransactionId?: number | null
   qrCode?: string | null
   qrCodeLink?: string | null
   /** Error message, if the operation did not complete successfully. */
@@ -3806,6 +3839,19 @@ export interface GetLinkTokenRequest {
   subClientId?: string | null
 }
 
+export interface GoodsDetails {
+  /** The type of the goods for the order (01: Tangible Goods, 02: Virtual Goods). */
+  goodsType?: string | null
+  /** The category of goods (e.g., Electronics, Food). */
+  goodsCategory?: string | null
+  /** A unique reference ID to identify the goods. */
+  referenceGoodsId?: string | null
+  /** The name of the goods. */
+  goodsName?: string | null
+  /** Additional details about the goods (optional). */
+  goodsDetail?: string | null
+}
+
 export type HoldingTransferIneligibilityReason =
   | 'noEligibleNetworks'
   | 'symbolDoesNotMatch'
@@ -3882,6 +3928,7 @@ export interface HoldingsModel {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /** External institution's account id (returned by the institution) */
   accountId?: string | null
   /** Friendly name of the connected institution */
@@ -3976,6 +4023,7 @@ export interface HoldingsRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   includeMarketValue?: boolean
 }
 
@@ -4014,6 +4062,14 @@ export interface InitializeTransfersForLinkRequest {
    * Onramp: The user is using balances and linked payment methods in an exchange account to fund the purchase of crypto in their wallet on your platform.
    */
   transferType?: TransferTypeEnum | null
+  /**
+   * Transaction description. (Binance Pay)
+   * @minLength 0
+   * @maxLength 256
+   */
+  description?: string | null
+  /** Goods details for the transaction. (Binance Pay) */
+  goodsDetails?: GoodsDetails[] | null
 }
 
 /** Integreation logos. */
@@ -4103,6 +4159,7 @@ export interface IntegrationModel {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /** DeFi wallet provider identifier. */
   deFiWalletProviderId?: string | null
   /** Integration categories. */
@@ -4174,6 +4231,7 @@ export interface IntegrationNetwork {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
 }
 
 export interface IntegrationNetworkResponse {
@@ -4257,6 +4315,7 @@ export interface IntegrationNetworksModelResponse {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /** The list of supported networks and corresponding tokens for the integration. */
   networks?: NetworkResponse[] | null
   /** Specifies if the integration supports outgoing transfers. */
@@ -4392,23 +4451,14 @@ export interface LinkTokenTransferOptions {
   fundingOptions?: TransferCryptocurrencyFundingOptions | null
   /** Specifies if all the fees are included in the amount to transfer. */
   isInclusiveFeeEnabled?: boolean
-  /** Descripton: Binance Pay Description name. */
-  description?: "Mesh Test"
-  /** GoodsDetails: GoodsDetails object */
-  goodsDetails?: GoodsDetailsDto[]
-}
-
-export interface GoodsDetailsDto {
-  /** The type of the goods for the order: 01: Tangible Goods 02: Virtual Goods */
-  goodsType?: "02",
-  /** The Category of the goods for the order: 6000: Game & Recharge */
-  goodsCategory?: "6000",
-  /** The unique ID to identify the goods. */
-  referenceGoodsId?: "12345",
-  /** Goods name. Special character is prohibited Example: \ " or emoji */
-  goodsName?: "Gold Coins",
-  /** More detailed explanation for the Goods. */
-  goodsDetail?:"virtual in-game currency"
+  /**
+   * Transaction description. (Binance Pay)
+   * @minLength 0
+   * @maxLength 256
+   */
+  description?: string | null
+  /** Goods details for the transaction. (Binance Pay) */
+  goodsDetails?: GoodsDetails[] | null
 }
 
 export interface ManagedBrokerCryptocurrencyDepositAddressRequest {
@@ -4469,6 +4519,7 @@ export interface ManagedBrokerCryptocurrencyDepositAddressRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
    * Can be used instead of the `AddressType` field.
@@ -4756,6 +4807,7 @@ export interface PortfolioBrokerBaseRequest {
    * ```BlockchainCom```
    * ```BitsoDirect```
    * ```BinanceOAuth```
+   * ```BybitDirect```
    * ```DeFiWallet```
    */
   type:
@@ -4809,6 +4861,7 @@ export interface PortfolioBrokerBaseRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
 }
 
 export interface PortfolioFiatBalance {
@@ -4879,6 +4932,7 @@ export interface PortfolioHoldingsRequest {
    * ```BlockchainCom```
    * ```BitsoDirect```
    * ```BinanceOAuth```
+   * ```BybitDirect```
    * ```DeFiWallet```
    */
   type:
@@ -4932,6 +4986,7 @@ export interface PortfolioHoldingsRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   includeMarketValue?: boolean
 }
 
@@ -5092,6 +5147,7 @@ export interface PreviewTransferRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /**
    * The authentication token of the target integration. Can be used alternatively to the address in the `ToAddress` field.
    * If used, `toType` should also be provided.
@@ -5413,6 +5469,7 @@ export interface QuoteFundingOption {
     | 'cryptocurrencyConversion'
     | 'stableCoinNoFeeConversion'
     | 'cryptocurrencyBuyingPowerConversion'
+    | 'cryptocurrencyMultiStepConversion'
   /** Payment method being quoted for PaymentMethodDepositUsage funding option */
   paymentMethodType?: BrokerPaymentMethodType | null
   /**
@@ -5508,6 +5565,7 @@ export interface QuoteTransferRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /**
    * Flat fee in crypto to be charged as a partner fee
    * @format double
@@ -5589,6 +5647,7 @@ export interface QuoteTransferResponse {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /** Is the transaction is possible based on the minimum transfer amount of the selected exchange */
   isEligible?: boolean
   /**
@@ -5818,6 +5877,7 @@ export interface TransactionsB2BBrokerCreateOrderRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -5963,6 +6023,7 @@ export interface TransactionsB2BBrokerOrderListRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /**
    * The cursor to retrieve the next page of transactions.
    * Providing it will cause the response to only return changes after this update.
@@ -6079,6 +6140,7 @@ export interface TransactionsB2BBrokerOrderRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /** @minLength 1 */
   id: string
   /** Should be provided for Coinbase. */
@@ -6184,6 +6246,7 @@ export interface TransactionsB2BBrokerSymbolInfoForOrderRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -6330,6 +6393,7 @@ export interface TransactionsBrokerBaseRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
 }
 
 export interface TransferBalanceFundingAvailability {
@@ -6406,6 +6470,7 @@ export interface TransferFundingModel {
     | 'cryptocurrencyConversion'
     | 'stableCoinNoFeeConversion'
     | 'cryptocurrencyBuyingPowerConversion'
+    | 'cryptocurrencyMultiStepConversion'
   /**
    * Amount funded.
    * @format double
@@ -6490,6 +6555,7 @@ export interface TransferIntegrationModel {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /** Name of integration. */
   name?: string | null
 }
@@ -6552,6 +6618,7 @@ export interface TransferIntegrationWithLogoModel {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /** Name of integration. */
   name?: string | null
   /** Integration logo URL. */
@@ -6886,6 +6953,7 @@ export interface TransfersBrokerCreateCryptocurrencyTransactionRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /** Additional data to send on-chain (optional, depends on an integration) */
   data?: string | null
   /**
@@ -6911,6 +6979,11 @@ export interface TransfersBrokerCreateCryptocurrencyTransactionRequest {
   addressType?: CryptocurrencyAddressType | null
   /** 2 Factor auth code (optional, depends on an integration) */
   mfaCode?: string | null
+  /**
+   * Travel rule transaction id (optional, depends on an integration)
+   * @format int32
+   */
+  travelRuleTransactionId?: number | null
   /** 2 Factor auth type (optional, depends on an integration) */
   mfaType?: MfaType | null
   verificationSteps?: MfaType[] | null
@@ -7021,6 +7094,7 @@ export interface TransfersBrokerCryptocurrencyDepositAddressRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
    * Can be used instead of the `AddressType` field.
@@ -7127,6 +7201,7 @@ export interface TransfersBrokerCryptocurrencyTransactionDetailsRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /** Type of the address of the transferred asset. Can be used instead of the `Symbol` field. */
   addressType?: CryptocurrencyAddressType | null
   /** Transaction Id by the financial institution */
@@ -7227,6 +7302,7 @@ export interface TransfersBrokerTransactionsListRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /**
    * Number of records to include in the response. <br />
    * Default: `100` <br />
@@ -7388,6 +7464,7 @@ export interface UpdateTransferStatusRequest {
     | 'binanceOAuth'
     | 'revolutConnect'
     | 'binancePay'
+    | 'bybitDirect'
   /**
    * Id of the executed transfer.
    * @minLength 1
@@ -8044,7 +8121,8 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         | 'binanceConnect'
         | 'binanceOAuth'
         | 'revolutConnect'
-        | 'binancePay',
+        | 'binancePay'
+        | 'bybitDirect',
       query: {
         /** Id of the end-user */
         userId: string
