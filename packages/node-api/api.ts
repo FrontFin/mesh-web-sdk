@@ -4392,6 +4392,23 @@ export interface LinkTokenTransferOptions {
   fundingOptions?: TransferCryptocurrencyFundingOptions | null
   /** Specifies if all the fees are included in the amount to transfer. */
   isInclusiveFeeEnabled?: boolean
+  /** Descripton: Binance Pay Description name. */
+  description?: "Mesh Test"
+  /** GoodsDetails: GoodsDetails object */
+  goodsDetails?: GoodsDetailsDto[]
+}
+
+export interface GoodsDetailsDto {
+  /** The type of the goods for the order: 01: Tangible Goods 02: Virtual Goods */
+  goodsType?: "02",
+  /** The Category of the goods for the order: 6000: Game & Recharge */
+  goodsCategory?: "6000",
+  /** The unique ID to identify the goods. */
+  referenceGoodsId?: "12345",
+  /** Goods name. Special character is prohibited Example: \ " or emoji */
+  goodsName?: "Gold Coins",
+  /** More detailed explanation for the Goods. */
+  goodsDetail?:"virtual in-game currency"
 }
 
 export interface ManagedBrokerCryptocurrencyDepositAddressRequest {
