@@ -971,7 +971,8 @@
                 "binanceConnect",
                 "binanceOAuth",
                 "revolutConnect",
-                "binancePay"
+                "binancePay",
+                "bybitDirect"
               ],
               "allOf": [
                 {
@@ -3650,7 +3651,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -4199,7 +4201,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -4355,7 +4358,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -5236,7 +5240,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -5399,7 +5404,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -5588,7 +5594,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -5807,7 +5814,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -6107,7 +6115,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -6329,7 +6338,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -6672,7 +6682,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -7238,14 +7249,15 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n```BybitDirect```\n"
           }
         },
         "additionalProperties": false
@@ -7405,7 +7417,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -7574,7 +7587,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -7650,7 +7664,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -7691,6 +7706,12 @@
           "mfaCode": {
             "type": "string",
             "description": "2 Factor auth code (optional, depends on an integration)",
+            "nullable": true
+          },
+          "travelRuleTransactionId": {
+            "type": "integer",
+            "description": "Travel rule transaction id (optional, depends on an integration)",
+            "format": "int32",
             "nullable": true
           },
           "mfaType": {
@@ -7850,7 +7871,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -7973,7 +7995,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -8376,7 +8399,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -8499,7 +8523,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -8595,7 +8620,8 @@
           "binanceConnect",
           "binanceOAuth",
           "revolutConnect",
-          "binancePay"
+          "binancePay",
+          "bybitDirect"
         ],
         "type": "string"
       },
@@ -8743,7 +8769,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -9152,7 +9179,8 @@
           "paymentMethodDepositUsage",
           "cryptocurrencyConversion",
           "stableCoinNoFeeConversion",
-          "cryptocurrencyBuyingPowerConversion"
+          "cryptocurrencyBuyingPowerConversion",
+          "cryptocurrencyMultiStepConversion"
         ],
         "type": "string"
       },
@@ -9387,7 +9415,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -9455,6 +9484,12 @@
               "$ref": "#/components/schemas/ExecuteTransferMfaType"
             },
             "description": "The type of the MFA when the status is `MfaRequired`.",
+            "nullable": true
+          },
+          "travelRuleTransactionId": {
+            "type": "integer",
+            "description": "The transaction number for Travel rule required clients (optional, depends on an integration).",
+            "format": "int32",
             "nullable": true
           },
           "qrCode": {
@@ -9765,6 +9800,37 @@
         },
         "additionalProperties": false
       },
+      "GoodsDetails": {
+        "type": "object",
+        "properties": {
+          "goodsType": {
+            "type": "string",
+            "description": "The type of the goods for the order (01: Tangible Goods, 02: Virtual Goods).",
+            "nullable": true
+          },
+          "goodsCategory": {
+            "type": "string",
+            "description": "The category of goods (e.g., Electronics, Food).",
+            "nullable": true
+          },
+          "referenceGoodsId": {
+            "type": "string",
+            "description": "A unique reference ID to identify the goods.",
+            "nullable": true
+          },
+          "goodsName": {
+            "type": "string",
+            "description": "The name of the goods.",
+            "nullable": true
+          },
+          "goodsDetail": {
+            "type": "string",
+            "description": "Additional details about the goods (optional).",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
       "HoldingTransferIneligibilityReason": {
         "enum": [
           "noEligibleNetworks",
@@ -9886,7 +9952,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -10044,7 +10111,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -10097,6 +10165,21 @@
               }
             ],
             "description": "Deposit (default): The user is transferring crypto to a wallet they own on your platform.\r\nPayment: The user is transferring crypto to a wallet your company owns in exchange for receiving a good or service.\r\nOnramp: The user is using balances and linked payment methods in an exchange account to fund the purchase of crypto in their wallet on your platform.",
+            "nullable": true
+          },
+          "description": {
+            "maxLength": 256,
+            "minLength": 0,
+            "type": "string",
+            "description": "Transaction description. (Binance Pay)",
+            "nullable": true
+          },
+          "goodsDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GoodsDetails"
+            },
+            "description": "Goods details for the transaction. (Binance Pay)",
             "nullable": true
           }
         },
@@ -10228,7 +10311,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -10351,7 +10435,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -10481,7 +10566,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -10749,6 +10835,21 @@
           "isInclusiveFeeEnabled": {
             "type": "boolean",
             "description": "Specifies if all the fees are included in the amount to transfer."
+          },
+          "description": {
+            "maxLength": 256,
+            "minLength": 0,
+            "type": "string",
+            "description": "Transaction description. (Binance Pay)",
+            "nullable": true
+          },
+          "goodsDetails": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/GoodsDetails"
+            },
+            "description": "Goods details for the transaction. (Binance Pay)",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -10816,7 +10917,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -11408,14 +11510,15 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n```BinanceOAuth```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n```BinanceOAuth```\n```BybitDirect```\n```DeFiWallet```\n"
           }
         },
         "additionalProperties": false
@@ -11506,14 +11609,15 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n```BinanceOAuth```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n```BinanceOAuth```\n```BybitDirect```\n```DeFiWallet```\n"
           },
           "includeMarketValue": {
             "type": "boolean"
@@ -11724,7 +11828,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -12260,7 +12365,8 @@
               "paymentMethodDepositUsage",
               "cryptocurrencyConversion",
               "stableCoinNoFeeConversion",
-              "cryptocurrencyBuyingPowerConversion"
+              "cryptocurrencyBuyingPowerConversion",
+              "cryptocurrencyMultiStepConversion"
             ],
             "allOf": [
               {
@@ -12381,7 +12487,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -12484,7 +12591,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -12826,7 +12934,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -12986,7 +13095,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -13087,7 +13197,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -13197,7 +13308,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -13365,7 +13477,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -13513,7 +13626,8 @@
               "paymentMethodDepositUsage",
               "cryptocurrencyConversion",
               "stableCoinNoFeeConversion",
-              "cryptocurrencyBuyingPowerConversion"
+              "cryptocurrencyBuyingPowerConversion",
+              "cryptocurrencyMultiStepConversion"
             ],
             "allOf": [
               {
@@ -13628,7 +13742,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -13705,7 +13820,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -14296,7 +14412,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -14337,6 +14454,12 @@
           "mfaCode": {
             "type": "string",
             "description": "2 Factor auth code (optional, depends on an integration)",
+            "nullable": true
+          },
+          "travelRuleTransactionId": {
+            "type": "integer",
+            "description": "Travel rule transaction id (optional, depends on an integration)",
+            "format": "int32",
             "nullable": true
           },
           "mfaType": {
@@ -14456,7 +14579,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -14555,7 +14679,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -14654,7 +14779,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -14937,7 +15063,8 @@
               "binanceConnect",
               "binanceOAuth",
               "revolutConnect",
-              "binancePay"
+              "binancePay",
+              "bybitDirect"
             ],
             "allOf": [
               {
@@ -15049,11 +15176,11 @@
     },
     {
       "name": "Portfolio",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n```BinanceOAuth```\n```DeFiWallet```\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n```BinanceOAuth```\n```BybitDirect```\n```DeFiWallet```\n"
     },
     {
       "name": "Balance",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```ETrade```\n```Alpaca```\n```WeBull```\n```Stash```\n```InteractiveBrokers```\n```Public```\n```Coinbase```\n```Kraken```\n```CoinbasePro```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```Etoro```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Acorns```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```Vanguard```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n```BybitDirect```\n"
     },
     {
       "name": "Transactions",
