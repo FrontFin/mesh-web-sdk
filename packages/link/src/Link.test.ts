@@ -87,7 +87,8 @@ describe('createLink tests', () => {
           data: {
             type: eventName,
             payload: payload
-          }
+          },
+          origin: 'http://localhost'
         })
       )
 
@@ -120,7 +121,8 @@ describe('createLink tests', () => {
         data: {
           type: 'brokerageAccountAccessToken',
           payload: payload
-        }
+        },
+        origin: 'http://localhost'
       })
     )
 
@@ -153,7 +155,8 @@ describe('createLink tests', () => {
         data: {
           type: 'delayedAuthentication',
           payload: payload
-        }
+        },
+        origin: 'http://localhost'
       })
     )
 
@@ -195,7 +198,8 @@ describe('createLink tests', () => {
         data: {
           type: 'transferFinished',
           payload: payload
-        }
+        },
+        origin: 'http://localhost'
       })
     )
 
@@ -219,7 +223,8 @@ describe('createLink tests', () => {
         data: {
           type: 'oauthLinkOpen',
           link: 'https://localhost/2'
-        }
+        },
+        origin: 'http://localhost'
       })
     )
 
@@ -272,7 +277,8 @@ describe('createLink tests', () => {
       new MessageEvent<EventPayload>('message', {
         data: {
           type: 'loaded'
-        }
+        },
+        origin: 'http://localhost'
       })
     )
 
@@ -285,7 +291,8 @@ describe('createLink tests', () => {
         type: 'meshSDKSpecs',
         payload: {
           platform: 'web',
-          version: packageJSONContent.version
+          version: packageJSONContent.version,
+          origin: 'http://localhost'
         }
       },
       'http://localhost'
@@ -316,7 +323,8 @@ describe('createLink tests', () => {
       new MessageEvent('message', {
         data: {
           type: 'integrationConnected'
-        }
+        },
+        origin: 'http://localhost'
       })
     )
 
@@ -337,7 +345,8 @@ describe('createLink tests', () => {
       new MessageEvent('message', {
         data: {
           type: 'unknown'
-        }
+        },
+        origin: 'http://localhost'
       })
     )
 
@@ -368,7 +377,8 @@ describe('createLink tests', () => {
         data: {
           type: 'brokerageAccountAccessToken',
           payload: payload
-        }
+        },
+        origin: 'http://localhost'
       })
     )
 

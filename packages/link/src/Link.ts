@@ -337,7 +337,7 @@ async function eventsListener(
     await handleWalletBrowserEvent(
       event as MessageEvent<WalletBrowserEventType>
     )
-  } else if (event.origin.endsWith('.meshconnect.com')) {
+  } else if (possibleOrigins.has(event.origin)) {
     await handleLinkEvent(event as MessageEvent<{ type: EventType }>)
   }
 }

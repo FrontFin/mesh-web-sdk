@@ -1,4 +1,4 @@
-import { sdkSpecs } from './sdk-specs';
+import { sdkSpecs } from './sdk-specs'
 
 const sdkType = sdkSpecs
 
@@ -7,11 +7,12 @@ describe('SDK Specs', () => {
     const packageJSONContent = JSON.parse(
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('fs').readFileSync('package.json', 'utf8')
-    );
+    )
 
     expect(sdkType).toEqual({
       platform: 'web',
-      version: packageJSONContent.version
-    });
+      version: packageJSONContent.version,
+      origin: 'http://localhost'
+    })
   })
 })
