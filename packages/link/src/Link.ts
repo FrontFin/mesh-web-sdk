@@ -27,7 +27,7 @@ import {
 let currentOptions: LinkOptions | undefined
 const possibleOrigins = new Set<string>([
   'https://web.meshconnect.com',
-  'https://web.getfront.com'
+  'https://dev-web.meshconnect.com'
 ])
 
 const iframeElement = () => {
@@ -337,7 +337,7 @@ async function eventsListener(
     await handleWalletBrowserEvent(
       event as MessageEvent<WalletBrowserEventType>
     )
-  } else {
+  } else if (possibleOrigins.has(event.origin)) {
     await handleLinkEvent(event as MessageEvent<{ type: EventType }>)
   }
 }

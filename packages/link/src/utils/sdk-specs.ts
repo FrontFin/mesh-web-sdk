@@ -2,5 +2,6 @@ import { sdkVersion } from './version'
 
 export const sdkSpecs = {
   platform: 'web',
-  version: sdkVersion
+  version: sdkVersion,
+  origin: window.location.origin
 }
