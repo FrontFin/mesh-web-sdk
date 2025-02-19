@@ -21,6 +21,23 @@ const WALLET_BROWSER_EVENT_TYPE_KEYS = [
   'walletBrowserDisconnect'
 ] as const
 
+export type NetworkType =
+  | 'unknown'
+  | 'evm'
+  | 'solana'
+  | 'bitcoin'
+  | 'cardano'
+  | 'tron'
+  | 'avalancheX'
+  | 'tezos'
+  | 'dogecoin'
+  | 'ripple'
+  | 'stellar'
+  | 'litecoin'
+  | 'sui'
+  | 'aptos'
+  | 'tvm'
+
 export type WalletBrowserEventTypeKeys =
   (typeof WALLET_BROWSER_EVENT_TYPE_KEYS)[number]
 
@@ -41,6 +58,8 @@ export interface WalletBrowserInjectedWalletSelected
   type: 'walletBrowserInjectedWalletSelected'
   payload: {
     integrationName: string
+    networkType?: string
+    targetChainId?: number
   }
 }
 
@@ -49,6 +68,8 @@ export interface WalletBrowserSignRequest extends WalletBrowserEventBase {
   payload: {
     address: `0x${string}`
     message: string
+    walletName?: string
+    networkType?: NetworkType
   }
 }
 
@@ -57,6 +78,7 @@ export interface WalletBrowserChainSwitchRequest
   type: 'walletBrowserChainSwitchRequest'
   payload: {
     chainId: number
+    networkType: NetworkType
   }
 }
 
@@ -78,6 +100,9 @@ export interface WalletBrowserNativeTransferRequest
     decimalPlaces: number
     chainId: number
     account: string
+    network: string
+    blockhash?: string
+    walletName?: string
   }
 }
 
@@ -109,4 +134,8 @@ export interface WalletBrowserNonNativeSmartDeposit
 
 export interface WalletBrowserDisconnect extends WalletBrowserEventBase {
   type: 'walletBrowserDisconnect'
+  payload?: {
+    networkType?: NetworkType
+    walletName?: string
+  }
 }

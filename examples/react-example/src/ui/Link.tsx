@@ -14,7 +14,6 @@ export const LinkComponent: React.FC<{
   onExit?: (error?: string) => void
 }> = ({ linkToken, onIntegrationConnected, onTransferFinished, onExit }) => {
   const [linkConnection, setLinkConnection] = useState<Link | null>(null)
-
   useEffect(() => {
     setLinkConnection(
       createLink({
