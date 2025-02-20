@@ -1,6 +1,20 @@
 import { ethers } from 'ethers'
 import { getActiveRawProvider } from './provider'
 
+const isUserRejection = (error: any): boolean => {
+  if (!error) return false
+
+  // Check for various wallet rejection patterns
+  const message = error.message?.toLowerCase() || ''
+  return (
+    error.code === 4001 || // Standard EIP-1193 user rejection code
+    message.includes('user rejected') ||
+    message.includes('user denied') ||
+    message.includes('user cancelled') ||
+    message.includes('declined')
+  )
+}
+
 /**
  * Sends a native EVM transaction
  */
@@ -24,8 +38,6 @@ export const sendEVMTransaction = async (
     // Create a new provider instance for this transaction
     const provider = new ethers.BrowserProvider(activeRawProvider)
     const signer = await provider.getSigner(fromAddress)
-    console.log('Signer:', signer)
-    console.log('Provider:', provider)
 
     // Verify we're still on the same network before proceeding
     const network = await provider.getNetwork()
@@ -33,32 +45,29 @@ export const sendEVMTransaction = async (
       throw new Error('Network changed during transaction setup')
     }
 
-    console.log('Sending native transaction:', {
-      toAddress,
-      amount: amount.toString(),
-      chainId,
-      fromAddress
-    })
+    try {
+      const tx = await signer.sendTransaction({
+        to: toAddress,
+        value: amount
+      })
 
-    const tx = await signer.sendTransaction({
-      to: toAddress,
-      value: amount
-    })
-
-    console.log('Transaction sent:', tx.hash)
-
-    const receipt = await tx.wait()
-    console.log('Transaction confirmed:', receipt?.hash)
-
-    return receipt ? receipt.hash : ''
+      const receipt = await tx.wait()
+      return receipt ? receipt.hash : ''
+    } catch (txError: any) {
+      if (isUserRejection(txError)) {
+        return new Error('Transaction was rejected by user')
+      }
+      throw txError
+    }
   } catch (error: any) {
     console.error('Transaction error:', error)
 
-    // Check for specific error types
+    if (isUserRejection(error)) {
+      return new Error('Transaction was rejected by user')
+    }
+
     if (error.code === 'NETWORK_ERROR') {
       return new Error('Network changed during transaction. Please try again.')
-    } else if (error.code === 4001) {
-      return new Error('Transaction rejected by user')
     }
 
     return error instanceof Error
@@ -84,13 +93,11 @@ export const sendEVMTokenTransaction = async (
       throw new Error('No active EVM provider')
     }
 
-    // Get current chain ID before transaction
     const chainIdHex = await activeRawProvider.request({
       method: 'eth_chainId'
     })
     const chainId = parseInt(chainIdHex, 16)
 
-    // Create a new provider instance for this transaction
     const provider = new ethers.BrowserProvider(activeRawProvider)
     const signer = await provider.getSigner(fromAddress)
 
@@ -99,13 +106,6 @@ export const sendEVMTokenTransaction = async (
     if (Number(network.chainId) !== chainId) {
       throw new Error('Network changed during transaction setup')
     }
-
-    console.log('Sending token transaction:', {
-      contractAddress,
-      functionName,
-      chainId,
-      fromAddress
-    })
 
     const contract = new ethers.Contract(contractAddress, abi, signer)
     const txOptions: ethers.Overrides = {}
@@ -120,23 +120,28 @@ export const sendEVMTokenTransaction = async (
       txOptions.value = value
     }
 
-    // Send the transaction
-    const tx = await contract[functionName](...args, txOptions)
-    console.log('Transaction sent:', tx.hash)
+    try {
+      // Send the transaction
+      const tx = await contract[functionName](...args, txOptions)
 
-    // Wait for transaction confirmation
-    const receipt = await tx.wait()
-    console.log('Transaction confirmed:', receipt.hash)
-
-    return receipt ? receipt.hash : ''
+      // Wait for transaction confirmation
+      const receipt = await tx.wait()
+      return receipt ? receipt.hash : ''
+    } catch (txError: any) {
+      if (isUserRejection(txError)) {
+        return new Error('Transaction was rejected by user')
+      }
+      throw txError
+    }
   } catch (error: any) {
     console.error('Token transaction error:', error)
 
-    // Check for specific error types
+    if (isUserRejection(error)) {
+      return new Error('Transaction was rejected by user')
+    }
+
     if (error.code === 'NETWORK_ERROR') {
       return new Error('Network changed during transaction. Please try again.')
-    } else if (error.code === 4001) {
-      return new Error('Transaction rejected by user')
     }
 
     return error instanceof Error

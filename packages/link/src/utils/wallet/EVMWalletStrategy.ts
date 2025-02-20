@@ -1,4 +1,3 @@
-import { ethers } from 'ethers'
 import { BaseWalletStrategy } from './WalletStrategy'
 import {
   WalletBrowserPayload,
@@ -17,7 +16,6 @@ import {
   switchEVMChain,
   findAvailableProviders
 } from '../connectors/evm'
-import { getActiveRawProvider } from '../connectors/evm/provider'
 
 export class EVMWalletStrategy extends BaseWalletStrategy {
   async connect(payload: WalletBrowserPayload) {

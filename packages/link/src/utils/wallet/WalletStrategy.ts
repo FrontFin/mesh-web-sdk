@@ -1,7 +1,4 @@
 import {
-  AccessTokenPayload,
-  DelayedAuthPayload,
-  TransferFinishedPayload,
   WalletBrowserPayload,
   SignRequestPayload,
   ChainSwitchPayload,
@@ -62,6 +59,7 @@ export abstract class BaseWalletStrategy implements WalletStrategy {
     if (!error) return false
 
     const message = error.message?.toLowerCase() || ''
+    //4001 - user reject, -32603 internal error
     const errorCodes = [4001, -32603]
 
     return (

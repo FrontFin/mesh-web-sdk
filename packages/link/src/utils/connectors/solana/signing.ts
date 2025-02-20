@@ -3,7 +3,6 @@ import { getSolanaProvider } from './providerDiscovery'
 
 export const signSolanaMessage = async (
   walletName: string,
-  address: string,
   message: string
 ): Promise<string | Error> => {
   try {

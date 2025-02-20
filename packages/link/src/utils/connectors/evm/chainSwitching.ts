@@ -54,7 +54,6 @@ export const switchEVMChain = async (
       throw new Error('No active EVM provider')
     }
 
-    console.log('Switching chain using provider:', targetProvider)
     const chainIdHex = `0x${chainId.toString(16)}`
 
     try {
@@ -123,7 +122,6 @@ const addChain = async (
   chainId: number,
   chainIdHex: string
 ): Promise<void> => {
-  console.log('Chain not added, attempting to add:', chainId)
   const chainConfig = getChainConfiguration(chainId)
 
   if (!chainConfig) {

@@ -49,7 +49,6 @@ export class SolanaWalletStrategy extends BaseWalletStrategy {
     try {
       const result = await signSolanaMessage(
         payload.walletName || 'Unknown Wallet',
-        payload.address,
         payload.message
       )
       if (result instanceof Error) {
@@ -61,15 +60,18 @@ export class SolanaWalletStrategy extends BaseWalletStrategy {
     }
   }
 
-  async switchChain(payload: ChainSwitchPayload) {
-    // Solana doesn't need chain switching as it's a single chain
-    // Get the current connected account from the provider
-    const provider = (window as any).solana
-    const account = provider?.publicKey?.toString() || ''
-
+  /**
+   * @note Solana doesn't support chain switching as it's a single-chain network
+   * This method is implemented to satisfy the interface but will always return mainnet (101)
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  async switchChain(_payload: ChainSwitchPayload): Promise<{
+    chainId: string
+    accounts: string[]
+  }> {
     return {
       chainId: '101',
-      accounts: [account]
+      accounts: []
     }
   }
 
@@ -92,11 +94,17 @@ export class SolanaWalletStrategy extends BaseWalletStrategy {
     }
   }
 
+  /**
+   * @note This feature is not yet implemented for Solana
+   * @throws {Error} Always throws with a "not implemented" message
+   */
   async sendSmartContractInteraction(
-    payload: SmartContractPayload
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    _payload: SmartContractPayload
   ): Promise<string> {
-    // For now, we don't support Solana smart contract interactions directly
-    throw new Error('Solana smart contract interactions not supported')
+    throw new Error(
+      'NOT_IMPLEMENTED: Solana smart contract interactions are not yet supported'
+    )
   }
 
   getProviders() {

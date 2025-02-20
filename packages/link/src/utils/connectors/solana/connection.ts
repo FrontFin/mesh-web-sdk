@@ -7,16 +7,14 @@ export const connectToSolanaWallet = async (
   try {
     const provider = getSolanaProvider(walletName)
 
-    // First check if already connected
     if (provider.publicKey && provider.isConnected) {
       return {
         accounts: [provider.publicKey.toString()],
-        chainId: '101', // Solana mainnet
+        chainId: '101',
         isConnected: true
       }
     }
 
-    // Try to connect with whatever method works
     const response = await provider.connect({ onlyIfTrusted: true }).catch(() =>
       // If eager connect fails, try regular connect
       provider.connect()

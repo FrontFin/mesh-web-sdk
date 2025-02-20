@@ -11,13 +11,15 @@ import { TransactionConfig } from './types'
 const QUICKNODE_RPC =
   'https://alien-newest-vineyard.solana-mainnet.quiknode.pro/ebe5e35661d7edb7a5e48ab84bd9d477e472a40b/'
 
-const isTransactionRejectedByUser = (error: any): boolean => {
+const isUserRejection = (error: any): boolean => {
   if (!error) return false
 
+  const message = (error?.message || '').toLowerCase()
   return (
-    error?.message?.toLowerCase().includes('user rejected') ||
-    error?.message?.toLowerCase().includes('declined') ||
-    error?.message?.toLowerCase().includes('cancelled') ||
+    message.includes('user rejected') ||
+    message.includes('declined') ||
+    message.includes('cancelled') ||
+    message.includes('denied') ||
     error?.code === 4001
   )
 }
@@ -73,7 +75,7 @@ const handleManualSignAndSend = async (
     )
     return standardizeSignature(rawSignature)
   } catch (error: any) {
-    if (isTransactionRejectedByUser(error)) {
+    if (isUserRejection(error)) {
       throw new Error('Transaction was rejected by user')
     }
     throw error
@@ -94,7 +96,14 @@ export const sendSOLTransaction = async (
 
     // For Trust Wallet, always use manual sign and send
     if (isManualWallet) {
-      return handleManualSignAndSend(transaction, provider)
+      try {
+        return await handleManualSignAndSend(transaction, provider)
+      } catch (error: any) {
+        if (isUserRejection(error)) {
+          throw new Error('Transaction was rejected by user')
+        }
+        throw error
+      }
     }
 
     // For other wallets, try native signAndSendTransaction first
@@ -103,7 +112,7 @@ export const sendSOLTransaction = async (
         const { signature } = await provider.signAndSendTransaction(transaction)
         return signature
       } catch (error: any) {
-        if (isTransactionRejectedByUser(error)) {
+        if (isUserRejection(error)) {
           throw new Error('Transaction was rejected by user')
         }
         // For other errors, fall back to manual sign and send
@@ -114,7 +123,7 @@ export const sendSOLTransaction = async (
     // If no signAndSendTransaction available, use manual method
     return handleManualSignAndSend(transaction, provider)
   } catch (error: any) {
-    if (isTransactionRejectedByUser(error)) {
+    if (isUserRejection(error)) {
       throw new Error('Transaction was rejected by user')
     }
     throw error instanceof Error

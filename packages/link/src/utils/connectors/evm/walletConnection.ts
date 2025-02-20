@@ -20,7 +20,6 @@ declare global {
   }
 }
 
-// Initialize wallet discovery on module load
 initializeWalletDiscovery()
 
 /**
@@ -30,8 +29,6 @@ export const getEVMProvider = (
   walletName?: string,
   walletDetail?: EIP6963ProviderDetail
 ): EVMProvider => {
-  console.log('Getting EVM provider for wallet:', { walletName, walletDetail })
-
   if (walletDetail?.provider) {
     return walletDetail.provider as EVMProvider
   }
@@ -40,11 +37,8 @@ export const getEVMProvider = (
     throw new Error('Wallet name is required')
   }
 
-  // Get all available providers
   const providers = findAvailableProviders()
-  console.log('Available providers:', providers)
 
-  // Try to find a matching provider by name
   const matchingProvider = providers.find(
     p => p.name.toLowerCase() === walletName.toLowerCase()
   )
@@ -53,7 +47,6 @@ export const getEVMProvider = (
     return matchingProvider.injectedData.provider
   }
 
-  // If no match found, try window.ethereum as last resort
   if (window.ethereum) {
     return window.ethereum
   }
@@ -75,36 +68,27 @@ export const connectToEVMWallet = async (
     let provider: EVMProvider
     try {
       provider = getEVMProvider(walletName, walletDetail)
-      console.log('Got provider for', walletName, ':', provider)
     } catch (error) {
-      // If we can't get a provider, it might be a non-EVM wallet
-      // Let the caller handle routing to the appropriate connector
       throw new Error(`No provider found for wallet ${walletName}`)
     }
 
     const browserProvider = new ethers.BrowserProvider(provider)
-    setActiveEVMProvider(browserProvider, provider, walletName)
+    setActiveEVMProvider(browserProvider, provider)
 
     setupEventListeners(provider)
 
-    // Check for existing connection first
     const existingAccounts = await provider.request({ method: 'eth_accounts' })
     if (!existingAccounts || existingAccounts.length === 0) {
-      // No existing connection, request accounts
       await browserProvider.send('eth_requestAccounts', [])
     }
 
-    // Get signer and address
     const signer = await browserProvider.getSigner()
     const address = await signer.getAddress()
     let chainId = await browserProvider
       .getNetwork()
       .then(network => Number(network.chainId))
 
-    // If a target chain is specified and it's different from the current chain,
-    // try to switch to it
     if (targetChainId && chainId !== targetChainId) {
-      console.log('Switching to target chain:', targetChainId)
       const switchResult = await switchEVMChain(targetChainId, provider)
       if (switchResult instanceof Error) {
         throw switchResult
@@ -151,12 +135,10 @@ export const disconnectFromEVMWallet = async (
       return
     }
 
-    // Remove all event listeners
     if (provider.removeAllListeners) {
       provider.removeAllListeners()
     }
 
-    // Clear the active provider
     clearActiveProviders()
   } catch (error) {
     console.error('EVM wallet disconnection error:', error)

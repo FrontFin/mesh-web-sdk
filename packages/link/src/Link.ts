@@ -20,22 +20,6 @@ import {
   isWalletBrowserEventTypeKey
 } from './utils/wallet-browser-event-types'
 import { sdkSpecs } from './utils/sdk-specs'
-import {
-  connectToEVMWallet,
-  signEVMMessage,
-  sendEVMTransaction,
-  switchEVMChain,
-  sendEVMTokenTransaction,
-  disconnectFromEVMWallet,
-  findAvailableProviders
-} from './utils/connectors/evm'
-import {
-  connectToSolanaWallet,
-  disconnectFromSolanaWallet,
-  signSolanaMessage,
-  sendSOLTransaction,
-  findAvailableSolanaProviders
-} from './utils/connectors/solana'
 import { WalletStrategyFactory, NetworkType } from './utils/wallet'
 
 let currentOptions: LinkOptions | undefined

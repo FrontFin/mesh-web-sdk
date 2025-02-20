@@ -7,10 +7,8 @@ let activeRawProvider: EVMProvider | null = null
 
 export const setActiveEVMProvider = (
   provider: ethers.BrowserProvider,
-  rawProvider: EVMProvider,
-  name: string
+  rawProvider: EVMProvider
 ) => {
-  console.log(`Setting active EVM provider for ${name}:`, provider)
   activeEVMProvider = provider
   activeRawProvider = rawProvider
 }
