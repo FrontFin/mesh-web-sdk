@@ -63,46 +63,46 @@ export interface EIP6963RequestProviderEvent extends Event {
   type: 'eip6963:requestProvider'
 }
 
-export interface WalletBrowserPayload {
-  networkType?: string
-  integrationName: string
-  targetChainId?: string
-  walletName?: string
-}
+// export interface WalletBrowserPayload {
+//   networkType?: string
+//   integrationName: string
+//   targetChainId?: string
+//   walletName?: string
+// }
 
-export interface SignRequestPayload {
-  address: string
-  message: string
-  walletName?: string
-}
+// export interface SignRequestPayload {
+//   address: string
+//   message: string
+//   walletName?: string
+// }
 
-export interface ChainSwitchPayload {
-  chainId: number
-  networkType?: string
-  walletName?: string
-}
+// export interface ChainSwitchPayload {
+//   chainId: number
+//   networkType?: string
+//   walletName?: string
+// }
 
-export interface TransferPayload {
-  toAddress: string
-  amount: number
-  decimalPlaces: number
-  chainId: number
-  account: string
-  network: string
-  blockhash?: string
-  walletName?: string
-}
+// export interface TransferPayload {
+//   toAddress: string
+//   amount: number
+//   decimalPlaces: number
+//   chainId: number
+//   account: string
+//   network: string
+//   blockhash?: string
+//   walletName?: string
+// }
 
-export interface SmartContractPayload {
-  address: string
-  abi: string
-  functionName: string
-  args: unknown[]
-  account: string
-  value?: string
-}
+// export interface SmartContractPayload {
+//   address: string
+//   abi: string
+//   functionName: string
+//   args: unknown[]
+//   account: string
+//   value?: string
+// }
 
-export interface DisconnectPayload {
-  networkType?: string
-  walletName?: string
-}
+// export interface DisconnectPayload {
+//   networkType?: string
+//   walletName?: string
+// }

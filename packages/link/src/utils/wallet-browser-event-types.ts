@@ -110,8 +110,9 @@ interface SmartContractPayload {
   address: string
   abi: string
   functionName: string
-  args: any[] // eslint-disable-line @typescript-eslint/no-explicit-any
-  value?: bigint
+  args: unknown[]
+  account: string
+  value?: string
 }
 
 export interface WalletBrowserNonNativeTransferRequest

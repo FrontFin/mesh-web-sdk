@@ -5,16 +5,14 @@ import {
   AccessTokenPayload,
   DelayedAuthPayload,
   TransferFinishedPayload,
-  LinkPayload
-} from './utils/types'
-import {
+  LinkPayload,
   WalletBrowserPayload,
   SignRequestPayload,
   ChainSwitchPayload,
   TransferPayload,
   SmartContractPayload,
   DisconnectPayload
-} from './utils/connectors/evm/types'
+} from './utils/types'
 import { addPopup, iframeId, removePopup } from './utils/popup'
 import { LinkEventType, isLinkEventTypeKey } from './utils/event-types'
 import {
@@ -38,6 +36,7 @@ import {
   sendSOLTransaction,
   findAvailableSolanaProviders
 } from './utils/connectors/solana'
+import { WalletStrategyFactory, NetworkType } from './utils/wallet'
 
 let currentOptions: LinkOptions | undefined
 const possibleOrigins = new Set<string>([
@@ -145,30 +144,14 @@ async function handleLinkEvent(
         payload: { ...sdkSpecs }
       })
 
-      // Get both EVM and Solana providers
-      const evmProviders = findAvailableProviders().map(provider => ({
-        icon: provider.icon,
-        id: provider.id,
-        name: provider.name,
-        type: 'evm'
-      }))
+      // Get all providers using the wallet factory
+      const walletFactory = WalletStrategyFactory.getInstance()
+      const allProviders = walletFactory.getAllProviders()
 
-      const solanaProviderMap = findAvailableSolanaProviders()
-      const solanaProviders = Object.keys(solanaProviderMap).map(id => ({
-        id,
-        type: 'solana'
-      }))
-
-      const allProviders = [...evmProviders, ...solanaProviders]
-      console.log('About to send providers:', allProviders)
-
-      // Send the combined provider list to the iframe
       sendMessageToIframe({
         type: 'SDKinjectedWalletProviders',
         payload: allProviders
       })
-
-      console.log('Sent SDKinjectedWalletProviders message')
 
       if (currentOptions?.accessTokens) {
         sendMessageToIframe({
@@ -197,46 +180,25 @@ async function handleLinkEvent(
 async function handleWalletBrowserEvent(
   event: MessageEvent<WalletBrowserEventType>
 ) {
+  const walletFactory = WalletStrategyFactory.getInstance()
+
   switch (event.data.type) {
     case 'walletBrowserInjectedWalletSelected': {
-      console.log('walletBrowserInjectedWalletSelected', event.data.payload)
       const payload = event.data.payload as WalletBrowserPayload
       try {
-        let result
+        const networkType = (
+          payload.networkType?.includes('solana') ? 'solana' : 'evm'
+        ) as NetworkType
+        const strategy = walletFactory.getStrategy(networkType)
 
-        // Handle connection based on networkType
-        if (payload.networkType?.includes('solana')) {
-          console.log('Connecting to Solana wallet:', payload.integrationName)
-          result = await connectToSolanaWallet(payload.integrationName)
-        } else {
-          console.log('Connecting to EVM wallet:', {
-            name: payload.integrationName,
-            targetChainId: payload.targetChainId
-          })
+        const result = await strategy.connect(payload)
 
-          // Pass the targetChainId for immediate connection to correct network
-          result = await connectToEVMWallet(
-            payload.integrationName,
-            payload.targetChainId
-              ? parseInt(payload.targetChainId, 10)
-              : undefined
-          )
-        }
-
-        console.log('Connection result:', result)
-        if (result instanceof Error) {
-          throw result
-        }
-
-        // Send connection completed message which will trigger authenticate
         sendMessageToIframe({
           type: 'SDKinjectedConnectionCompleted',
           payload: {
             accounts: result.accounts,
             chainId: result.chainId,
-            networkType: payload.networkType?.includes('solana')
-              ? 'solana'
-              : 'evm'
+            networkType: networkType
           }
         })
       } catch (error) {
@@ -249,44 +211,19 @@ async function handleWalletBrowserEvent(
       break
     }
     case 'walletBrowserSignRequest': {
-      console.log('walletBrowserSignRequest!!!!!')
       const payload = event.data.payload as SignRequestPayload
-      console.log('payload sign request', payload)
       try {
-        // Check if this is a Solana address (doesn't start with 0x)
-        if (!payload.address.startsWith('0x')) {
-          console.log('Detected Solana address, using Solana signing...')
-          if (!payload.walletName) {
-            throw new Error('Wallet name is required for Solana signing')
-          }
-          const result = await signSolanaMessage(
-            payload.walletName,
-            payload.address,
-            payload.message
-          )
-          if (result instanceof Error) {
-            throw result
-          }
-          console.log('result sign request', result)
-          sendMessageToIframe({
-            type: 'SDKsignRequestCompleted',
-            payload: result
-          })
-        } else {
-          // Just pass the original message directly
-          const result = await signEVMMessage(
-            payload.walletName || 'Unknown Wallet',
-            payload.address,
-            payload.message
-          )
-          if (result instanceof Error) {
-            throw result
-          }
-          sendMessageToIframe({
-            type: 'SDKsignRequestCompleted',
-            payload: result
-          })
-        }
+        const networkType = (
+          !payload.address.startsWith('0x') ? 'solana' : 'evm'
+        ) as NetworkType
+        const strategy = walletFactory.getStrategy(networkType)
+
+        const result = await strategy.signMessage(payload)
+
+        sendMessageToIframe({
+          type: 'SDKsignRequestCompleted',
+          payload: result
+        })
       } catch (error) {
         handleErrorAndSendMessage(error as Error, 'SDKsignRequestCompleted')
       }
@@ -295,63 +232,21 @@ async function handleWalletBrowserEvent(
     case 'walletBrowserChainSwitchRequest': {
       const payload = event.data.payload as ChainSwitchPayload
       try {
-        console.log('Processing chain switch request:', payload)
+        const networkType = (
+          payload.networkType === 'solana' ? 'solana' : 'evm'
+        ) as NetworkType
+        const strategy = walletFactory.getStrategy(networkType)
 
-        // Handle Solana chain switching
-        if (payload.networkType === 'solana') {
-          console.log('Switching to Solana chain')
-          const provider = window.solana
-          if (!provider) {
-            throw new Error('Solana provider not found')
-          }
-          if (!provider.isConnected || !provider.publicKey) {
-            // If not connected, try to connect
-            const connectResult = await provider.connect()
-            if (!connectResult?.publicKey) {
-              throw new Error('Failed to connect to Solana wallet')
-            }
-          }
+        const result = await strategy.switchChain(payload)
 
-          const solanaAddress = provider.publicKey?.toString()
-          if (!solanaAddress) {
-            throw new Error('No Solana address available')
-          }
-
-          console.log('Solana connection verified:', { solanaAddress })
-
-          sendMessageToIframe({
-            type: 'SDKswitchChainCompleted',
-            payload: {
-              chainId: 101,
-              accounts: [solanaAddress],
-              networkType: 'solana'
-            }
-          })
-        } else {
-          // Handle EVM chain switching
-          console.log('Switching EVM chain to:', payload.chainId)
-          const result = await switchEVMChain(payload.chainId)
-          console.log('switch chain result', result)
-          if (result instanceof Error) {
-            throw result
-          }
-
-          // Send the switch completed message with the new chain ID and accounts
-          console.log('Sending chain switch completed with:', {
+        sendMessageToIframe({
+          type: 'SDKswitchChainCompleted',
+          payload: {
             chainId: result.chainId,
             accounts: result.accounts,
-            networkType: 'evm'
-          })
-
-          sendMessageToIframe({
-            type: 'SDKswitchChainCompleted',
-            payload: {
-              chainId: result.chainId,
-              accounts: result.accounts,
-              networkType: 'evm'
-            }
-          })
-        }
+            networkType: networkType
+          }
+        })
       } catch (error) {
         console.error('Chain switch failed:', error)
         handleErrorAndSendMessage(error as Error, 'SDKswitchChainCompleted')
@@ -361,28 +256,13 @@ async function handleWalletBrowserEvent(
     case 'walletBrowserNativeTransferRequest': {
       const payload = event.data.payload as TransferPayload
       try {
-        let result
-        if (payload.network === 'solana') {
-          result = await sendSOLTransaction({
-            toAddress: payload.toAddress,
-            amount: BigInt(
-              payload.amount * Math.pow(10, payload.decimalPlaces)
-            ),
-            fromAddress: payload.account,
-            blockhash: payload.blockhash || '',
-            walletName: payload.walletName || ''
-          })
-        } else {
-          result = await sendEVMTransaction(
-            payload.toAddress,
-            BigInt(payload.amount * Math.pow(10, payload.decimalPlaces)),
-            payload.account
-          )
-        }
+        const networkType = (
+          payload.network === 'solana' ? 'solana' : 'evm'
+        ) as NetworkType
+        const strategy = walletFactory.getStrategy(networkType)
 
-        if (result instanceof Error) {
-          throw result
-        }
+        const result = await strategy.sendNativeTransfer(payload)
+
         sendMessageToIframe({
           type: 'SDKnativeTransferCompleted',
           payload: result
@@ -392,110 +272,56 @@ async function handleWalletBrowserEvent(
       }
       break
     }
-    case 'walletBrowserNonNativeTransferRequest': {
-      const payload = event.data.payload as SmartContractPayload
-      try {
-        const result = await sendEVMTokenTransaction(
-          payload.address,
-          JSON.parse(payload.abi),
-          payload.functionName,
-          payload.args,
-          payload.account
-        )
-        if (result instanceof Error) {
-          throw result
-        }
-        sendMessageToIframe({
-          type: 'SDKnonNativeTransferCompleted',
-          payload: result
-        })
-      } catch (error) {
-        handleErrorAndSendMessage(
-          error as Error,
-          'SDKnonNativeTransferCompleted'
-        )
-      }
-      break
-    }
-    case 'walletBrowserNativeSmartDeposit': {
-      const payload = event.data.payload as SmartContractPayload
-      try {
-        const result = await sendEVMTokenTransaction(
-          payload.address,
-          JSON.parse(payload.abi),
-          payload.functionName,
-          payload.args,
-          payload.account,
-          BigInt(payload.value || '0')
-        )
-        if (result instanceof Error) {
-          throw result
-        }
-        sendMessageToIframe({
-          type: 'SDKnativeSmartDepositCompleted',
-          payload: {
-            txHash: result
-          }
-        })
-      } catch (error) {
-        handleErrorAndSendMessage(
-          error as Error,
-          'SDKnativeSmartDepositCompleted'
-        )
-      }
-      break
-    }
+    case 'walletBrowserNonNativeTransferRequest':
+    case 'walletBrowserNativeSmartDeposit':
     case 'walletBrowserNonNativeSmartDeposit': {
       const payload = event.data.payload as SmartContractPayload
       try {
-        const result = await sendEVMTokenTransaction(
-          payload.address,
-          JSON.parse(payload.abi),
-          payload.functionName,
-          payload.args,
-          payload.account
-        )
-        if (result instanceof Error) {
-          throw result
-        }
+        // These operations are currently only supported for EVM
+        const strategy = walletFactory.getStrategy('evm')
+
+        const result = await strategy.sendSmartContractInteraction(payload)
+
+        const responseType =
+          event.data.type === 'walletBrowserNonNativeTransferRequest'
+            ? 'SDKnonNativeTransferCompleted'
+            : event.data.type === 'walletBrowserNativeSmartDeposit'
+            ? 'SDKnativeSmartDepositCompleted'
+            : 'SDKnonNativeSmartDepositCompleted'
+
         sendMessageToIframe({
-          type: 'SDKnonNativeSmartDepositCompleted',
+          type: responseType,
           payload: {
             txHash: result
           }
         })
       } catch (error) {
-        handleErrorAndSendMessage(
-          error as Error,
-          'SDKnonNativeSmartDepositCompleted'
-        )
+        const errorType =
+          event.data.type === 'walletBrowserNonNativeTransferRequest'
+            ? 'SDKnonNativeTransferCompleted'
+            : event.data.type === 'walletBrowserNativeSmartDeposit'
+            ? 'SDKnativeSmartDepositCompleted'
+            : 'SDKnonNativeSmartDepositCompleted'
+
+        handleErrorAndSendMessage(error as Error, errorType)
       }
       break
     }
     case 'walletBrowserDisconnect': {
       const payload = event.data.payload as DisconnectPayload
-      console.log('Disconnecting wallet before network switch', {
-        networkType: payload?.networkType,
-        walletName: payload?.walletName
-      })
 
       try {
-        if (payload?.networkType === 'solana') {
-          // Disconnect from Solana
-          console.log('Disconnecting from Solana wallet')
-          await disconnectFromSolanaWallet(
-            payload?.walletName || 'Unknown Wallet'
-          )
-        } else if (payload?.networkType === 'evm') {
-          // Disconnect from EVM
-          console.log('Disconnecting from EVM wallet')
-          await disconnectFromEVMWallet(payload?.walletName || 'Unknown Wallet')
+        if (payload?.networkType) {
+          const networkType = (
+            payload.networkType === 'solana' ? 'solana' : 'evm'
+          ) as NetworkType
+          const strategy = walletFactory.getStrategy(networkType)
+          await strategy.disconnect(payload)
         } else {
-          // If networkType is undefined or unknown, disconnect from both to be safe
-          console.log('No network type specified, disconnecting from all')
+          // Disconnect from all if no specific network type
           await Promise.all([
-            disconnectFromSolanaWallet('Unknown Wallet'),
-            disconnectFromEVMWallet('Unknown Wallet')
+            walletFactory.getStrategy('solana').disconnect(payload),
+            walletFactory.getStrategy('evm').disconnect(payload)
           ])
         }
 
