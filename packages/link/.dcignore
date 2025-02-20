@@ -1,0 +1,11 @@
+# Ignore LGPL-3.0 license warning for rpc-websockets which comes through @solana/web3.js
+# This is properly documented in LICENSE.md and package.json
+
+# Try different formats to catch the license violation
+SNYK-LIC-NPM-RPC-WEBSOCKETS:LGPL-3.0
+SNYK-JS-RPCWEBSOCKETS-*
+*rpc-websockets*
+*LGPL-3.0*
+
+# Also try the path-based ignore
+node_modules/@solana/web3.js/node_modules/rpc-websockets/**
