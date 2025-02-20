@@ -10,17 +10,6 @@
   "license": "MIT",
   "repository": "https://github.com/FrontFin/mesh-web-sdk.git",
   "homepage": "https://github.com/FrontFin/mesh-web-sdk",
-  "licenses": [
-    {
-      "type": "MIT",
-      "url": "https://github.com/FrontFin/mesh-web-sdk/blob/main/LICENSE.md"
-    },
-    {
-      "type": "LGPL-3.0",
-      "url": "https://www.gnu.org/licenses/lgpl-3.0.en.html",
-      "comment": "Used by dependency rpc-websockets through @solana/web3.js"
-    }
-  ],
   "devDependencies": {
     "@babel/preset-env": "^7.20.0",
     "@babel/preset-typescript": "^7.20.0",
