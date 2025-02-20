@@ -1,25 +1,13 @@
-import { Buffer } from 'buffer'
 import { SolanaConnectResult } from './types'
 import { getSolanaProvider } from './providerDiscovery'
 
-// Ensure Buffer is available globally
-if (typeof window !== 'undefined') {
-  window.Buffer = window.Buffer || Buffer
-}
-
 export const connectToSolanaWallet = async (
-  walletName: string,
-  eagerConnect = true
+  walletName: string
 ): Promise<SolanaConnectResult | Error> => {
   try {
     const provider = getSolanaProvider(walletName)
 
-    // For Trust Wallet, wait a bit to ensure provider is ready
-    if (walletName.toLowerCase().includes('trust')) {
-      await new Promise(resolve => setTimeout(resolve, 500))
-    }
-
-    // Check for existing connection first
+    // First check if already connected
     if (provider.publicKey && provider.isConnected) {
       return {
         accounts: [provider.publicKey.toString()],
@@ -28,36 +16,20 @@ export const connectToSolanaWallet = async (
       }
     }
 
-    // Try eager connect if requested and no existing connection
-    if (eagerConnect) {
-      try {
-        const response = await provider.connect({ onlyIfTrusted: true })
-        if (!response?.publicKey) {
-          throw new Error('No publicKey in eager connect response')
-        }
-        return {
-          accounts: [response.publicKey.toString()],
-          chainId: '101', // Solana mainnet
-          isConnected: true
-        }
-      } catch (error) {
-        // Eager connect failed, continue to regular connect
-      }
-    }
+    // Try to connect with whatever method works
+    const response = await provider.connect({ onlyIfTrusted: true }).catch(() =>
+      // If eager connect fails, try regular connect
+      provider.connect()
+    )
 
-    // Regular connect with user approval
-    const response = await provider.connect()
-
-    // Try getting publicKey from either the response or the provider
-    const publicKey = response?.publicKey || provider.publicKey
-    if (!publicKey) {
+    if (!response?.publicKey) {
       throw new Error(
-        `${walletName} connection succeeded but no publicKey was returned`
+        `${walletName} connection failed - no public key returned`
       )
     }
 
     return {
-      accounts: [publicKey.toString()],
+      accounts: [response.publicKey.toString()],
       chainId: '101',
       isConnected: true
     }

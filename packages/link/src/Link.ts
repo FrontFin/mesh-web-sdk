@@ -155,9 +155,7 @@ async function handleLinkEvent(
 
       const solanaProviderMap = findAvailableSolanaProviders()
       const solanaProviders = Object.keys(solanaProviderMap).map(id => ({
-        icon: '', // Solana wallets don't provide icons through the provider
         id,
-        name: id.charAt(0).toUpperCase() + id.slice(1), // Capitalize first letter
         type: 'solana'
       }))
 

@@ -11,6 +11,17 @@ import { TransactionConfig } from './types'
 const QUICKNODE_RPC =
   'https://alien-newest-vineyard.solana-mainnet.quiknode.pro/ebe5e35661d7edb7a5e48ab84bd9d477e472a40b/'
 
+const isTransactionRejectedByUser = (error: any): boolean => {
+  if (!error) return false
+
+  return (
+    error?.message?.toLowerCase().includes('user rejected') ||
+    error?.message?.toLowerCase().includes('declined') ||
+    error?.message?.toLowerCase().includes('cancelled') ||
+    error?.code === 4001
+  )
+}
+
 const standardizeSignature = (rawSignature: string | Uint8Array): string => {
   // First ensure we have a string
   let signature =
@@ -49,17 +60,24 @@ const handleManualSignAndSend = async (
   transaction: Transaction,
   provider: any
 ): Promise<string> => {
-  const signedTx = await provider.signTransaction(transaction)
-  const connection = new Connection(QUICKNODE_RPC)
-  const rawSignature = await connection.sendRawTransaction(
-    signedTx.serialize(),
-    {
-      skipPreflight: false,
-      maxRetries: 3,
-      preflightCommitment: 'confirmed'
+  try {
+    const signedTx = await provider.signTransaction(transaction)
+    const connection = new Connection(QUICKNODE_RPC)
+    const rawSignature = await connection.sendRawTransaction(
+      signedTx.serialize(),
+      {
+        skipPreflight: false,
+        maxRetries: 3,
+        preflightCommitment: 'confirmed'
+      }
+    )
+    return standardizeSignature(rawSignature)
+  } catch (error: any) {
+    if (isTransactionRejectedByUser(error)) {
+      throw new Error('Transaction was rejected by user')
     }
-  )
-  return standardizeSignature(rawSignature)
+    throw error
+  }
 }
 
 export const sendSOLTransaction = async (
@@ -70,8 +88,8 @@ export const sendSOLTransaction = async (
     const transaction = createTransferTransaction(config)
 
     const isManualWallet =
-      provider.isTrust ||
-      provider.isTrustWallet ||
+      (provider as any).isTrust ||
+      (provider as any).isTrustWallet ||
       config.walletName.toLowerCase().includes('trust')
 
     // For Trust Wallet, always use manual sign and send
@@ -84,15 +102,21 @@ export const sendSOLTransaction = async (
       try {
         const { signature } = await provider.signAndSendTransaction(transaction)
         return signature
-      } catch (error) {
-        // Fall back to manual sign and send if native method fails
+      } catch (error: any) {
+        if (isTransactionRejectedByUser(error)) {
+          throw new Error('Transaction was rejected by user')
+        }
+        // For other errors, fall back to manual sign and send
         return handleManualSignAndSend(transaction, provider)
       }
     }
 
     // If no signAndSendTransaction available, use manual method
     return handleManualSignAndSend(transaction, provider)
-  } catch (error) {
+  } catch (error: any) {
+    if (isTransactionRejectedByUser(error)) {
+      throw new Error('Transaction was rejected by user')
+    }
     throw error instanceof Error
       ? error
       : new Error(

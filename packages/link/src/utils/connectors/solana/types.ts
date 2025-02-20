@@ -1,5 +1,12 @@
 import { Transaction } from '@solana/web3.js'
-import { PublicKey } from '@solana/web3.js'
+
+export enum SolanaWalletType {
+  PHANTOM = 'phantom',
+  SOLFLARE = 'solflare',
+  TRUST = 'trustwallet',
+  EXODUS = 'exodus',
+  UNKNOWN = 'unknown'
+}
 
 export interface SolanaConnectResult {
   accounts: string[]
@@ -12,11 +19,7 @@ export interface SolanaProvider {
     onlyIfTrusted?: boolean
   }): Promise<{ publicKey: { toString(): string; toBase58(): string } }>
   disconnect(): Promise<void>
-  isPhantom?: boolean
-  isSolflare?: boolean
-  isTrust?: boolean
-  isTrustWallet?: boolean
-  isExodus?: boolean
+  walletType?: SolanaWalletType
   isConnected?: boolean
   publicKey?: { toString(): string; toBase58(): string }
   on(
@@ -32,18 +35,18 @@ export interface SolanaProvider {
 }
 
 export interface WindowWithSolanaProviders extends Window {
-  solana?: SolanaProvider
-  phantom?: {
-    solana?: SolanaProvider
+  solana?: SolanaProvider & {
+    isPhantom?: boolean
+    isSolflare?: boolean
+    isTrust?: boolean
+    isTrustWallet?: boolean
+    isExodus?: boolean
   }
-  exodus?: {
-    solana?: SolanaProvider
-  }
-  trustwallet?: {
-    solana?: SolanaProvider
-  }
+  phantom?: { solana?: SolanaProvider }
+  exodus?: { solana?: SolanaProvider }
+  trustwallet?: { solana?: SolanaProvider }
   solflare?: SolanaProvider
-  Buffer?: typeof Buffer
+  [key: string]: { solana?: SolanaProvider } | SolanaProvider | undefined | any
 }
 
 export interface TransactionConfig {

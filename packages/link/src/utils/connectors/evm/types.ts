@@ -7,17 +7,6 @@ export interface EVMConnectResult {
   isConnected: boolean
 }
 
-export interface WalletFlags {
-  isMetaMask?: boolean
-  isCoinbaseWallet?: boolean
-  isPhantom?: boolean
-  isTrust?: boolean
-  isRainbow?: boolean
-  isBraveWallet?: boolean
-  isOKXWallet?: boolean
-  isCryptoComWallet?: boolean
-}
-
 export interface EVMProvider extends ethers.Eip1193Provider {
   on(event: string, listener: (...args: any[]) => void): void
   removeListener(event: string, listener: (...args: any[]) => void): void
@@ -31,14 +20,6 @@ export interface InjectedProviderInfo {
   icon?: string
   injectedData: {
     provider: EVMProvider
-    isMetaMask?: boolean
-    isCoinbaseWallet?: boolean
-    isPhantom?: boolean
-    isTrust?: boolean
-    isRainbow?: boolean
-    isBraveWallet?: boolean
-    isOKXWallet?: boolean
-    isCryptoComWallet?: boolean
     [key: string]: any
   }
 }
