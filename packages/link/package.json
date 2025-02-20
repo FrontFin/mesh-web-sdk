@@ -65,7 +65,7 @@
       ]
     },
     "transformIgnorePatterns": [
-      "/node_modules/(?!ethers).+\\.js$"
+      "/node_modules/(?!(@solana/web3.js|uuid|jayson|superstruct|@noble|@meshconnect|ethers)/)"
     ],
     "testEnvironmentOptions": {
       "url": "http://localhost/"
