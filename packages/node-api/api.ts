@@ -9,6 +9,21 @@
  * ---------------------------------------------------------------
  */
 
+export type AccountInfoType =
+  | 'firstName'
+  | 'middleName'
+  | 'lastName'
+  | 'accountNumber'
+  | 'email'
+  | 'mobileNumber'
+  | 'companyName'
+  | 'countryCode'
+  | 'city'
+  | 'postalCode'
+  | 'address'
+  | 'id'
+  | 'dateOfBirth'
+
 export interface ApiResult {
   readonly status?:
     | 'ok'
@@ -175,6 +190,7 @@ export interface B2BBrokerAccountDetailsRequest {
 }
 
 export interface B2BBrokerAccountDetailsResponse {
+  integrationName?: string | null
   firstName?: string | null
   middleName?: string | null
   lastName?: string | null
@@ -182,12 +198,11 @@ export interface B2BBrokerAccountDetailsResponse {
   email?: string | null
   mobileNumber?: string | null
   companyName?: string | null
-  integrationName?: string | null
   countryCode?: string | null
   city?: string | null
   postalCode?: string | null
   address?: string | null
-  idType?: 'none' | 'idCard' | 'driversLicense' | 'passport'
+  idType?: UserIdentificationType | null
   idNumber?: string | null
   /** @format int64 */
   dateOfBirth?: number | null
@@ -303,6 +318,8 @@ export interface B2BBrokerAuthRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   phone?: string | null
   username?: string | null
   password?: string | null
@@ -569,6 +586,8 @@ export interface B2BBrokerCreateOrderRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -677,6 +696,8 @@ export interface B2BBrokerCreateOrderResult {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /** Side of the order. */
   side?: 'unknown' | 'buy' | 'sell'
   /**
@@ -1107,6 +1128,8 @@ export interface B2BBrokerOrder {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /** Type of the transaction */
   transactionType?:
     | 'order'
@@ -1210,6 +1233,8 @@ export interface B2BBrokerOrderListRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /**
    * The cursor to retrieve the next page of transactions.
    * Providing it will cause the response to only return changes after this update.
@@ -1217,8 +1242,10 @@ export interface B2BBrokerOrderListRequest {
    */
   cursor?: string | null
   /**
-   * Number of records to include in the response. <br />
-   * Default: `100` <br />
+   * Number of records to include in the response.
+   *
+   * Default: `100`
+   *
    * Maximum: `250`
    * @format int32
    */
@@ -1335,6 +1362,8 @@ export interface B2BBrokerOrderRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /** @minLength 1 */
   id: string
   /** Should be provided for Coinbase. */
@@ -1456,6 +1485,8 @@ export interface B2BBrokerPreviewOrderResult {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /** @format double */
   fee?: number | null
   feeText?: string | null
@@ -1594,6 +1625,8 @@ export interface B2BBrokerSymbolInfoForOrderRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -1714,6 +1747,8 @@ export interface B2BBrokerTradingFeatureInfo {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /** Account Id of the integration. */
   accountId?: string | null
   /** Model, describing the ability to place cryptocurrency orders. */
@@ -1905,6 +1940,8 @@ export interface B2BBrokersHealthStatus {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /** Name of the integration */
   name?: string | null
   /** Is the communication with the integration up */
@@ -2203,6 +2240,7 @@ export interface BalanceBrokerBaseRequest {
    * ```BlockchainCom```
    * ```BitsoDirect```
    * ```BybitDirect```
+   * ```ParibuOAuth```
    */
   type:
     | 'robinhood'
@@ -2256,6 +2294,8 @@ export interface BalanceBrokerBaseRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
 }
 
 export interface BrokerAccount {
@@ -2292,6 +2332,8 @@ export interface BrokerAccountTokens {
   account?: BrokerAccount | null
   accessToken?: string | null
   refreshToken?: string | null
+  /** Token identifier provided by Mesh when the actual integration's token is managed by Mesh's Token Management System. */
+  tokenId?: string | null
 }
 
 export type BrokerAuthPromptStatus = 'failed' | 'redirect' | 'openInBrokerModule'
@@ -2368,6 +2410,8 @@ export interface BrokerAuthenticationScheme {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /** Type of authentication for the integration. */
   authenticationSchemeType?: 'usernamePassword' | 'oAuth' | 'apiKey' | 'blockchainAddress'
   /** Set of fields that should be provided in the initial POST `authenticate` request. */
@@ -2463,6 +2507,8 @@ export interface BrokerBaseRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
 }
 
 export interface BrokerCreateCryptocurrencyTransactionRequest {
@@ -2524,6 +2570,8 @@ export interface BrokerCreateCryptocurrencyTransactionRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /** Additional data to send on-chain (optional, depends on an integration) */
   data?: string | null
   /**
@@ -2649,6 +2697,8 @@ export interface BrokerCryptocurrencyDepositAddressRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
    * Can be used instead of the `AddressType` field.
@@ -2745,6 +2795,8 @@ export interface BrokerCryptocurrencyTransactionDetailsRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /** Type of the address of the transferred asset. Can be used instead of the `Symbol` field. */
   addressType?: CryptocurrencyAddressType | null
   /** Transaction Id by the financial institution */
@@ -2994,6 +3046,8 @@ export interface BrokerRefreshTokenRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /** @minLength 1 */
   refreshToken: string
   /**
@@ -3077,9 +3131,13 @@ export interface BrokerTransactionsListRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /**
-   * Number of records to include in the response. <br />
-   * Default: `100` <br />
+   * Number of records to include in the response.
+   *
+   * Default: `100`
+   *
    * Maximum: `250`
    * @format int32
    */
@@ -3153,6 +3211,8 @@ export type BrokerType =
   | 'revolutConnect'
   | 'binancePay'
   | 'bybitDirect'
+  | 'paribuOAuth'
+  | 'payPalConnect'
 
 export interface CatalogLink {
   /**
@@ -3191,7 +3251,17 @@ export interface CatalogLinkApiResult {
   content?: CatalogLink | null
 }
 
-export type ClientType = 'undefined' | 'wallet' | 'exchange' | 'vasp' | 'merchant' | 'other'
+export type ClientType =
+  | 'undefined'
+  | 'wallet'
+  | 'exchange'
+  | 'vasp'
+  | 'merchant'
+  | 'other'
+  | 'psp'
+  | 'neobank'
+  | 'iGaming'
+  | 'aggregator'
 
 export interface ConfigureTransferRequest {
   /**
@@ -3252,6 +3322,8 @@ export interface ConfigureTransferRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /**
    * The authentication token of the target integration. Can be used alternatively to the list of requested address (`toAddresses`).
    * If used, `toType` should also be provided.
@@ -3568,6 +3640,19 @@ export interface DeFiWalletVerificationResponseApiResult {
   content?: DeFiWalletVerificationResponse | null
 }
 
+/** Exchange account info request. */
+export interface ExchangeAccountInfoRequest {
+  /** Auth token that allows connecting to the target institution. */
+  authToken?: string | null
+  /**
+   * The Id which uniquely identifies the integration.
+   * @format uuid
+   */
+  integrationId?: string
+  /** Account information to return. */
+  accountInfo?: AccountInfoType[] | null
+}
+
 export type ExecuteTransferMfaType = 'unspecified' | 'phone' | 'email' | 'totp' | 'face' | 'tradingPin' | 'mobile'
 
 export interface ExecuteTransferRequest {
@@ -3629,6 +3714,8 @@ export interface ExecuteTransferRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /**
    * Id of the Preview of the transfer.
    * @format uuid
@@ -3645,6 +3732,7 @@ export interface ExecuteTransferResponse {
   /** The status of the transfer. */
   status?:
     | 'succeeded'
+    | 'inProgress'
     | 'failed'
     | 'mfaRequired'
     | 'emailConfirmationRequired'
@@ -3773,6 +3861,7 @@ export interface ExecuteTransferResultResponse {
 
 export type ExecuteTransferStatus =
   | 'succeeded'
+  | 'inProgress'
   | 'failed'
   | 'mfaRequired'
   | 'emailConfirmationRequired'
@@ -3929,6 +4018,8 @@ export interface HoldingsModel {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /** External institution's account id (returned by the institution) */
   accountId?: string | null
   /** Friendly name of the connected institution */
@@ -4024,6 +4115,8 @@ export interface HoldingsRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   includeMarketValue?: boolean
 }
 
@@ -4160,6 +4253,8 @@ export interface IntegrationModel {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /** DeFi wallet provider identifier. */
   deFiWalletProviderId?: string | null
   /** Integration categories. */
@@ -4232,6 +4327,8 @@ export interface IntegrationNetwork {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
 }
 
 export interface IntegrationNetworkResponse {
@@ -4316,6 +4413,8 @@ export interface IntegrationNetworksModelResponse {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /** The list of supported networks and corresponding tokens for the integration. */
   networks?: NetworkResponse[] | null
   /** Specifies if the integration supports outgoing transfers. */
@@ -4520,6 +4619,8 @@ export interface ManagedBrokerCryptocurrencyDepositAddressRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
    * Can be used instead of the `AddressType` field.
@@ -4808,6 +4909,7 @@ export interface PortfolioBrokerBaseRequest {
    * ```BitsoDirect```
    * ```BinanceOAuth```
    * ```BybitDirect```
+   * ```ParibuOAuth```
    * ```DeFiWallet```
    */
   type:
@@ -4862,6 +4964,8 @@ export interface PortfolioBrokerBaseRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
 }
 
 export interface PortfolioFiatBalance {
@@ -4933,6 +5037,7 @@ export interface PortfolioHoldingsRequest {
    * ```BitsoDirect```
    * ```BinanceOAuth```
    * ```BybitDirect```
+   * ```ParibuOAuth```
    * ```DeFiWallet```
    */
   type:
@@ -4987,6 +5092,8 @@ export interface PortfolioHoldingsRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   includeMarketValue?: boolean
 }
 
@@ -5148,6 +5255,8 @@ export interface PreviewTransferRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /**
    * The authentication token of the target integration. Can be used alternatively to the address in the `ToAddress` field.
    * If used, `toType` should also be provided.
@@ -5566,6 +5675,8 @@ export interface QuoteTransferRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /**
    * Flat fee in crypto to be charged as a partner fee
    * @format double
@@ -5648,6 +5759,8 @@ export interface QuoteTransferResponse {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /** Is the transaction is possible based on the minimum transfer amount of the selected exchange */
   isEligible?: boolean
   /**
@@ -5878,6 +5991,8 @@ export interface TransactionsB2BBrokerCreateOrderRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -6024,6 +6139,8 @@ export interface TransactionsB2BBrokerOrderListRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /**
    * The cursor to retrieve the next page of transactions.
    * Providing it will cause the response to only return changes after this update.
@@ -6031,8 +6148,10 @@ export interface TransactionsB2BBrokerOrderListRequest {
    */
   cursor?: string | null
   /**
-   * Number of records to include in the response. <br />
-   * Default: `100` <br />
+   * Number of records to include in the response.
+   *
+   * Default: `100`
+   *
    * Maximum: `250`
    * @format int32
    */
@@ -6141,6 +6260,8 @@ export interface TransactionsB2BBrokerOrderRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /** @minLength 1 */
   id: string
   /** Should be provided for Coinbase. */
@@ -6247,6 +6368,8 @@ export interface TransactionsB2BBrokerSymbolInfoForOrderRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -6394,6 +6517,8 @@ export interface TransactionsBrokerBaseRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
 }
 
 export interface TransferBalanceFundingAvailability {
@@ -6556,6 +6681,8 @@ export interface TransferIntegrationModel {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /** Name of integration. */
   name?: string | null
 }
@@ -6619,6 +6746,8 @@ export interface TransferIntegrationWithLogoModel {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /** Name of integration. */
   name?: string | null
   /** Integration logo URL. */
@@ -6819,7 +6948,17 @@ export interface TransferToAddressWithAmount {
 export interface TransferTravelRuleOptions {
   clientName?: string | null
   transferType?: TransferTypeEnum | null
-  clientType?: 'undefined' | 'wallet' | 'exchange' | 'vasp' | 'merchant' | 'other'
+  clientType?:
+    | 'undefined'
+    | 'wallet'
+    | 'exchange'
+    | 'vasp'
+    | 'merchant'
+    | 'other'
+    | 'psp'
+    | 'neobank'
+    | 'iGaming'
+    | 'aggregator'
 }
 
 export type TransferTypeEnum = 'deposit' | 'payment' | 'onramp'
@@ -6899,6 +7038,7 @@ export interface TransfersBrokerCreateCryptocurrencyTransactionRequest {
    * ```RobinhoodConnect```
    * ```BlockchainCom```
    * ```BinanceConnect```
+   * ```RevolutConnect```
    * ```BinancePay```
    * ```DeFiWallet```
    */
@@ -6954,6 +7094,8 @@ export interface TransfersBrokerCreateCryptocurrencyTransactionRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /** Additional data to send on-chain (optional, depends on an integration) */
   data?: string | null
   /**
@@ -7040,6 +7182,7 @@ export interface TransfersBrokerCryptocurrencyDepositAddressRequest {
    * ```RobinhoodConnect```
    * ```BlockchainCom```
    * ```BinanceConnect```
+   * ```RevolutConnect```
    * ```BinancePay```
    * ```DeFiWallet```
    */
@@ -7095,6 +7238,8 @@ export interface TransfersBrokerCryptocurrencyDepositAddressRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
    * Can be used instead of the `AddressType` field.
@@ -7147,6 +7292,7 @@ export interface TransfersBrokerCryptocurrencyTransactionDetailsRequest {
    * ```RobinhoodConnect```
    * ```BlockchainCom```
    * ```BinanceConnect```
+   * ```RevolutConnect```
    * ```BinancePay```
    * ```DeFiWallet```
    */
@@ -7202,6 +7348,8 @@ export interface TransfersBrokerCryptocurrencyTransactionDetailsRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /** Type of the address of the transferred asset. Can be used instead of the `Symbol` field. */
   addressType?: CryptocurrencyAddressType | null
   /** Transaction Id by the financial institution */
@@ -7248,6 +7396,7 @@ export interface TransfersBrokerTransactionsListRequest {
    * ```RobinhoodConnect```
    * ```BlockchainCom```
    * ```BinanceConnect```
+   * ```RevolutConnect```
    * ```BinancePay```
    * ```DeFiWallet```
    */
@@ -7303,9 +7452,13 @@ export interface TransfersBrokerTransactionsListRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /**
-   * Number of records to include in the response. <br />
-   * Default: `100` <br />
+   * Number of records to include in the response.
+   *
+   * Default: `100`
+   *
    * Maximum: `250`
    * @format int32
    */
@@ -7376,6 +7529,29 @@ export interface UpdateTransferModel {
 export interface UpdateTransferResponse {
   /** The status of the transfer. */
   status?: 'pending' | 'succeeded' | 'failed'
+  /** The status details of the transfer. */
+  statusDetails?:
+    | 'unknown'
+    | 'failed'
+    | 'frozen'
+    | 'succeeded'
+    | 'mfaRequired'
+    | 'pending'
+    | 'expired'
+    | 'canceled'
+    | 'waitingForSignature'
+    | 'waitingForClearing'
+    | 'awaitingApproval'
+    | 'awaitingConfirmation'
+    | 'awaitingVerification'
+    | 'rejected'
+    | 'pendingCancel'
+    | 'emailVerification'
+    | 'deviceConfirmationRequired'
+    | 'mfaFailed'
+    | 'addressWhitelistRequired'
+    | 'secondMfaRequired'
+    | 'emailConfirmationApprovalRequired'
   /** Error message, if the operation did not complete successfully. */
   errorMessage?: string | null
   /** Result of the transfer initiation. */
@@ -7465,6 +7641,8 @@ export interface UpdateTransferStatusRequest {
     | 'revolutConnect'
     | 'binancePay'
     | 'bybitDirect'
+    | 'paribuOAuth'
+    | 'payPalConnect'
   /**
    * Id of the executed transfer.
    * @minLength 1
@@ -7647,6 +7825,56 @@ export class HttpClient<SecurityDataType = unknown> {
  * transaction history and balances and execute crypto transfers (with user approval).
  */
 export class FrontApi<SecurityDataType extends unknown> extends HttpClient<SecurityDataType> {
+  integrationsAccountInformation = {
+    /**
+     * @description Return KYC details of the user.
+     *
+     * @tags Integrations account information
+     * @name V1AccountVerifyCreate
+     * @summary Verify account identity. Replaced by exchange/verify endpoint.
+     * @request POST:/api/v1/account/verify
+     * @deprecated
+     * @secure
+     * @response `200` `B2BBrokerAccountDetailsResponseApiResult` Successfully returns account details.
+     * @response `400` `ApiResult` Request to retrieve account details is not correct.
+     * @response `401` `any` Unauthorized: Client Id or Client Secret are not correct or missing.
+     * @response `403` `any` Forbidden
+     */
+    v1AccountVerifyCreate: (data: B2BBrokerAccountDetailsRequest, params: RequestParams = {}) =>
+      this.request<B2BBrokerAccountDetailsResponseApiResult, ApiResult>({
+        path: `/api/v1/account/verify`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * @description Returns basic profile data of the user's exchange account. Available data varies by exchange and linked account.
+     *
+     * @tags Integrations account information
+     * @name V1ExchangeVerifyCreate
+     * @summary Verify account identity.
+     * @request POST:/api/v1/exchange/verify
+     * @secure
+     * @response `200` `B2BBrokerAccountDetailsResponseApiResult` Successfully returns account details.
+     * @response `400` `ApiResult` Request to retrieve account details is not correct.
+     * @response `401` `any` Unauthorized: Client Id or Client Secret are not correct or missing.
+     * @response `403` `any` Forbidden
+     */
+    v1ExchangeVerifyCreate: (data: ExchangeAccountInfoRequest, params: RequestParams = {}) =>
+      this.request<B2BBrokerAccountDetailsResponseApiResult, ApiResult>({
+        path: `/api/v1/exchange/verify`,
+        method: 'POST',
+        body: data,
+        secure: true,
+        type: ContentType.Json,
+        format: 'json',
+        ...params
+      })
+  }
   assets = {
     /**
      * No description
@@ -7656,7 +7884,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @summary Get available assets
      * @request GET:/api/v1/assets/{assetType}
      * @secure
-     * @response `200` `AssetPaginationResponseApiResult` Success
+     * @response `200` `AssetPaginationResponseApiResult` OK
      * @response `400` `ApiResult` Bad Request
      * @response `401` `any` Unauthorized
      */
@@ -7688,7 +7916,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @summary Get symbol price
      * @request GET:/api/v1/assets/equity/{symbol}/price
      * @secure
-     * @response `200` `B2BPriceInfoApiResult` Success
+     * @response `200` `B2BPriceInfoApiResult` OK
      * @response `400` `ApiResult` Bad Request
      * @response `401` `any` Unauthorized
      */
@@ -7710,7 +7938,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @summary Get account balance
      * @request POST:/api/v1/balance/get
      * @secure
-     * @response `200` `B2BBrokerAccountBalanceModelApiResult` Success
+     * @response `200` `B2BBrokerAccountBalanceModelApiResult` OK
      * @response `400` `ApiResult` Bad Request
      * @response `401` `any` Unauthorized
      * @response `403` `any` The API key used does not have read permission to call this Mesh endpoint.
@@ -7734,7 +7962,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @summary Get aggregated portfolio fiat balances
      * @request GET:/api/v1/balance/portfolio
      * @secure
-     * @response `200` `B2BFiatPortfolioModelApiResult` Success
+     * @response `200` `B2BFiatPortfolioModelApiResult` OK
      * @response `400` `ApiResult` Bad Request
      * @response `401` `any` Unauthorized
      * @response `403` `any` The API key used does not have read permission to call this Mesh endpoint.
@@ -7751,31 +7979,6 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         method: 'GET',
         query: query,
         secure: true,
-        format: 'json',
-        ...params
-      })
-  }
-  brokerAccountDetail = {
-    /**
-     * @description Return KYC details of the user.
-     *
-     * @tags BrokerAccountDetail
-     * @name V1AccountVerifyCreate
-     * @summary Verify account identity.
-     * @request POST:/api/v1/account/verify
-     * @secure
-     * @response `200` `B2BBrokerAccountDetailsResponseApiResult` Successfully returns account details.
-     * @response `400` `ApiResult` Request to retrieve account details is not correct.
-     * @response `401` `any` Unauthorized: Client Id or Client Secret are not correct or missing.
-     * @response `403` `any` Forbidden
-     */
-    v1AccountVerifyCreate: (data: B2BBrokerAccountDetailsRequest, params: RequestParams = {}) =>
-      this.request<B2BBrokerAccountDetailsResponseApiResult, ApiResult>({
-        path: `/api/v1/account/verify`,
-        method: 'POST',
-        body: data,
-        secure: true,
-        type: ContentType.Json,
         format: 'json',
         ...params
       })
@@ -7926,7 +8129,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @summary Refresh auth token
      * @request POST:/api/v1/token/refresh
      * @secure
-     * @response `200` `B2BBrokerRefreshTokenResponseApiResult` Success
+     * @response `200` `B2BBrokerRefreshTokenResponseApiResult` OK
      * @response `400` `ApiResult` Bad Request
      * @response `401` `any` Unauthorized
      */
@@ -7949,7 +8152,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @summary Remove connection
      * @request DELETE:/api/v1/account
      * @secure
-     * @response `200` `ApiResult` Success
+     * @response `200` `ApiResult` OK
      * @response `400` `ApiResult` Bad Request
      * @response `401` `any` Unauthorized
      */
@@ -7972,7 +8175,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @summary Get health status
      * @request GET:/api/v1/status
      * @secure
-     * @response `200` `B2BBrokersHealthStatusListApiResult` Success
+     * @response `200` `B2BBrokersHealthStatusListApiResult` OK
      * @response `401` `any` Unauthorized
      */
     v1StatusList: (params: RequestParams = {}) =>
@@ -7992,7 +8195,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @summary Retrieve the list of all available integrations.
      * @request GET:/api/v1/integrations
      * @secure
-     * @response `200` `IntegrationsResponseApiResult` Success
+     * @response `200` `IntegrationsResponseApiResult` OK
      */
     v1IntegrationsList: (params: RequestParams = {}) =>
       this.request<IntegrationsResponseApiResult, any>({
@@ -8012,7 +8215,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @summary Get authentication schemes
      * @request GET:/api/v1/authenticationSchemes
      * @secure
-     * @response `200` `BrokerAuthenticationSchemeIReadOnlyCollectionApiResult` Success
+     * @response `200` `BrokerAuthenticationSchemeIReadOnlyCollectionApiResult` OK
      * @response `401` `any` Unauthorized
      */
     v1AuthenticationSchemesList: (params: RequestParams = {}) =>
@@ -8032,10 +8235,10 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @summary Authenticate user's account
      * @request POST:/api/v1/authenticate
      * @secure
-     * @response `200` `B2BBrokerAuthResponseApiResult` Success
+     * @response `200` `B2BBrokerAuthResponseApiResult` OK
      * @response `400` `ProblemDetails` Bad Request
-     * @response `500` `void` Server Error
-     * @response `503` `void` Server Error
+     * @response `500` `void` Internal Server Error
+     * @response `503` `void` Service Unavailable
      */
     v1AuthenticateCreate: (
       query: {
@@ -8067,7 +8270,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @summary Get OAuth authentication link
      * @request GET:/api/v1/authenticate/{brokerType}
      * @secure
-     * @response `200` `B2BBrokerAuthPromptResponseApiResult` Success
+     * @response `200` `B2BBrokerAuthPromptResponseApiResult` OK
      * @response `400` `ProblemDetails` Bad Request
      */
     v1AuthenticateDetail: (
@@ -8122,7 +8325,9 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         | 'binanceOAuth'
         | 'revolutConnect'
         | 'binancePay'
-        | 'bybitDirect',
+        | 'bybitDirect'
+        | 'paribuOAuth'
+        | 'payPalConnect',
       query: {
         /** Id of the end-user */
         userId: string
@@ -8140,14 +8345,14 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
   }
   managedTransfers = {
     /**
-     * @description **Get supported networks list.** <br /> --- Get the list of all networks supported by Mesh to perform transfers, including which tokens and integrations are supported.
+     * @description **Get supported networks list.** --- Get the list of all networks supported by Mesh to perform transfers, including which tokens and integrations are supported.
      *
      * @tags Managed Transfers
      * @name V1TransfersManagedNetworksList
      * @summary Get networks
      * @request GET:/api/v1/transfers/managed/networks
      * @secure
-     * @response `200` `NetworkModelResponseApiResult` Success
+     * @response `200` `NetworkModelResponseApiResult` OK
      * @response `401` `any` Unauthorized
      */
     v1TransfersManagedNetworksList: (params: RequestParams = {}) =>
@@ -8160,14 +8365,14 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
       }),
 
     /**
-     * @description **Get supported integrations list.** <br /> --- Get the list of all integrations supported by Mesh to perform transfers, including which tokens and networks are supported.
+     * @description **Get supported integrations list.** --- Get the list of all integrations supported by Mesh to perform transfers, including which tokens and networks are supported.
      *
      * @tags Managed Transfers
      * @name V1TransfersManagedIntegrationsList
      * @summary Get integrations
      * @request GET:/api/v1/transfers/managed/integrations
      * @secure
-     * @response `200` `IntegrationNetworkResponseApiResult` Success
+     * @response `200` `IntegrationNetworkResponseApiResult` OK
      * @response `401` `any` Unauthorized
      */
     v1TransfersManagedIntegrationsList: (params: RequestParams = {}) =>
@@ -8187,7 +8392,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @summary Get supported tokens list
      * @request GET:/api/v1/transfers/managed/tokens
      * @secure
-     * @response `200` `TokenNetworksResponseApiResult` Success
+     * @response `200` `TokenNetworksResponseApiResult` OK
      */
     v1TransfersManagedTokensList: (params: RequestParams = {}) =>
       this.request<TokenNetworksResponseApiResult, any>({
@@ -8206,7 +8411,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
      * @summary Verify the transfer request without authenticating the integration accounts
      * @request GET:/api/v1/transfers/managed/verify
      * @secure
-     * @response `200` `TransferVerificationResponseApiResult` Success
+     * @response `200` `TransferVerificationResponseApiResult` OK
      * @response `400` `ApiResult` Bad Request
      * @response `401` `any` Unauthorized
      */
@@ -8222,14 +8427,14 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
       }),
 
     /**
-     * @description **Get the list of networks and tokens eligible for a transfer, based on the provided request data.** <br /> --- Transfers can be configured either from one connected account to another connected account, or from a connected account to any arbitrary address or addresses. <br /> * **From one connected account to another connected account:** <br /> The API client provides `FromAuthToken` that is representing the source account and `ToAuthToken` that is representing the target account. Front API maps networks and tokens supported by both accounts and returns all tokens and networks eligible for a transfer as the result. <br /> * **From a connected account to any arbitrary address:** <br /> The API client provides `FromAuthToken` that is representing the source account and the list of target addresses using the `ToAddresses` field. Front API verifies the addresses and returns the list of tokens, eligible to be transferred as the result of the operation. <br /><br /> Returns the list of holdings on the account that can be used to perform the transfer. Each holdings item contains the list of supported networks that can be used to transfer the corresponding asset. Each network contains details such as gas fees and the amount eligible to be transferred.
+     * @description **Get the list of networks and tokens eligible for a transfer, based on the provided request data.** --- Transfers can be configured either from one connected account to another connected account, or from a connected account to any arbitrary address or addresses. * **From one connected account to another connected account:** The API client provides `FromAuthToken` that is representing the source account and `ToAuthToken` that is representing the target account. Front API maps networks and tokens supported by both accounts and returns all tokens and networks eligible for a transfer as the result. * **From a connected account to any arbitrary address:** The API client provides `FromAuthToken` that is representing the source account and the list of target addresses using the `ToAddresses` field. Front API verifies the addresses and returns the list of tokens, eligible to be transferred as the result of the operation. Returns the list of holdings on the account that can be used to perform the transfer. Each holdings item contains the list of supported networks that can be used to transfer the corresponding asset. Each network contains details such as gas fees and the amount eligible to be transferred.
      *
      * @tags Managed Transfers
      * @name V1TransfersManagedConfigureCreate
      * @summary Configure transfer
      * @request POST:/api/v1/transfers/managed/configure
      * @secure
-     * @response `200` `ConfigureTransferResponseApiResult` Success
+     * @response `200` `ConfigureTransferResponseApiResult` OK
      * @response `400` `ApiResult` Bad Request
      * @response `401` `any` Unauthorized
      * @response `403` `any` The API key used does not have write permission to call this Mesh endpoint.
@@ -8246,14 +8451,14 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
       }),
 
     /**
-     * @description **Validate and preview the transfer.** <br /> --- Validates the transfer, calculates the relevant amount in crypto if requested amount was in fiat and updates the current network fee values. <br /> This endpoint uses the `NetworkId` field to specify which network will be used to perform the transfer. The target `NetworkId` should be selected after configuring the transfer using `/configure` endpoint. <br /><br /> Returns the `PreviewId` value that can be used to commit the transfer.
+     * @description **Validate and preview the transfer.** --- Validates the transfer, calculates the relevant amount in crypto if requested amount was in fiat and updates the current network fee values. This endpoint uses the `NetworkId` field to specify which network will be used to perform the transfer. The target `NetworkId` should be selected after configuring the transfer using `/configure` endpoint. Returns the `PreviewId` value that can be used to commit the transfer.
      *
      * @tags Managed Transfers
      * @name V1TransfersManagedPreviewCreate
      * @summary Preview transfer
      * @request POST:/api/v1/transfers/managed/preview
      * @secure
-     * @response `200` `PreviewTransferResponseApiResult` Success
+     * @response `200` `PreviewTransferResponseApiResult` OK
      * @response `400` `ApiResult` Bad Request
      * @response `401` `any` Unauthorized
      * @response `403` `any` The API key used does not have write permission to call this Mesh endpoint.
@@ -8270,14 +8475,14 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
       }),
 
     /**
-     * @description **Commit the previously previewed transfer.** <br /> --- Previews the transfer, using the `PreviewId` value. <br /> Handles multi-factor authentication codes if the account is configured to use them for additional security. <br /><br /> Returns the status of the transfer and the details of the transfer if it was initiated successfully.
+     * @description **Commit the previously previewed transfer.** --- Previews the transfer, using the `PreviewId` value. Handles multi-factor authentication codes if the account is configured to use them for additional security. Returns the status of the transfer and the details of the transfer if it was initiated successfully.
      *
      * @tags Managed Transfers
      * @name V1TransfersManagedExecuteCreate
      * @summary Execute transfer
      * @request POST:/api/v1/transfers/managed/execute
      * @secure
-     * @response `200` `ExecuteTransferResponseApiResult` Success
+     * @response `200` `ExecuteTransferResponseApiResult` OK
      * @response `400` `ApiResult` Bad Request
      * @response `401` `any` Unauthorized
      * @response `403` `any` The API key used does not have write permission to call this Mesh endpoint.
@@ -8431,14 +8636,14 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
       }),
 
     /**
-     * @description **Updates the previously executed transfer.** <br /> --- Updates the transfer status, using the `TransactionId` value. Returns the status of the transfer and the details of the transfer.
+     * @description **Updates the previously executed transfer.** --- Updates the transfer status, using the `TransactionId` value. Returns the status of the transfer and the details of the transfer.
      *
      * @tags Managed Transfers
      * @name V1TransfersManagedUpdateCreate
      * @summary Update transfer status
      * @request POST:/api/v1/transfers/managed/update
      * @secure
-     * @response `200` `UpdateTransferResponseApiResult` Success
+     * @response `200` `UpdateTransferResponseApiResult` OK
      * @response `400` `ApiResult` Bad Request
      * @response `401` `any` Unauthorized
      * @response `403` `any` The API key used does not have write permission to call this Mesh endpoint.

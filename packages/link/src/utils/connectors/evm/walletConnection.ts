@@ -75,8 +75,6 @@ export const connectToEVMWallet = async (
     const browserProvider = new ethers.BrowserProvider(provider)
     setActiveEVMProvider(browserProvider, provider)
 
-    setupEventListeners(provider)
-
     const existingAccounts = await provider.request({ method: 'eth_accounts' })
     if (!existingAccounts || existingAccounts.length === 0) {
       await browserProvider.send('eth_requestAccounts', [])
@@ -107,20 +105,6 @@ export const connectToEVMWallet = async (
       ? error
       : new Error(`Failed to connect to ${walletName} wallet`)
   }
-}
-
-/**
- * Sets up event listeners for the provider
- */
-const setupEventListeners = (provider: EVMProvider) => {
-  const handleAccountsChanged = (accounts: string[]) => {
-    // Handle account changes if needed in the future
-  }
-  const handleChainChanged = (chainId: string) => {
-    // Handle chain changes if needed in the future
-  }
-  provider.on('accountsChanged', handleAccountsChanged)
-  provider.on('chainChanged', handleChainChanged)
 }
 
 /**
