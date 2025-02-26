@@ -24,6 +24,7 @@ export interface AccountToken {
   account: Account
   accessToken: string
   refreshToken?: string
+  tokenId?: string
 }
 
 export interface Account {
