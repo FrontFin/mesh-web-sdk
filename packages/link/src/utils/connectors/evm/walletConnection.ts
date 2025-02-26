@@ -114,10 +114,10 @@ export const connectToEVMWallet = async (
  */
 const setupEventListeners = (provider: EVMProvider) => {
   const handleAccountsChanged = (accounts: string[]) => {
-    console.log('Accounts changed:', accounts)
+    // Handle account changes if needed in the future
   }
   const handleChainChanged = (chainId: string) => {
-    console.log('Chain changed:', parseInt(chainId, 16))
+    // Handle chain changes if needed in the future
   }
   provider.on('accountsChanged', handleAccountsChanged)
   provider.on('chainChanged', handleChainChanged)
