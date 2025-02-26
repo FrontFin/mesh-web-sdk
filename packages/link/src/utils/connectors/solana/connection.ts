@@ -1,5 +1,10 @@
 import { SolanaConnectResult } from './types'
 import { getSolanaProvider } from './providerDiscovery'
+import { Buffer } from 'buffer'
+
+if (typeof window !== 'undefined') {
+  window.Buffer = window.Buffer || Buffer
+}
 
 export const connectToSolanaWallet = async (
   walletName: string

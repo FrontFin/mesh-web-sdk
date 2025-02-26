@@ -1,6 +1,6 @@
 {
   "name": "@meshconnect/web-link-sdk",
-  "version": "3.1.0-rc.2",
+  "version": "3.1.0",
   "description": "A client-side JS library for integrating with Mesh Connect",
   "main": "./src/index.ts",
   "module": "./src/index.ts",
@@ -29,6 +29,7 @@
     "@meshconnect/node-api": "^2.0.16",
     "@solana/web3.js": "^1.91.1",
     "bs58": "^5.0.0",
+    "buffer": "^6.0.3",
     "ethers": "^6.11.1"
   },
   "scripts": {
