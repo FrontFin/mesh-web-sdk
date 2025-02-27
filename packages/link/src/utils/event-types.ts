@@ -29,6 +29,7 @@ export type LinkEventType =
   | CloseEvent
   | VerifyWalletRejected
   | VerifyDonePage
+  | SDKinjectedWalletProviders
 
 const LINK_EVENT_TYPE_KEYS = [
   'integrationConnected',
@@ -62,7 +63,8 @@ const LINK_EVENT_TYPE_KEYS = [
   'connectionUnavailable',
   'transferDeclined',
   'done',
-  'close'
+  'close',
+  'SDKinjectedWalletProviders'
 ] as const
 
 export type LinkEventTypeKeys = (typeof LINK_EVENT_TYPE_KEYS)[number]
@@ -295,4 +297,13 @@ export interface SessionSymmary {
     networkId?: string
   }
   errorMessage?: string
+}
+
+export interface SDKinjectedWalletProviders extends LinkEventBase {
+  type: 'SDKinjectedWalletProviders'
+  payload: Array<{
+    icon?: string
+    id: string
+    name: string
+  }>
 }
