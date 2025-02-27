@@ -260,18 +260,24 @@ async function handleWalletBrowserEvent(
     case 'walletBrowserNativeSmartDeposit':
     case 'walletBrowserNonNativeSmartDeposit': {
       const payload = event.data.payload as SmartContractPayload
-      try {
-        // These operations are currently only supported for EVM
-        const strategy = walletFactory.getStrategy('evm')
+      const getResponseType = (type: WalletBrowserEventType['type']) => {
+        switch (type) {
+          case 'walletBrowserNonNativeTransferRequest':
+            return 'SDKnonNativeTransferCompleted'
+          case 'walletBrowserNativeSmartDeposit':
+            return 'SDKnativeSmartDepositCompleted'
+          case 'walletBrowserNonNativeSmartDeposit':
+            return 'SDKnonNativeSmartDepositCompleted'
+          default:
+            return 'SDKnonNativeTransferCompleted'
+        }
+      }
 
+      try {
+        const strategy = walletFactory.getStrategy('evm')
         const result = await strategy.sendSmartContractInteraction(payload)
 
-        const responseType =
-          event.data.type === 'walletBrowserNonNativeTransferRequest'
-            ? 'SDKnonNativeTransferCompleted'
-            : event.data.type === 'walletBrowserNativeSmartDeposit'
-            ? 'SDKnativeSmartDepositCompleted'
-            : 'SDKnonNativeSmartDepositCompleted'
+        const responseType = getResponseType(event.data.type)
 
         sendMessageToIframe({
           type: responseType,
@@ -280,13 +286,7 @@ async function handleWalletBrowserEvent(
           }
         })
       } catch (error) {
-        const errorType =
-          event.data.type === 'walletBrowserNonNativeTransferRequest'
-            ? 'SDKnonNativeTransferCompleted'
-            : event.data.type === 'walletBrowserNativeSmartDeposit'
-            ? 'SDKnativeSmartDepositCompleted'
-            : 'SDKnonNativeSmartDepositCompleted'
-
+        const errorType = getResponseType(event.data.type)
         handleErrorAndSendMessage(error as Error, errorType)
       }
       break

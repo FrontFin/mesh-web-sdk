@@ -20,26 +20,26 @@ export const connectToSolanaWallet = async (
       }
     }
 
-    const response = await provider.connect({ onlyIfTrusted: true }).catch(() =>
-      // If eager connect fails, try regular connect
-      provider.connect()
-    )
+    await provider
+      .connect({ onlyIfTrusted: true })
+      .catch(() => provider.connect())
 
-    if (!response?.publicKey) {
+    if (!provider.publicKey) {
       throw new Error(
-        `${walletName} connection failed - no public key returned`
+        `${walletName} connection failed - no public key available`
       )
     }
 
     return {
-      accounts: [response.publicKey.toString()],
+      accounts: [provider.publicKey.toString()],
       chainId: '101',
       isConnected: true
     }
   } catch (error) {
+    console.error('Solana wallet connection error:', error)
     return error instanceof Error
       ? error
-      : new Error(`Failed to connect to ${walletName} wallet`)
+      : new Error(`Failed to connect to ${walletName} wallet: ${error}`)
   }
 }
 
