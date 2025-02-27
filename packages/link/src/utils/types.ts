@@ -5,7 +5,6 @@ export type EventType =
   | 'brokerageAccountAccessToken'
   | 'delayedAuthentication'
   | 'loaded'
-  | 'oauthLinkOpen'
   | 'transferFinished'
 
 export interface Link {

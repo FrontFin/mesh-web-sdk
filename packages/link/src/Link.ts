@@ -105,23 +105,6 @@ async function handleLinkEvent(
       removePopup()
       break
     }
-    case 'oauthLinkOpen': {
-      if (event.data.link) {
-        const w = 700
-        const h = 800
-        const left = screen.width / 2 - w / 2
-        const top = screen.height / 2 - h / 2
-        window
-          .open(
-            event.data.link,
-            '_blank',
-            `popup,noopener,noreferrer,resizable,scrollbars,width=${w},height=${h},top=${top},left=${left}`
-          )
-          ?.focus()
-      }
-
-      break
-    }
     case 'loaded': {
       sendMessageToIframe({
         type: 'meshSDKSpecs',
@@ -326,11 +309,13 @@ async function eventsListener(
     LinkEventType | WalletBrowserEventType | { type: EventType }
   >
 ) {
-  if (isWalletBrowserEventTypeKey(event.data.type)) {
+  if (!possibleOrigins.has(event.origin)) {
+    console.warn('Received message from untrusted origin:', event.origin)
+  } else if (isWalletBrowserEventTypeKey(event.data.type)) {
     await handleWalletBrowserEvent(
       event as MessageEvent<WalletBrowserEventType>
     )
-  } else if (possibleOrigins.has(event.origin)) {
+  } else {
     await handleLinkEvent(event as MessageEvent<{ type: EventType }>)
   }
 }

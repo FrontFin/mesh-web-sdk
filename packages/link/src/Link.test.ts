@@ -210,31 +210,6 @@ describe('createLink tests', () => {
     expect(onTransferFinishedHandler).toBeCalledWith(payload)
   })
 
-  test('createLink "oauthLinkOpen" event should open new window', () => {
-    const frontConnection = createLink({
-      clientId: 'test',
-      onIntegrationConnected: jest.fn()
-    })
-
-    frontConnection.openLink(BASE64_ENCODED_URL)
-
-    window.dispatchEvent(
-      new MessageEvent<EventPayload>('message', {
-        data: {
-          type: 'oauthLinkOpen',
-          link: 'https://localhost/2'
-        },
-        origin: 'http://localhost'
-      })
-    )
-
-    expect(window.open).toBeCalledWith(
-      'https://localhost/2',
-      '_blank',
-      'popup,noopener,noreferrer,resizable,scrollbars,width=700,height=800,top=-400,left=-350'
-    )
-  })
-
   test('createLink "loaded" event should trigger the passing for tokens', () => {
     const tokens: IntegrationAccessToken[] = [
       {
