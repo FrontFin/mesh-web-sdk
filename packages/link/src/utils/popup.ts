@@ -7,17 +7,7 @@ const popupContentId = 'mesh-link-popup__popup-content'
 const stylesId = 'mesh-link-popup__styles'
 export const iframeId = 'mesh-link-popup__iframe'
 
-const getPopupHtml = (link: string) => `
-<div id="${popupId}">
-  <div id="${backdropId}"></div>
-  <div id="${popupContentId}">
-    <iframe id="${iframeId}" src="${link}" allow="clipboard-read *; clipboard-write *" />
-  </div>
-</div>
-`
-
-const getStyles = (style?: LinkStyle) => `
-<style id="${stylesId}">
+const getStylesContent = (style?: LinkStyle) => `
   body {
     position: fixed;
     left: 0;
@@ -97,7 +87,6 @@ const getStyles = (style?: LinkStyle) => `
       min-height: 100%;
     }
   }
-</style>
 `
 
 export function removePopup(): void {
@@ -109,23 +98,26 @@ export function removePopup(): void {
 }
 
 export function addPopup(iframeLink: string): void {
-  const style = getLinkStyle(iframeLink)
   removePopup()
-  const popup = getPopupHtml(iframeLink)
-  const stylesElement = htmlToElement(getStyles(style))
-  if (stylesElement) {
-    window.document.head.appendChild(stylesElement)
-  }
 
-  const popupElement = htmlToElement(popup)
-  if (popupElement) {
-    window.document.body.appendChild(popupElement)
-  }
-}
+  const styleElement = document.createElement('style')
+  styleElement.id = stylesId
+  const style = getLinkStyle(iframeLink)
+  styleElement.textContent = getStylesContent(style)
+  window.document.head.appendChild(styleElement)
 
-function htmlToElement(html: string): Node | null {
-  const template = document.createElement('template')
-  html = html.trim()
-  template.innerHTML = html
-  return template.content.firstChild
+  const popupRootElement = document.createElement('div')
+  popupRootElement.id = popupId
+  const popupBackdropElement = document.createElement('div')
+  popupBackdropElement.id = backdropId
+  popupRootElement.appendChild(popupBackdropElement)
+  const popupContentElement = document.createElement('div')
+  popupContentElement.id = popupContentId
+  const iframeElement = document.createElement('iframe')
+  iframeElement.id = iframeId
+  iframeElement.src = iframeLink
+  iframeElement.allow = 'clipboard-read *; clipboard-write *'
+  popupContentElement.appendChild(iframeElement)
+  popupRootElement.appendChild(popupContentElement)
+  window.document.body.appendChild(popupRootElement)
 }
