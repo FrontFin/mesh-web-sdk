@@ -12,7 +12,22 @@ export const connectToSolanaWallet = async (
   try {
     const provider = getSolanaProvider(walletName)
 
-    if (provider.publicKey && provider.isConnected) {
+    // Try eager connect first, fall back to regular connect
+    const response = await provider
+      .connect({ onlyIfTrusted: true })
+      .catch(() => provider.connect())
+
+    // Handle Phantom wallet which returns response.publicKey
+    if (response?.publicKey) {
+      return {
+        accounts: [response.publicKey.toString()],
+        chainId: '101',
+        isConnected: true
+      }
+    }
+
+    // Handle other wallets that update provider.publicKey directly
+    if (provider.publicKey) {
       return {
         accounts: [provider.publicKey.toString()],
         chainId: '101',
@@ -20,26 +35,11 @@ export const connectToSolanaWallet = async (
       }
     }
 
-    await provider
-      .connect({ onlyIfTrusted: true })
-      .catch(() => provider.connect())
-
-    if (!provider.publicKey) {
-      throw new Error(
-        `${walletName} connection failed - no public key available`
-      )
-    }
-
-    return {
-      accounts: [provider.publicKey.toString()],
-      chainId: '101',
-      isConnected: true
-    }
+    throw new Error(`${walletName} connection failed - no public key returned`)
   } catch (error) {
-    console.error('Solana wallet connection error:', error)
     return error instanceof Error
       ? error
-      : new Error(`Failed to connect to ${walletName} wallet: ${error}`)
+      : new Error(`Failed to connect to ${walletName} wallet`)
   }
 }
 
