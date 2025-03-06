@@ -1039,7 +1039,8 @@
                 "binancePay",
                 "bybitDirect",
                 "paribuOAuth",
-                "payPalConnect"
+                "payPalConnect",
+                "binanceTrDirect"
               ],
               "allOf": [
                 {
@@ -2201,6 +2202,38 @@
                 "schema": { }
               }
             }
+          }
+        }
+      }
+    },
+    "/api/v1/catalog/solana/getLatestBlockhash": {
+      "post": {
+        "tags": [
+          "QuickNode"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringApiResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
           }
         }
       }
@@ -3734,7 +3767,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -4286,7 +4320,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -4445,7 +4480,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -5329,7 +5365,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -5495,7 +5532,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -5687,7 +5725,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -5909,7 +5948,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -6212,7 +6252,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -6437,7 +6478,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -6783,7 +6825,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -7352,7 +7395,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -7527,7 +7571,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -7699,7 +7744,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -7778,7 +7824,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -7987,7 +8034,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -8113,7 +8161,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -8519,7 +8568,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -8645,7 +8695,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -8744,7 +8795,8 @@
           "binancePay",
           "bybitDirect",
           "paribuOAuth",
-          "payPalConnect"
+          "payPalConnect",
+          "binanceTrDirect"
         ],
         "type": "string"
       },
@@ -8899,7 +8951,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -9572,7 +9625,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -10113,7 +10167,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -10274,7 +10329,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -10476,7 +10532,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -10602,7 +10659,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -10735,7 +10793,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -11088,7 +11147,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -11683,7 +11743,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -11784,7 +11845,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -12005,7 +12067,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -12666,7 +12729,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -12772,7 +12836,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -12930,6 +12995,54 @@
             "type": "integer",
             "description": "The timestamp by which the transfer must be completely initiated. Currently, this means solving the MFA steps",
             "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "StringApiResult": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "ok",
+              "serverFailure",
+              "permissionDenied",
+              "badRequest",
+              "notFound",
+              "conflict",
+              "tooManyRequest",
+              "locked",
+              "unavailableForLegalReasons"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/ApiResultStatus"
+              }
+            ],
+            "readOnly": true
+          },
+          "message": {
+            "type": "string",
+            "description": "A message generated by the API",
+            "nullable": true
+          },
+          "displayMessage": {
+            "type": "string",
+            "description": "User-friendly display message that can be presented to the end user",
+            "nullable": true
+          },
+          "errorType": {
+            "type": "string",
+            "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
+            "nullable": true
+          },
+          "errorData": {
+            "nullable": true,
+            "readOnly": true
+          },
+          "content": {
+            "type": "string",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -13117,7 +13230,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -13280,7 +13394,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -13384,7 +13499,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -13497,7 +13613,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -13668,7 +13785,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -13935,7 +14053,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -14015,7 +14134,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -14613,7 +14733,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -14782,7 +14903,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -14884,7 +15006,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -14986,7 +15109,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -15303,7 +15427,8 @@
               "binancePay",
               "bybitDirect",
               "paribuOAuth",
-              "payPalConnect"
+              "payPalConnect",
+              "binanceTrDirect"
             ],
             "allOf": [
               {
@@ -15402,6 +15527,9 @@
     }
   ],
   "tags": [
+    {
+      "name": "QuickNode"
+    },
     {
       "name": "Integrations account information"
     },

@@ -320,6 +320,7 @@ export interface B2BBrokerAuthRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   phone?: string | null
   username?: string | null
   password?: string | null
@@ -588,6 +589,7 @@ export interface B2BBrokerCreateOrderRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -698,6 +700,7 @@ export interface B2BBrokerCreateOrderResult {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /** Side of the order. */
   side?: 'unknown' | 'buy' | 'sell'
   /**
@@ -1130,6 +1133,7 @@ export interface B2BBrokerOrder {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /** Type of the transaction */
   transactionType?:
     | 'order'
@@ -1235,6 +1239,7 @@ export interface B2BBrokerOrderListRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /**
    * The cursor to retrieve the next page of transactions.
    * Providing it will cause the response to only return changes after this update.
@@ -1364,6 +1369,7 @@ export interface B2BBrokerOrderRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /** @minLength 1 */
   id: string
   /** Should be provided for Coinbase. */
@@ -1487,6 +1493,7 @@ export interface B2BBrokerPreviewOrderResult {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /** @format double */
   fee?: number | null
   feeText?: string | null
@@ -1627,6 +1634,7 @@ export interface B2BBrokerSymbolInfoForOrderRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -1749,6 +1757,7 @@ export interface B2BBrokerTradingFeatureInfo {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /** Account Id of the integration. */
   accountId?: string | null
   /** Model, describing the ability to place cryptocurrency orders. */
@@ -1942,6 +1951,7 @@ export interface B2BBrokersHealthStatus {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /** Name of the integration */
   name?: string | null
   /** Is the communication with the integration up */
@@ -2296,6 +2306,7 @@ export interface BalanceBrokerBaseRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
 }
 
 export interface BrokerAccount {
@@ -2412,6 +2423,7 @@ export interface BrokerAuthenticationScheme {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /** Type of authentication for the integration. */
   authenticationSchemeType?: 'usernamePassword' | 'oAuth' | 'apiKey' | 'blockchainAddress'
   /** Set of fields that should be provided in the initial POST `authenticate` request. */
@@ -2509,6 +2521,7 @@ export interface BrokerBaseRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
 }
 
 export interface BrokerCreateCryptocurrencyTransactionRequest {
@@ -2572,6 +2585,7 @@ export interface BrokerCreateCryptocurrencyTransactionRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /** Additional data to send on-chain (optional, depends on an integration) */
   data?: string | null
   /**
@@ -2699,6 +2713,7 @@ export interface BrokerCryptocurrencyDepositAddressRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
    * Can be used instead of the `AddressType` field.
@@ -2797,6 +2812,7 @@ export interface BrokerCryptocurrencyTransactionDetailsRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /** Type of the address of the transferred asset. Can be used instead of the `Symbol` field. */
   addressType?: CryptocurrencyAddressType | null
   /** Transaction Id by the financial institution */
@@ -3048,6 +3064,7 @@ export interface BrokerRefreshTokenRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /** @minLength 1 */
   refreshToken: string
   /**
@@ -3133,6 +3150,7 @@ export interface BrokerTransactionsListRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /**
    * Number of records to include in the response.
    *
@@ -3213,6 +3231,7 @@ export type BrokerType =
   | 'bybitDirect'
   | 'paribuOAuth'
   | 'payPalConnect'
+  | 'binanceTrDirect'
 
 export interface CatalogLink {
   /**
@@ -3324,6 +3343,7 @@ export interface ConfigureTransferRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /**
    * The authentication token of the target integration. Can be used alternatively to the list of requested address (`toAddresses`).
    * If used, `toType` should also be provided.
@@ -3716,6 +3736,7 @@ export interface ExecuteTransferRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /**
    * Id of the Preview of the transfer.
    * @format uuid
@@ -4020,6 +4041,7 @@ export interface HoldingsModel {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /** External institution's account id (returned by the institution) */
   accountId?: string | null
   /** Friendly name of the connected institution */
@@ -4117,6 +4139,7 @@ export interface HoldingsRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   includeMarketValue?: boolean
 }
 
@@ -4255,6 +4278,7 @@ export interface IntegrationModel {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /** DeFi wallet provider identifier. */
   deFiWalletProviderId?: string | null
   /** Integration categories. */
@@ -4329,6 +4353,7 @@ export interface IntegrationNetwork {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
 }
 
 export interface IntegrationNetworkResponse {
@@ -4415,6 +4440,7 @@ export interface IntegrationNetworksModelResponse {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /** The list of supported networks and corresponding tokens for the integration. */
   networks?: NetworkResponse[] | null
   /** Specifies if the integration supports outgoing transfers. */
@@ -4621,6 +4647,7 @@ export interface ManagedBrokerCryptocurrencyDepositAddressRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
    * Can be used instead of the `AddressType` field.
@@ -4966,6 +4993,7 @@ export interface PortfolioBrokerBaseRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
 }
 
 export interface PortfolioFiatBalance {
@@ -5094,6 +5122,7 @@ export interface PortfolioHoldingsRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   includeMarketValue?: boolean
 }
 
@@ -5257,6 +5286,7 @@ export interface PreviewTransferRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /**
    * The authentication token of the target integration. Can be used alternatively to the address in the `ToAddress` field.
    * If used, `toType` should also be provided.
@@ -5677,6 +5707,7 @@ export interface QuoteTransferRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /**
    * Flat fee in crypto to be charged as a partner fee
    * @format double
@@ -5761,6 +5792,7 @@ export interface QuoteTransferResponse {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /** Is the transaction is possible based on the minimum transfer amount of the selected exchange */
   isEligible?: boolean
   /**
@@ -5853,6 +5885,30 @@ export interface SmartContractTransferAllocation {
    * @format int64
    */
   expirationTimestamp?: number
+}
+
+export interface StringApiResult {
+  readonly status?:
+    | 'ok'
+    | 'serverFailure'
+    | 'permissionDenied'
+    | 'badRequest'
+    | 'notFound'
+    | 'conflict'
+    | 'tooManyRequest'
+    | 'locked'
+    | 'unavailableForLegalReasons'
+  /** A message generated by the API */
+  message?: string | null
+  /** User-friendly display message that can be presented to the end user */
+  displayMessage?: string | null
+  /**
+   * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
+   * All possible error types are available in the documentation.
+   */
+  errorType?: string | null
+  readonly errorData?: any
+  content?: string | null
 }
 
 export type SymbolTradingAllowance =
@@ -5993,6 +6049,7 @@ export interface TransactionsB2BBrokerCreateOrderRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -6141,6 +6198,7 @@ export interface TransactionsB2BBrokerOrderListRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /**
    * The cursor to retrieve the next page of transactions.
    * Providing it will cause the response to only return changes after this update.
@@ -6262,6 +6320,7 @@ export interface TransactionsB2BBrokerOrderRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /** @minLength 1 */
   id: string
   /** Should be provided for Coinbase. */
@@ -6370,6 +6429,7 @@ export interface TransactionsB2BBrokerSymbolInfoForOrderRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -6519,6 +6579,7 @@ export interface TransactionsBrokerBaseRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
 }
 
 export interface TransferBalanceFundingAvailability {
@@ -6683,6 +6744,7 @@ export interface TransferIntegrationModel {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /** Name of integration. */
   name?: string | null
 }
@@ -6748,6 +6810,7 @@ export interface TransferIntegrationWithLogoModel {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /** Name of integration. */
   name?: string | null
   /** Integration logo URL. */
@@ -7096,6 +7159,7 @@ export interface TransfersBrokerCreateCryptocurrencyTransactionRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /** Additional data to send on-chain (optional, depends on an integration) */
   data?: string | null
   /**
@@ -7240,6 +7304,7 @@ export interface TransfersBrokerCryptocurrencyDepositAddressRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
    * Can be used instead of the `AddressType` field.
@@ -7350,6 +7415,7 @@ export interface TransfersBrokerCryptocurrencyTransactionDetailsRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /** Type of the address of the transferred asset. Can be used instead of the `Symbol` field. */
   addressType?: CryptocurrencyAddressType | null
   /** Transaction Id by the financial institution */
@@ -7454,6 +7520,7 @@ export interface TransfersBrokerTransactionsListRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /**
    * Number of records to include in the response.
    *
@@ -7643,6 +7710,7 @@ export interface UpdateTransferStatusRequest {
     | 'bybitDirect'
     | 'paribuOAuth'
     | 'payPalConnect'
+    | 'binanceTrDirect'
   /**
    * Id of the executed transfer.
    * @minLength 1
@@ -8327,7 +8395,8 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         | 'binancePay'
         | 'bybitDirect'
         | 'paribuOAuth'
-        | 'payPalConnect',
+        | 'payPalConnect'
+        | 'binanceTrDirect',
       query: {
         /** Id of the end-user */
         userId: string
@@ -8737,6 +8806,27 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         path: `/api/v1/holdings/portfolio`,
         method: 'GET',
         query: query,
+        secure: true,
+        format: 'json',
+        ...params
+      })
+  }
+  quickNode = {
+    /**
+     * No description
+     *
+     * @tags QuickNode
+     * @name V1CatalogSolanaGetLatestBlockhashCreate
+     * @request POST:/api/v1/catalog/solana/getLatestBlockhash
+     * @secure
+     * @response `200` `StringApiResult` OK
+     * @response `400` `ProblemDetails` Bad Request
+     * @response `500` `void` Internal Server Error
+     */
+    v1CatalogSolanaGetLatestBlockhashCreate: (params: RequestParams = {}) =>
+      this.request<StringApiResult, ProblemDetails | void>({
+        path: `/api/v1/catalog/solana/getLatestBlockhash`,
+        method: 'POST',
         secure: true,
         format: 'json',
         ...params
