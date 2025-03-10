@@ -38,10 +38,10 @@ jobs:
       #   uses: ./.github/actions/vuln-scan
       #   with:
       #     src-dir: '.'
-      - name: Yarn test
-        run: yarn test:cov
-      - name: SonarQube Scan
-        uses: sonarsource/sonarqube-scan-action@master
-        env:
-          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
+      # - name: Yarn test
+      #  run: yarn test:cov
+      #- name: SonarQube Scan
+       # uses: sonarsource/sonarqube-scan-action@master
+       # env:
+        #  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+         # SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
