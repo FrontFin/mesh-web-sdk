@@ -73,6 +73,7 @@ export interface TransferFinishedPayload {
   networkName?: string
   txHash?: string
   transferId?: string
+  refundAddress?: string
 }
 
 export interface IntegrationAccessToken {
