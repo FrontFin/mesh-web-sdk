@@ -344,7 +344,7 @@ export const createLink = (options: LinkOptions): Link => {
     }
 
     window.removeEventListener('message', eventsListener)
-    addPopup(linkUrl)
+    addPopup(linkUrl, currentOptions?.language)
     window.addEventListener('message', eventsListener)
   }
 

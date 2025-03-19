@@ -19,6 +19,7 @@ export const LinkComponent: React.FC<{
     setLinkConnection(
       createLink({
         clientId: clientId,
+        language: 'en',
         onIntegrationConnected: authData => {
           console.info('[MESH CONNECTED]', authData)
           onIntegrationConnected(authData)
