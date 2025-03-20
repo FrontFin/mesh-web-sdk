@@ -39,14 +39,15 @@ describe('createLink tests', () => {
   test('createLink when valid link provided should open popup', () => {
     const frontConnection = createLink({
       clientId: 'test',
-      onIntegrationConnected: jest.fn()
+      onIntegrationConnected: jest.fn(),
+      language: 'en'
     })
 
     frontConnection.openLink(BASE64_ENCODED_URL)
     const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeTruthy()
     expect(iframeElement?.attributes.getNamedItem('src')?.nodeValue).toBe(
-      'http://localhost/1'
+      'http://localhost/1?lng=en'
     )
   })
 

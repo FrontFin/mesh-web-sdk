@@ -169,6 +169,11 @@ export interface LinkOptions {
    * Can be used to initialize the crypto transfers flow as an alternative to the target addresses.
    */
   transferDestinationTokens?: IntegrationAccessToken[]
+
+  /**
+   * Link UI language. Right now only 'en' is supported.
+   */
+  language?: 'en'
 }
 
 export interface LinkStyle {
