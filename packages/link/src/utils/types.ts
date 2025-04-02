@@ -35,6 +35,7 @@ export interface Account {
 
 export interface BrandInfo {
   brokerLogo: string
+  brokerLogoUrl?: string
   brokerPrimaryColor?: string
 }
 
