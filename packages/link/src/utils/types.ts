@@ -130,6 +130,8 @@ export interface DisconnectPayload {
   walletName?: string
 }
 
+export type Language = 'en' | 'ru'
+
 export interface LinkOptions {
   /**
    * Client ID that can be obtained at https://dashboard.meshconnect.com/company/keys
@@ -172,9 +174,9 @@ export interface LinkOptions {
   transferDestinationTokens?: IntegrationAccessToken[]
 
   /**
-   * Link UI language. Right now only 'en' is supported.
+   * Link UI language. Supported: 'en', 'ru'.
    */
-  language?: 'en'
+  language?: Language
 }
 
 export interface LinkStyle {
