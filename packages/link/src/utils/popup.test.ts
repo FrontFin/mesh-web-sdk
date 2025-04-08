@@ -32,7 +32,7 @@ describe('Popup tests', () => {
     const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeTruthy()
     expect(iframeElement?.attributes.getNamedItem('src')?.nodeValue).toBe(
-      'http://localhost/2'
+      'http://localhost/2?lng=en'
     )
   })
 
