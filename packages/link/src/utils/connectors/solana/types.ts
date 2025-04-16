@@ -1,4 +1,4 @@
-import { Transaction } from '@solana/web3.js'
+import { Transaction, VersionedTransaction } from '@meshconnect/solana-web3.js'
 
 export enum SolanaWalletType {
   PHANTOM = 'phantom',
@@ -27,11 +27,15 @@ export interface SolanaProvider {
     callback: (publicKey?: any) => void
   ): void
   signMessage(message: Uint8Array): Promise<{ signature: Uint8Array }>
-  signTransaction(transaction: Transaction): Promise<Transaction>
+  signTransaction(
+    transaction: Transaction | VersionedTransaction
+  ): Promise<Transaction | VersionedTransaction>
   signAndSendTransaction?(
-    transaction: Transaction
+    transaction: Transaction | VersionedTransaction
   ): Promise<{ signature: string }>
-  sendTransaction?(transaction: Transaction): Promise<string>
+  sendTransaction?(
+    transaction: Transaction | VersionedTransaction
+  ): Promise<string>
 }
 
 export interface WindowWithSolanaProviders extends Window {
@@ -55,4 +59,7 @@ export interface TransactionConfig {
   fromAddress: string
   blockhash: string
   walletName: string
+  tokenMint?: string
+  tokenProgram?: string
+  tokenDecimals?: number
 }

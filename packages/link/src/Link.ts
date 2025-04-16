@@ -148,7 +148,6 @@ async function handleWalletBrowserEvent(
   event: MessageEvent<WalletBrowserEventType>
 ) {
   const walletFactory = WalletStrategyFactory.getInstance()
-
   switch (event.data.type) {
     case 'walletBrowserInjectedWalletSelected': {
       const payload = event.data.payload as WalletBrowserPayload
@@ -257,7 +256,10 @@ async function handleWalletBrowserEvent(
       }
 
       try {
-        const strategy = walletFactory.getStrategy('evm')
+        const networkType = (
+          payload.address.startsWith('0x') ? 'evm' : 'solana'
+        ) as NetworkType
+        const strategy = walletFactory.getStrategy(networkType)
         const result = await strategy.sendSmartContractInteraction(payload)
 
         const responseType = getResponseType(event.data.type)

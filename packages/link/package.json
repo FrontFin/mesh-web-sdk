@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@meshconnect/node-api": "^2.0.16",
-    "@solana/web3.js": "^1.91.1",
+    "@meshconnect/solana-web3.js": "^1.0.4",
     "bs58": "^5.0.0",
     "buffer": "^6.0.3",
     "ethers": "^6.11.1"
@@ -66,7 +66,7 @@
       ]
     },
     "transformIgnorePatterns": [
-      "/node_modules/(?!(@solana/web3.js|uuid|jayson|superstruct|@noble|@meshconnect|ethers)/)"
+      "/node_modules/(?!(@meshconnect/solana-web3.js|uuid|jayson|superstruct|@noble|@meshconnect|ethers)/)"
     ],
     "testEnvironmentOptions": {
       "url": "http://localhost/"

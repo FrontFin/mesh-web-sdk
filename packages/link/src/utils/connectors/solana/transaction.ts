@@ -1,81 +1,137 @@
 import {
-  Connection,
   PublicKey,
   SystemProgram,
-  Transaction
-} from '@solana/web3.js'
-import bs58 from 'bs58'
+  TransactionMessage,
+  VersionedTransaction,
+  TransactionInstruction
+} from '@meshconnect/solana-web3.js'
 import { getSolanaProvider } from './providerDiscovery'
-import { TransactionConfig } from './types'
+import { TransactionConfig, SolanaProvider } from './types'
 
-const QUICKNODE_RPC =
-  'https://alien-newest-vineyard.solana-mainnet.quiknode.pro/ebe5e35661d7edb7a5e48ab84bd9d477e472a40b/'
+const TOKEN_PROGRAM_ID = new PublicKey(
+  'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
+)
+const ASSOCIATED_TOKEN_PROGRAM_ID = new PublicKey(
+  'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL'
+)
 
-const isUserRejection = (error: any): boolean => {
-  if (!error) return false
-
-  const message = (error?.message || '').toLowerCase()
+const isUserRejection = (error: unknown): boolean => {
+  if (!error || typeof error !== 'object') return false
+  const err = error as Record<string, any>
+  const message = (err.message || '').toLowerCase()
   return (
     message.includes('user rejected') ||
     message.includes('declined') ||
     message.includes('cancelled') ||
     message.includes('denied') ||
-    error?.code === 4001
+    err.code === 4001
   )
 }
 
-const standardizeSignature = (rawSignature: string | Uint8Array): string => {
-  // First ensure we have a string
-  let signature =
-    typeof rawSignature === 'string' ? rawSignature : bs58.encode(rawSignature)
+export async function getAssociatedTokenAddress(
+  mint: PublicKey,
+  owner: PublicKey
+): Promise<PublicKey> {
+  const [address] = await PublicKey.findProgramAddress(
+    [owner.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), mint.toBuffer()],
+    ASSOCIATED_TOKEN_PROGRAM_ID
+  )
+  return address
+}
 
-  // If signature is longer than standard 88 chars, decode and re-encode
-  if (signature.length > 88) {
-    try {
-      const bytes = bs58.decode(signature)
-      const truncatedBytes = bytes.slice(0, 64)
-      signature = bs58.encode(truncatedBytes)
-    } catch (e) {
-      console.error('Failed to normalize signature:', e)
-    }
+export function createSPLTransferInstruction({
+  fromTokenAccount,
+  toTokenAccount,
+  owner,
+  amount
+}: {
+  fromTokenAccount: PublicKey
+  toTokenAccount: PublicKey
+  owner: PublicKey
+  amount: bigint
+}): TransactionInstruction {
+  const data = Buffer.alloc(9)
+  data[0] = 3 // Transfer instruction
+  data.writeBigUInt64LE(amount, 1)
+
+  return new TransactionInstruction({
+    keys: [
+      { pubkey: fromTokenAccount, isSigner: false, isWritable: true },
+      { pubkey: toTokenAccount, isSigner: false, isWritable: true },
+      { pubkey: owner, isSigner: true, isWritable: false }
+    ],
+    programId: TOKEN_PROGRAM_ID,
+    data
+  })
+}
+
+export async function createTransferTransaction(config: {
+  fromAddress: string
+  toAddress: string
+  amount: bigint
+  tokenMint?: string
+  blockhash: string
+}): Promise<VersionedTransaction> {
+  const fromPubkey = new PublicKey(config.fromAddress)
+  const toPubkey = new PublicKey(config.toAddress)
+
+  let instruction: TransactionInstruction
+
+  if (!config.tokenMint) {
+    // Native SOL transfer
+    instruction = SystemProgram.transfer({
+      fromPubkey,
+      toPubkey,
+      lamports: Number(config.amount)
+    })
+  } else {
+    // Token transfer
+    const tokenMintPubkey = new PublicKey(config.tokenMint)
+    const fromTokenAccount = await getAssociatedTokenAddress(
+      tokenMintPubkey,
+      fromPubkey
+    )
+    const toTokenAccount = await getAssociatedTokenAddress(
+      tokenMintPubkey,
+      toPubkey
+    )
+
+    instruction = createSPLTransferInstruction({
+      fromTokenAccount,
+      toTokenAccount,
+      owner: fromPubkey,
+      amount: BigInt(config.amount)
+    })
   }
 
-  return signature
+  const messageV0 = new TransactionMessage({
+    payerKey: fromPubkey,
+    recentBlockhash: config.blockhash,
+    instructions: [instruction]
+  }).compileToV0Message()
+
+  return new VersionedTransaction(messageV0)
 }
 
-const createTransferTransaction = (config: TransactionConfig): Transaction => {
-  const transaction = new Transaction().add(
-    SystemProgram.transfer({
-      fromPubkey: new PublicKey(config.fromAddress),
-      toPubkey: new PublicKey(config.toAddress),
-      lamports: config.amount
-    })
-  )
-
-  transaction.recentBlockhash = config.blockhash
-  transaction.feePayer = new PublicKey(config.fromAddress)
-
-  return transaction
-}
-
-const handleManualSignAndSend = async (
-  transaction: Transaction,
-  provider: any
-): Promise<string> => {
+export async function handleManualSignAndSend(
+  transaction: VersionedTransaction,
+  provider: SolanaProvider
+): Promise<string> {
   try {
-    const signedTx = await provider.signTransaction(transaction)
-    const connection = new Connection(QUICKNODE_RPC)
-    const rawSignature = await connection.sendRawTransaction(
-      signedTx.serialize(),
-      {
-        skipPreflight: false,
-        maxRetries: 3,
-        preflightCommitment: 'confirmed'
+    if (provider.signAndSendTransaction) {
+      const { signature } = await provider.signAndSendTransaction(transaction)
+      return signature
+    } else {
+      const signedTransaction = await provider.signTransaction(transaction)
+      if (!provider.sendTransaction) {
+        throw new Error('Provider does not support sendTransaction')
       }
-    )
-    return standardizeSignature(rawSignature)
-  } catch (error: any) {
-    if (isUserRejection(error)) {
+      const signature = await provider.sendTransaction(signedTransaction)
+      return signature
+    }
+  } catch (error: unknown) {
+    console.error('Error in handleManualSignAndSend:', error)
+    if (error instanceof Error && error.message?.includes('User rejected')) {
       throw new Error('Transaction was rejected by user')
     }
     throw error
@@ -87,42 +143,32 @@ export const sendSOLTransaction = async (
 ): Promise<string> => {
   try {
     const provider = getSolanaProvider(config.walletName)
-    const transaction = createTransferTransaction(config)
+    const transaction = await createTransferTransaction(config)
 
     const isManualWallet =
       (provider as any).isTrust ||
       (provider as any).isTrustWallet ||
       config.walletName.toLowerCase().includes('trust')
 
-    // For Trust Wallet, always use manual sign and send
     if (isManualWallet) {
-      try {
-        return await handleManualSignAndSend(transaction, provider)
-      } catch (error: any) {
-        if (isUserRejection(error)) {
-          throw new Error('Transaction was rejected by user')
-        }
-        throw error
-      }
+      return await handleManualSignAndSend(transaction, provider)
     }
 
-    // For other wallets, try native signAndSendTransaction first
     if (provider.signAndSendTransaction) {
       try {
-        const { signature } = await provider.signAndSendTransaction(transaction)
+        const { signature }: { signature: string } =
+          await provider.signAndSendTransaction(transaction)
         return signature
-      } catch (error: any) {
+      } catch (error) {
         if (isUserRejection(error)) {
           throw new Error('Transaction was rejected by user')
         }
-        // For other errors, fall back to manual sign and send
         return handleManualSignAndSend(transaction, provider)
       }
     }
 
-    // If no signAndSendTransaction available, use manual method
     return handleManualSignAndSend(transaction, provider)
-  } catch (error: any) {
+  } catch (error) {
     if (isUserRejection(error)) {
       throw new Error('Transaction was rejected by user')
     }
