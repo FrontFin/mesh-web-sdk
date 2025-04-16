@@ -232,12 +232,12 @@ export interface TransferKycRequired extends LinkEventBase {
 
 export interface DoneEvent extends LinkEventBase {
   type: 'done'
-  payload: SessionSummary
+  payload: SessionSymmary
 }
 
 export interface CloseEvent extends LinkEventBase {
   type: 'close'
-  payload: SessionSummary
+  payload: SessionSymmary
 }
 
 export interface WalletMessageSigned extends LinkEventBase {
@@ -259,7 +259,7 @@ export interface VerifyWalletRejected extends LinkEventBase {
   type: 'verifyWalletRejected'
 }
 
-export interface SessionSummary {
+export interface SessionSymmary {
   /**
    *   Current page of application. Possible values:
    * `startPage`
