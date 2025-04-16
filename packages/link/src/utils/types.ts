@@ -1,5 +1,5 @@
 import type { BrokerType } from '@meshconnect/node-api'
-import { SessionSymmary, LinkEventType } from './event-types'
+import { SessionSummary, LinkEventType } from './event-types'
 
 export type EventType =
   | 'brokerageAccountAccessToken'
@@ -147,7 +147,7 @@ export interface LinkOptions {
   /**
    * (Optional) A callback function that is called when the Front iframe is closed.
    */
-  onExit?: (error?: string, summary?: SessionSymmary) => void
+  onExit?: (error?: string, summary?: SessionSummary) => void
 
   /**
    * (Optional) A callback function that is called when a transfer is finished.
