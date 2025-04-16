@@ -123,6 +123,8 @@ export interface SmartContractPayload {
   args: unknown[]
   account: string
   value?: string
+  walletName?: string
+  blockhash?: string
 }
 
 export interface DisconnectPayload {

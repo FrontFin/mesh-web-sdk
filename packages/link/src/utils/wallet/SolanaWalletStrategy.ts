@@ -12,7 +12,8 @@ import {
   disconnectFromSolanaWallet,
   signSolanaMessage,
   sendSOLTransaction,
-  findAvailableSolanaProviders
+  findAvailableSolanaProviders,
+  getSolanaProvider
 } from '../connectors/solana'
 
 export class SolanaWalletStrategy extends BaseWalletStrategy {
@@ -94,17 +95,36 @@ export class SolanaWalletStrategy extends BaseWalletStrategy {
     }
   }
 
-  /**
-   * @note This feature is not yet implemented for Solana
-   * @throws {Error} Always throws with a "not implemented" message
-   */
   async sendSmartContractInteraction(
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    _payload: SmartContractPayload
+    payload: SmartContractPayload
   ): Promise<string> {
-    throw new Error(
-      'NOT_IMPLEMENTED: Solana smart contract interactions are not yet supported'
-    )
+    // Get the sender's address from the connected wallet if not provided
+    const provider = getSolanaProvider(payload.walletName || '')
+    const senderAddress =
+      payload.account || (await provider.publicKey?.toString())
+
+    if (!senderAddress) {
+      throw new Error('Sender account address is required')
+    }
+
+    // Convert the amount to the correct scale based on token decimals
+    const decimals = (payload.args[2] as number) || 6 // USDC has 6 decimals
+    const rawAmount = payload.args[1] as bigint
+    const scaledAmount = rawAmount
+
+    if (!payload.blockhash) {
+      throw new Error('Blockhash is required for Solana transactions')
+    }
+
+    return await sendSOLTransaction({
+      toAddress: payload.args[0] as string,
+      amount: scaledAmount,
+      fromAddress: senderAddress,
+      blockhash: payload.blockhash,
+      walletName: payload.walletName || '',
+      tokenMint: payload.address,
+      tokenDecimals: decimals
+    })
   }
 
   getProviders() {

@@ -6,7 +6,8 @@ jest.mock('../../connectors/solana', () => ({
   disconnectFromSolanaWallet: jest.fn(),
   signSolanaMessage: jest.fn(),
   sendSOLTransaction: jest.fn(),
-  findAvailableSolanaProviders: jest.fn()
+  findAvailableSolanaProviders: jest.fn(),
+  getSolanaProvider: jest.fn()
 }))
 
 describe('SolanaWalletStrategy', () => {
@@ -159,19 +160,63 @@ describe('SolanaWalletStrategy', () => {
 
   describe('sendSmartContractInteraction', () => {
     const mockPayload = {
-      address: 'contract_address',
+      address: 'token_mint_address',
       abi: '[]',
-      functionName: 'test',
-      args: [],
-      account: 'sender_address'
+      functionName: 'transfer',
+      args: ['recipient_address', 1000000n, 6],
+      account: 'sender_address',
+      walletName: 'Phantom',
+      blockhash: 'test_blockhash'
     }
 
-    it('should throw not implemented error', async () => {
-      await expect(
-        strategy.sendSmartContractInteraction(mockPayload)
-      ).rejects.toThrow(
-        'NOT_IMPLEMENTED: Solana smart contract interactions are not yet supported'
+    it('should successfully send token transfer', async () => {
+      const mockTxHash = 'tx_hash'
+      const mockPublicKey = { toString: () => mockPayload.account }
+      ;(solanaConnectors.getSolanaProvider as jest.Mock).mockReturnValue({
+        publicKey: mockPublicKey
+      })
+      ;(solanaConnectors.sendSOLTransaction as jest.Mock).mockResolvedValue(
+        mockTxHash
       )
+
+      const result = await strategy.sendSmartContractInteraction(mockPayload)
+      expect(result).toBe(mockTxHash)
+      expect(solanaConnectors.sendSOLTransaction).toHaveBeenCalledWith({
+        toAddress: mockPayload.args[0],
+        amount: mockPayload.args[1],
+        fromAddress: mockPayload.account,
+        blockhash: mockPayload.blockhash,
+        walletName: mockPayload.walletName,
+        tokenMint: mockPayload.address,
+        tokenDecimals: mockPayload.args[2]
+      })
+    })
+
+    it('should handle missing sender address', async () => {
+      ;(solanaConnectors.getSolanaProvider as jest.Mock).mockReturnValue({
+        publicKey: null
+      })
+
+      await expect(
+        strategy.sendSmartContractInteraction({
+          ...mockPayload,
+          account: ''
+        })
+      ).rejects.toThrow('Sender account address is required')
+    })
+
+    it('should handle missing blockhash', async () => {
+      const mockPublicKey = { toString: () => mockPayload.account }
+      ;(solanaConnectors.getSolanaProvider as jest.Mock).mockReturnValue({
+        publicKey: mockPublicKey
+      })
+
+      await expect(
+        strategy.sendSmartContractInteraction({
+          ...mockPayload,
+          blockhash: ''
+        })
+      ).rejects.toThrow('Blockhash is required for Solana transactions')
     })
   })
 
