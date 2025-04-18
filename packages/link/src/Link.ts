@@ -340,14 +340,11 @@ export const createLink = (options: LinkOptions): Link => {
 
     currentOptions = options
     const linkUrl = window.atob(linkToken)
-    const iframeUrlObject = new URL(linkUrl)
-    if (iframeUrlObject.origin) {
-      possibleOrigins.add(iframeUrlObject.origin)
-    }
-
     window.removeEventListener('message', eventsListener)
     addPopup(linkUrl, currentOptions?.language)
     window.addEventListener('message', eventsListener)
+
+    possibleOrigins.add(window.location.origin)
   }
 
   const closeLink = () => {
