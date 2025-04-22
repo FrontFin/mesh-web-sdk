@@ -44,8 +44,6 @@ function sendMessageToIframe<T extends { type: string }>(message: T) {
     )
     return
   }
-  console.log('linkTokenOrigin', linkTokenOrigin)
-  console.log('message', message)
   try {
     iframe.contentWindow?.postMessage(message, linkTokenOrigin)
   } catch (e) {
