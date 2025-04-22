@@ -38,15 +38,16 @@ function sendMessageToIframe<T extends { type: string }>(message: T) {
     )
     return
   }
-  if (!targetOrigin) {
+  if (!linkTokenOrigin) {
     console.warn(
-      `Mesh SDK: Failed to deliver ${message.type} message to the iframe - no target origin found`
+      `Mesh SDK: Failed to deliver ${message.type} message to the iframe - no link token origin found`
     )
     return
   }
-
+  console.log('linkTokenOrigin', linkTokenOrigin)
+  console.log('message', message)
   try {
-    iframe.contentWindow?.postMessage(message, targetOrigin)
+    iframe.contentWindow?.postMessage(message, linkTokenOrigin)
   } catch (e) {
     console.error(
       `Mesh SDK: Failed to deliver ${message.type} message to the iframe`
