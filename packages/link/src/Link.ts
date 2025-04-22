@@ -23,34 +23,36 @@ import { sdkSpecs } from './utils/sdk-specs'
 import { WalletStrategyFactory, NetworkType } from './utils/wallet'
 
 let currentOptions: LinkOptions | undefined
-const possibleOrigins = new Set<string>([
-  'https://web.meshconnect.com',
-  'https://dev-web.meshconnect.com'
-])
+let targetOrigin: string | undefined
+let linkTokenOrigin: string | undefined
 
 const iframeElement = () => {
   return document.getElementById(iframeId) as HTMLIFrameElement
 }
 
 function sendMessageToIframe<T extends { type: string }>(message: T) {
-  possibleOrigins.forEach(origin => {
-    const iframe = iframeElement()
-    if (!iframe) {
-      console.warn(
-        `Mesh SDK: Failed to deliver ${message.type} message to the iframe - no iframe element found`
-      )
-      return
-    }
+  const iframe = iframeElement()
+  if (!iframe) {
+    console.warn(
+      `Mesh SDK: Failed to deliver ${message.type} message to the iframe - no iframe element found`
+    )
+    return
+  }
+  if (!targetOrigin) {
+    console.warn(
+      `Mesh SDK: Failed to deliver ${message.type} message to the iframe - no target origin found`
+    )
+    return
+  }
 
-    try {
-      iframe.contentWindow?.postMessage(message, origin)
-    } catch (e) {
-      console.error(
-        `Mesh SDK: Failed to deliver ${message.type} message to the iframe`
-      )
-      console.error(e)
-    }
-  })
+  try {
+    iframe.contentWindow?.postMessage(message, targetOrigin)
+  } catch (e) {
+    console.error(
+      `Mesh SDK: Failed to deliver ${message.type} message to the iframe`
+    )
+    console.error(e)
+  }
 }
 
 async function handleLinkEvent(
@@ -311,7 +313,7 @@ async function eventsListener(
     LinkEventType | WalletBrowserEventType | { type: EventType }
   >
 ) {
-  if (!possibleOrigins.has(event.origin)) {
+  if (event.origin !== targetOrigin && event.origin !== linkTokenOrigin) {
     console.warn('Received message from untrusted origin:', event.origin)
   } else if (isWalletBrowserEventTypeKey(event.data.type)) {
     await handleWalletBrowserEvent(
@@ -340,11 +342,12 @@ export const createLink = (options: LinkOptions): Link => {
 
     currentOptions = options
     const linkUrl = window.atob(linkToken)
+    linkTokenOrigin = new URL(linkUrl).origin
     window.removeEventListener('message', eventsListener)
     addPopup(linkUrl, currentOptions?.language)
     window.addEventListener('message', eventsListener)
 
-    possibleOrigins.add(window.location.origin)
+    targetOrigin = window.location.origin
   }
 
   const closeLink = () => {
