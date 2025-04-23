@@ -125,6 +125,7 @@ export interface SmartContractPayload {
   value?: string
   walletName?: string
   blockhash?: string
+  gasLimit?: string
 }
 
 export interface DisconnectPayload {
