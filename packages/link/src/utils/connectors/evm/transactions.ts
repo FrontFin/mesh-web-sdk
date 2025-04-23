@@ -117,7 +117,6 @@ export const sendEVMTokenTransaction = async (
       ? (feeData.gasPrice * BigInt(1000)) / BigInt(100)
       : undefined
     txOptions.gasLimit = gasLimit
-    console.log(txOptions)
     if (value) {
       txOptions.value = value
     }
