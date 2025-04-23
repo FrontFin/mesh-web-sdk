@@ -85,7 +85,8 @@ export const sendEVMTokenTransaction = async (
   functionName: string,
   args: unknown[],
   fromAddress: string,
-  value?: bigint
+  value?: bigint,
+  gasLimit?: bigint
 ): Promise<string | Error> => {
   try {
     const activeRawProvider = getActiveRawProvider()
@@ -113,9 +114,10 @@ export const sendEVMTokenTransaction = async (
     const feeData = await provider.getFeeData()
 
     txOptions.gasPrice = feeData.gasPrice
-      ? (feeData.gasPrice * BigInt(120)) / BigInt(100)
+      ? (feeData.gasPrice * BigInt(1000)) / BigInt(100)
       : undefined
-
+    txOptions.gasLimit = gasLimit
+    console.log(txOptions)
     if (value) {
       txOptions.value = value
     }

@@ -104,7 +104,8 @@ export class EVMWalletStrategy extends BaseWalletStrategy {
         payload.functionName,
         payload.args,
         payload.account,
-        payload.value ? BigInt(payload.value) : undefined
+        payload.value ? BigInt(payload.value) : undefined,
+        payload.gasLimit ? BigInt(payload.gasLimit) : undefined
       )
       if (result instanceof Error) {
         throw result
