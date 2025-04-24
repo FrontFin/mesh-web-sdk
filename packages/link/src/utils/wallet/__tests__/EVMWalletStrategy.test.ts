@@ -197,7 +197,8 @@ describe('EVMWalletStrategy', () => {
         mockPayload.functionName,
         mockPayload.args,
         mockPayload.account,
-        mockPayload.value ? BigInt(mockPayload.value) : undefined
+        mockPayload.value ? BigInt(mockPayload.value) : undefined,
+        undefined
       )
     })
 
