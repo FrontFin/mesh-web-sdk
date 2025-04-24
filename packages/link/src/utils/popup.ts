@@ -1,4 +1,4 @@
-import { Language, LinkStyle } from './types'
+import { LinkStyle } from './types'
 import { getLinkStyle, getNumber } from './style'
 
 const popupId = 'mesh-link-popup'
@@ -99,7 +99,7 @@ export function removePopup(): void {
 
 export function addPopup(
   iframeLink: string,
-  language: Language | undefined
+  language: string | undefined
 ): void {
   removePopup()
 
