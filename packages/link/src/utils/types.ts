@@ -33,10 +33,34 @@ export interface Account {
   isReconnected?: boolean
 }
 
+/**
+ * Integration brand information
+ */
 export interface BrandInfo {
+  /**
+   * Integration logo in base 64 format
+   */
   brokerLogo: string
+  /**
+   * Integration logo URL (obsolete, use `logoLightUrl` instead)
+   */
   brokerLogoUrl?: string
-  brokerPrimaryColor?: string
+  /**
+   * Integration logo URL for light theme
+   */
+  logoLightUrl?: string
+  /**
+   * Integration logo URL for dark theme
+   */
+  logoDarkUrl?: string
+  /**
+   * Integration icon URL for light theme
+   */
+  iconLightUrl?: string
+  /**
+   * Integration icon URL for dark theme
+   */
+  iconDarkUrl?: string
 }
 
 export interface LinkPayload {
@@ -133,8 +157,6 @@ export interface DisconnectPayload {
   walletName?: string
 }
 
-export type Language = 'en' | 'ru'
-
 export interface LinkOptions {
   /**
    * Client ID that can be obtained at https://dashboard.meshconnect.com/company/keys
@@ -177,9 +199,9 @@ export interface LinkOptions {
   transferDestinationTokens?: IntegrationAccessToken[]
 
   /**
-   * Link UI language. Supported: 'en', 'ru'.
+   * Link UI language. Supported: 'en', 'ru'. Can be set as 'en-US', 'ru-RU', etc.
    */
-  language?: Language
+  language?: string
 }
 
 export interface LinkStyle {
