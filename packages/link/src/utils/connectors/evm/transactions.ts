@@ -21,7 +21,10 @@ const isUserRejection = (error: any): boolean => {
 export const sendEVMTransaction = async (
   toAddress: string,
   amount: bigint,
-  fromAddress: string
+  fromAddress: string,
+  gasLimit?: number | null,
+  maxFeePerGas?: number | null,
+  maxPriorityFeePerGas?: number | null
 ): Promise<string | Error> => {
   try {
     const activeRawProvider = getActiveRawProvider()
@@ -48,7 +51,14 @@ export const sendEVMTransaction = async (
     try {
       const tx = await signer.sendTransaction({
         to: toAddress,
-        value: amount
+        value: amount,
+        gasLimit: gasLimit ? BigInt(Math.floor(gasLimit)) : undefined,
+        maxFeePerGas: maxFeePerGas
+          ? BigInt(Math.floor(maxFeePerGas))
+          : undefined,
+        maxPriorityFeePerGas: maxPriorityFeePerGas
+          ? BigInt(Math.floor(maxPriorityFeePerGas))
+          : undefined
       })
 
       const receipt = await tx.wait()
@@ -84,9 +94,7 @@ export const sendEVMTokenTransaction = async (
   abi: ethers.InterfaceAbi,
   functionName: string,
   args: unknown[],
-  fromAddress: string,
-  value?: bigint,
-  gasLimit?: bigint
+  fromAddress: string
 ): Promise<string | Error> => {
   try {
     const activeRawProvider = getActiveRawProvider()
@@ -111,19 +119,21 @@ export const sendEVMTokenTransaction = async (
     const contract = new ethers.Contract(contractAddress, abi, signer)
     const txOptions: ethers.Overrides = {}
 
-    const feeData = await provider.getFeeData()
+    const gasLimit = toSafeNumber(args[2], 'gasLimit')
+    const maxFeePerGas = toSafeNumber(args[3], 'maxFeePerGas')
+    const maxPriorityFeePerGas = toSafeNumber(args[4], 'maxPriorityFeePerGas')
 
-    txOptions.gasPrice = feeData.gasPrice
-      ? (feeData.gasPrice * BigInt(1000)) / BigInt(100)
+    txOptions.gasLimit = gasLimit ? BigInt(Math.floor(gasLimit)) : undefined
+    txOptions.maxFeePerGas = maxFeePerGas
+      ? BigInt(Math.floor(maxFeePerGas))
       : undefined
-    txOptions.gasLimit = gasLimit
-    if (value) {
-      txOptions.value = value
-    }
+    txOptions.maxPriorityFeePerGas = maxPriorityFeePerGas
+      ? BigInt(Math.floor(maxPriorityFeePerGas))
+      : undefined
 
     try {
       // Send the transaction
-      const tx = await contract[functionName](...args, txOptions)
+      const tx = await contract[functionName](args[0], args[1], txOptions)
 
       // Wait for transaction confirmation
       const receipt = await tx.wait()
@@ -149,4 +159,13 @@ export const sendEVMTokenTransaction = async (
       ? error
       : new Error('Failed to send token transaction')
   }
+}
+
+function toSafeNumber(value: unknown, name: string): number {
+  if (typeof value !== 'number' || Number.isNaN(value)) {
+    throw new TypeError(
+      `Invalid ${name}: expected a number, got ${typeof value} (${value})`
+    )
+  }
+  return value
 }

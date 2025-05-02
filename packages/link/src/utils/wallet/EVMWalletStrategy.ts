@@ -85,7 +85,10 @@ export class EVMWalletStrategy extends BaseWalletStrategy {
       const result = await sendEVMTransaction(
         payload.toAddress,
         BigInt(payload.amount * Math.pow(10, payload.decimalPlaces)),
-        payload.account
+        payload.account,
+        payload.gasLimit,
+        payload.maxFeePerGas,
+        payload.maxPriorityFeePerGas
       )
       if (result instanceof Error) {
         throw result
@@ -103,9 +106,7 @@ export class EVMWalletStrategy extends BaseWalletStrategy {
         JSON.parse(payload.abi),
         payload.functionName,
         payload.args,
-        payload.account,
-        payload.value ? BigInt(payload.value) : undefined,
-        payload.gasLimit ? BigInt(payload.gasLimit) : undefined
+        payload.account
       )
       if (result instanceof Error) {
         throw result
