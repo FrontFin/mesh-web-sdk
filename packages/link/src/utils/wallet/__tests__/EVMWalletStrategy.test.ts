@@ -143,7 +143,10 @@ describe('EVMWalletStrategy', () => {
       account: '0x123',
       decimalPlaces: 18,
       chainId: 1,
-      network: 'ethereum'
+      network: 'ethereum',
+      gasLimit: 21000,
+      maxFeePerGas: 50000000000,
+      maxPriorityFeePerGas: 1500000000
     }
 
     it('should successfully send native transfer', async () => {
@@ -157,7 +160,10 @@ describe('EVMWalletStrategy', () => {
       expect(evmConnectors.sendEVMTransaction).toHaveBeenCalledWith(
         mockPayload.toAddress,
         BigInt(mockPayload.amount * Math.pow(10, mockPayload.decimalPlaces)),
-        mockPayload.account
+        mockPayload.account,
+        mockPayload.gasLimit,
+        mockPayload.maxFeePerGas,
+        mockPayload.maxPriorityFeePerGas
       )
     })
 
@@ -179,8 +185,7 @@ describe('EVMWalletStrategy', () => {
       abi: '["function transfer(address to, uint256 amount)"]',
       functionName: 'transfer',
       args: ['0x456', '1000000000000000000'],
-      account: '0x123',
-      value: '0'
+      account: '0x123'
     }
 
     it('should successfully send contract interaction', async () => {
@@ -196,9 +201,7 @@ describe('EVMWalletStrategy', () => {
         JSON.parse(mockPayload.abi),
         mockPayload.functionName,
         mockPayload.args,
-        mockPayload.account,
-        mockPayload.value ? BigInt(mockPayload.value) : undefined,
-        undefined
+        mockPayload.account
       )
     })
 
