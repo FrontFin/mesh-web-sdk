@@ -119,9 +119,16 @@ export const sendEVMTokenTransaction = async (
     const contract = new ethers.Contract(contractAddress, abi, signer)
     const txOptions: ethers.Overrides = {}
 
-    const gasLimit = toSafeNumber(args[2], 'gasLimit')
-    const maxFeePerGas = toSafeNumber(args[3], 'maxFeePerGas')
-    const maxPriorityFeePerGas = toSafeNumber(args[4], 'maxPriorityFeePerGas')
+    const gasLimit =
+      args?.[2] !== undefined ? toSafeNumber(args[2], 'gasLimit') : undefined
+    const maxFeePerGas =
+      args?.[3] !== undefined
+        ? toSafeNumber(args[3], 'maxFeePerGas')
+        : undefined
+    const maxPriorityFeePerGas =
+      args?.[4] !== undefined
+        ? toSafeNumber(args[4], 'maxPriorityFeePerGas')
+        : undefined
 
     txOptions.gasLimit = gasLimit ? BigInt(Math.floor(gasLimit)) : undefined
     txOptions.maxFeePerGas = maxFeePerGas
