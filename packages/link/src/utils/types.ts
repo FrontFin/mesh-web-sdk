@@ -138,6 +138,9 @@ export interface TransferPayload {
   network: string
   blockhash?: string
   walletName?: string
+  gasLimit?: number | null
+  maxFeePerGas?: number | null
+  maxPriorityFeePerGas?: number | null
 }
 
 export interface SmartContractPayload {
@@ -149,7 +152,9 @@ export interface SmartContractPayload {
   value?: string
   walletName?: string
   blockhash?: string
-  gasLimit?: string
+  gasLimit?: number | null
+  maxFeePerGas?: number | null
+  maxPriorityFeePerGas?: number | null
 }
 
 export interface DisconnectPayload {
