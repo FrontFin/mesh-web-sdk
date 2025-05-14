@@ -36,12 +36,3 @@ jobs:
         run: yarn test:cov
       - name: Yarn build
         run: yarn build
-      # - name: Trivy Vulnerability Scan
-      #   uses: ./.github/actions/vuln-scan
-      #   with:
-      #     src-dir: '.'
-      #- name: SonarQube Scan
-      # uses: sonarsource/sonarqube-scan-action@master
-      # env:
-      #  SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-      # SONAR_HOST_URL: ${{ secrets.SONAR_HOST_URL }}
