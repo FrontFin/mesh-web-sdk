@@ -12,10 +12,6 @@ jobs:
           node-version: 18.x
       - name: Install dependencies
         run: yarn
-      # - name: Trivy Vulnerability Scan
-      #   uses: ./.github/actions/vuln-scan
-      #   with:
-      #     src-dir: '.'
       - name: Checking for type errors
         run: yarn typecheck
       - name: Checking for linting errors
