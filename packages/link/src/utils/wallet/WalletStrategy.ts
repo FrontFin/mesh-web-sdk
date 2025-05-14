@@ -4,7 +4,8 @@ import {
   ChainSwitchPayload,
   TransferPayload,
   SmartContractPayload,
-  DisconnectPayload
+  DisconnectPayload,
+  TransactionBatchPayload
 } from '../types'
 
 export interface WalletStrategy {
@@ -21,6 +22,7 @@ export interface WalletStrategy {
   }>
   sendNativeTransfer(payload: TransferPayload): Promise<string>
   sendSmartContractInteraction(payload: SmartContractPayload): Promise<string>
+  sendTransactionBatch(payload: TransactionBatchPayload): Promise<string>
   getProviders(): { id: string; type: string; name?: string; icon?: string }[]
 }
 
@@ -39,6 +41,9 @@ export abstract class BaseWalletStrategy implements WalletStrategy {
   abstract sendNativeTransfer(payload: TransferPayload): Promise<string>
   abstract sendSmartContractInteraction(
     payload: SmartContractPayload
+  ): Promise<string>
+  abstract sendTransactionBatch(
+    payload: TransactionBatchPayload
   ): Promise<string>
   abstract getProviders(): {
     id: string

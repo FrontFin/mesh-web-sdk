@@ -157,6 +157,18 @@ export interface SmartContractPayload {
   maxPriorityFeePerGas?: number | null
 }
 
+export interface TransactionBatchPayload {
+  version: string
+  from: string
+  chainId: string
+  atomicRequired: boolean
+  calls: {
+    to: string
+    value: string
+    data?: string
+  }[]
+}
+
 export interface DisconnectPayload {
   networkType?: string
   walletName?: string

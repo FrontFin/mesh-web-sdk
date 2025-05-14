@@ -127,6 +127,10 @@ export class SolanaWalletStrategy extends BaseWalletStrategy {
     })
   }
 
+  sendTransactionBatch(): Promise<string> {
+    throw new Error('Method not implemented.')
+  }
+
   getProviders() {
     const solanaProviderMap = findAvailableSolanaProviders()
     return Object.keys(solanaProviderMap).map(id => ({

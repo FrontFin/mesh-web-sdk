@@ -11,7 +11,8 @@ import {
   ChainSwitchPayload,
   TransferPayload,
   SmartContractPayload,
-  DisconnectPayload
+  DisconnectPayload,
+  TransactionBatchPayload
 } from './utils/types'
 import { addPopup, iframeId, removePopup } from './utils/popup'
 import { LinkEventType, isLinkEventTypeKey } from './utils/event-types'
@@ -274,6 +275,28 @@ async function handleWalletBrowserEvent(
       } catch (error) {
         const errorType = getResponseType(event.data.type)
         handleErrorAndSendMessage(error as Error, errorType)
+      }
+      break
+    }
+    case 'walletBrowserTransactionBatchRequest': {
+      const payload = event.data.payload as TransactionBatchPayload
+      const responseType = 'SDKtransactionBatchCompleted'
+
+      try {
+        const networkType = (
+          payload.from.startsWith('0x') ? 'evm' : 'solana'
+        ) as NetworkType
+        const strategy = walletFactory.getStrategy(networkType)
+        const result = await strategy.sendTransactionBatch(payload)
+
+        sendMessageToIframe({
+          type: responseType,
+          payload: {
+            txHash: result
+          }
+        })
+      } catch (error) {
+        handleErrorAndSendMessage(error as Error, responseType)
       }
       break
     }

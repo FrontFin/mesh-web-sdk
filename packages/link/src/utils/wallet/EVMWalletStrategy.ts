@@ -5,7 +5,8 @@ import {
   ChainSwitchPayload,
   TransferPayload,
   SmartContractPayload,
-  DisconnectPayload
+  DisconnectPayload,
+  TransactionBatchPayload
 } from '../types'
 import {
   connectToEVMWallet,
@@ -14,7 +15,8 @@ import {
   sendEVMTransaction,
   sendEVMTokenTransaction,
   switchEVMChain,
-  findAvailableProviders
+  findAvailableProviders,
+  sendEVMTransactionBatch
 } from '../connectors/evm'
 
 export class EVMWalletStrategy extends BaseWalletStrategy {
@@ -108,6 +110,18 @@ export class EVMWalletStrategy extends BaseWalletStrategy {
         payload.args,
         payload.account
       )
+      if (result instanceof Error) {
+        throw result
+      }
+      return result
+    } catch (error) {
+      throw this.handleError(error, 'send EVM smart contract interaction')
+    }
+  }
+
+  async sendTransactionBatch(payload: TransactionBatchPayload) {
+    try {
+      const result = await sendEVMTransactionBatch(payload)
       if (result instanceof Error) {
         throw result
       }
