@@ -176,3 +176,80 @@ function toSafeNumber(value: unknown, name: string): number {
   }
   return value
 }
+
+/**
+ * Sends a batch of EVM transactions
+ */
+export const sendEVMTransactionBatch = async (params: {
+  version: string
+  from: string
+  chainId: string
+  atomicRequired: boolean
+  calls: {
+    to: string
+    value: string
+    data?: string
+  }[]
+}): Promise<string | Error> => {
+  try {
+    const activeRawProvider = getActiveRawProvider()
+    if (!activeRawProvider) {
+      throw new Error('No active EVM provider')
+    }
+
+    const provider = new ethers.BrowserProvider(activeRawProvider)
+
+    try {
+      // Send the transaction batch
+      const response: { id: `0x${string}` } = await provider.send(
+        'wallet_sendCalls',
+        [params]
+      )
+
+      // Wait for transaction confirmation
+      let result: {
+        chainId: `0x${string}`
+        id: `0x${string}`
+        status: number
+        atomic: boolean
+        receipts: [
+          {
+            transactionHash: `0x${string}`
+          }
+        ]
+      }
+      do {
+        result = await provider.send('wallet_getCallsStatus', [response.id])
+
+        // wait 1 second if receipt is not yet available
+        if (result.status == 100) {
+          await new Promise(resolve => setTimeout(resolve, 1000))
+        }
+      } while (result.status == 100)
+
+      return result?.status != 200
+        ? new Error('Failed to send batched transactions')
+        : result.receipts.find(x => x)?.transactionHash ??
+            new Error('Failed to get batched transactions receipt')
+    } catch (txError: any) {
+      if (isUserRejection(txError)) {
+        return new Error('Transaction was rejected by user')
+      }
+      throw txError
+    }
+  } catch (error: any) {
+    console.error('Token transaction error:', error)
+
+    if (isUserRejection(error)) {
+      return new Error('Transaction was rejected by user')
+    }
+
+    if (error.code === 'NETWORK_ERROR') {
+      return new Error('Network changed during transaction. Please try again.')
+    }
+
+    return error instanceof Error
+      ? error
+      : new Error('Failed to send token transaction')
+  }
+}

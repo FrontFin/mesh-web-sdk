@@ -8,6 +8,7 @@ export type WalletBrowserEventType =
   | WalletBrowserNativeSmartDeposit
   | WalletBrowserNonNativeSmartDeposit
   | WalletBrowserDisconnect
+  | WalletBrowserTransactionBatch
 
 const WALLET_BROWSER_EVENT_TYPE_KEYS = [
   'walletBrowserInjectedWalletSelected',
@@ -18,7 +19,8 @@ const WALLET_BROWSER_EVENT_TYPE_KEYS = [
   'walletBrowserNonNativeTransferRequest',
   'walletBrowserNativeSmartDeposit',
   'walletBrowserNonNativeSmartDeposit',
-  'walletBrowserDisconnect'
+  'walletBrowserDisconnect',
+  'walletBrowserTransactionBatchRequest'
 ] as const
 
 export type NetworkType =
@@ -138,5 +140,20 @@ export interface WalletBrowserDisconnect extends WalletBrowserEventBase {
   payload?: {
     networkType?: NetworkType
     walletName?: string
+  }
+}
+
+export interface WalletBrowserTransactionBatch extends WalletBrowserEventBase {
+  type: 'walletBrowserTransactionBatchRequest'
+  payload: {
+    version: string
+    from: string
+    chainId: string
+    atomicRequired: boolean
+    calls: {
+      to: string
+      value: string
+      data?: string
+    }[]
   }
 }
