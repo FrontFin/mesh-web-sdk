@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from 'react'
 import {
   createLink,
+  LinkOptions,
   LinkPayload,
   TransferFinishedPayload
 } from '@meshconnect/web-link-sdk'
@@ -13,23 +14,58 @@ export const App: React.FC = () => {
     useState<TransferFinishedPayload | null>(null)
   const [directLinkToken, setDirectLinkToken] = useState('')
 
+  const prepareLink = useCallback(
+    (linkOptions?: Partial<LinkOptions>) => {
+      if (!directLinkToken) {
+        setError('Please enter a link token')
+        return
+      }
+
+      setPayload(null)
+      setTransferFinishedData(null)
+      setError(null)
+
+      const meshLink = createLink({
+        clientId: 'directLinkToken',
+        language: 'en',
+        onIntegrationConnected: payload => {
+          setPayload(payload)
+          console.info('[MESH CONNECTED]', payload)
+        },
+        onExit: (error, summary) => {
+          if (error) {
+            console.error(`[MESH ERROR] ${error}`)
+          }
+          if (summary) {
+            console.log('Summary', summary)
+          }
+          setError(error || null)
+        },
+        onTransferFinished: transferData => {
+          console.info('[MESH TRANSFER FINISHED]', transferData)
+          setTransferFinishedData(transferData)
+        },
+        onEvent: ev => {
+          console.info('[MESH Event]', ev)
+          if (ev.type === 'transferExecuted' && ev.payload) {
+            setTransferFinishedData(ev.payload as TransferFinishedPayload)
+          }
+        },
+        ...linkOptions
+      })
+
+      return meshLink
+    },
+    [directLinkToken]
+  )
+
   const handleDirectTokenLaunch = useCallback(() => {
-    if (!directLinkToken) {
-      setError('Please enter a link token')
-      return
-    }
+    const meshLink = prepareLink()
+    meshLink?.openLink(directLinkToken)
+  }, [prepareLink, directLinkToken])
 
-    setPayload(null)
-    setTransferFinishedData(null)
-    setError(null)
-
-    const meshLink = createLink({
-      clientId: 'directLinkToken',
-      language: 'en',
-      onIntegrationConnected: payload => {
-        setPayload(payload)
-        console.info('[MESH CONNECTED]', payload)
-      },
+  const handleCustomIframeLaunch = useCallback(() => {
+    const meshLink = prepareLink({
       onExit: (error, summary) => {
         if (error) {
           console.error(`[MESH ERROR] ${error}`)
@@ -38,21 +74,17 @@ export const App: React.FC = () => {
           console.log('Summary', summary)
         }
         setError(error || null)
-      },
-      onTransferFinished: transferData => {
-        console.info('[MESH TRANSFER FINISHED]', transferData)
-        setTransferFinishedData(transferData)
-      },
-      onEvent: ev => {
-        console.info('[MESH Event]', ev)
-        if (ev.type === 'transferExecuted' && ev.payload) {
-          setTransferFinishedData(ev.payload as TransferFinishedPayload)
+
+        const customIframe = document.getElementById(
+          'custom-iframe'
+        ) as HTMLIFrameElement
+        if (customIframe) {
+          customIframe.src = ''
         }
       }
     })
-
-    meshLink.openLink(directLinkToken)
-  }, [directLinkToken])
+    meshLink?.openLink(directLinkToken, 'custom-iframe')
+  }, [prepareLink, directLinkToken])
 
   return (
     <div
@@ -75,6 +107,13 @@ export const App: React.FC = () => {
         />
         <Button onClick={handleDirectTokenLaunch}>
           Launch with Link Token
+        </Button>
+
+        <Button
+          onClick={handleCustomIframeLaunch}
+          style={{ marginInlineStart: '10px' }}
+        >
+          Launch with Link Token in custom frame
         </Button>
       </Section>
 
@@ -146,6 +185,12 @@ export const App: React.FC = () => {
           </div>
         </Section>
       )}
+
+      <iframe
+        id="custom-iframe"
+        title="Custom Iframe"
+        style={{ width: '400px', height: '600px' }}
+      ></iframe>
     </div>
   )
 }

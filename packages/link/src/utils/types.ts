@@ -10,8 +10,10 @@ export type EventType =
 export interface Link {
   /**
    * A function that takes linkToken parameter from `/api/v1/linktoken` endpoint as an input, and opens the Link UI popup
+   * @param linkToken - Base64 encoded link token from the `/api/v1/linktoken` endpoint
+   * @param customIframeId - Optional custom ID for the existing iframe element. If not provided, a new iframe element will be created
    */
-  openLink: (linkToken: string) => Promise<void>
+  openLink: (linkToken: string, customIframeId?: string) => void
   /**
    * A function to close Link UI popup
    */

@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { HTMLAttributes, InputHTMLAttributes } from 'react'
 
 // Theme object
 export const theme = {
@@ -21,7 +21,12 @@ export const theme = {
   transition: 'all 0.3s ease'
 }
 
-export const Section = ({ children, title, ...props }: any) => (
+export const Section = ({
+  children,
+  title,
+  style,
+  ...props
+}: HTMLAttributes<HTMLElement>) => (
   <section
     style={{
       backgroundColor: theme.colors.white,
@@ -29,8 +34,9 @@ export const Section = ({ children, title, ...props }: any) => (
       borderRadius: theme.borderRadius,
       boxShadow: theme.boxShadow,
       marginBottom: theme.spacing.lg,
-      ...props?.style
+      ...style
     }}
+    {...props}
   >
     {title && (
       <h2 style={{ color: theme.colors.text, marginBottom: theme.spacing.md }}>
@@ -41,7 +47,11 @@ export const Section = ({ children, title, ...props }: any) => (
   </section>
 )
 
-export const Button = ({ children, ...props }: any) => (
+export const Button = ({
+  children,
+  style,
+  ...props
+}: HTMLAttributes<HTMLElement>) => (
   <button
     {...props}
     style={{
@@ -53,17 +63,18 @@ export const Button = ({ children, ...props }: any) => (
       cursor: 'pointer',
       transition: theme.transition,
       fontWeight: 500,
-      ':hover': {
-        backgroundColor: '#2980b9'
-      },
-      ...props?.style
+      ...style
     }}
+    {...props}
   >
     {children}
   </button>
 )
 
-export const Input = ({ label, ...props }: any) => (
+export const Input = ({
+  label,
+  ...props
+}: InputHTMLAttributes<HTMLInputElement> & { label: string }) => (
   <div style={{ marginBottom: theme.spacing.sm }}>
     {label && (
       <label style={{ display: 'block', marginBottom: '5px', fontWeight: 500 }}>
@@ -78,10 +89,6 @@ export const Input = ({ label, ...props }: any) => (
         borderRadius: theme.borderRadius,
         border: `1px solid ${theme.colors.border}`,
         transition: theme.transition,
-        ':focus': {
-          borderColor: theme.colors.primary,
-          outline: 'none'
-        },
         ...props?.style
       }}
     />
