@@ -356,7 +356,7 @@ function handleErrorAndSendMessage(error: Error, messageType: string) {
 }
 
 export const createLink = (options: LinkOptions): Link => {
-  const openLink = async (linkToken: string) => {
+  const openLink = async (linkToken: string, iframeId?:string) => {
     if (!linkToken) {
       options?.onExit?.('Invalid link token!')
       return
@@ -366,7 +366,22 @@ export const createLink = (options: LinkOptions): Link => {
     const linkUrl = window.atob(linkToken)
     linkTokenOrigin = new URL(linkUrl).origin
     window.removeEventListener('message', eventsListener)
-    addPopup(linkUrl, currentOptions?.language)
+    if(iframeId)
+    {
+      const iframe = document.getElementById(iframeId) as HTMLIFrameElement
+      if (iframe) {
+        iframe.allow = 'clipboard-read *; clipboard-write *'
+        iframe.src = `${linkUrl}${linkUrl.includes('?') ? '&' : '?'}lng=${
+          currentOptions?.language || 'en'
+        }`
+      } else {
+        console.warn(`Mesh SDK: No iframe found with id ${iframeId}`)
+      }
+    } else
+    {
+      addPopup(linkUrl, currentOptions?.language)
+    }
+
     window.addEventListener('message', eventsListener)
 
     targetOrigin = window.location.origin
