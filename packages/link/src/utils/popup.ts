@@ -97,10 +97,7 @@ export function removePopup(): void {
   existingStyles?.parentElement?.removeChild(existingStyles)
 }
 
-export function addPopup(
-  iframeLink: string,
-  language: string | undefined
-): void {
+export function addPopup(iframeLink: string): void {
   removePopup()
 
   const styleElement = document.createElement('style')
@@ -108,10 +105,6 @@ export function addPopup(
   const style = getLinkStyle(iframeLink)
   styleElement.textContent = getStylesContent(style)
   window.document.head.appendChild(styleElement)
-
-  iframeLink = `${iframeLink}${iframeLink.includes('?') ? '&' : '?'}lng=${
-    language || 'en'
-  }`
 
   const popupRootElement = document.createElement('div')
   popupRootElement.id = popupId

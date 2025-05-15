@@ -26,9 +26,10 @@ import { WalletStrategyFactory, NetworkType } from './utils/wallet'
 let currentOptions: LinkOptions | undefined
 let targetOrigin: string | undefined
 let linkTokenOrigin: string | undefined
+let currentIframeId = iframeId
 
 const iframeElement = () => {
-  return document.getElementById(iframeId) as HTMLIFrameElement
+  return document.getElementById(currentIframeId) as HTMLIFrameElement
 }
 
 function sendMessageToIframe<T extends { type: string }>(message: T) {
@@ -356,30 +357,31 @@ function handleErrorAndSendMessage(error: Error, messageType: string) {
 }
 
 export const createLink = (options: LinkOptions): Link => {
-  const openLink = async (linkToken: string, iframeId?:string) => {
+  const openLink = (linkToken: string, customIframeId?: string) => {
     if (!linkToken) {
       options?.onExit?.('Invalid link token!')
       return
     }
 
     currentOptions = options
-    const linkUrl = window.atob(linkToken)
+    let linkUrl = window.atob(linkToken)
+    linkUrl = addLanguage(linkUrl, currentOptions?.language)
     linkTokenOrigin = new URL(linkUrl).origin
     window.removeEventListener('message', eventsListener)
-    if(iframeId)
-    {
-      const iframe = document.getElementById(iframeId) as HTMLIFrameElement
+    if (customIframeId) {
+      const iframe = document.getElementById(
+        customIframeId
+      ) as HTMLIFrameElement
       if (iframe) {
         iframe.allow = 'clipboard-read *; clipboard-write *'
-        iframe.src = `${linkUrl}${linkUrl.includes('?') ? '&' : '?'}lng=${
-          currentOptions?.language || 'en'
-        }`
+        iframe.src = linkUrl
+        currentIframeId = customIframeId
       } else {
-        console.warn(`Mesh SDK: No iframe found with id ${iframeId}`)
+        console.warn(`Mesh SDK: No iframe found with id ${customIframeId}`)
       }
-    } else
-    {
-      addPopup(linkUrl, currentOptions?.language)
+    } else {
+      currentIframeId = iframeId
+      addPopup(linkUrl)
     }
 
     window.addEventListener('message', eventsListener)
@@ -397,4 +399,8 @@ export const createLink = (options: LinkOptions): Link => {
     openLink: openLink,
     closeLink: closeLink
   }
+}
+
+function addLanguage(linkUrl: string, language: string | undefined) {
+  return `${linkUrl}${linkUrl.includes('?') ? '&' : '?'}lng=${language || 'en'}`
 }

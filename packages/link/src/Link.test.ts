@@ -21,6 +21,10 @@ const BASE64_ENCODED_URL = Buffer.from('http://localhost/1').toString('base64')
 describe('createLink tests', () => {
   window.open = jest.fn()
 
+  beforeEach(() => {
+    document.getElementsByTagName('html')[0].innerHTML = ''
+  })
+
   test('createLink when invalid link provided should not open popup', () => {
     const exitFunction = jest.fn<void, [string | undefined]>()
     const frontConnection = createLink({
@@ -31,7 +35,7 @@ describe('createLink tests', () => {
 
     frontConnection.openLink('')
 
-    expect(exitFunction).toBeCalledWith('Invalid link token!')
+    expect(exitFunction).toHaveBeenCalledWith('Invalid link token!')
     const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeFalsy()
   })
@@ -51,6 +55,27 @@ describe('createLink tests', () => {
     )
   })
 
+  test('createLink when valid link provided should open popup with custom iframe id', () => {
+    const customIframeId = 'custom-iframe-id'
+    const customIframeElement = document.createElement('iframe')
+    customIframeElement.id = customIframeId
+    document.body.appendChild(customIframeElement)
+
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      language: 'en'
+    })
+
+    frontConnection.openLink(BASE64_ENCODED_URL, customIframeId)
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
+    expect(iframeElement).toBeFalsy()
+
+    expect(customIframeElement.attributes.getNamedItem('src')?.nodeValue).toBe(
+      'http://localhost/1?lng=en'
+    )
+  })
+
   test('createLink closePopup should close popup', () => {
     const exitFunction = jest.fn<void, [string | undefined]>()
     const frontConnection = createLink({
@@ -65,7 +90,7 @@ describe('createLink tests', () => {
     const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeFalsy()
 
-    expect(exitFunction).toBeCalled()
+    expect(exitFunction).toHaveBeenCalled()
   })
 
   test.each(['close', 'done'] as const)(
@@ -96,7 +121,7 @@ describe('createLink tests', () => {
       const iframeElement = document.getElementById('mesh-link-popup__iframe')
       expect(iframeElement).toBeFalsy()
 
-      expect(exitFunction).toBeCalledWith('some msg', payload)
+      expect(exitFunction).toHaveBeenCalledWith('some msg', payload)
     }
   )
 
@@ -127,11 +152,13 @@ describe('createLink tests', () => {
       })
     )
 
-    expect(onEventHandler).toBeCalledWith({
+    expect(onEventHandler).toHaveBeenCalledWith({
       type: 'integrationConnected',
       payload: { accessToken: payload }
     })
-    expect(onBrokerConnectedHandler).toBeCalledWith({ accessToken: payload })
+    expect(onBrokerConnectedHandler).toHaveBeenCalledWith({
+      accessToken: payload
+    })
   })
 
   test('createLink "delayedAuthentication" event should send dalayed tokens', () => {
@@ -161,11 +188,13 @@ describe('createLink tests', () => {
       })
     )
 
-    expect(onEventHandler).toBeCalledWith({
+    expect(onEventHandler).toHaveBeenCalledWith({
       type: 'integrationConnected',
       payload: { delayedAuth: payload }
     })
-    expect(onBrokerConnectedHandler).toBeCalledWith({ delayedAuth: payload })
+    expect(onBrokerConnectedHandler).toHaveBeenCalledWith({
+      delayedAuth: payload
+    })
   })
 
   test('createLink "transferFinished" event should send transfer payload', () => {
@@ -204,11 +233,11 @@ describe('createLink tests', () => {
       })
     )
 
-    expect(onEventHandler).toBeCalledWith({
+    expect(onEventHandler).toHaveBeenCalledWith({
       type: 'transferCompleted',
       payload: payload
     })
-    expect(onTransferFinishedHandler).toBeCalledWith(payload)
+    expect(onTransferFinishedHandler).toHaveBeenCalledWith(payload)
   })
 
   test('createLink "loaded" event should trigger the passing for tokens', () => {
@@ -262,7 +291,7 @@ describe('createLink tests', () => {
       // eslint-disable-next-line @typescript-eslint/no-var-requires
       require('fs').readFileSync('package.json', 'utf8')
     )
-    expect(postMessageSpy).toBeCalledWith(
+    expect(postMessageSpy).toHaveBeenCalledWith(
       {
         type: 'meshSDKSpecs',
         payload: {
@@ -274,12 +303,12 @@ describe('createLink tests', () => {
       'http://localhost'
     )
 
-    expect(postMessageSpy).toBeCalledWith(
+    expect(postMessageSpy).toHaveBeenCalledWith(
       { type: 'frontAccessTokens', payload: tokens },
       'http://localhost'
     )
 
-    expect(postMessageSpy).toBeCalledWith(
+    expect(postMessageSpy).toHaveBeenCalledWith(
       { type: 'frontTransferDestinationTokens', payload: destinationTokens },
       'http://localhost'
     )
@@ -304,7 +333,7 @@ describe('createLink tests', () => {
       })
     )
 
-    expect(onEventHandler).toBeCalled()
+    expect(onEventHandler).toHaveBeenCalled()
   })
 
   test('createLink unknown event should not send any events', () => {
@@ -326,7 +355,7 @@ describe('createLink tests', () => {
       })
     )
 
-    expect(onEventHandler).not.toBeCalled()
+    expect(onEventHandler).not.toHaveBeenCalled()
   })
 
   test('createLink "brokerageAccountAccessToken" event should send tokens - used with openLink function', () => {
@@ -358,11 +387,13 @@ describe('createLink tests', () => {
       })
     )
 
-    expect(onEventHandler).toBeCalledWith({
+    expect(onEventHandler).toHaveBeenCalledWith({
       type: 'integrationConnected',
       payload: { accessToken: payload }
     })
-    expect(onBrokerConnectedHandler).toBeCalledWith({ accessToken: payload })
+    expect(onBrokerConnectedHandler).toHaveBeenCalledWith({
+      accessToken: payload
+    })
   })
 
   test('createLink closeLink should close popup', () => {
@@ -381,6 +412,6 @@ describe('createLink tests', () => {
     const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeFalsy()
 
-    expect(exitFunction).toBeCalled()
+    expect(exitFunction).toHaveBeenCalled()
   })
 })
