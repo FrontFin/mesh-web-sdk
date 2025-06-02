@@ -402,5 +402,12 @@ export const createLink = (options: LinkOptions): Link => {
 }
 
 function addLanguage(linkUrl: string, language: string | undefined) {
+  if (language === 'system') {
+    language =
+      typeof navigator !== 'undefined' && navigator.language
+        ? encodeURIComponent(navigator.language)
+        : 'en'
+  }
+
   return `${linkUrl}${linkUrl.includes('?') ? '&' : '?'}lng=${language || 'en'}`
 }
