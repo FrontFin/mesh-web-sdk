@@ -30,6 +30,12 @@ export type LinkEventType =
   | VerifyWalletRejected
   | VerifyDonePage
   | SDKinjectedWalletProviders
+  | LegalTermsViewed
+  | SeeWhatHappenedClicked
+  | FundingOptionsUpdated
+  | FundingOptionsViewed
+  | GasIncreaseWarning
+  | ExecuteFundingStep
 
 const LINK_EVENT_TYPE_KEYS = [
   'integrationConnected',
@@ -64,7 +70,13 @@ const LINK_EVENT_TYPE_KEYS = [
   'transferDeclined',
   'done',
   'close',
-  'SDKinjectedWalletProviders'
+  'SDKinjectedWalletProviders',
+  'legalTermsViewed',
+  'seeWhatHappenedClicked',
+  'executeFundingStep',
+  'fundingOptionsUpdated',
+  'fundingOptionsViewed',
+  'gasIncreaseWarning'
 ] as const
 
 export type LinkEventTypeKeys = (typeof LINK_EVENT_TYPE_KEYS)[number]
@@ -306,4 +318,33 @@ export interface SDKinjectedWalletProviders extends LinkEventBase {
     id: string
     name: string
   }>
+}
+
+export interface LegalTermsViewed {
+  type: 'legalTermsViewed'
+}
+
+export interface SeeWhatHappenedClicked {
+  type: 'seeWhatHappenedClicked'
+}
+
+export interface FundingOptionsUpdated {
+  type: 'fundingOptionsUpdated'
+}
+
+export interface FundingOptionsViewed {
+  type: 'fundingOptionsViewed'
+}
+
+export interface GasIncreaseWarning {
+  type: 'gasIncreaseWarning'
+}
+
+export interface ExecuteFundingStep {
+  type: 'executeFundingStep'
+  payload: {
+    cryptocurrencyFundingOptionType: string
+    status: string
+    errorMessage?: string
+  }
 }
