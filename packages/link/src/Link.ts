@@ -406,7 +406,7 @@ function addLanguage(linkUrl: string, language: string | undefined) {
     language =
       typeof navigator !== 'undefined' && navigator.language
         ? encodeURIComponent(navigator.language)
-        : 'en'
+        : undefined
   }
 
   return `${linkUrl}${linkUrl.includes('?') ? '&' : '?'}lng=${language || 'en'}`
