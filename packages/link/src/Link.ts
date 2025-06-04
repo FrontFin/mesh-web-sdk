@@ -12,7 +12,8 @@ import {
   TransferPayload,
   SmartContractPayload,
   DisconnectPayload,
-  TransactionBatchPayload
+  TransactionBatchPayload,
+  WalletCapabilitiesPayload
 } from './utils/types'
 import { addPopup, iframeId, removePopup } from './utils/popup'
 import { LinkEventType, isLinkEventTypeKey } from './utils/event-types'
@@ -299,6 +300,26 @@ async function handleWalletBrowserEvent(
       } catch (error) {
         handleErrorAndSendMessage(error as Error, responseType)
       }
+      break
+    }
+    case 'walletBrowserWalletCapabilities': {
+      const payload = event.data.payload as WalletCapabilitiesPayload
+      const responseType = 'SDKwalletCapabilitiesCompleted'
+      try {
+        const networkType = (
+          payload.from.startsWith('0x') ? 'evm' : 'solana'
+        ) as NetworkType
+        const strategy = walletFactory.getStrategy(networkType)
+        const result = await strategy.getWalletCapabilities(payload)
+
+        sendMessageToIframe({
+          type: responseType,
+          payload: result
+        })
+      } catch (error) {
+        handleErrorAndSendMessage(error as Error, responseType)
+      }
+      break
       break
     }
     case 'walletBrowserDisconnect': {

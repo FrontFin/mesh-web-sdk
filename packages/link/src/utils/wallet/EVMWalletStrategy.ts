@@ -6,7 +6,8 @@ import {
   TransferPayload,
   SmartContractPayload,
   DisconnectPayload,
-  TransactionBatchPayload
+  TransactionBatchPayload,
+  WalletCapabilitiesPayload
 } from '../types'
 import {
   connectToEVMWallet,
@@ -16,7 +17,8 @@ import {
   sendEVMTokenTransaction,
   switchEVMChain,
   findAvailableProviders,
-  sendEVMTransactionBatch
+  sendEVMTransactionBatch,
+  getWalletCapabilities
 } from '../connectors/evm'
 
 export class EVMWalletStrategy extends BaseWalletStrategy {
@@ -129,6 +131,13 @@ export class EVMWalletStrategy extends BaseWalletStrategy {
     } catch (error) {
       throw this.handleError(error, 'send EVM smart contract interaction')
     }
+  }
+
+  async getWalletCapabilities(
+    payload: WalletCapabilitiesPayload
+  ): Promise<{ atomic: { status: string } }> {
+    const result = await getWalletCapabilities(payload.from, payload.chainId)
+    return result
   }
 
   getProviders() {
