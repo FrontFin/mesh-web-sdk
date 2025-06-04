@@ -9,6 +9,7 @@ class TestWalletStrategy extends BaseWalletStrategy {
   sendNativeTransfer = jest.fn()
   sendSmartContractInteraction = jest.fn()
   getProviders = jest.fn()
+  sendTransactionBatch = jest.fn()
 }
 
 describe('BaseWalletStrategy', () => {
