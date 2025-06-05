@@ -131,6 +131,10 @@ export class SolanaWalletStrategy extends BaseWalletStrategy {
     throw new Error('Method not implemented.')
   }
 
+  getWalletCapabilities(): Promise<{ atomic: { status: string } }> {
+    throw new Error('Method not implemented.')
+  }
+
   getProviders() {
     const solanaProviderMap = findAvailableSolanaProviders()
     return Object.keys(solanaProviderMap).map(id => ({
