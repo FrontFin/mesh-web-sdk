@@ -253,3 +253,17 @@ export const sendEVMTransactionBatch = async (params: {
       : new Error('Failed to send token transaction')
   }
 }
+
+export const getWalletCapabilities = async (from: string, chainId: string) => {
+  const activeRawProvider = getActiveRawProvider()
+  if (!activeRawProvider) {
+    throw new Error('No active EVM provider')
+  }
+  const provider = new ethers.BrowserProvider(activeRawProvider)
+
+  const capabilities = await provider.send('wallet_getCapabilities', [
+    from,
+    [chainId]
+  ])
+  return capabilities[chainId]
+}

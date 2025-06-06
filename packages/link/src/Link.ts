@@ -12,7 +12,8 @@ import {
   TransferPayload,
   SmartContractPayload,
   DisconnectPayload,
-  TransactionBatchPayload
+  TransactionBatchPayload,
+  WalletCapabilitiesPayload
 } from './utils/types'
 import { addPopup, iframeId, removePopup } from './utils/popup'
 import { LinkEventType, isLinkEventTypeKey } from './utils/event-types'
@@ -301,6 +302,26 @@ async function handleWalletBrowserEvent(
       }
       break
     }
+    case 'walletBrowserWalletCapabilities': {
+      const payload = event.data.payload as WalletCapabilitiesPayload
+      const responseType = 'SDKwalletCapabilitiesCompleted'
+      try {
+        const networkType = (
+          payload.from.startsWith('0x') ? 'evm' : 'solana'
+        ) as NetworkType
+        const strategy = walletFactory.getStrategy(networkType)
+        const result = await strategy.getWalletCapabilities(payload)
+
+        sendMessageToIframe({
+          type: responseType,
+          payload: result
+        })
+      } catch (error) {
+        handleErrorAndSendMessage(error as Error, responseType)
+      }
+      break
+      break
+    }
     case 'walletBrowserDisconnect': {
       const payload = event.data.payload as DisconnectPayload
 
@@ -402,5 +423,12 @@ export const createLink = (options: LinkOptions): Link => {
 }
 
 function addLanguage(linkUrl: string, language: string | undefined) {
+  if (language === 'system') {
+    language =
+      typeof navigator !== 'undefined' && navigator.language
+        ? encodeURIComponent(navigator.language)
+        : undefined
+  }
+
   return `${linkUrl}${linkUrl.includes('?') ? '&' : '?'}lng=${language || 'en'}`
 }
