@@ -243,7 +243,6 @@ async function handleWalletBrowserEvent(
       break
     }
     case 'walletBrowserNonNativeTransferRequest':
-    case 'walletBrowserNativeSmartDeposit':
     case 'walletBrowserNonNativeSmartDeposit': {
       const payload = event.data.payload as SmartContractPayload
       const getResponseType = (type: WalletBrowserEventType['type']) => {
@@ -265,6 +264,44 @@ async function handleWalletBrowserEvent(
         ) as NetworkType
         const strategy = walletFactory.getStrategy(networkType)
         const result = await strategy.sendSmartContractInteraction(payload)
+
+        const responseType = getResponseType(event.data.type)
+
+        sendMessageToIframe({
+          type: responseType,
+          payload: {
+            txHash: result
+          }
+        })
+      } catch (error) {
+        const errorType = getResponseType(event.data.type)
+        handleErrorAndSendMessage(error as Error, errorType)
+      }
+      break
+    }
+    case 'walletBrowserNativeSmartDeposit': {
+      const payload = event.data.payload as SmartContractPayload
+      const getResponseType = (type: WalletBrowserEventType['type']) => {
+        switch (type) {
+          case 'walletBrowserNonNativeTransferRequest':
+            return 'SDKnonNativeTransferCompleted'
+          case 'walletBrowserNativeSmartDeposit':
+            return 'SDKnativeSmartDepositCompleted'
+          case 'walletBrowserNonNativeSmartDeposit':
+            return 'SDKnonNativeSmartDepositCompleted'
+          default:
+            return 'SDKnonNativeTransferCompleted'
+        }
+      }
+
+      try {
+        const networkType = (
+          payload.address.startsWith('0x') ? 'evm' : 'solana'
+        ) as NetworkType
+        const strategy = walletFactory.getStrategy(networkType)
+        const result = await strategy.sendNativeSmartContractInteraction(
+          payload
+        )
 
         const responseType = getResponseType(event.data.type)
 

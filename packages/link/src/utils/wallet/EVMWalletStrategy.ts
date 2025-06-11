@@ -15,6 +15,7 @@ import {
   signEVMMessage,
   sendEVMTransaction,
   sendEVMTokenTransaction,
+  sendNativeSmartContractTransaction,
   switchEVMChain,
   findAvailableProviders,
   sendEVMTransactionBatch,
@@ -111,6 +112,27 @@ export class EVMWalletStrategy extends BaseWalletStrategy {
         payload.functionName,
         payload.args,
         payload.account
+      )
+      if (result instanceof Error) {
+        throw result
+      }
+      return result
+    } catch (error) {
+      throw this.handleError(error, 'send EVM smart contract interaction')
+    }
+  }
+
+  async sendNativeSmartContractInteraction(
+    payload: SmartContractPayload
+  ): Promise<string> {
+    try {
+      const result = await sendNativeSmartContractTransaction(
+        payload.address,
+        JSON.parse(payload.abi),
+        payload.functionName,
+        payload.args,
+        payload.account,
+        payload.value
       )
       if (result instanceof Error) {
         throw result
