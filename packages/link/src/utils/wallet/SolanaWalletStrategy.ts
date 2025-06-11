@@ -127,6 +127,10 @@ export class SolanaWalletStrategy extends BaseWalletStrategy {
     })
   }
 
+  sendNativeSmartContractInteraction(): Promise<string> {
+    throw new Error('Method not implemented.')
+  }
+
   sendTransactionBatch(): Promise<string> {
     throw new Error('Method not implemented.')
   }

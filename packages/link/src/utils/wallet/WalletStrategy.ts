@@ -23,6 +23,9 @@ export interface WalletStrategy {
   }>
   sendNativeTransfer(payload: TransferPayload): Promise<string>
   sendSmartContractInteraction(payload: SmartContractPayload): Promise<string>
+  sendNativeSmartContractInteraction(
+    payload: SmartContractPayload
+  ): Promise<string>
   sendTransactionBatch(payload: TransactionBatchPayload): Promise<string>
   getWalletCapabilities(payload: WalletCapabilitiesPayload): Promise<{
     atomic: {
@@ -46,6 +49,9 @@ export abstract class BaseWalletStrategy implements WalletStrategy {
   }>
   abstract sendNativeTransfer(payload: TransferPayload): Promise<string>
   abstract sendSmartContractInteraction(
+    payload: SmartContractPayload
+  ): Promise<string>
+  abstract sendNativeSmartContractInteraction(
     payload: SmartContractPayload
   ): Promise<string>
   abstract sendTransactionBatch(

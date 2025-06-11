@@ -168,6 +168,93 @@ export const sendEVMTokenTransaction = async (
   }
 }
 
+/**
+ * Sends an native smart contract transaction
+ */
+export const sendNativeSmartContractTransaction = async (
+  contractAddress: string,
+  abi: ethers.InterfaceAbi,
+  functionName: string,
+  args: unknown[],
+  fromAddress: string,
+  value?: string
+): Promise<string | Error> => {
+  try {
+    const activeRawProvider = getActiveRawProvider()
+    if (!activeRawProvider) {
+      throw new Error('No active EVM provider')
+    }
+
+    const chainIdHex = await activeRawProvider.request({
+      method: 'eth_chainId'
+    })
+    const chainId = parseInt(chainIdHex, 16)
+
+    const provider = new ethers.BrowserProvider(activeRawProvider)
+    const signer = await provider.getSigner(fromAddress)
+
+    // Verify we're still on the same network before proceeding
+    const network = await provider.getNetwork()
+    if (Number(network.chainId) !== chainId) {
+      throw new Error('Network changed during transaction setup')
+    }
+
+    const contract = new ethers.Contract(contractAddress, abi, signer)
+    const txOptions: ethers.Overrides = {}
+
+    const gasLimit =
+      args?.[1] !== undefined ? toSafeNumber(args[1], 'gasLimit') : undefined
+    const maxFeePerGas =
+      args?.[2] !== undefined
+        ? toSafeNumber(args[2], 'maxFeePerGas')
+        : undefined
+    const maxPriorityFeePerGas =
+      args?.[3] !== undefined
+        ? toSafeNumber(args[3], 'maxPriorityFeePerGas')
+        : undefined
+
+    txOptions.gasLimit = gasLimit ? BigInt(Math.floor(gasLimit)) : undefined
+    txOptions.maxFeePerGas = maxFeePerGas
+      ? BigInt(Math.floor(maxFeePerGas))
+      : undefined
+    txOptions.maxPriorityFeePerGas = maxPriorityFeePerGas
+      ? BigInt(Math.floor(maxPriorityFeePerGas))
+      : undefined
+
+    if (value) {
+      txOptions.value = value
+    }
+
+    try {
+      // Send the transaction
+      const tx = await contract[functionName](args[0], txOptions)
+
+      // Wait for transaction confirmation
+      const receipt = await tx.wait()
+      return receipt ? receipt.hash : ''
+    } catch (txError: any) {
+      if (isUserRejection(txError)) {
+        return new Error('Transaction was rejected by user')
+      }
+      throw txError
+    }
+  } catch (error: any) {
+    console.error('Token transaction error:', error)
+
+    if (isUserRejection(error)) {
+      return new Error('Transaction was rejected by user')
+    }
+
+    if (error.code === 'NETWORK_ERROR') {
+      return new Error('Network changed during transaction. Please try again.')
+    }
+
+    return error instanceof Error
+      ? error
+      : new Error('Failed to send token transaction')
+  }
+}
+
 function toSafeNumber(value: unknown, name: string): number {
   if (typeof value !== 'number' || Number.isNaN(value)) {
     throw new TypeError(
