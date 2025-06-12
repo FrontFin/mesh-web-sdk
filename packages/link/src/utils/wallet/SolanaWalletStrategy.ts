@@ -19,7 +19,7 @@ import {
 export class SolanaWalletStrategy extends BaseWalletStrategy {
   async connect(payload: WalletBrowserPayload) {
     try {
-      const result = await connectToSolanaWallet(payload.integrationName)
+      const result = await connectToSolanaWallet(payload)
       if (result instanceof Error) {
         throw result
       }

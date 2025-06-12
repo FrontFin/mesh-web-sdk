@@ -1,16 +1,17 @@
 import { SolanaConnectResult } from './types'
 import { getSolanaProvider } from './providerDiscovery'
 import { Buffer } from 'buffer'
+import { WalletBrowserPayload } from '../../types'
 
 if (typeof window !== 'undefined') {
   window.Buffer = window.Buffer || Buffer
 }
 
 export const connectToSolanaWallet = async (
-  walletName: string
+  walletPayload: WalletBrowserPayload
 ): Promise<SolanaConnectResult | Error> => {
   try {
-    const provider = getSolanaProvider(walletName)
+    const provider = getSolanaProvider(walletPayload.integrationName)
 
     // Try eager connect first, fall back to regular connect
     const response = await provider
@@ -19,6 +20,13 @@ export const connectToSolanaWallet = async (
 
     // Handle Phantom wallet which returns response.publicKey
     if (response?.publicKey) {
+      if (walletPayload.targetChainId == '103') {
+        return {
+          accounts: [response.publicKey.toString()],
+          chainId: '103',
+          isConnected: true
+        }
+      }
       return {
         accounts: [response.publicKey.toString()],
         chainId: '101',
@@ -35,11 +43,15 @@ export const connectToSolanaWallet = async (
       }
     }
 
-    throw new Error(`${walletName} connection failed - no public key returned`)
+    throw new Error(
+      `${walletPayload.integrationName} connection failed - no public key returned`
+    )
   } catch (error) {
     return error instanceof Error
       ? error
-      : new Error(`Failed to connect to ${walletName} wallet`)
+      : new Error(
+          `Failed to connect to ${walletPayload.integrationName} wallet`
+        )
   }
 }
 
