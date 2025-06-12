@@ -36,7 +36,7 @@ describe('SolanaWalletStrategy', () => {
       const result = await strategy.connect(mockPayload)
       expect(result).toEqual(mockResult)
       expect(solanaConnectors.connectToSolanaWallet).toHaveBeenCalledWith(
-        mockPayload.integrationName
+        mockPayload
       )
     })
 
@@ -106,12 +106,48 @@ describe('SolanaWalletStrategy', () => {
   })
 
   describe('switchChain', () => {
-    it('should return fixed Solana chain ID', async () => {
-      const result = await strategy.switchChain({ chainId: 1 })
+    it('should switch to mainnet (101)', async () => {
+      const result = await strategy.switchChain({ chainId: 101 })
       expect(result).toEqual({
         chainId: '101',
         accounts: []
       })
+      expect(strategy.getCurrentChainId()).toBe('101')
+      expect(strategy.isMainnet()).toBe(true)
+      expect(strategy.isDevnet()).toBe(false)
+    })
+
+    it('should switch to devnet (103)', async () => {
+      const result = await strategy.switchChain({ chainId: 103 })
+      expect(result).toEqual({
+        chainId: '103',
+        accounts: []
+      })
+      expect(strategy.getCurrentChainId()).toBe('103')
+      expect(strategy.isDevnet()).toBe(true)
+      expect(strategy.isMainnet()).toBe(false)
+    })
+
+    it('should return accounts when wallet is connected', async () => {
+      const mockPublicKey = { toString: () => 'test_address' }
+      ;(solanaConnectors.getSolanaProvider as jest.Mock).mockReturnValue({
+        publicKey: mockPublicKey
+      })
+
+      const result = await strategy.switchChain({
+        chainId: 103,
+        walletName: 'Phantom'
+      })
+      expect(result).toEqual({
+        chainId: '103',
+        accounts: ['test_address']
+      })
+    })
+
+    it('should throw error for unsupported chain ID', async () => {
+      await expect(strategy.switchChain({ chainId: 999 })).rejects.toThrow(
+        'Unsupported Solana chain ID: 999. Supported chains: 101 (mainnet), 103 (devnet)'
+      )
     })
   })
 
@@ -142,7 +178,8 @@ describe('SolanaWalletStrategy', () => {
         ),
         fromAddress: mockPayload.account,
         blockhash: mockPayload.blockhash,
-        walletName: mockPayload.walletName
+        walletName: mockPayload.walletName,
+        network: '101' // mainnet by default
       })
     })
 
@@ -188,7 +225,8 @@ describe('SolanaWalletStrategy', () => {
         blockhash: mockPayload.blockhash,
         walletName: mockPayload.walletName,
         tokenMint: mockPayload.address,
-        tokenDecimals: mockPayload.args[2]
+        tokenDecimals: mockPayload.args[2],
+        network: '101' // mainnet by default
       })
     })
 
@@ -244,6 +282,38 @@ describe('SolanaWalletStrategy', () => {
 
       const result = strategy.getProviders()
       expect(result).toEqual([])
+    })
+  })
+
+  describe('utility methods', () => {
+    it('should return current chain ID', () => {
+      expect(strategy.getCurrentChainId()).toBe('101') // default mainnet
+    })
+
+    it('should correctly identify mainnet', () => {
+      expect(strategy.isMainnet()).toBe(true)
+      expect(strategy.isDevnet()).toBe(false)
+    })
+
+    it('should correctly identify devnet after switch', async () => {
+      await strategy.switchChain({ chainId: 103 })
+      expect(strategy.isDevnet()).toBe(true)
+      expect(strategy.isMainnet()).toBe(false)
+    })
+
+    it('should update chain ID when connecting with target chain', async () => {
+      const mockResult = {
+        accounts: ['solana_address'],
+        chainId: '103', // devnet
+        isConnected: true
+      }
+      ;(solanaConnectors.connectToSolanaWallet as jest.Mock).mockResolvedValue(
+        mockResult
+      )
+
+      await strategy.connect({ integrationName: 'Phantom' })
+      expect(strategy.getCurrentChainId()).toBe('103')
+      expect(strategy.isDevnet()).toBe(true)
     })
   })
 })
