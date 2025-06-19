@@ -3,13 +3,17 @@ import {
   SystemProgram,
   TransactionMessage,
   VersionedTransaction,
-  TransactionInstruction
+  TransactionInstruction,
+  Connection
 } from '@meshconnect/solana-web3.js'
 import { getSolanaProvider } from './providerDiscovery'
 import { TransactionConfig, SolanaProvider } from './types'
 
 const TOKEN_PROGRAM_ID = new PublicKey(
   'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
+)
+const TOKEN_2022_PROGRAM_ID = new PublicKey(
+  'TokenzQdBNbLqP5VEhdkAS6EPFLC1PHnBqCXEpPxuEb'
 )
 const ASSOCIATED_TOKEN_PROGRAM_ID = new PublicKey(
   'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL'
@@ -30,13 +34,41 @@ const isUserRejection = (error: unknown): boolean => {
 
 export async function getAssociatedTokenAddress(
   mint: PublicKey,
-  owner: PublicKey
+  owner: PublicKey,
+  programId = TOKEN_PROGRAM_ID.toBase58()
 ): Promise<PublicKey> {
   const [address] = await PublicKey.findProgramAddress(
-    [owner.toBuffer(), TOKEN_PROGRAM_ID.toBuffer(), mint.toBuffer()],
+    [owner.toBuffer(), new PublicKey(programId).toBuffer(), mint.toBuffer()],
     ASSOCIATED_TOKEN_PROGRAM_ID
   )
   return address
+}
+
+export function createTransferCheckedInstruction(
+  fromTokenAccount: PublicKey,
+  toTokenAccount: PublicKey,
+  owner: PublicKey,
+  amount: bigint,
+  decimals = 9,
+  tokenMint: PublicKey
+): TransactionInstruction {
+  const data = Buffer.alloc(10)
+  data[0] = 12 // TransferChecked instruction enum
+  data.writeBigUInt64LE(amount, 1) // 8-byte amount
+  data[9] = decimals // single-byte decimal
+
+  const programId = TOKEN_2022_PROGRAM_ID
+
+  return new TransactionInstruction({
+    keys: [
+      { pubkey: fromTokenAccount, isSigner: false, isWritable: true },
+      { pubkey: tokenMint, isSigner: false, isWritable: false },
+      { pubkey: toTokenAccount, isSigner: false, isWritable: true },
+      { pubkey: owner, isSigner: true, isWritable: false }
+    ],
+    programId,
+    data
+  })
 }
 
 export function createSPLTransferInstruction({
@@ -65,20 +97,15 @@ export function createSPLTransferInstruction({
   })
 }
 
-export async function createTransferTransaction(config: {
-  fromAddress: string
-  toAddress: string
-  amount: bigint
-  tokenMint?: string
-  blockhash: string
-}): Promise<VersionedTransaction> {
+export async function createTransferTransaction(
+  config: TransactionConfig
+): Promise<VersionedTransaction> {
   const fromPubkey = new PublicKey(config.fromAddress)
   const toPubkey = new PublicKey(config.toAddress)
 
   let instruction: TransactionInstruction
 
   if (!config.tokenMint) {
-    // Native SOL transfer
     instruction = SystemProgram.transfer({
       fromPubkey,
       toPubkey,
@@ -89,19 +116,32 @@ export async function createTransferTransaction(config: {
     const tokenMintPubkey = new PublicKey(config.tokenMint)
     const fromTokenAccount = await getAssociatedTokenAddress(
       tokenMintPubkey,
-      fromPubkey
-    )
-    const toTokenAccount = await getAssociatedTokenAddress(
-      tokenMintPubkey,
-      toPubkey
+      fromPubkey,
+      config.tokenProgram
     )
 
-    instruction = createSPLTransferInstruction({
-      fromTokenAccount,
-      toTokenAccount,
-      owner: fromPubkey,
-      amount: BigInt(config.amount)
-    })
+    const toTokenAccount = await getAssociatedTokenAddress(
+      tokenMintPubkey,
+      toPubkey,
+      config.tokenProgram
+    )
+
+    instruction =
+      config.tokenProgram === TOKEN_2022_PROGRAM_ID.toBase58()
+        ? createTransferCheckedInstruction(
+            fromTokenAccount,
+            toTokenAccount,
+            fromPubkey,
+            BigInt(config.amount),
+            config.tokenDecimals,
+            tokenMintPubkey
+          )
+        : createSPLTransferInstruction({
+            fromTokenAccount,
+            toTokenAccount,
+            owner: fromPubkey,
+            amount: BigInt(config.amount)
+          })
   }
 
   const messageV0 = new TransactionMessage({
@@ -143,6 +183,32 @@ export const sendSOLTransaction = async (
 ): Promise<string> => {
   try {
     const provider = getSolanaProvider(config.walletName)
+
+    const walletPublicKey = new PublicKey(config.fromAddress)
+
+    if (config.tokenMint) {
+      let connection
+      // special use case for PYUSD on solana devnet. TODO: make it generic
+      if (config.tokenMint === 'CXk2AMBfi3TwaEL2468s6zP8xq9NxTXjp9gjMgzeUynM') {
+        connection = new Connection(
+          'https://api.devnet.solana.com',
+          'confirmed'
+        )
+      } else {
+        connection = new Connection(
+          'https://api.mainnet-beta.solana.com',
+          'confirmed'
+        )
+      }
+      const token2022Accounts = await connection.getTokenAccountsByOwner(
+        walletPublicKey,
+        { programId: TOKEN_2022_PROGRAM_ID }
+      )
+      config.tokenProgram = token2022Accounts?.value.length
+        ? TOKEN_2022_PROGRAM_ID.toBase58()
+        : TOKEN_PROGRAM_ID.toBase58()
+    }
+
     const transaction = await createTransferTransaction(config)
 
     const isManualWallet =

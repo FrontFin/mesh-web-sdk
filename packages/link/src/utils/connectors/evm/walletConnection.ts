@@ -40,7 +40,9 @@ export const getEVMProvider = (
   const providers = findAvailableProviders()
 
   const matchingProvider = providers.find(
-    p => p.name.toLowerCase() === walletName.toLowerCase()
+    p =>
+      p.name.toLowerCase() === walletName.toLowerCase() ||
+      p.name.toLowerCase().includes(walletName.toLowerCase())
   )
 
   if (matchingProvider) {
@@ -75,7 +77,12 @@ export const connectToEVMWallet = async (
     const browserProvider = new ethers.BrowserProvider(provider)
     setActiveEVMProvider(browserProvider, provider)
 
-    const existingAccounts = await provider.request({ method: 'eth_accounts' })
+    let existingAccounts
+    try {
+      existingAccounts = await provider.request({ method: 'eth_accounts' })
+    } catch (error) {
+      existingAccounts = []
+    }
     if (!existingAccounts || existingAccounts.length === 0) {
       await browserProvider.send('eth_requestAccounts', [])
     }

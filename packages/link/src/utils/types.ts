@@ -171,6 +171,11 @@ export interface TransactionBatchPayload {
   }[]
 }
 
+export interface WalletCapabilitiesPayload {
+  from: string
+  chainId: string
+}
+
 export interface DisconnectPayload {
   networkType?: string
   walletName?: string

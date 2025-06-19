@@ -19,7 +19,7 @@ import {
 export class SolanaWalletStrategy extends BaseWalletStrategy {
   async connect(payload: WalletBrowserPayload) {
     try {
-      const result = await connectToSolanaWallet(payload.integrationName)
+      const result = await connectToSolanaWallet(payload)
       if (result instanceof Error) {
         throw result
       }
@@ -127,7 +127,15 @@ export class SolanaWalletStrategy extends BaseWalletStrategy {
     })
   }
 
+  sendNativeSmartContractInteraction(): Promise<string> {
+    throw new Error('Method not implemented.')
+  }
+
   sendTransactionBatch(): Promise<string> {
+    throw new Error('Method not implemented.')
+  }
+
+  getWalletCapabilities(): Promise<{ atomic: { status: string } }> {
     throw new Error('Method not implemented.')
   }
 

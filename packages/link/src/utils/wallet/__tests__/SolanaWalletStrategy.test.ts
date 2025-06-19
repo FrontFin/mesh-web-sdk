@@ -36,7 +36,7 @@ describe('SolanaWalletStrategy', () => {
       const result = await strategy.connect(mockPayload)
       expect(result).toEqual(mockResult)
       expect(solanaConnectors.connectToSolanaWallet).toHaveBeenCalledWith(
-        mockPayload.integrationName
+        mockPayload
       )
     })
 

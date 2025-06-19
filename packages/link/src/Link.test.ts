@@ -55,6 +55,23 @@ describe('createLink tests', () => {
     )
   })
 
+  test('createLink system language is requested then should open popup with correct language', () => {
+    jest.spyOn(navigator, 'language', 'get').mockReturnValue('es-US')
+
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      language: 'system'
+    })
+
+    frontConnection.openLink(BASE64_ENCODED_URL)
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
+    expect(iframeElement).toBeTruthy()
+    expect(iframeElement?.attributes.getNamedItem('src')?.nodeValue).toBe(
+      'http://localhost/1?lng=es-US'
+    )
+  })
+
   test('createLink when valid link provided should open popup with custom iframe id', () => {
     const customIframeId = 'custom-iframe-id'
     const customIframeElement = document.createElement('iframe')

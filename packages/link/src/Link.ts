@@ -12,7 +12,8 @@ import {
   TransferPayload,
   SmartContractPayload,
   DisconnectPayload,
-  TransactionBatchPayload
+  TransactionBatchPayload,
+  WalletCapabilitiesPayload
 } from './utils/types'
 import { addPopup, iframeId, removePopup } from './utils/popup'
 import { LinkEventType, isLinkEventTypeKey } from './utils/event-types'
@@ -242,7 +243,6 @@ async function handleWalletBrowserEvent(
       break
     }
     case 'walletBrowserNonNativeTransferRequest':
-    case 'walletBrowserNativeSmartDeposit':
     case 'walletBrowserNonNativeSmartDeposit': {
       const payload = event.data.payload as SmartContractPayload
       const getResponseType = (type: WalletBrowserEventType['type']) => {
@@ -279,6 +279,44 @@ async function handleWalletBrowserEvent(
       }
       break
     }
+    case 'walletBrowserNativeSmartDeposit': {
+      const payload = event.data.payload as SmartContractPayload
+      const getResponseType = (type: WalletBrowserEventType['type']) => {
+        switch (type) {
+          case 'walletBrowserNonNativeTransferRequest':
+            return 'SDKnonNativeTransferCompleted'
+          case 'walletBrowserNativeSmartDeposit':
+            return 'SDKnativeSmartDepositCompleted'
+          case 'walletBrowserNonNativeSmartDeposit':
+            return 'SDKnonNativeSmartDepositCompleted'
+          default:
+            return 'SDKnonNativeTransferCompleted'
+        }
+      }
+
+      try {
+        const networkType = (
+          payload.address.startsWith('0x') ? 'evm' : 'solana'
+        ) as NetworkType
+        const strategy = walletFactory.getStrategy(networkType)
+        const result = await strategy.sendNativeSmartContractInteraction(
+          payload
+        )
+
+        const responseType = getResponseType(event.data.type)
+
+        sendMessageToIframe({
+          type: responseType,
+          payload: {
+            txHash: result
+          }
+        })
+      } catch (error) {
+        const errorType = getResponseType(event.data.type)
+        handleErrorAndSendMessage(error as Error, errorType)
+      }
+      break
+    }
     case 'walletBrowserTransactionBatchRequest': {
       const payload = event.data.payload as TransactionBatchPayload
       const responseType = 'SDKtransactionBatchCompleted'
@@ -299,6 +337,26 @@ async function handleWalletBrowserEvent(
       } catch (error) {
         handleErrorAndSendMessage(error as Error, responseType)
       }
+      break
+    }
+    case 'walletBrowserWalletCapabilities': {
+      const payload = event.data.payload as WalletCapabilitiesPayload
+      const responseType = 'SDKwalletCapabilitiesCompleted'
+      try {
+        const networkType = (
+          payload.from.startsWith('0x') ? 'evm' : 'solana'
+        ) as NetworkType
+        const strategy = walletFactory.getStrategy(networkType)
+        const result = await strategy.getWalletCapabilities(payload)
+
+        sendMessageToIframe({
+          type: responseType,
+          payload: result
+        })
+      } catch (error) {
+        handleErrorAndSendMessage(error as Error, responseType)
+      }
+      break
       break
     }
     case 'walletBrowserDisconnect': {
@@ -402,5 +460,12 @@ export const createLink = (options: LinkOptions): Link => {
 }
 
 function addLanguage(linkUrl: string, language: string | undefined) {
+  if (language === 'system') {
+    language =
+      typeof navigator !== 'undefined' && navigator.language
+        ? encodeURIComponent(navigator.language)
+        : undefined
+  }
+
   return `${linkUrl}${linkUrl.includes('?') ? '&' : '?'}lng=${language || 'en'}`
 }
