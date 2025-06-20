@@ -44,6 +44,29 @@ export async function getAssociatedTokenAddress(
   return address
 }
 
+function createTokenAccountInstruction(
+  payer: PublicKey,
+  associatedToken: PublicKey,
+  owner: PublicKey,
+  mint: PublicKey,
+  programId = TOKEN_PROGRAM_ID
+): TransactionInstruction {
+  const keys = [
+    { pubkey: payer, isSigner: true, isWritable: true },
+    { pubkey: associatedToken, isSigner: false, isWritable: true },
+    { pubkey: owner, isSigner: false, isWritable: false },
+    { pubkey: mint, isSigner: false, isWritable: false },
+    { pubkey: SystemProgram.programId, isSigner: false, isWritable: false },
+    { pubkey: programId, isSigner: false, isWritable: false }
+  ]
+
+  return new TransactionInstruction({
+    keys,
+    programId: ASSOCIATED_TOKEN_PROGRAM_ID,
+    data: Buffer.alloc(0)
+  })
+}
+
 export function createTransferCheckedInstruction(
   fromTokenAccount: PublicKey,
   toTokenAccount: PublicKey,
@@ -103,15 +126,36 @@ export async function createTransferTransaction(
   const fromPubkey = new PublicKey(config.fromAddress)
   const toPubkey = new PublicKey(config.toAddress)
 
-  let instruction: TransactionInstruction
+  const instructions: TransactionInstruction[] = []
 
   if (!config.tokenMint) {
-    instruction = SystemProgram.transfer({
-      fromPubkey,
-      toPubkey,
-      lamports: Number(config.amount)
-    })
+    instructions.push(
+      SystemProgram.transfer({
+        fromPubkey,
+        toPubkey,
+        lamports: Number(config.amount)
+      })
+    )
   } else {
+    let connection
+    // special use case for PYUSD on solana devnet. TODO: make it generic
+    if (config.tokenMint === 'CXk2AMBfi3TwaEL2468s6zP8xq9NxTXjp9gjMgzeUynM') {
+      connection = new Connection('https://api.devnet.solana.com', 'confirmed')
+    } else {
+      connection = new Connection(
+        'https://api.mainnet-beta.solana.com',
+        'confirmed'
+      )
+    }
+    const token2022Accounts = await connection.getTokenAccountsByOwner(
+      fromPubkey,
+      { programId: TOKEN_2022_PROGRAM_ID }
+    )
+    const tokenProgram = token2022Accounts?.value.length
+      ? TOKEN_2022_PROGRAM_ID
+      : TOKEN_PROGRAM_ID
+    config.tokenProgram = tokenProgram.toBase58()
+
     // Token transfer
     const tokenMintPubkey = new PublicKey(config.tokenMint)
     const fromTokenAccount = await getAssociatedTokenAddress(
@@ -126,28 +170,51 @@ export async function createTransferTransaction(
       config.tokenProgram
     )
 
-    instruction =
-      config.tokenProgram === TOKEN_2022_PROGRAM_ID.toBase58()
-        ? createTransferCheckedInstruction(
-            fromTokenAccount,
-            toTokenAccount,
-            fromPubkey,
-            BigInt(config.amount),
-            config.tokenDecimals,
-            tokenMintPubkey
-          )
-        : createSPLTransferInstruction({
-            fromTokenAccount,
-            toTokenAccount,
-            owner: fromPubkey,
-            amount: BigInt(config.amount)
-          })
+    if (
+      !(
+        await connection.getTokenAccountsByOwner(toPubkey, {
+          programId: tokenProgram
+        })
+      )?.value.length
+    ) {
+      instructions.push(
+        createTokenAccountInstruction(
+          toPubkey,
+          toTokenAccount,
+          toPubkey,
+          tokenMintPubkey,
+          tokenProgram
+        )
+      )
+    }
+
+    if (config.tokenProgram === TOKEN_2022_PROGRAM_ID.toBase58()) {
+      instructions.push(
+        createTransferCheckedInstruction(
+          fromTokenAccount,
+          toTokenAccount,
+          fromPubkey,
+          BigInt(config.amount),
+          config.tokenDecimals,
+          tokenMintPubkey
+        )
+      )
+    } else {
+      instructions.push(
+        createSPLTransferInstruction({
+          fromTokenAccount,
+          toTokenAccount,
+          owner: fromPubkey,
+          amount: BigInt(config.amount)
+        })
+      )
+    }
   }
 
   const messageV0 = new TransactionMessage({
     payerKey: fromPubkey,
     recentBlockhash: config.blockhash,
-    instructions: [instruction]
+    instructions
   }).compileToV0Message()
 
   return new VersionedTransaction(messageV0)
@@ -183,32 +250,6 @@ export const sendSOLTransaction = async (
 ): Promise<string> => {
   try {
     const provider = getSolanaProvider(config.walletName)
-
-    const walletPublicKey = new PublicKey(config.fromAddress)
-
-    if (config.tokenMint) {
-      let connection
-      // special use case for PYUSD on solana devnet. TODO: make it generic
-      if (config.tokenMint === 'CXk2AMBfi3TwaEL2468s6zP8xq9NxTXjp9gjMgzeUynM') {
-        connection = new Connection(
-          'https://api.devnet.solana.com',
-          'confirmed'
-        )
-      } else {
-        connection = new Connection(
-          'https://api.mainnet-beta.solana.com',
-          'confirmed'
-        )
-      }
-      const token2022Accounts = await connection.getTokenAccountsByOwner(
-        walletPublicKey,
-        { programId: TOKEN_2022_PROGRAM_ID }
-      )
-      config.tokenProgram = token2022Accounts?.value.length
-        ? TOKEN_2022_PROGRAM_ID.toBase58()
-        : TOKEN_PROGRAM_ID.toBase58()
-    }
-
     const transaction = await createTransferTransaction(config)
 
     const isManualWallet =
@@ -224,6 +265,8 @@ export const sendSOLTransaction = async (
       try {
         const { signature }: { signature: string } =
           await provider.signAndSendTransaction(transaction)
+
+        // @TODO: validate that signature was a successful tx
         return signature
       } catch (error) {
         if (isUserRejection(error)) {
