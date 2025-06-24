@@ -179,7 +179,7 @@ export async function createTransferTransaction(
     ) {
       instructions.push(
         createTokenAccountInstruction(
-          toPubkey,
+          fromPubkey,
           toTokenAccount,
           toPubkey,
           tokenMintPubkey,
