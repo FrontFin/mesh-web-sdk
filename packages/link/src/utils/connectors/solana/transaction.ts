@@ -218,8 +218,6 @@ export async function createTransferTransaction(
     }
   }
 
-  console.log('Transfer instruction:', instruction)
-
   const messageV0 = new TransactionMessage({
     payerKey: fromPubkey,
     recentBlockhash: config.blockhash,
@@ -278,7 +276,13 @@ export async function getTransferInstructions(
             try {
               const mint = new PublicKey(meta.pubKey!)
               // Derive payer's ATA for given mint
-              resolvedPubkey = await getAssociatedTokenAddress(mint, payerKey)
+              if (
+                mint.toBase58() == 'So11111111111111111111111111111111111111112'
+              ) {
+                resolvedPubkey = mint
+              } else {
+                resolvedPubkey = await getAssociatedTokenAddress(mint, payerKey)
+              }
             } catch (e) {
               throw new Error(
                 `Invalid mint pubKey at instruction ${instrIndex}, account ${accountIndex}: ${meta.pubKey}`
@@ -389,52 +393,28 @@ export const sendSOLTransactionWithInstructions = async (
           }
         })
       })
-    const allTxKeys = new Set(
-      instructions.flatMap(ix => ix.keys.map(k => k.pubkey.toBase58()))
-    )
 
-    const allLookupAddresses = new Set(
-      addressLookupTableAccounts.flatMap(alt =>
-        alt.state.addresses.map(a => a.toBase58())
-      )
-    )
-
-    const intersection = Array.from(allTxKeys).filter(k =>
-      allLookupAddresses.has(k)
-    )
-
-    console.log(
-      'Transaction keys that are actually in lookup tables:',
-      intersection
-    )
     console.log('Address lookup table accounts:', addressLookupTableAccounts)
     const fromPubkey = new PublicKey(payload.account!)
+    console.log('From public key:', fromPubkey.toBase58())
     const messageV0 = new TransactionMessage({
       payerKey: fromPubkey,
       recentBlockhash: payload.blockhash,
       instructions: instructions
     }).compileToV0Message(addressLookupTableAccounts)
 
-    console.log('Compiled message V0:', getByteLength(messageV0))
+    const transaction = new VersionedTransaction(messageV0)
+    const longTransaction = new TransactionMessage({
+      payerKey: fromPubkey,
+      recentBlockhash: payload.blockhash,
+      instructions: instructions
+    }).compileToV0Message()
+
+    console.log(`Transaction size: ${getByteLength(transaction)} bytes`)
     console.log(
-      'Compiled message V0:long',
-      getByteLength(
-        new TransactionMessage({
-          payerKey: fromPubkey,
-          recentBlockhash: payload.blockhash,
-          instructions: instructions
-        }).compileToV0Message()
-      )
+      `Long Transaction size: ${getByteLength(longTransaction)} bytes`
     )
 
-    const transaction = VersionedTransaction.deserialize(
-      Buffer.from(
-        'AQAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAQAHDR9Z+6RX/m8eOojbnlAUb1ZEB2rygUBSEFbacc8DQdihzOuNFaILYVKmgKp015YO6aejZj001UB6xPS6GTWXaMXQmZr1rJDtclN66upO9QSMHI4vf7LTTsWl50j1u/O3i+3xtvoh97eYFhrar79pEgHrrxMT9uil3jOnhFKf+a8+77AcehLFu/pgfxKbakVgfUkZL0tuwjW9JbNnnJMToK3y1Ilelux96OXIk46KxIX+0sMPjqt/kWT4kvRH4gcLvwAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAwZGb+UhFzL/7K26csOb57yM5bvF9xJrLEObOkAAAAAEedVb8jHAbu50xW7OaBUH/bGy3qP0jlECsc2iVrwTjwbd9uHXZaGT2cvhRs7reawctIXtX1s3kTqM9YV+/wCpFAwJw4hsHGqETzKTG88EqsMXhRmxwP5T1P8qcQ603jyMlyWPTiSJ8bs9ECkUjg2DC1oTmdr/EIQEjnvY2+n4WbQ/+if11/ZKdMCbHylYed5LCas238ndUUsyGqezjOXoXI20bKrM6tgEmsFdn19mEv1PU8bAhADW0sk7dUdNiA8IBwAFAsBcFQAHAAkD1HoLAAAAAAALBgAFABYGCQEBBgIABQwCAAAAgIQeAAAAAAAJAQUBEQsGAAEAGwYXAQEIKQkKAAUDAQEWGwgXDAgfCQoUAxUCERITBCAZCh4bAgEOEA8NHRgcGgkXKcEgmzNB1pyBAQIAAAARAWQAAU9kAQKAhB4AAAAAAPOgBAAAAAAAMgAACQMFAAABCQJ9wMcXAhzLZucTPtF6MmZ80NPWq9GD13dumGAXjalsagT0dHN3CQkZeXXz+PFv9yFlIouyhsBRKy498/fE68bpS/fs6s0Xz0yLE2MypDBQBZ6cp26kAgal',
-        'base64'
-      )
-    ) //new VersionedTransaction(messageV0)
-
-    console.log('Transaction', transaction)
     const isManualWallet =
       (provider as any).isTrust ||
       (provider as any).isTrustWallet ||
