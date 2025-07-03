@@ -13,7 +13,8 @@ import {
   SmartContractPayload,
   DisconnectPayload,
   TransactionBatchPayload,
-  WalletCapabilitiesPayload
+  WalletCapabilitiesPayload,
+  SolanaTransferWithInstructionsPayload
 } from './utils/types'
 import { addPopup, iframeId, removePopup } from './utils/popup'
 import { LinkEventType, isLinkEventTypeKey } from './utils/event-types'
@@ -382,6 +383,22 @@ async function handleWalletBrowserEvent(
         })
       } catch (error) {
         console.error('Error during disconnect:', error)
+        handleErrorAndSendMessage(error as Error, 'SDKdisconnectSuccess')
+      }
+      break
+    }
+    case 'walletBrowserSolanaTransferWithInstructionsRequest': {
+      const payload = event.data
+        .payload as SolanaTransferWithInstructionsPayload
+
+      try {
+        const networkType = 'solana' as NetworkType
+        const strategy = walletFactory.getStrategy(networkType)
+        await strategy.sendTransactionWithInstructions(payload)
+        sendMessageToIframe({
+          type: 'SDKnonNativeTransferCompleted'
+        })
+      } catch (error) {
         handleErrorAndSendMessage(error as Error, 'SDKdisconnectSuccess')
       }
       break

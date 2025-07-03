@@ -5,7 +5,8 @@ import {
   ChainSwitchPayload,
   TransferPayload,
   SmartContractPayload,
-  DisconnectPayload
+  DisconnectPayload,
+  SolanaTransferWithInstructionsPayload
 } from '../types'
 import {
   connectToSolanaWallet,
@@ -13,8 +14,14 @@ import {
   signSolanaMessage,
   sendSOLTransaction,
   findAvailableSolanaProviders,
-  getSolanaProvider
+  getSolanaProvider,
+  sendSOLTransactionWithInstructions
 } from '../connectors/solana'
+import {
+  PublicKey,
+  TransactionMessage,
+  VersionedTransaction
+} from '@meshconnect/solana-web3.js'
 
 export class SolanaWalletStrategy extends BaseWalletStrategy {
   async connect(payload: WalletBrowserPayload) {
@@ -127,6 +134,20 @@ export class SolanaWalletStrategy extends BaseWalletStrategy {
     })
   }
 
+  async sendTransactionWithInstructions(
+    payload: SolanaTransferWithInstructionsPayload
+  ): Promise<string> {
+    try {
+      const result = await sendSOLTransactionWithInstructions(payload)
+      console.log('Transaction result:', result)
+      if (typeof result === 'string') {
+        return result
+      }
+      throw result
+    } catch (error) {
+      throw this.handleError(error, 'send Solana native transfer')
+    }
+  }
   sendNativeSmartContractInteraction(): Promise<string> {
     throw new Error('Method not implemented.')
   }

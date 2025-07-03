@@ -1,3 +1,5 @@
+import { TransactionInstruction } from '@meshconnect/solana-web3.js'
+
 export type WalletBrowserEventType =
   | WalletBrowserInjectedWalletSelected
   | WalletBrowserSignRequest
@@ -10,6 +12,7 @@ export type WalletBrowserEventType =
   | WalletBrowserDisconnect
   | WalletBrowserTransactionBatch
   | WalletBrowserWalletCapabilities
+  | WalletBrowserSolanaTransferWithInstructionsRequest
 
 const WALLET_BROWSER_EVENT_TYPE_KEYS = [
   'walletBrowserInjectedWalletSelected',
@@ -22,7 +25,8 @@ const WALLET_BROWSER_EVENT_TYPE_KEYS = [
   'walletBrowserNonNativeSmartDeposit',
   'walletBrowserDisconnect',
   'walletBrowserTransactionBatchRequest',
-  'walletBrowserWalletCapabilities'
+  'walletBrowserWalletCapabilities',
+  'walletBrowserSolanaTransferWithInstructionsRequest'
 ] as const
 
 export type NetworkType =
@@ -166,5 +170,17 @@ export interface WalletBrowserWalletCapabilities
   payload: {
     from: string
     chainId: string
+  }
+}
+
+export interface WalletBrowserSolanaTransferWithInstructionsRequest
+  extends WalletBrowserEventBase {
+  type: 'walletBrowserSolanaTransferWithInstructionsRequest'
+  payload: {
+    instructions: TransactionInstruction[]
+    account: string
+    blockhash: string
+    walletName?: string
+    network?: string
   }
 }
