@@ -394,9 +394,12 @@ async function handleWalletBrowserEvent(
       try {
         const networkType = 'solana' as NetworkType
         const strategy = walletFactory.getStrategy(networkType)
-        await strategy.sendTransactionWithInstructions(payload)
+        const result = await strategy.sendTransactionWithInstructions(payload)
         sendMessageToIframe({
-          type: 'SDKnonNativeTransferCompleted'
+          type: 'SDKnonNativeTransferCompleted',
+          payload: {
+            txHash: result
+          }
         })
       } catch (error) {
         handleErrorAndSendMessage(error as Error, 'SDKdisconnectSuccess')

@@ -146,7 +146,7 @@ async function createTransferInstructions(config: TransactionConfig) {
   const toPubkey = new PublicKey(config.toAddress)
   console.log('Sender address:', config.fromAddress)
   console.log('blockhash:', config.blockhash)
-
+  console.log('Config :', config)
   const instructions: TransactionInstruction[] = []
 
   if (!config.tokenMint) {
@@ -164,7 +164,7 @@ async function createTransferInstructions(config: TransactionConfig) {
       connection = new Connection('https://api.devnet.solana.com', 'confirmed')
     } else {
       connection = new Connection(
-        'https://api.mainnet-beta.solana.com',
+        'https://alien-newest-vineyard.solana-mainnet.quiknode.pro/ebe5e35661d7edb7a5e48ab84bd9d477e472a40b/',
         'confirmed'
       )
     }
@@ -172,18 +172,37 @@ async function createTransferInstructions(config: TransactionConfig) {
       fromPubkey,
       { programId: TOKEN_2022_PROGRAM_ID }
     )
-    const tokenProgram = token2022Accounts?.value.length
-      ? TOKEN_2022_PROGRAM_ID
-      : TOKEN_PROGRAM_ID
-    config.tokenProgram = tokenProgram.toBase58()
-
-    // Token transfer
+    console.log(token2022Accounts)
+    token2022Accounts.value.forEach(account => {
+      console.log('Token 2022 account:', account.pubkey.toBase58())
+      console.log('Token 2022 account:', account.pubkey.toBase58())
+    })
     const tokenMintPubkey = new PublicKey(config.tokenMint)
-    const fromTokenAccount = await getAssociatedTokenAddress(
+
+    let fromTokenAccount = await getAssociatedTokenAddress(
       tokenMintPubkey,
       fromPubkey,
-      config.tokenProgram
+      TOKEN_PROGRAM_ID.toBase58()
     )
+
+    const fromTokenAccount2022 = await getAssociatedTokenAddress(
+      tokenMintPubkey,
+      fromPubkey,
+      TOKEN_2022_PROGRAM_ID.toBase58()
+    )
+
+    const tokenProgram = token2022Accounts?.value.filter(
+      x => x.pubkey.toBase58() === fromTokenAccount2022.toBase58()
+    ).length
+      ? TOKEN_2022_PROGRAM_ID
+      : TOKEN_PROGRAM_ID
+
+    fromTokenAccount = await getAssociatedTokenAddress(
+      tokenMintPubkey,
+      fromPubkey,
+      tokenProgram.toBase58()
+    )
+    config.tokenProgram = tokenProgram.toBase58()
 
     const toTokenAccount = await getAssociatedTokenAddress(
       tokenMintPubkey,
@@ -378,7 +397,7 @@ export const sendSOLTransactionWithInstructions = async (
 
     console.log(`Keys resolved from ALTAs: ${intersect.length}`)
     console.log('Address lookup table accounts:', addressLookupTableAccounts)
-    const fromPubkey = new PublicKey(payload.transactionInstructions.account!)
+    const fromPubkey = new PublicKey(transferConfig.fromAddress)
     console.log('From public key:', fromPubkey.toBase58())
 
     const transferInstructions = await createTransferInstructions(
@@ -386,13 +405,14 @@ export const sendSOLTransactionWithInstructions = async (
     )
 
     instructions.push(...transferInstructions)
+    console.log('Instructions:', instructions)
 
     const transaction = new VersionedTransaction(
       new TransactionMessage({
         payerKey: fromPubkey,
         recentBlockhash: payload.transactionInstructions.blockhash,
         instructions: instructions
-      }).compileToV0Message(addressLookupTableAccounts)
+      }).compileToV0Message()
     )
 
     const isManualWallet =
