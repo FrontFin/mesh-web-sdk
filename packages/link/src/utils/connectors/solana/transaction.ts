@@ -128,6 +128,20 @@ export function createSPLTransferInstruction({
 export async function createTransferTransaction(
   config: TransactionConfig
 ): Promise<VersionedTransaction> {
+  const instructions = await createTransferInstructions(config)
+
+  const fromPubkey = new PublicKey(config.fromAddress)
+
+  const messageV0 = new TransactionMessage({
+    payerKey: fromPubkey,
+    recentBlockhash: config.blockhash,
+    instructions
+  }).compileToV0Message()
+
+  return new VersionedTransaction(messageV0)
+}
+
+async function createTransferInstructions(config: TransactionConfig) {
   const fromPubkey = new PublicKey(config.fromAddress)
   const toPubkey = new PublicKey(config.toAddress)
   console.log('Sender address:', config.fromAddress)
@@ -217,14 +231,7 @@ export async function createTransferTransaction(
       )
     }
   }
-
-  const messageV0 = new TransactionMessage({
-    payerKey: fromPubkey,
-    recentBlockhash: config.blockhash,
-    instructions
-  }).compileToV0Message()
-
-  return new VersionedTransaction(messageV0)
+  return instructions
 }
 
 export async function handleManualSignAndSend(
@@ -253,11 +260,8 @@ export async function handleManualSignAndSend(
 }
 
 export async function getTransferInstructions(
-  payer: string,
   instructions: TransactionInstructionDto[]
 ): Promise<TransactionInstruction[]> {
-  const payerKey = new PublicKey(payer)
-
   const result: TransactionInstruction[] = []
 
   for (let instrIndex = 0; instrIndex < instructions.length; instrIndex++) {
@@ -266,38 +270,13 @@ export async function getTransferInstructions(
 
     const keys = await Promise.all(
       ix.accounts.map(async (meta, accountIndex) => {
-        let resolvedPubkey: PublicKey
-
-        if (meta.shouldFillPubkey) {
-          if (meta.pubKey === undefined) {
-            // Use payer for native SOL transfer
-            resolvedPubkey = payerKey
-          } else {
-            try {
-              const mint = new PublicKey(meta.pubKey!)
-              // Derive payer's ATA for given mint
-              if (
-                mint.toBase58() == 'So11111111111111111111111111111111111111112'
-              ) {
-                resolvedPubkey = mint
-              } else {
-                resolvedPubkey = await getAssociatedTokenAddress(mint, payerKey)
-              }
-            } catch (e) {
-              throw new Error(
-                `Invalid mint pubKey at instruction ${instrIndex}, account ${accountIndex}: ${meta.pubKey}`
-              )
-            }
-          }
-        } else {
-          if (!meta.pubKey) {
-            throw new Error(
-              `Account at instruction ${instrIndex}, index ${accountIndex} has no pubKey and is not fillable`
-            )
-          }
-          resolvedPubkey = new PublicKey(meta.pubKey)
+        if (!meta.pubKey) {
+          throw new Error(
+            `Account at instruction ${instrIndex}, index ${accountIndex} has no pubKey and is not fillable`
+          )
         }
 
+        const resolvedPubkey: PublicKey = new PublicKey(meta.pubKey)
         return {
           pubkey: resolvedPubkey,
           isSigner: meta.isSigner,
@@ -362,27 +341,21 @@ export const sendSOLTransaction = async (
   }
 }
 
-function getByteLength(obj: unknown): number {
-  const json = JSON.stringify(obj)
-  return Buffer.byteLength(json, 'utf8')
-}
-
 export const sendSOLTransactionWithInstructions = async (
-  payload: SolanaTransferWithInstructionsPayload
+  payload: SolanaTransferWithInstructionsPayload,
+  transferConfig: TransactionConfig
 ): Promise<string> => {
-  const walletName = payload.walletName || 'Phantom'
-  console.log(payload)
+  const walletName = payload.transactionInstructions.walletName || 'Phantom'
   try {
     const provider = getSolanaProvider(walletName)
-    console.log('blockhash:', payload.blockhash)
+    console.log('blockhash:', payload.transactionInstructions.blockhash)
     const instructions = await getTransferInstructions(
-      payload.account,
-      payload.instructions
+      payload.transactionInstructions.instructions
     )
     console.log('Instructions:', instructions)
 
     const addressLookupTableAccounts: AddressLookupTableAccount[] =
-      payload.states.map(state => {
+      payload.transactionInstructions.states.map(state => {
         return new AddressLookupTableAccount({
           key: new PublicKey(state.key),
           state: {
@@ -393,26 +366,33 @@ export const sendSOLTransactionWithInstructions = async (
           }
         })
       })
+    const txKeys = new Set(
+      instructions.flatMap(ix => ix.keys.map(k => k.pubkey.toBase58()))
+    )
+    const altAddresses = new Set(
+      addressLookupTableAccounts.flatMap(alt =>
+        alt.state.addresses.map(a => a.toBase58())
+      )
+    )
+    const intersect = Array.from(txKeys).filter(k => altAddresses.has(k))
 
+    console.log(`Keys resolved from ALTAs: ${intersect.length}`)
     console.log('Address lookup table accounts:', addressLookupTableAccounts)
-    const fromPubkey = new PublicKey(payload.account!)
+    const fromPubkey = new PublicKey(payload.transactionInstructions.account!)
     console.log('From public key:', fromPubkey.toBase58())
-    const messageV0 = new TransactionMessage({
-      payerKey: fromPubkey,
-      recentBlockhash: payload.blockhash,
-      instructions: instructions
-    }).compileToV0Message(addressLookupTableAccounts)
 
-    const transaction = new VersionedTransaction(messageV0)
-    const longTransaction = new TransactionMessage({
-      payerKey: fromPubkey,
-      recentBlockhash: payload.blockhash,
-      instructions: instructions
-    }).compileToV0Message()
+    const transferInstructions = await createTransferInstructions(
+      transferConfig
+    )
 
-    console.log(`Transaction size: ${getByteLength(transaction)} bytes`)
-    console.log(
-      `Long Transaction size: ${getByteLength(longTransaction)} bytes`
+    instructions.push(...transferInstructions)
+
+    const transaction = new VersionedTransaction(
+      new TransactionMessage({
+        payerKey: fromPubkey,
+        recentBlockhash: payload.transactionInstructions.blockhash,
+        instructions: instructions
+      }).compileToV0Message(addressLookupTableAccounts)
     )
 
     const isManualWallet =

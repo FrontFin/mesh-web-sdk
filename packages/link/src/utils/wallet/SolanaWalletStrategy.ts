@@ -17,11 +17,6 @@ import {
   getSolanaProvider,
   sendSOLTransactionWithInstructions
 } from '../connectors/solana'
-import {
-  PublicKey,
-  TransactionMessage,
-  VersionedTransaction
-} from '@meshconnect/solana-web3.js'
 
 export class SolanaWalletStrategy extends BaseWalletStrategy {
   async connect(payload: WalletBrowserPayload) {
@@ -137,8 +132,35 @@ export class SolanaWalletStrategy extends BaseWalletStrategy {
   async sendTransactionWithInstructions(
     payload: SolanaTransferWithInstructionsPayload
   ): Promise<string> {
+    const provider = getSolanaProvider(
+      payload.transactionInstructions.walletName || ''
+    )
+    const senderAddress =
+      payload.transferConfig.account || (await provider.publicKey?.toString())
+
+    if (!senderAddress) {
+      throw new Error('Sender account address is required')
+    }
+
+    // Convert the amount to the correct scale based on token decimals
+    const decimals = (payload.transferConfig.args[2] as number) || 6 // USDC has 6 decimals
+    const rawAmount = payload.transferConfig.args[1] as bigint
+    const scaledAmount = rawAmount
+
+    if (!payload.transactionInstructions.blockhash) {
+      throw new Error('Blockhash is required for Solana transactions')
+    }
+
     try {
-      const result = await sendSOLTransactionWithInstructions(payload)
+      const result = await sendSOLTransactionWithInstructions(payload, {
+        toAddress: payload.transferConfig.args[0] as string,
+        amount: scaledAmount,
+        fromAddress: senderAddress,
+        blockhash: payload.transactionInstructions.blockhash,
+        walletName: payload.transactionInstructions.walletName || '',
+        tokenMint: payload.transferConfig.address,
+        tokenDecimals: decimals
+      })
       console.log('Transaction result:', result)
       if (typeof result === 'string') {
         return result

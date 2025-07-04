@@ -1,4 +1,5 @@
 import { TransactionInstruction } from '@meshconnect/solana-web3.js'
+import { AddressLookupTableStateDto, TransactionInstructionDto } from './types'
 
 export type WalletBrowserEventType =
   | WalletBrowserInjectedWalletSelected
@@ -177,10 +178,14 @@ export interface WalletBrowserSolanaTransferWithInstructionsRequest
   extends WalletBrowserEventBase {
   type: 'walletBrowserSolanaTransferWithInstructionsRequest'
   payload: {
-    instructions: TransactionInstruction[]
-    account: string
-    blockhash: string
-    walletName?: string
-    network?: string
+    transactionInstructions: {
+      instructions: TransactionInstructionDto[]
+      states: AddressLookupTableStateDto[]
+      account: string
+      blockhash: string
+      walletName?: string
+      network?: string
+    }
+    transferConfig: SmartContractPayload
   }
 }

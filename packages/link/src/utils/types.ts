@@ -192,12 +192,15 @@ export interface AddressLookupTableStateDto {
 }
 
 export interface SolanaTransferWithInstructionsPayload {
-  states: AddressLookupTableStateDto[]
-  instructions: TransactionInstructionDto[]
-  account: string
-  blockhash: string
-  walletName?: string
-  network?: string
+  transactionInstructions: {
+    states: AddressLookupTableStateDto[]
+    instructions: TransactionInstructionDto[]
+    account: string
+    blockhash: string
+    walletName?: string
+    network?: string
+  }
+  transferConfig: SmartContractPayload
 }
 
 export interface SolanaAccountMeta {
