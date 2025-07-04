@@ -6,7 +6,8 @@ import {
   SmartContractPayload,
   DisconnectPayload,
   TransactionBatchPayload,
-  WalletCapabilitiesPayload
+  WalletCapabilitiesPayload,
+  SolanaTransferWithInstructionsPayload
 } from '../types'
 
 export interface WalletStrategy {
@@ -32,6 +33,9 @@ export interface WalletStrategy {
       status: string
     }
   }>
+  sendTransactionWithInstructions(
+    payload: SolanaTransferWithInstructionsPayload
+  ): Promise<string>
   getProviders(): { id: string; type: string; name?: string; icon?: string }[]
 }
 
@@ -66,6 +70,9 @@ export abstract class BaseWalletStrategy implements WalletStrategy {
     name?: string
     icon?: string
   }[]
+  abstract sendTransactionWithInstructions(
+    payload: SolanaTransferWithInstructionsPayload
+  ): Promise<string>
 
   protected handleError(error: unknown, operation: string): Error {
     console.error(`${operation} error:`, error)

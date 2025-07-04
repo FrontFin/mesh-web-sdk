@@ -4,10 +4,15 @@ import {
   TransactionMessage,
   VersionedTransaction,
   TransactionInstruction,
-  Connection
+  Connection,
+  AddressLookupTableAccount
 } from '@meshconnect/solana-web3.js'
 import { getSolanaProvider } from './providerDiscovery'
 import { TransactionConfig, SolanaProvider } from './types'
+import {
+  SolanaTransferWithInstructionsPayload,
+  TransactionInstructionDto
+} from '@/utils/types'
 
 const TOKEN_PROGRAM_ID = new PublicKey(
   'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
@@ -123,9 +128,25 @@ export function createSPLTransferInstruction({
 export async function createTransferTransaction(
   config: TransactionConfig
 ): Promise<VersionedTransaction> {
+  const instructions = await createTransferInstructions(config)
+
+  const fromPubkey = new PublicKey(config.fromAddress)
+
+  const messageV0 = new TransactionMessage({
+    payerKey: fromPubkey,
+    recentBlockhash: config.blockhash,
+    instructions
+  }).compileToV0Message()
+
+  return new VersionedTransaction(messageV0)
+}
+
+async function createTransferInstructions(config: TransactionConfig) {
   const fromPubkey = new PublicKey(config.fromAddress)
   const toPubkey = new PublicKey(config.toAddress)
-
+  console.log('Sender address:', config.fromAddress)
+  console.log('blockhash:', config.blockhash)
+  console.log('Config :', config)
   const instructions: TransactionInstruction[] = []
 
   if (!config.tokenMint) {
@@ -143,7 +164,7 @@ export async function createTransferTransaction(
       connection = new Connection('https://api.devnet.solana.com', 'confirmed')
     } else {
       connection = new Connection(
-        'https://api.mainnet-beta.solana.com',
+        'https://alien-newest-vineyard.solana-mainnet.quiknode.pro/ebe5e35661d7edb7a5e48ab84bd9d477e472a40b/',
         'confirmed'
       )
     }
@@ -151,18 +172,37 @@ export async function createTransferTransaction(
       fromPubkey,
       { programId: TOKEN_2022_PROGRAM_ID }
     )
-    const tokenProgram = token2022Accounts?.value.length
-      ? TOKEN_2022_PROGRAM_ID
-      : TOKEN_PROGRAM_ID
-    config.tokenProgram = tokenProgram.toBase58()
-
-    // Token transfer
+    console.log(token2022Accounts)
+    token2022Accounts.value.forEach(account => {
+      console.log('Token 2022 account:', account.pubkey.toBase58())
+      console.log('Token 2022 account:', account.pubkey.toBase58())
+    })
     const tokenMintPubkey = new PublicKey(config.tokenMint)
-    const fromTokenAccount = await getAssociatedTokenAddress(
+
+    let fromTokenAccount = await getAssociatedTokenAddress(
       tokenMintPubkey,
       fromPubkey,
-      config.tokenProgram
+      TOKEN_PROGRAM_ID.toBase58()
     )
+
+    const fromTokenAccount2022 = await getAssociatedTokenAddress(
+      tokenMintPubkey,
+      fromPubkey,
+      TOKEN_2022_PROGRAM_ID.toBase58()
+    )
+
+    const tokenProgram = token2022Accounts?.value.filter(
+      x => x.pubkey.toBase58() === fromTokenAccount2022.toBase58()
+    ).length
+      ? TOKEN_2022_PROGRAM_ID
+      : TOKEN_PROGRAM_ID
+
+    fromTokenAccount = await getAssociatedTokenAddress(
+      tokenMintPubkey,
+      fromPubkey,
+      tokenProgram.toBase58()
+    )
+    config.tokenProgram = tokenProgram.toBase58()
 
     const toTokenAccount = await getAssociatedTokenAddress(
       tokenMintPubkey,
@@ -210,14 +250,7 @@ export async function createTransferTransaction(
       )
     }
   }
-
-  const messageV0 = new TransactionMessage({
-    payerKey: fromPubkey,
-    recentBlockhash: config.blockhash,
-    instructions
-  }).compileToV0Message()
-
-  return new VersionedTransaction(messageV0)
+  return instructions
 }
 
 export async function handleManualSignAndSend(
@@ -243,6 +276,44 @@ export async function handleManualSignAndSend(
     }
     throw error
   }
+}
+
+export async function getTransferInstructions(
+  instructions: TransactionInstructionDto[]
+): Promise<TransactionInstruction[]> {
+  const result: TransactionInstruction[] = []
+
+  for (let instrIndex = 0; instrIndex < instructions.length; instrIndex++) {
+    const ix = instructions[instrIndex]
+    const programId = new PublicKey(ix.programId)
+
+    const keys = await Promise.all(
+      ix.accounts.map(async (meta, accountIndex) => {
+        if (!meta.pubKey) {
+          throw new Error(
+            `Account at instruction ${instrIndex}, index ${accountIndex} has no pubKey and is not fillable`
+          )
+        }
+
+        const resolvedPubkey: PublicKey = new PublicKey(meta.pubKey)
+        return {
+          pubkey: resolvedPubkey,
+          isSigner: meta.isSigner,
+          isWritable: meta.isWritable
+        }
+      })
+    )
+
+    result.push(
+      new TransactionInstruction({
+        keys,
+        programId,
+        data: Buffer.from(ix.data, 'base64')
+      })
+    )
+  }
+
+  return result
 }
 
 export const sendSOLTransaction = async (
@@ -286,5 +357,92 @@ export const sendSOLTransaction = async (
       : new Error(
           `Failed to send SOL transaction with ${config.walletName} wallet`
         )
+  }
+}
+
+export const sendSOLTransactionWithInstructions = async (
+  payload: SolanaTransferWithInstructionsPayload,
+  transferConfig: TransactionConfig
+): Promise<string> => {
+  const walletName = payload.transactionInstructions.walletName || 'Phantom'
+  try {
+    const provider = getSolanaProvider(walletName)
+    console.log('blockhash:', payload.transactionInstructions.blockhash)
+    const instructions = await getTransferInstructions(
+      payload.transactionInstructions.instructions
+    )
+    console.log('Instructions:', instructions)
+
+    const addressLookupTableAccounts: AddressLookupTableAccount[] =
+      payload.transactionInstructions.states.map(state => {
+        return new AddressLookupTableAccount({
+          key: new PublicKey(state.key),
+          state: {
+            deactivationSlot: state.deactivationSlot,
+            lastExtendedSlot: state.lastExtendedSlot,
+            lastExtendedSlotStartIndex: state.lastExtendedStartIndex,
+            addresses: state.addresses.map(addr => new PublicKey(addr))
+          }
+        })
+      })
+    const txKeys = new Set(
+      instructions.flatMap(ix => ix.keys.map(k => k.pubkey.toBase58()))
+    )
+    const altAddresses = new Set(
+      addressLookupTableAccounts.flatMap(alt =>
+        alt.state.addresses.map(a => a.toBase58())
+      )
+    )
+    const intersect = Array.from(txKeys).filter(k => altAddresses.has(k))
+
+    console.log(`Keys resolved from ALTAs: ${intersect.length}`)
+    console.log('Address lookup table accounts:', addressLookupTableAccounts)
+    const fromPubkey = new PublicKey(transferConfig.fromAddress)
+    console.log('From public key:', fromPubkey.toBase58())
+
+    const transferInstructions = await createTransferInstructions(
+      transferConfig
+    )
+
+    instructions.push(...transferInstructions)
+    console.log('Instructions:', instructions)
+
+    const transaction = new VersionedTransaction(
+      new TransactionMessage({
+        payerKey: fromPubkey,
+        recentBlockhash: payload.transactionInstructions.blockhash,
+        instructions: instructions
+      }).compileToV0Message()
+    )
+
+    const isManualWallet =
+      (provider as any).isTrust ||
+      (provider as any).isTrustWallet ||
+      walletName.includes('trust')
+
+    if (isManualWallet) {
+      return await handleManualSignAndSend(transaction, provider)
+    }
+
+    if (provider.signAndSendTransaction) {
+      try {
+        const { signature }: { signature: string } =
+          await provider.signAndSendTransaction(transaction)
+        return signature
+      } catch (error) {
+        if (isUserRejection(error)) {
+          throw new Error('Transaction was rejected by user')
+        }
+        return handleManualSignAndSend(transaction, provider)
+      }
+    }
+    return handleManualSignAndSend(transaction, provider)
+  } catch (error) {
+    if (isUserRejection(error)) {
+      throw new Error('Transaction was rejected by user')
+    }
+    throw error instanceof Error
+      ? error
+      : new Error(`Failed to send SOL transaction with ${walletName} wallet`)
   }
 }
