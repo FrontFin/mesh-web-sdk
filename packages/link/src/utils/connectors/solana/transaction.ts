@@ -166,6 +166,8 @@ export async function createTransferTransaction(
       ? TOKEN_2022_PROGRAM_ID
       : TOKEN_PROGRAM_ID
 
+    config.tokenProgram = tokenProgram.toBase58()
+
     // Token transfer
     const fromTokenAccount = await getAssociatedTokenAddress(
       tokenMintPubkey,
@@ -184,7 +186,8 @@ export async function createTransferTransaction(
         await connection.getTokenAccountsByOwner(toPubkey, {
           programId: tokenProgram
         })
-      )?.value.length
+      )?.value.filter(x => x.pubkey.toBase58() === toTokenAccount.toBase58())
+        .length
     ) {
       instructions.push(
         createTokenAccountInstruction(
