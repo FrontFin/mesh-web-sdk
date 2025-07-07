@@ -144,9 +144,6 @@ export async function createTransferTransaction(
 async function createTransferInstructions(config: TransactionConfig) {
   const fromPubkey = new PublicKey(config.fromAddress)
   const toPubkey = new PublicKey(config.toAddress)
-  console.log('Sender address:', config.fromAddress)
-  console.log('blockhash:', config.blockhash)
-  console.log('Config :', config)
   const instructions: TransactionInstruction[] = []
 
   if (!config.tokenMint) {
@@ -164,7 +161,7 @@ async function createTransferInstructions(config: TransactionConfig) {
       connection = new Connection('https://api.devnet.solana.com', 'confirmed')
     } else {
       connection = new Connection(
-        'https://alien-newest-vineyard.solana-mainnet.quiknode.pro/ebe5e35661d7edb7a5e48ab84bd9d477e472a40b/',
+        'https://api.mainnet-beta.solana.com',
         'confirmed'
       )
     }
@@ -172,11 +169,6 @@ async function createTransferInstructions(config: TransactionConfig) {
       fromPubkey,
       { programId: TOKEN_2022_PROGRAM_ID }
     )
-    console.log(token2022Accounts)
-    token2022Accounts.value.forEach(account => {
-      console.log('Token 2022 account:', account.pubkey.toBase58())
-      console.log('Token 2022 account:', account.pubkey.toBase58())
-    })
     const tokenMintPubkey = new PublicKey(config.tokenMint)
 
     let fromTokenAccount = await getAssociatedTokenAddress(
@@ -367,11 +359,9 @@ export const sendSOLTransactionWithInstructions = async (
   const walletName = payload.transactionInstructions.walletName || 'Phantom'
   try {
     const provider = getSolanaProvider(walletName)
-    console.log('blockhash:', payload.transactionInstructions.blockhash)
     const instructions = await getTransferInstructions(
       payload.transactionInstructions.instructions
     )
-    console.log('Instructions:', instructions)
 
     const addressLookupTableAccounts: AddressLookupTableAccount[] =
       payload.transactionInstructions.states.map(state => {
@@ -385,27 +375,14 @@ export const sendSOLTransactionWithInstructions = async (
           }
         })
       })
-    const txKeys = new Set(
-      instructions.flatMap(ix => ix.keys.map(k => k.pubkey.toBase58()))
-    )
-    const altAddresses = new Set(
-      addressLookupTableAccounts.flatMap(alt =>
-        alt.state.addresses.map(a => a.toBase58())
-      )
-    )
-    const intersect = Array.from(txKeys).filter(k => altAddresses.has(k))
 
-    console.log(`Keys resolved from ALTAs: ${intersect.length}`)
-    console.log('Address lookup table accounts:', addressLookupTableAccounts)
     const fromPubkey = new PublicKey(transferConfig.fromAddress)
-    console.log('From public key:', fromPubkey.toBase58())
 
     const transferInstructions = await createTransferInstructions(
       transferConfig
     )
 
     instructions.push(...transferInstructions)
-    console.log('Instructions:', instructions)
 
     const transaction = new VersionedTransaction(
       new TransactionMessage({

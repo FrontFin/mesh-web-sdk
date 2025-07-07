@@ -161,7 +161,6 @@ export class SolanaWalletStrategy extends BaseWalletStrategy {
         tokenMint: payload.transferConfig.address,
         tokenDecimals: decimals
       })
-      console.log('Transaction result:', result)
       if (typeof result === 'string') {
         return result
       }
