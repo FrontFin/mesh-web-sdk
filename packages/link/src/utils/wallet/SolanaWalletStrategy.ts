@@ -110,7 +110,7 @@ export class SolanaWalletStrategy extends BaseWalletStrategy {
     }
 
     // Convert the amount to the correct scale based on token decimals
-    const decimals = (payload.args[2] as number) || 6 // USDC has 6 decimals
+    const decimals = (payload.args[2] as number) || 9
     const rawAmount = payload.args[1] as bigint
     const scaledAmount = rawAmount
 
