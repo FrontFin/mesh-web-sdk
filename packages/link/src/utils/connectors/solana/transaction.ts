@@ -9,6 +9,7 @@ import {
 import { getSolanaProvider } from './providerDiscovery'
 import { TransactionConfig, SolanaProvider } from './types'
 import {
+  SolanaAccountMeta,
   SolanaTransferWithInstructionsPayload,
   TransactionInstructionDto
 } from '@/utils/types'
@@ -273,20 +274,22 @@ export async function getTransferInstructions(
     const ix = instructions[instrIndex]
     const programId = new PublicKey(ix.programId)
 
-    const keys = ix.accounts.map((meta, accountIndex) => {
-      if (!meta.pubKey) {
-        throw new Error(
-          `Account at instruction ${instrIndex}, index ${accountIndex} has no pubKey and is not fillable`
-        )
-      }
+    const keys = ix.accounts.map(
+      (meta: SolanaAccountMeta, accountIndex: number) => {
+        if (!meta.pubKey) {
+          throw new Error(
+            `Account at instruction ${instrIndex}, index ${accountIndex} has no pubKey and is not fillable`
+          )
+        }
 
-      const resolvedPubkey: PublicKey = new PublicKey(meta.pubKey)
-      return {
-        pubkey: resolvedPubkey,
-        isSigner: meta.isSigner,
-        isWritable: meta.isWritable
+        const resolvedPubkey: PublicKey = new PublicKey(meta.pubKey)
+        return {
+          pubkey: resolvedPubkey,
+          isSigner: meta.isSigner,
+          isWritable: meta.isWritable
+        }
       }
-    })
+    )
 
     result.push(
       new TransactionInstruction({
