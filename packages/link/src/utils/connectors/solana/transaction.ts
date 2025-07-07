@@ -171,12 +171,6 @@ async function createTransferInstructions(config: TransactionConfig) {
     )
     const tokenMintPubkey = new PublicKey(config.tokenMint)
 
-    let fromTokenAccount = await getAssociatedTokenAddress(
-      tokenMintPubkey,
-      fromPubkey,
-      TOKEN_PROGRAM_ID.toBase58()
-    )
-
     const fromTokenAccount2022 = await getAssociatedTokenAddress(
       tokenMintPubkey,
       fromPubkey,
@@ -189,7 +183,7 @@ async function createTransferInstructions(config: TransactionConfig) {
       ? TOKEN_2022_PROGRAM_ID
       : TOKEN_PROGRAM_ID
 
-    fromTokenAccount = await getAssociatedTokenAddress(
+    const fromTokenAccount = await getAssociatedTokenAddress(
       tokenMintPubkey,
       fromPubkey,
       tokenProgram.toBase58()
@@ -207,7 +201,8 @@ async function createTransferInstructions(config: TransactionConfig) {
         await connection.getTokenAccountsByOwner(toPubkey, {
           programId: tokenProgram
         })
-      )?.value.length
+      )?.value.filter(x => x.pubkey.toBase58() === toTokenAccount.toBase58())
+        .length
     ) {
       instructions.push(
         createTokenAccountInstruction(
@@ -362,19 +357,6 @@ export const sendSOLTransactionWithInstructions = async (
     const instructions = await getTransferInstructions(
       payload.transactionInstructions.instructions
     )
-
-    const addressLookupTableAccounts: AddressLookupTableAccount[] =
-      payload.transactionInstructions.states.map(state => {
-        return new AddressLookupTableAccount({
-          key: new PublicKey(state.key),
-          state: {
-            deactivationSlot: state.deactivationSlot,
-            lastExtendedSlot: state.lastExtendedSlot,
-            lastExtendedSlotStartIndex: state.lastExtendedStartIndex,
-            addresses: state.addresses.map(addr => new PublicKey(addr))
-          }
-        })
-      })
 
     const fromPubkey = new PublicKey(transferConfig.fromAddress)
 
