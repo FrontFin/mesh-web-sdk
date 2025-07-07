@@ -1,6 +1,5 @@
 import type { BrokerType } from '@meshconnect/node-api'
 import { SessionSummary, LinkEventType } from './event-types'
-import { TransactionInstruction } from '@meshconnect/solana-web3.js'
 
 export type EventType =
   | 'brokerageAccountAccessToken'

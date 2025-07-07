@@ -7,8 +7,7 @@ import {
   SmartContractPayload,
   DisconnectPayload,
   TransactionBatchPayload,
-  WalletCapabilitiesPayload,
-  SolanaTransferWithInstructionsPayload
+  WalletCapabilitiesPayload
 } from '../types'
 import {
   connectToEVMWallet,
