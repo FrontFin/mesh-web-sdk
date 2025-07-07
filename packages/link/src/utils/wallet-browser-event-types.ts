@@ -1,4 +1,3 @@
-import { TransactionInstruction } from '@meshconnect/solana-web3.js'
 import { AddressLookupTableStateDto, TransactionInstructionDto } from './types'
 
 export type WalletBrowserEventType =
