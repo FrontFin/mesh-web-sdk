@@ -349,8 +349,8 @@ export const sendSOLTransactionWithInstructions = async (
   transferConfig: TransactionConfig
 ): Promise<string> => {
   const walletName = payload.transactionInstructions.walletName || 'Phantom'
+
   try {
-    const provider = getSolanaProvider(walletName)
     const instructions = await getTransferInstructions(
       payload.transactionInstructions.instructions
     )
@@ -371,28 +371,7 @@ export const sendSOLTransactionWithInstructions = async (
       }).compileToV0Message()
     )
 
-    const isManualWallet =
-      (provider as any).isTrust ||
-      (provider as any).isTrustWallet ||
-      walletName.includes('trust')
-
-    if (isManualWallet) {
-      return await handleManualSignAndSend(transaction, provider)
-    }
-
-    if (provider.signAndSendTransaction) {
-      try {
-        const { signature }: { signature: string } =
-          await provider.signAndSendTransaction(transaction)
-        return signature
-      } catch (error) {
-        if (isUserRejection(error)) {
-          throw new Error('Transaction was rejected by user')
-        }
-        return handleManualSignAndSend(transaction, provider)
-      }
-    }
-    return handleManualSignAndSend(transaction, provider)
+    return await sendSolanaTransfer(walletName, transaction)
   } catch (error) {
     if (isUserRejection(error)) {
       throw new Error('Transaction was rejected by user')
@@ -401,4 +380,33 @@ export const sendSOLTransactionWithInstructions = async (
       ? error
       : new Error(`Failed to send SOL transaction with ${walletName} wallet`)
   }
+}
+
+export const sendSolanaTransfer = async (
+  walletName: string,
+  transaction: VersionedTransaction
+): Promise<string> => {
+  const provider = getSolanaProvider(walletName)
+  const isManualWallet =
+    (provider as any).isTrust ||
+    (provider as any).isTrustWallet ||
+    walletName.includes('trust')
+
+  if (isManualWallet) {
+    return await handleManualSignAndSend(transaction, provider)
+  }
+
+  if (provider.signAndSendTransaction) {
+    try {
+      const { signature }: { signature: string } =
+        await provider.signAndSendTransaction(transaction)
+      return signature
+    } catch (error) {
+      if (isUserRejection(error)) {
+        throw new Error('Transaction was rejected by user')
+      }
+      return handleManualSignAndSend(transaction, provider)
+    }
+  }
+  return handleManualSignAndSend(transaction, provider)
 }
