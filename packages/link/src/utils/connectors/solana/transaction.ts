@@ -12,7 +12,7 @@ import {
   SolanaAccountMeta,
   SolanaTransferWithInstructionsPayload,
   TransactionInstructionDto
-} from '../../utils/types'
+} from '../../../utils/types'
 
 const TOKEN_PROGRAM_ID = new PublicKey(
   'TokenkegQfeZyiNwAJbNbGKPFXCWuBvf9Ss623VQ5DA'
