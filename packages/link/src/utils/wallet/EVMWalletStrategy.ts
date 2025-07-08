@@ -23,6 +23,9 @@ import {
 } from '../connectors/evm'
 
 export class EVMWalletStrategy extends BaseWalletStrategy {
+  sendTransactionWithInstructions(): Promise<string> {
+    throw new Error('Method not implemented.')
+  }
   async connect(payload: WalletBrowserPayload) {
     try {
       const result = await connectToEVMWallet(

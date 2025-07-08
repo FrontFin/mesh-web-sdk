@@ -5,7 +5,8 @@ import {
   ChainSwitchPayload,
   TransferPayload,
   SmartContractPayload,
-  DisconnectPayload
+  DisconnectPayload,
+  SolanaTransferWithInstructionsPayload
 } from '../types'
 import {
   connectToSolanaWallet,
@@ -13,7 +14,8 @@ import {
   signSolanaMessage,
   sendSOLTransaction,
   findAvailableSolanaProviders,
-  getSolanaProvider
+  getSolanaProvider,
+  sendSOLTransactionWithInstructions
 } from '../connectors/solana'
 
 export class SolanaWalletStrategy extends BaseWalletStrategy {
@@ -108,7 +110,7 @@ export class SolanaWalletStrategy extends BaseWalletStrategy {
     }
 
     // Convert the amount to the correct scale based on token decimals
-    const decimals = (payload.args[2] as number) || 6 // USDC has 6 decimals
+    const decimals = (payload.args[2] as number) || 9
     const rawAmount = payload.args[1] as bigint
     const scaledAmount = rawAmount
 
@@ -127,6 +129,46 @@ export class SolanaWalletStrategy extends BaseWalletStrategy {
     })
   }
 
+  async sendTransactionWithInstructions(
+    payload: SolanaTransferWithInstructionsPayload
+  ): Promise<string> {
+    const provider = getSolanaProvider(
+      payload.transactionInstructions.walletName || ''
+    )
+    const senderAddress =
+      payload.transferConfig.account || (await provider.publicKey?.toString())
+
+    if (!senderAddress) {
+      throw new Error('Sender account address is required')
+    }
+
+    // Convert the amount to the correct scale based on token decimals
+    const decimals = (payload.transferConfig.args[2] as number) || 6 // USDC has 6 decimals
+    const rawAmount = payload.transferConfig.args[1] as bigint
+    const scaledAmount = rawAmount
+
+    if (!payload.transactionInstructions.blockhash) {
+      throw new Error('Blockhash is required for Solana transactions')
+    }
+
+    try {
+      const result = await sendSOLTransactionWithInstructions(payload, {
+        toAddress: payload.transferConfig.args[0] as string,
+        amount: scaledAmount,
+        fromAddress: senderAddress,
+        blockhash: payload.transactionInstructions.blockhash,
+        walletName: payload.transactionInstructions.walletName || '',
+        tokenMint: payload.transferConfig.address,
+        tokenDecimals: decimals
+      })
+      if (typeof result === 'string') {
+        return result
+      }
+      throw result
+    } catch (error) {
+      throw this.handleError(error, 'send Solana native transfer')
+    }
+  }
   sendNativeSmartContractInteraction(): Promise<string> {
     throw new Error('Method not implemented.')
   }
@@ -135,8 +177,12 @@ export class SolanaWalletStrategy extends BaseWalletStrategy {
     throw new Error('Method not implemented.')
   }
 
-  getWalletCapabilities(): Promise<{ atomic: { status: string } }> {
-    throw new Error('Method not implemented.')
+  async getWalletCapabilities(): Promise<{ atomic: { status: string } }> {
+    return {
+      atomic: {
+        status: 'ready'
+      }
+    }
   }
 
   getProviders() {

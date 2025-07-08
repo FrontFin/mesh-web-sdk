@@ -181,6 +181,40 @@ export interface DisconnectPayload {
   walletName?: string
 }
 
+export interface AddressLookupTableStateDto {
+  deactivationSlot: bigint
+  lastExtendedSlot: number
+  lastExtendedStartIndex: number
+  key: string
+  authority?: string
+  addresses: string[]
+}
+
+export interface SolanaTransferWithInstructionsPayload {
+  transactionInstructions: {
+    states: AddressLookupTableStateDto[]
+    instructions: TransactionInstructionDto[]
+    account: string
+    blockhash: string
+    walletName?: string
+    network?: string
+  }
+  transferConfig: SmartContractPayload
+}
+
+export interface SolanaAccountMeta {
+  shouldFillPubkey: boolean
+  pubKey: string | null
+  isWritable: boolean
+  isSigner: boolean
+}
+
+export interface TransactionInstructionDto {
+  programId: string
+  accounts: SolanaAccountMeta[]
+  data: string
+}
+
 export interface LinkOptions {
   /**
    * Client ID that can be obtained at https://dashboard.meshconnect.com/company/keys
