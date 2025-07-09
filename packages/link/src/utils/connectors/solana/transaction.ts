@@ -161,7 +161,7 @@ async function createTransferInstructions(config: TransactionConfig) {
       connection = new Connection('https://api.devnet.solana.com', 'confirmed')
     } else {
       connection = new Connection(
-        'https://api.mainnet-beta.solana.com',
+        'https://alien-newest-vineyard.solana-mainnet.quiknode.pro/ebe5e35661d7edb7a5e48ab84bd9d477e472a40b',
         'confirmed'
       )
     }
