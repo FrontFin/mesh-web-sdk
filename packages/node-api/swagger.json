@@ -598,7 +598,7 @@
                   }
                 ]
               },
-              "example": {"userId":"UserId","configurationId":"18a20b11-e47f-43b9-8546-94284e9ee547","restrictMultipleAccounts":true,"transferOptions":{"toAddresses":[{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"ETH","address":"0x00000000000000000000000"},{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"USDC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"MATIC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDC","address":"0x00000000000000000000000"}],"amountInFiat":10,"isInclusiveFeeEnabled":false},"disableApiKeyGeneration":false,"generatePayLink":false}
+              "example": {"userId":"UserId","configurationId":"18a20b11-e47f-43b9-8546-94284e9ee547","restrictMultipleAccounts":true,"transferOptions":{"toAddresses":[{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"ETH","address":"0x00000000000000000000000"},{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"USDC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"MATIC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDC","address":"0x00000000000000000000000"}],"amountInFiat":10,"isInclusiveFeeEnabled":false,"generatePayLink":false},"disableApiKeyGeneration":false}
             },
             "text/json": {
               "schema": {
@@ -608,7 +608,7 @@
                   }
                 ]
               },
-              "example": {"userId":"UserId","configurationId":"18a20b11-e47f-43b9-8546-94284e9ee547","restrictMultipleAccounts":true,"transferOptions":{"toAddresses":[{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"ETH","address":"0x00000000000000000000000"},{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"USDC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"MATIC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDC","address":"0x00000000000000000000000"}],"amountInFiat":10,"isInclusiveFeeEnabled":false},"disableApiKeyGeneration":false,"generatePayLink":false}
+              "example": {"userId":"UserId","configurationId":"18a20b11-e47f-43b9-8546-94284e9ee547","restrictMultipleAccounts":true,"transferOptions":{"toAddresses":[{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"ETH","address":"0x00000000000000000000000"},{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"USDC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"MATIC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDC","address":"0x00000000000000000000000"}],"amountInFiat":10,"isInclusiveFeeEnabled":false,"generatePayLink":false},"disableApiKeyGeneration":false}
             },
             "application/*+json": {
               "schema": {
@@ -618,7 +618,7 @@
                   }
                 ]
               },
-              "example": {"userId":"UserId","configurationId":"18a20b11-e47f-43b9-8546-94284e9ee547","restrictMultipleAccounts":true,"transferOptions":{"toAddresses":[{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"ETH","address":"0x00000000000000000000000"},{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"USDC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"MATIC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDC","address":"0x00000000000000000000000"}],"amountInFiat":10,"isInclusiveFeeEnabled":false},"disableApiKeyGeneration":false,"generatePayLink":false}
+              "example": {"userId":"UserId","configurationId":"18a20b11-e47f-43b9-8546-94284e9ee547","restrictMultipleAccounts":true,"transferOptions":{"toAddresses":[{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"ETH","address":"0x00000000000000000000000"},{"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","symbol":"USDC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"MATIC","address":"0x00000000000000000000000"},{"networkId":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","symbol":"USDC","address":"0x00000000000000000000000"}],"amountInFiat":10,"isInclusiveFeeEnabled":false,"generatePayLink":false},"disableApiKeyGeneration":false}
             }
           }
         },
@@ -812,7 +812,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokersHealthStatusListApiResult"
                 },
-                "example": {"content":[{"type":"robinhood","name":"Robinhood","isUp":true,"supportedProducts":["balance","holdings","identity","orders","transfers"]},{"type":"celsius","name":"Celsius","isUp":false,"description":"Temporarily disabled","downTimeStart":1655891444,"supportedProducts":["balance","orders","transfers","holdings"]},{"type":"deFiWallet","name":"MetaMask","isUp":false,"supportedProducts":["transfers","holdings"],"deFiWalletData":{"id":"00000000-0000-0000-0000-000000000000","name":"MetaMask"}}],"status":"ok","message":"","errorType":""}
+                "example": {"content":[{"type":"robinhood","name":"Robinhood","isUp":true,"supportedProducts":["balance","holdings","identity","orders","transfers"]},{"type":"celsius","name":"Celsius","isUp":false,"description":"Temporarily disabled","downTimeStart":1655891444,"supportedProducts":["balance","orders","transfers","holdings"]},{"type":"deFiWallet","name":"MetaMask","isUp":false,"supportedProducts":["transfers","holdings"],"deFiWalletData":{"id":"34aeb688-decb-485f-9d80-b66466783394","name":"MetaMask"}}],"status":"ok","message":"","errorType":""}
               }
             }
           },
@@ -990,7 +990,9 @@
                 "bybitDirect",
                 "paribuOAuth",
                 "payPalConnect",
-                "binanceTrDirect"
+                "binanceTrDirect",
+                "coinbaseRamp",
+                "bybitDirectMobile"
               ],
               "allOf": [
                 {
@@ -1405,7 +1407,7 @@
                 },
                 "examples": {
                   "Successful transfer preview": {
-                    "value": {"content":{"status":"succeeded","previewResult":{"previewId":"29b185b1-2305-40fb-a0e2-929d61451568","previewExpiresIn":300,"fromAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","toAddress":"0x326a8825472bb0f4719998e708a1eeeb4473ed1b","symbol":"USDT","amount":10,"amountInFiat":10,"totalEstimatedAmount":11.21,"totalEstimatedAmountInFiat":11.21,"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","institutionTransferFee":{"fee":0,"feeCurrency":"USDT","feeInFiat":0},"estimatedNetworkGasFee":{"fee":1.1,"feeCurrency":"USDT","feeInFiat":1.1},"unitPrice":0,"customClientFee":{"fee":0.011,"feeCurrency":"USDT","feeInFiat":0.011},"transferType":"deposit","isCustomClientFeeProvided":false,"amountWithCustomClientFee":"0","isFeeIncluded":false,"amountToReceive":0,"amountToReceiveInFiat":0,"transferAmountToRequest":0,"isMaximumAmount":false}},"status":"ok","message":"","errorType":""}
+                    "value": {"content":{"status":"succeeded","previewResult":{"previewId":"29b185b1-2305-40fb-a0e2-929d61451568","previewExpiresIn":300,"fromAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","toAddress":"0x326a8825472bb0f4719998e708a1eeeb4473ed1b","symbol":"USDT","amount":10,"amountInFiat":10,"totalEstimatedAmount":11.21,"totalEstimatedAmountInFiat":11.21,"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","institutionTransferFee":{"fee":0,"feeCurrency":"USDT","feeInFiat":0},"estimatedNetworkGasFee":{"fee":1.1,"feeCurrency":"USDT","feeInFiat":1.1},"unitPrice":0,"customClientFee":{"fee":0.011,"feeCurrency":"USDT","feeInFiat":0.011},"transferType":"deposit","isCustomClientFeeProvided":false,"amountWithCustomClientFee":"0","isFeeIncluded":false,"amountToReceive":0,"amountToReceiveInFiat":0,"transferAmountToRequest":0,"isMaximumAmount":false,"isBridging":false}},"status":"ok","message":"","errorType":""}
                   },
                   "Failed transfer preview": {
                     "value": {"status":"badRequest","message":"The\u00A0specified amount is greater than the maximum amount allowed.","displayMessage":"The\u00A0specified amount is greater than the maximum amount allowed.","errorType":"invalidField"}
@@ -2006,7 +2008,14 @@
                 "schema": {
                   "$ref": "#/components/schemas/HoldingsModelApiResult"
                 },
-                "example": {"content":{"equityPositions":[{"symbol":"AAPL","amount":3,"costBasis":109},{"symbol":"F","amount":27,"costBasis":7.05791}],"cryptocurrencyPositions":[{"marketValue":75.15,"lastPrice":0.05,"symbol":"DOGE","amount":1503,"costBasis":0.033},{"symbol":"BTC","amount":3.00016720,"costBasis":18000}],"status":"succeeded","notSupportedEquityPositions":[{"symbol":"CUSIP38259P508","amount":1}],"notSupportedCryptocurrencyPositions":[],"nftPositions":[],"optionPositions":[],"type":"robinhood","accountId":"5FUVPB0","institutionName":"Robinhood","accountName":"Margin account"},"status":"ok","message":"","errorType":""}
+                "examples": {
+                  "Trading platform example": {
+                    "value": {"content":{"equityPositions":[{"symbol":"AAPL","amount":3,"costBasis":109},{"symbol":"F","amount":27,"costBasis":7.05791}],"cryptocurrencyPositions":[{"marketValue":75.15,"lastPrice":0.05,"symbol":"DOGE","amount":1503,"costBasis":0.033},{"symbol":"BTC","amount":3.00016720,"costBasis":18000}],"status":"succeeded","errorMessage":"","displayMessage":"","notSupportedEquityPositions":[{"symbol":"CUSIP38259P508","amount":1}],"notSupportedCryptocurrencyPositions":[],"nftPositions":[],"optionPositions":[],"type":"robinhood","accountId":"5FUVPB0","institutionName":"Robinhood","accountName":"Margin account"},"status":"ok","message":"","errorType":""}
+                  },
+                  "Self-custody cryptocurrency wallet example": {
+                    "value": {"content":{"equityPositions":[],"cryptocurrencyPositions":[{"marketValue":75.15,"lastPrice":0.05,"symbol":"DOGE","amount":1503,"costBasis":0.033,"distribution":[{"caipNetworkId":"eip155:1","address":"0x1111111111111111111111111111111111111111","amount":1500},{"caipNetworkId":"eip155:42161","address":"0x1111111111111111111111111111111111111111","amount":3}]},{"symbol":"BTC","amount":3.00016720,"costBasis":18000,"distribution":[{"caipNetworkId":"bip122:000000000019d6689c085ae165831e93","address":"bc1q5cyxnuxmeuwuvkwfem96lxyepd5t0gd5nqf6h4","amount":1},{"caipNetworkId":"bip122:000000000019d6689c085ae165831e93","address":"bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf7du0","amount":1},{"caipNetworkId":"bip122:000000000019d6689c085ae165831e93","address":"bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh","amount":1.00016720}]}],"status":"succeeded","errorMessage":"","displayMessage":"","notSupportedEquityPositions":[],"notSupportedCryptocurrencyPositions":[],"nftPositions":[],"optionPositions":[],"type":"deFiWallet","accountId":"8c02d545753b596075ecbc20e2b7d3fb5b380c52","institutionName":"DeFiWallet","accountName":"MetaMask wallet"},"status":"ok","message":"","errorType":""}
+                  }
+                }
               }
             }
           },
@@ -2139,7 +2148,14 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BPortfolioModelApiResult"
                 },
-                "example": {"content":{"portfolioCostBasis":1793.71,"actualPortfolioPerformance":6.9,"equitiesValue":1918.03,"cryptocurrenciesValue":1164.44,"nftsValue":0,"equityPositions":[{"portfolioPercentage":0.44,"totalReturn":-1.30,"returnPercentage":-8.67,"companyName":"Tesla","totalDailyReturn":0.45,"dailyReturnPercentage":3.45,"marketValue":13.69,"lastPrice":214.44,"symbol":"TSLA","amount":0.063,"costBasis":234.80},{"portfolioPercentage":38.98,"totalReturn":144.97,"returnPercentage":13.71,"companyName":"Apple","totalDailyReturn":31.65,"dailyReturnPercentage":2.70,"marketValue":1201.67,"lastPrice":147.27,"symbol":"AAPL","amount":8.15,"costBasis":129.50}],"cryptocurrencyPositions":[{"portfolioPercentage":11.4018,"totalReturn":-592.6533,"returnPercentage":-62.7737,"companyName":"Ethereum","totalDailyReturn":-3.6081,"dailyReturnPercentage":-1.0162,"marketValue":351.4570,"lastPrice":1350.07,"symbol":"ETH","amount":0.260325000,"costBasis":3626.660},{"portfolioPercentage":7.80,"totalReturn":-85.45,"returnPercentage":-26.20,"companyName":"Dogecoin","totalDailyReturn":-2.45,"dailyReturnPercentage":-1.0103,"marketValue":240.5754,"lastPrice":0.05977,"symbol":"DOGE","amount":4025.02,"costBasis":0.081}],"nftPositions":[]},"status":"ok","message":"","errorType":""}
+                "examples": {
+                  "CEX example": {
+                    "value": {"content":{"portfolioCostBasis":1819.90,"actualPortfolioPerformance":6.1,"equitiesValue":1934.78,"cryptocurrenciesValue":1185.12,"nftsValue":0,"equityPositions":[{"portfolioPercentage":0.44,"totalReturn":-1.30,"returnPercentage":-8.67,"companyName":"Tesla","totalDailyReturn":0.45,"dailyReturnPercentage":3.45,"marketValue":13.69,"lastPrice":214.44,"symbol":"TSLA","amount":0.063,"costBasis":234.80},{"portfolioPercentage":38.98,"totalReturn":144.97,"returnPercentage":13.71,"companyName":"Apple","totalDailyReturn":31.65,"dailyReturnPercentage":2.70,"marketValue":1201.67,"lastPrice":147.27,"symbol":"AAPL","amount":8.15,"costBasis":129.50}],"cryptocurrencyPositions":[{"portfolioPercentage":11.4018,"totalReturn":-592.6533,"returnPercentage":-62.7737,"companyName":"Ethereum","totalDailyReturn":-3.6081,"dailyReturnPercentage":-1.0162,"marketValue":351.4570,"lastPrice":1350.07,"symbol":"ETH","amount":0.260325000,"costBasis":3626.660},{"portfolioPercentage":7.80,"totalReturn":-85.45,"returnPercentage":-26.20,"companyName":"Dogecoin","totalDailyReturn":-2.45,"dailyReturnPercentage":-1.0103,"marketValue":240.5754,"lastPrice":0.05977,"symbol":"DOGE","amount":4025.02,"costBasis":0.081}],"nftPositions":[]},"status":"ok","message":"","errorType":""}
+                  },
+                  "Self-custody cryptocurrency wallet example": {
+                    "value": {"content":{"portfolioCostBasis":3626.74,"actualPortfolioPerformance":5.4,"equitiesValue":0,"cryptocurrenciesValue":592.03,"nftsValue":0,"equityPositions":[],"cryptocurrencyPositions":[{"portfolioPercentage":11.4018,"totalReturn":-592.6533,"returnPercentage":-62.7737,"companyName":"Ethereum","totalDailyReturn":-3.6081,"dailyReturnPercentage":-1.0162,"marketValue":351.4570,"lastPrice":1350.07,"symbol":"ETH","amount":0.260325000,"costBasis":3626.660,"distribution":[{"caipNetworkId":"eip155:1","address":"0x1111111111111111111111111111111111111111","amount":0.16},{"caipNetworkId":"eip155:42161","address":"0x1111111111111111111111111111111111111111","amount":0.100325000}]},{"portfolioPercentage":7.80,"totalReturn":-85.45,"returnPercentage":-26.20,"companyName":"Dogecoin","totalDailyReturn":-2.45,"dailyReturnPercentage":-1.0103,"marketValue":240.5754,"lastPrice":0.05977,"symbol":"DOGE","amount":4025.02,"costBasis":0.081,"distribution":[{"caipNetworkId":"eip155:1","address":"0x1111111111111111111111111111111111111111","amount":2025.02},{"caipNetworkId":"eip155:42161","address":"0x1111111111111111111111111111111111111111","amount":2000}]}],"nftPositions":[]},"status":"ok","message":"","errorType":""}
+                  }
+                }
               }
             }
           },
@@ -2177,6 +2193,15 @@
       "post": {
         "tags": [
           "QuickNode"
+        ],
+        "parameters": [
+          {
+            "name": "chainId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
         ],
         "responses": {
           "200": {
@@ -3322,7 +3347,8 @@
           "usernamePassword",
           "oAuth",
           "apiKey",
-          "blockchainAddress"
+          "blockchainAddress",
+          "trueAuth"
         ],
         "type": "string"
       },
@@ -3607,10 +3633,6 @@
             "type": "string",
             "nullable": true
           },
-          "oAuthToken": {
-            "type": "string",
-            "nullable": true
-          },
           "errorMessage": {
             "type": "string",
             "nullable": true
@@ -3731,7 +3753,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -3835,6 +3859,14 @@
           },
           "confirmationEmail": {
             "type": "string",
+            "nullable": true
+          },
+          "trueAuthAuthRequest": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TrueAuthAuthRequest"
+              }
+            ],
             "nullable": true
           },
           "isSensitiveFieldsEncrypted": {
@@ -4120,7 +4152,8 @@
               "mfaFailed",
               "addressWhitelistRequired",
               "secondMfaRequired",
-              "emailConfirmationApprovalRequired"
+              "emailConfirmationApprovalRequired",
+              "travelRuleRequired"
             ],
             "allOf": [
               {
@@ -4280,7 +4313,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -4440,7 +4475,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -4889,7 +4926,8 @@
               "mfaFailed",
               "addressWhitelistRequired",
               "secondMfaRequired",
-              "emailConfirmationApprovalRequired"
+              "emailConfirmationApprovalRequired",
+              "travelRuleRequired"
             ],
             "allOf": [
               {
@@ -5325,7 +5363,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -5492,7 +5532,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -5685,7 +5727,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -5908,7 +5952,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -6208,7 +6254,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -6434,7 +6482,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -6724,6 +6774,9 @@
         "additionalProperties": false
       },
       "B2BBrokersHealthStatus": {
+        "required": [
+          "deFiWalletData"
+        ],
         "type": "object",
         "properties": {
           "type": {
@@ -6781,7 +6834,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -7285,14 +7340,151 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n```BybitDirect```\n```ParibuOAuth```\n```BinanceTrDirect```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n```BybitDirect```\n```ParibuOAuth```\n```BinanceTrDirect```\n```BybitDirectMobile```\n"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BridgingDetails": {
+        "type": "object",
+        "properties": {
+          "bridgingDirectionId": {
+            "type": "string",
+            "description": "The ID of the bridging direction that was used to generate the preview.",
+            "format": "uuid"
+          },
+          "targetAddress": {
+            "type": "string",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BridgingOperationStatus": {
+        "enum": [
+          "recordCreated",
+          "registeredInProvider",
+          "sourceTransferStarted",
+          "inReview",
+          "providerAwaitingSourceTransfer",
+          "providerFundsReceived",
+          "providerProcessingPayment",
+          "providerProcessedPayment",
+          "providerSetUndeliverable",
+          "returned",
+          "refunded",
+          "canceled",
+          "succeeded",
+          "failed"
+        ],
+        "type": "string"
+      },
+      "BridgingTimelineEvent": {
+        "type": "object",
+        "properties": {
+          "eventType": {
+            "type": "string",
+            "nullable": true
+          },
+          "description": {
+            "type": "string",
+            "nullable": true
+          },
+          "timestamp": {
+            "type": "integer",
+            "format": "int64"
+          }
+        },
+        "additionalProperties": false
+      },
+      "BridgingTransferDetailsModel": {
+        "type": "object",
+        "properties": {
+          "status": {
+            "enum": [
+              "recordCreated",
+              "registeredInProvider",
+              "sourceTransferStarted",
+              "inReview",
+              "providerAwaitingSourceTransfer",
+              "providerFundsReceived",
+              "providerProcessingPayment",
+              "providerProcessedPayment",
+              "providerSetUndeliverable",
+              "returned",
+              "refunded",
+              "canceled",
+              "succeeded",
+              "failed"
+            ],
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BridgingOperationStatus"
+              }
+            ]
+          },
+          "statusDescription": {
+            "type": "string",
+            "nullable": true
+          },
+          "targetSide": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BridgingTransferSide"
+              }
+            ],
+            "nullable": true
+          },
+          "sourceSide": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BridgingTransferSide"
+              }
+            ],
+            "nullable": true
+          },
+          "timeline": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/BridgingTimelineEvent"
+            },
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BridgingTransferSide": {
+        "type": "object",
+        "properties": {
+          "networkName": {
+            "type": "string",
+            "nullable": true
+          },
+          "symbol": {
+            "type": "string",
+            "nullable": true
+          },
+          "amount": {
+            "type": "number",
+            "format": "double"
+          },
+          "transactionHash": {
+            "type": "string",
+            "nullable": true
+          },
+          "infoUrl": {
+            "type": "string",
+            "format": "uri",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -7461,7 +7653,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -7474,7 +7668,8 @@
               "usernamePassword",
               "oAuth",
               "apiKey",
-              "blockchainAddress"
+              "blockchainAddress",
+              "trueAuth"
             ],
             "allOf": [
               {
@@ -7511,6 +7706,14 @@
           "instructionsUrl": {
             "type": "string",
             "description": "Optional URL with the instructions explaining how to create a set of API key/secret for the integration, can be shown to the end user.",
+            "nullable": true
+          },
+          "trueAuthAuthenticaion": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BrokerTrueAuthAuthenticationScheme"
+              }
+            ],
             "nullable": true
           }
         },
@@ -7634,7 +7837,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -7714,7 +7919,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -7924,7 +8131,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -8051,7 +8260,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -8134,7 +8345,8 @@
           "mfaFailed",
           "addressWhitelistRequired",
           "secondMfaRequired",
-          "emailConfirmationApprovalRequired"
+          "emailConfirmationApprovalRequired",
+          "travelRuleRequired"
         ],
         "type": "string"
       },
@@ -8458,7 +8670,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -8585,7 +8799,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -8625,6 +8841,45 @@
             "type": "integer",
             "description": "If this value is provided, result set is filtered to only include transactions created after this timestamp",
             "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "BrokerTrueAuthAuthenticationScheme": {
+        "required": [
+          "cookieDomains",
+          "loginUrl",
+          "successfulLoginUri"
+        ],
+        "type": "object",
+        "properties": {
+          "loginUrl": {
+            "type": "string",
+            "description": "The login url page to show in the webview.",
+            "nullable": true
+          },
+          "successfulLoginUri": {
+            "type": "string",
+            "description": "The login page to check against for successful login",
+            "nullable": true
+          },
+          "cookieDomains": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The urls from where cookies are fetched.",
+            "nullable": true
+          },
+          "requiredHeaderNames": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string"
+            },
+            "description": "The headers that are required for authentication.",
             "nullable": true
           }
         },
@@ -8685,7 +8940,9 @@
           "bybitDirect",
           "paribuOAuth",
           "payPalConnect",
-          "binanceTrDirect"
+          "binanceTrDirect",
+          "coinbaseRamp",
+          "bybitDirectMobile"
         ],
         "type": "string"
       },
@@ -8841,7 +9098,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -9078,6 +9337,11 @@
             "description": "Logo url for holding.",
             "format": "uri",
             "nullable": true
+          },
+          "isBridgingAsset": {
+            "type": "boolean",
+            "description": "Specifies if the asset is used for bridging between networks.",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -9254,7 +9518,38 @@
         ],
         "type": "string"
       },
+      "DeFiPositionDistribution": {
+        "required": [
+          "address",
+          "amount",
+          "caipNetworkId"
+        ],
+        "type": "object",
+        "properties": {
+          "caipNetworkId": {
+            "type": "string",
+            "description": "Cryptocurrency CAIP-2 network ID associated with this distribution.",
+            "nullable": true
+          },
+          "address": {
+            "type": "string",
+            "description": "The wallet address on the specific network.",
+            "nullable": true
+          },
+          "amount": {
+            "type": "number",
+            "description": "Amount of cryptocurrency allocated to this network and address.",
+            "format": "double"
+          }
+        },
+        "additionalProperties": false,
+        "description": "Represents the distribution of a DeFi position across different networks and addresses.\r\nThis class holds the network-specific information, wallet address, and the amount of cryptocurrency\r\nallocated to each network and address for self-custody (DeFi) wallets."
+      },
       "DeFiWalletHealthStatusInfo": {
+        "required": [
+          "id",
+          "name"
+        ],
         "type": "object",
         "properties": {
           "id": {
@@ -9302,7 +9597,8 @@
               "litecoin",
               "sui",
               "aptos",
-              "tvm"
+              "tvm",
+              "injective"
             ],
             "allOf": [
               {
@@ -9523,7 +9819,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -9714,7 +10012,8 @@
               "mfaFailed",
               "addressWhitelistRequired",
               "secondMfaRequired",
-              "emailConfirmationApprovalRequired"
+              "emailConfirmationApprovalRequired",
+              "travelRuleRequired"
             ],
             "allOf": [
               {
@@ -9853,10 +10152,10 @@
         "type": "object",
         "properties": {
           "userId": {
-            "maxLength": 50,
+            "maxLength": 300,
             "minLength": 1,
             "type": "string",
-            "description": "A unique Id representing the end user. Typically this will be a user Id from the\r\nclient application. Personally identifiable information, such as an email address or phone number,\r\nshould not be used. 50 characters length maximum."
+            "description": "A unique Id representing the end user. Typically this will be a user Id from the\r\nclient application. Personally identifiable information, such as an email address or phone number,\r\nshould not be used. 300 characters length maximum."
           },
           "brokerType": {
             "allOf": [
@@ -9905,10 +10204,6 @@
             "description": "Sub Client ID, for B2B2B clients to tailor Link experience for their clients.",
             "format": "uuid",
             "nullable": true
-          },
-          "generatePayLink": {
-            "type": "boolean",
-            "description": "Link presents the user with the option to generate a unique payment link for Mesh pay scenarios.\r\nIf this param is true, a unique payment link will be returned."
           }
         },
         "additionalProperties": false
@@ -10069,7 +10364,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -10231,7 +10528,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -10434,7 +10733,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -10561,7 +10862,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -10700,7 +11003,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -10992,6 +11297,10 @@
             },
             "description": "Goods details for the transaction. (Binance Pay)",
             "nullable": true
+          },
+          "generatePayLink": {
+            "type": "boolean",
+            "description": "Link presents the user with the option to generate a unique payment link for Mesh pay scenarios.\r\nIf this param is true, a unique payment link will be returned."
           }
         },
         "additionalProperties": false
@@ -11063,7 +11372,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -11283,7 +11594,8 @@
               "litecoin",
               "sui",
               "aptos",
-              "tvm"
+              "tvm",
+              "injective"
             ],
             "allOf": [
               {
@@ -11392,7 +11704,8 @@
           "litecoin",
           "sui",
           "aptos",
-          "tvm"
+          "tvm",
+          "injective"
         ],
         "type": "string"
       },
@@ -11666,14 +11979,16 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n```BinanceOAuth```\n```BybitDirect```\n```ParibuOAuth```\n```BinanceTrDirect```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n```BinanceOAuth```\n```BybitDirect```\n```ParibuOAuth```\n```BinanceTrDirect```\n```BybitDirectMobile```\n```DeFiWallet```\n"
           }
         },
         "additionalProperties": false
@@ -11768,14 +12083,16 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n```BinanceOAuth```\n```BybitDirect```\n```ParibuOAuth```\n```BinanceTrDirect```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n```BinanceOAuth```\n```BybitDirect```\n```ParibuOAuth```\n```BinanceTrDirect```\n```BybitDirectMobile```\n```DeFiWallet```\n"
           },
           "includeMarketValue": {
             "type": "boolean"
@@ -11806,6 +12123,14 @@
             "description": "The total original value (or purchase price) of the asset",
             "format": "double",
             "nullable": true
+          },
+          "distribution": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DeFiPositionDistribution"
+            },
+            "description": "Breakdown of crypto distribution across different networks and addresses.\r\nThis data is populated only for self-custody (DeFi) wallets.",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -11832,6 +12157,14 @@
             "type": "number",
             "description": "The total original value (or purchase price) of the asset",
             "format": "double",
+            "nullable": true
+          },
+          "distribution": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DeFiPositionDistribution"
+            },
+            "description": "Breakdown of crypto distribution across different networks and addresses.\r\nThis data is populated only for self-custody (DeFi) wallets.",
             "nullable": true
           },
           "marketValue": {
@@ -11873,6 +12206,14 @@
             "format": "double",
             "nullable": true
           },
+          "distribution": {
+            "type": "array",
+            "items": {
+              "$ref": "#/components/schemas/DeFiPositionDistribution"
+            },
+            "description": "Breakdown of crypto distribution across different networks and addresses.\r\nThis data is populated only for self-custody (DeFi) wallets.",
+            "nullable": true
+          },
           "marketValue": {
             "type": "number",
             "description": "Market value of the asset: amount of asset multiplied by last asset value.",
@@ -11905,7 +12246,7 @@
           },
           "companyName": {
             "type": "string",
-            "description": "Company name of the relative asset/",
+            "description": "Company name of the relative asset.",
             "nullable": true
           },
           "totalDailyReturn": {
@@ -11990,7 +12331,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -12055,6 +12398,11 @@
             "minLength": 0,
             "type": "string",
             "description": "Transaction ID Provided by client to track transaction in future calls.",
+            "nullable": true
+          },
+          "isBridging": {
+            "type": "boolean",
+            "description": "Indicates that the transfer is a bridging transfer.",
             "nullable": true
           },
           "isInclusiveFeeEnabled": {
@@ -12167,7 +12515,8 @@
           "previewId": {
             "type": "string",
             "description": "The Id of the preview of the transfer. Should be used to commit the transfer using `Execute` endpoint.",
-            "format": "uuid"
+            "format": "uuid",
+            "nullable": true
           },
           "previewExpiresIn": {
             "type": "integer",
@@ -12201,7 +12550,7 @@
           },
           "amount": {
             "type": "number",
-            "description": "Amount in symbol. If the transfer was requested using `AmounInFiat` field, this field represents the exact amount\r\nof the asset that will be transferred.",
+            "description": "Amount in symbol. If the transfer was requested using `AmountInFiat` field, this field represents the exact amount\r\nof the asset that will be transferred.",
             "format": "double"
           },
           "amountInFiat": {
@@ -12250,6 +12599,15 @@
               }
             ],
             "description": "The gas fee that is estimated to be taken by the network. Depending on the integration, the network gas fee might be\r\ncovered by the `InstitutionTransferFee`.",
+            "nullable": true
+          },
+          "estimatedNetworkGasFeeDetails": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TransferFeeDetails"
+              }
+            ],
+            "description": "The gas fee values in EIP 1559 standard that is estimated to be taken by the network.",
             "nullable": true
           },
           "decimalPlaces": {
@@ -12342,6 +12700,19 @@
           "fiatCurrency": {
             "type": "string",
             "description": "Indicates the fiat currency that is used to calculate transfer amounts.",
+            "nullable": true
+          },
+          "isBridging": {
+            "type": "boolean",
+            "description": "Indicates if the transfer is a bridging transfer, meaning that the transfer will be swapped between two different networks."
+          },
+          "bridgingDetails": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BridgingDetails"
+              }
+            ],
+            "description": "Details of the bridging operation, in case the transfer is a bridging transfer.",
             "nullable": true
           }
         },
@@ -12652,7 +13023,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -12759,7 +13132,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -13153,7 +13528,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -13317,7 +13694,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -13422,7 +13801,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -13536,7 +13917,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -13708,7 +14091,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -13825,6 +14210,30 @@
             "type": "number",
             "description": "The value of the fee converted to the fiat currency.",
             "format": "double"
+          }
+        },
+        "additionalProperties": false
+      },
+      "TransferFeeDetails": {
+        "type": "object",
+        "properties": {
+          "gasLimit": {
+            "type": "number",
+            "description": "Units of gas used",
+            "format": "double",
+            "nullable": true
+          },
+          "maxPriorityFeePerGas": {
+            "type": "number",
+            "description": "The max amount of tip to be paid to validator",
+            "format": "double",
+            "nullable": true
+          },
+          "maxFeePerGas": {
+            "type": "number",
+            "description": "The max amount of fee to be paid per gas",
+            "format": "double",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -13976,7 +14385,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -14057,7 +14468,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -14292,6 +14705,15 @@
             "type": "string",
             "description": "Transfer Refund Address.",
             "nullable": true
+          },
+          "bridgingDetails": {
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/BridgingTransferDetailsModel"
+              }
+            ],
+            "description": "Bridging operation details.",
+            "nullable": true
           }
         },
         "additionalProperties": false
@@ -14456,16 +14878,16 @@
       "TransferTravelRuleOptions": {
         "type": "object",
         "properties": {
-          "clientName": {
-            "type": "string",
-            "nullable": true
-          },
           "transferType": {
             "allOf": [
               {
                 "$ref": "#/components/schemas/TransferTypeEnum"
               }
             ],
+            "nullable": true
+          },
+          "clientName": {
+            "type": "string",
             "nullable": true
           },
           "clientType": {
@@ -14680,14 +15102,16 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BinanceConnect```\n```RevolutConnect```\n```BinancePay```\n```PayPalConnect```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BinanceConnect```\n```RevolutConnect```\n```BinancePay```\n```ParibuOAuth```\n```PayPalConnect```\n```DeFiWallet```\n"
           },
           "data": {
             "type": "string",
@@ -14850,14 +15274,16 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BinanceConnect```\n```RevolutConnect```\n```BinancePay```\n```PayPalConnect```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BinanceConnect```\n```RevolutConnect```\n```BinancePay```\n```ParibuOAuth```\n```PayPalConnect```\n```DeFiWallet```\n"
           },
           "symbol": {
             "type": "string",
@@ -14953,14 +15379,16 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BinanceConnect```\n```RevolutConnect```\n```BinancePay```\n```PayPalConnect```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BinanceConnect```\n```RevolutConnect```\n```BinancePay```\n```ParibuOAuth```\n```PayPalConnect```\n```DeFiWallet```\n"
           },
           "addressType": {
             "allOf": [
@@ -15056,14 +15484,16 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/BrokerType"
               }
             ],
-            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BinanceConnect```\n```RevolutConnect```\n```BinancePay```\n```PayPalConnect```\n```DeFiWallet```\n"
+            "description": "Type of the institution to connect\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BinanceConnect```\n```RevolutConnect```\n```BinancePay```\n```ParibuOAuth```\n```PayPalConnect```\n```DeFiWallet```\n"
           },
           "count": {
             "type": "integer",
@@ -15096,6 +15526,39 @@
             "type": "integer",
             "description": "If this value is provided, result set is filtered to only include transactions created after this timestamp",
             "format": "int64",
+            "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "TrueAuthAuthRequest": {
+        "required": [
+          "cookies",
+          "requestHeaders",
+          "userAgent"
+        ],
+        "type": "object",
+        "properties": {
+          "requestHeaders": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "nullable": true
+            },
+            "nullable": true
+          },
+          "cookies": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "string"
+              }
+            },
+            "nullable": true
+          },
+          "userAgent": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -15228,7 +15691,8 @@
               "mfaFailed",
               "addressWhitelistRequired",
               "secondMfaRequired",
-              "emailConfirmationApprovalRequired"
+              "emailConfirmationApprovalRequired",
+              "travelRuleRequired"
             ],
             "allOf": [
               {
@@ -15374,7 +15838,9 @@
               "bybitDirect",
               "paribuOAuth",
               "payPalConnect",
-              "binanceTrDirect"
+              "binanceTrDirect",
+              "coinbaseRamp",
+              "bybitDirectMobile"
             ],
             "allOf": [
               {
@@ -15489,11 +15955,11 @@
     },
     {
       "name": "Portfolio",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n```BinanceOAuth```\n```BybitDirect```\n```ParibuOAuth```\n```BinanceTrDirect```\n```DeFiWallet```\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CryptoCom```\n```OpenSea```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n```BinanceOAuth```\n```BybitDirect```\n```ParibuOAuth```\n```BinanceTrDirect```\n```BybitDirectMobile```\n```DeFiWallet```\n"
     },
     {
       "name": "Balance",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n```BybitDirect```\n```ParibuOAuth```\n```BinanceTrDirect```\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```CexIo```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```BitFlyer```\n```Coinlist```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```KuCoinDirect```\n```OkxOAuth```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BitsoDirect```\n```BybitDirect```\n```ParibuOAuth```\n```BinanceTrDirect```\n```BybitDirectMobile```\n"
     },
     {
       "name": "Transactions",
@@ -15501,7 +15967,7 @@
     },
     {
       "name": "Transfers",
-      "description": "\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BinanceConnect```\n```RevolutConnect```\n```BinancePay```\n```PayPalConnect```\n```DeFiWallet```\n\n\n### Integration-specific notes:\n\n\n#### Robinhood:\n\n\nCryptocurrency transfers should be enabled in Robinhood settings. Transfers are disabled by default, enabling them for end users requires a review from Robinhood.\n\nPlease note:\n * `MfaCode` parameter is required to initiate a transaction in Robinhood.\n * The user's security settings should be configured to use an authenticator application.\n * Robinhood doesn't allow initiation of transactions if the authenticator application is not configured.\n\n\n#### Coinbase:\n\n\n`MfaCode` parameter should be used to initiate transactions in Coinbase.\n * If the end user's Coinbase account is configured to use text messages (SMS) for two factor authentication, the API will return `MfaRequired` status, and a text code will then be sent by Coinbase. The code is expected to be provided in the subsequent call using the `MfaCode` request field\n * If the account is configured to use an authenticator application, the API is expecting to get the code in the `MfaCode` request field.\n\n\n#### Kraken:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n\n\n#### Binance:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance Us.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### KuCoin:\n\n\nKuCoin requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n\n`Fee` parameter should be used to initiate a transaction in KuCoin.\n\nPlease note:\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * All currencies have their minimum `fee` and `amount` requirements. Please use `symbol/details` endpoint to get this data for a particular symbol.\n * KuCoin requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### BinanceInternational:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance International.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### GateIo:\n\n\nGate.io requires adding IP address to the list of trusted IP addresses to be able to initiate a cryptocurrency transfers.\n\nWithdrawal address should be already verified or added on the Gate.io UI (in mobile application or on the web site).\n * Please reach out to Front to get the static IP address for withdrawals. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * Only verified withdrawal blockchain addresses are allowed for withdrawal with Gate.io API.\n * Gate.io requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### Huobi:\n\n\nWarning: Huobi does not refund executed deposits that are below the `Minimum Deposit Amount`\n * Please check the MinimumDepositAmount in Get Deposit Address response in order to avoid making a deposit below the minimum amount\n * Huobi does not allow withdrawals to addresses that are not white-listed, please add the address that you would like to withdraw to the white list of addresses through the UI so that a withrawal can be processed\n\n\n#### Bitfinex:\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\n\n\n#### KrakenDirect:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n\n\n#### BitfinexDirect:\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\n"
+      "description": "\n\n### Supported integrations:\n```Robinhood```\n```Coinbase```\n```Kraken```\n```CryptoCom```\n```Binance```\n```Gemini```\n```OkCoin```\n```KuCoin```\n```BinanceInternational```\n```Bitstamp```\n```GateIo```\n```Okx```\n```Huobi```\n```Bitfinex```\n```KrakenDirect```\n```BinanceInternationalDirect```\n```BitfinexDirect```\n```Bybit```\n```Paxos```\n```CoinbasePrime```\n```BtcTurkDirect```\n```ParibuDirect```\n```RobinhoodConnect```\n```BlockchainCom```\n```BinanceConnect```\n```RevolutConnect```\n```BinancePay```\n```ParibuOAuth```\n```PayPalConnect```\n```DeFiWallet```\n\n\n### Integration-specific notes:\n\n\n#### Robinhood:\n\n\nCryptocurrency transfers should be enabled in Robinhood settings. Transfers are disabled by default, enabling them for end users requires a review from Robinhood.\n\nPlease note:\n * `MfaCode` parameter is required to initiate a transaction in Robinhood.\n * The user's security settings should be configured to use an authenticator application.\n * Robinhood doesn't allow initiation of transactions if the authenticator application is not configured.\n\n\n#### Coinbase:\n\n\n`MfaCode` parameter should be used to initiate transactions in Coinbase.\n * If the end user's Coinbase account is configured to use text messages (SMS) for two factor authentication, the API will return `MfaRequired` status, and a text code will then be sent by Coinbase. The code is expected to be provided in the subsequent call using the `MfaCode` request field\n * If the account is configured to use an authenticator application, the API is expecting to get the code in the `MfaCode` request field.\n\n\n#### Kraken:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n\n\n#### Binance:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance Us.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### KuCoin:\n\n\nKuCoin requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n\n`Fee` parameter should be used to initiate a transaction in KuCoin.\n\nPlease note:\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * All currencies have their minimum `fee` and `amount` requirements. Please use `symbol/details` endpoint to get this data for a particular symbol.\n * KuCoin requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### BinanceInternational:\n\n\n`Enable Withdrawals` permission should be given to the user's API key to initiate transfers with Binance International.\n\nBinance requires adding the IP address to the list of trusted IPs to be able to create API keys with transfer permission.\n * Please reach out to Front to get the static IP address. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * By default, the permission to enable withdrawals is turned off. If the end user's API key does not have the permission, asset transfers will not be available.\n\n\n#### GateIo:\n\n\nGate.io requires adding IP address to the list of trusted IP addresses to be able to initiate a cryptocurrency transfers.\n\nWithdrawal address should be already verified or added on the Gate.io UI (in mobile application or on the web site).\n * Please reach out to Front to get the static IP address for withdrawals. This address should be provided to the end user, and the user should be instructed to add it to the list of trusted IP addresses.\n * Only verified withdrawal blockchain addresses are allowed for withdrawal with Gate.io API.\n * Gate.io requires chain name to be provided for getting deposit address or initiating a cryptocurrency transfer. Some cryptocurrencies are supported over multiple chains. It's recommended to use `symbol/details` endpoint to get the list of supported chains and show it to the end user to select a target one.\n\n\n#### Huobi:\n\n\nWarning: Huobi does not refund executed deposits that are below the `Minimum Deposit Amount`\n * Please check the MinimumDepositAmount in Get Deposit Address response in order to avoid making a deposit below the minimum amount\n * Huobi does not allow withdrawals to addresses that are not white-listed, please add the address that you would like to withdraw to the white list of addresses through the UI so that a withrawal can be processed\n\n\n#### Bitfinex:\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\n\n\n#### KrakenDirect:\n\n\nKraken requires the explicit chain name to be provided (e.g. `Dogecoin` or `Ethereum (ERC20)`). The list of possible chains can be obtained by calling `symbol/details` endpoint.\n\nTo initiate a transaction, a Kraken Address Key name should be provided in `TargetAddress` field. Target address should be added using Kraken UI, then its name should be used.\n\n\n#### BitfinexDirect:\n * The hash of transfer is not available when making a transfer in Bitfinex. To get the hash please re-query the transfer using the transaction id.\n * Bitfinex does not separate sub-accounts when returning the list of transfers.Therefore the same list of transfers is returned for all Bitfinex sub-accounts.\n"
     },
     {
       "name": "Assets"
