@@ -153,6 +153,7 @@ export interface SmartContractPayload {
   account: string
   value?: string
   walletName?: string
+  tokenProgram?: string
   blockhash?: string
   gasLimit?: number | null
   maxFeePerGas?: number | null
