@@ -37,6 +37,69 @@ const isUserRejection = (error: unknown): boolean => {
   )
 }
 
+/**
+ * Detects if we're in a mobile environment or using mobile wallet
+ */
+const isMobileEnvironment = (): boolean => {
+  if (typeof window === 'undefined') return false
+
+  // Check for mobile user agent
+  const userAgent = window.navigator?.userAgent?.toLowerCase() || ''
+  const isMobile = /android|webos|iphone|ipad|ipod|blackberry|iemobile|opera mini/i.test(userAgent)
+
+  // Check if we're in a mobile app context (no window.phantom but has window.solana)
+  const typedWindow = window as any
+  const isMobileWallet = !typedWindow.phantom && typedWindow.solana
+
+  return isMobile || isMobileWallet
+}
+
+/**
+ * Handles transaction signing and sending with environment-aware approach.
+ *
+ * For desktop browser extensions (like Phantom): Uses the proven signAndSendTransaction pattern
+ * For mobile environments: Uses the recommended signTransaction + sendTransaction pattern
+ *
+ * @see https://docs.phantom.com/phantom-deeplinks/provider-methods/signandsendtransaction
+ * @param transaction - The transaction to sign and send
+ * @param provider - The Solana provider (e.g., Phantom wallet)
+ * @returns Transaction signature
+ */
+export async function handleManualSignAndSend(
+  transaction: VersionedTransaction,
+  provider: SolanaProvider
+): Promise<string> {
+  try {
+    // For desktop browser extensions: Preserve the working pattern
+    if (!isMobileEnvironment() && provider.signAndSendTransaction) {
+      const { signature } = await provider.signAndSendTransaction(transaction)
+      return signature
+    }
+
+    // For mobile environments: Use recommended signTransaction + sendTransaction pattern
+    if (provider.signTransaction && provider.sendTransaction) {
+      const signedTransaction = await provider.signTransaction(transaction)
+      const signature = await provider.sendTransaction(signedTransaction)
+      return signature
+    }
+
+    // Final fallback: Use deprecated method if it's the only option
+    if (provider.signAndSendTransaction) {
+      const { signature } = await provider.signAndSendTransaction(transaction)
+      return signature
+    }
+
+    // If neither method is available, throw error
+    throw new Error('Provider does not support transaction signing and sending')
+  } catch (error: unknown) {
+    console.error('Error in handleManualSignAndSend:', error)
+    if (error instanceof Error && error.message?.includes('User rejected')) {
+      throw new Error('Transaction was rejected by user')
+    }
+    throw error
+  }
+}
+
 export async function getAssociatedTokenAddress(
   mint: PublicKey,
   owner: PublicKey,
@@ -240,31 +303,6 @@ async function createTransferInstructions(config: TransactionConfig) {
   return instructions
 }
 
-export async function handleManualSignAndSend(
-  transaction: VersionedTransaction,
-  provider: SolanaProvider
-): Promise<string> {
-  try {
-    if (provider.signAndSendTransaction) {
-      const { signature } = await provider.signAndSendTransaction(transaction)
-      return signature
-    } else {
-      const signedTransaction = await provider.signTransaction(transaction)
-      if (!provider.sendTransaction) {
-        throw new Error('Provider does not support sendTransaction')
-      }
-      const signature = await provider.sendTransaction(signedTransaction)
-      return signature
-    }
-  } catch (error: unknown) {
-    console.error('Error in handleManualSignAndSend:', error)
-    if (error instanceof Error && error.message?.includes('User rejected')) {
-      throw new Error('Transaction was rejected by user')
-    }
-    throw error
-  }
-}
-
 export async function getTransferInstructions(
   instructions: TransactionInstructionDto[]
 ): Promise<TransactionInstruction[]> {
@@ -303,6 +341,16 @@ export async function getTransferInstructions(
   return result
 }
 
+/**
+ * Sends a SOL transaction with environment-aware approach.
+ *
+ * For desktop browser extensions: Uses proven signAndSendTransaction pattern (preserves working behavior)
+ * For mobile environments: Uses recommended signTransaction + sendTransaction pattern
+ *
+ * @see https://docs.phantom.com/phantom-deeplinks/provider-methods/signandsendtransaction
+ * @param config - Transaction configuration
+ * @returns Transaction signature
+ */
 export const sendSOLTransaction = async (
   config: TransactionConfig
 ): Promise<string> => {
@@ -319,6 +367,39 @@ export const sendSOLTransaction = async (
       return await handleManualSignAndSend(transaction, provider)
     }
 
+    // Environment-aware approach: Desktop keeps working pattern, mobile uses new pattern
+    if (!isMobileEnvironment() && provider.signAndSendTransaction) {
+      try {
+        const { signature }: { signature: string } =
+          await provider.signAndSendTransaction(transaction)
+
+        // @TODO: validate that signature was a successful tx
+        return signature
+      } catch (error) {
+        if (isUserRejection(error)) {
+          throw new Error('Transaction was rejected by user')
+        }
+        return handleManualSignAndSend(transaction, provider)
+      }
+    }
+
+    // For mobile or when signAndSendTransaction is not available: Use recommended pattern
+    if (provider.signTransaction && provider.sendTransaction) {
+      try {
+        const signedTransaction = await provider.signTransaction(transaction)
+        const signature = await provider.sendTransaction(signedTransaction)
+
+        // @TODO: validate that signature was a successful tx
+        return signature
+      } catch (error) {
+        if (isUserRejection(error)) {
+          throw new Error('Transaction was rejected by user')
+        }
+        return handleManualSignAndSend(transaction, provider)
+      }
+    }
+
+    // Final fallback: Use deprecated method if it's the only option
     if (provider.signAndSendTransaction) {
       try {
         const { signature }: { signature: string } =
@@ -385,6 +466,17 @@ export const sendSOLTransactionWithInstructions = async (
   }
 }
 
+/**
+ * Sends a Solana transaction with environment-aware approach.
+ *
+ * For desktop browser extensions: Uses proven signAndSendTransaction pattern (preserves working behavior)
+ * For mobile environments: Uses recommended signTransaction + sendTransaction pattern
+ *
+ * @see https://docs.phantom.com/phantom-deeplinks/provider-methods/signandsendtransaction
+ * @param walletName - Name of the wallet to use
+ * @param transaction - The transaction to send
+ * @returns Transaction signature
+ */
 export const sendSolanaTransfer = async (
   walletName: string,
   transaction: VersionedTransaction
@@ -399,6 +491,35 @@ export const sendSolanaTransfer = async (
     return await handleManualSignAndSend(transaction, provider)
   }
 
+  // Environment-aware approach: Desktop keeps working pattern, mobile uses new pattern
+  if (!isMobileEnvironment() && provider.signAndSendTransaction) {
+    try {
+      const { signature }: { signature: string } =
+        await provider.signAndSendTransaction(transaction)
+      return signature
+    } catch (error) {
+      if (isUserRejection(error)) {
+        throw new Error('Transaction was rejected by user')
+      }
+      return handleManualSignAndSend(transaction, provider)
+    }
+  }
+
+  // For mobile or when signAndSendTransaction is not available: Use recommended pattern
+  if (provider.signTransaction && provider.sendTransaction) {
+    try {
+      const signedTransaction = await provider.signTransaction(transaction)
+      const signature = await provider.sendTransaction(signedTransaction)
+      return signature
+    } catch (error) {
+      if (isUserRejection(error)) {
+        throw new Error('Transaction was rejected by user')
+      }
+      return handleManualSignAndSend(transaction, provider)
+    }
+  }
+
+  // Final fallback: Use deprecated method if it's the only option
   if (provider.signAndSendTransaction) {
     try {
       const { signature }: { signature: string } =
@@ -411,5 +532,6 @@ export const sendSolanaTransfer = async (
       return handleManualSignAndSend(transaction, provider)
     }
   }
+
   return handleManualSignAndSend(transaction, provider)
 }

@@ -27,12 +27,27 @@ export interface SolanaProvider {
     callback: (publicKey?: any) => void
   ): void
   signMessage(message: Uint8Array): Promise<{ signature: Uint8Array }>
+  /**
+   * Signs a transaction without sending it.
+   * This is the recommended approach for transaction signing.
+   * @see https://docs.phantom.com/phantom-deeplinks/provider-methods/signandsendtransaction
+   */
   signTransaction(
     transaction: Transaction | VersionedTransaction
   ): Promise<Transaction | VersionedTransaction>
+  /**
+   * @deprecated This method has been deprecated by Phantom.
+   * Use signTransaction + sendTransaction instead.
+   * @see https://docs.phantom.com/phantom-deeplinks/provider-methods/signandsendtransaction
+   */
   signAndSendTransaction?(
     transaction: Transaction | VersionedTransaction
   ): Promise<{ signature: string }>
+  /**
+   * Sends a pre-signed transaction.
+   * Used in combination with signTransaction for the recommended pattern.
+   * @see https://docs.phantom.com/phantom-deeplinks/provider-methods/signandsendtransaction
+   */
   sendTransaction?(
     transaction: Transaction | VersionedTransaction
   ): Promise<string>
