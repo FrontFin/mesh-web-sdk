@@ -69,6 +69,71 @@ const getSolanaConnection = (): Connection => {
 }
 
 /**
+ * Executes environment-aware transaction signing with unified logic
+ * This is the core implementation that handles desktop vs mobile signing patterns
+ */
+const executeEnvironmentAwareSignAndSend = async (
+  transaction: VersionedTransaction,
+  provider: SolanaProvider
+): Promise<string> => {
+  // For desktop browser extensions: Preserve the working pattern
+  if (!isMobileEnvironment() && provider.signAndSendTransaction) {
+    try {
+      const { signature } = await provider.signAndSendTransaction(transaction)
+      return signature
+    } catch (error) {
+      if (isUserRejection(error)) {
+        throw new Error('Transaction was rejected by user')
+      }
+      // Let caller handle fallback
+      throw error
+    }
+  }
+
+  // For mobile environments: Use recommended signTransaction + sendRawTransaction pattern
+  // Per Phantom docs: "After receiving the signature, your app can broadcast the transaction
+  // itself with sendRawTransaction in web3.js"
+  if (provider.signTransaction) {
+    try {
+      const signedTransaction = await provider.signTransaction(transaction)
+      const connection = getSolanaConnection()
+
+      // Serialize and broadcast the signed transaction ourselves
+      const rawTransaction = signedTransaction.serialize()
+      const signature = await connection.sendRawTransaction(rawTransaction, {
+        skipPreflight: false,
+        preflightCommitment: 'confirmed'
+      })
+
+      return signature
+    } catch (error) {
+      if (isUserRejection(error)) {
+        throw new Error('Transaction was rejected by user')
+      }
+      // Let caller handle fallback
+      throw error
+    }
+  }
+
+  // Final fallback: Use deprecated method if it's the only option
+  if (provider.signAndSendTransaction) {
+    try {
+      const { signature } = await provider.signAndSendTransaction(transaction)
+      return signature
+    } catch (error) {
+      if (isUserRejection(error)) {
+        throw new Error('Transaction was rejected by user')
+      }
+      // Let caller handle fallback
+      throw error
+    }
+  }
+
+  // If no signing method is available, throw error
+  throw new Error('Provider does not support transaction signing')
+}
+
+/**
  * Handles transaction signing and sending with environment-aware approach.
  *
  * For desktop browser extensions (like Phantom): Uses the proven signAndSendTransaction pattern
@@ -85,37 +150,7 @@ export async function handleManualSignAndSend(
   provider: SolanaProvider
 ): Promise<string> {
   try {
-    // For desktop browser extensions: Preserve the working pattern
-    if (!isMobileEnvironment() && provider.signAndSendTransaction) {
-      const { signature } = await provider.signAndSendTransaction(transaction)
-      return signature
-    }
-
-    // For mobile environments: Use recommended signTransaction + sendRawTransaction pattern
-    // Per Phantom docs: "After receiving the signature, your app can broadcast the transaction
-    // itself with sendRawTransaction in web3.js"
-    if (provider.signTransaction) {
-      const signedTransaction = await provider.signTransaction(transaction)
-      const connection = getSolanaConnection()
-
-      // Serialize and broadcast the signed transaction ourselves
-      const rawTransaction = signedTransaction.serialize()
-      const signature = await connection.sendRawTransaction(rawTransaction, {
-        skipPreflight: false,
-        preflightCommitment: 'confirmed'
-      })
-
-      return signature
-    }
-
-    // Final fallback: Use deprecated method if it's the only option
-    if (provider.signAndSendTransaction) {
-      const { signature } = await provider.signAndSendTransaction(transaction)
-      return signature
-    }
-
-    // If no signing method is available, throw error
-    throw new Error('Provider does not support transaction signing')
+    return await executeEnvironmentAwareSignAndSend(transaction, provider)
   } catch (error: unknown) {
     console.error('Error in handleManualSignAndSend:', error)
     if (error instanceof Error && error.message?.includes('User rejected')) {
@@ -393,63 +428,13 @@ export const sendSOLTransaction = async (
       return await handleManualSignAndSend(transaction, provider)
     }
 
-    // Environment-aware approach: Desktop keeps working pattern, mobile uses Phantom-recommended pattern
-    if (!isMobileEnvironment() && provider.signAndSendTransaction) {
-      try {
-        const { signature }: { signature: string } =
-          await provider.signAndSendTransaction(transaction)
-
-        // @TODO: validate that signature was a successful tx
-        return signature
-      } catch (error) {
-        if (isUserRejection(error)) {
-          throw new Error('Transaction was rejected by user')
-        }
-        return handleManualSignAndSend(transaction, provider)
-      }
+    try {
+      // @TODO: validate that signature was a successful tx
+      return await executeEnvironmentAwareSignAndSend(transaction, provider)
+    } catch (error) {
+      // Fallback to manual handling for any signing errors
+      return await handleManualSignAndSend(transaction, provider)
     }
-
-    // For mobile or when signAndSendTransaction is not available: Use Phantom-recommended pattern
-    // signTransaction + sendRawTransaction (app controls broadcasting)
-    if (provider.signTransaction) {
-      try {
-        const signedTransaction = await provider.signTransaction(transaction)
-        const connection = getSolanaConnection()
-
-        // Serialize and broadcast the signed transaction ourselves per Phantom docs
-        const rawTransaction = signedTransaction.serialize()
-        const signature = await connection.sendRawTransaction(rawTransaction, {
-          skipPreflight: false,
-          preflightCommitment: 'confirmed'
-        })
-
-        // @TODO: validate that signature was a successful tx
-        return signature
-      } catch (error) {
-        if (isUserRejection(error)) {
-          throw new Error('Transaction was rejected by user')
-        }
-        return handleManualSignAndSend(transaction, provider)
-      }
-    }
-
-    // Final fallback: Use deprecated method if it's the only option
-    if (provider.signAndSendTransaction) {
-      try {
-        const { signature }: { signature: string } =
-          await provider.signAndSendTransaction(transaction)
-
-        // @TODO: validate that signature was a successful tx
-        return signature
-      } catch (error) {
-        if (isUserRejection(error)) {
-          throw new Error('Transaction was rejected by user')
-        }
-        return handleManualSignAndSend(transaction, provider)
-      }
-    }
-
-    return handleManualSignAndSend(transaction, provider)
   } catch (error) {
     if (isUserRejection(error)) {
       throw new Error('Transaction was rejected by user')
@@ -526,56 +511,10 @@ export const sendSolanaTransfer = async (
     return await handleManualSignAndSend(transaction, provider)
   }
 
-  // Environment-aware approach: Desktop keeps working pattern, mobile uses Phantom-recommended pattern
-  if (!isMobileEnvironment() && provider.signAndSendTransaction) {
-    try {
-      const { signature }: { signature: string } =
-        await provider.signAndSendTransaction(transaction)
-      return signature
-    } catch (error) {
-      if (isUserRejection(error)) {
-        throw new Error('Transaction was rejected by user')
-      }
-      return handleManualSignAndSend(transaction, provider)
-    }
+  try {
+    return await executeEnvironmentAwareSignAndSend(transaction, provider)
+  } catch (error) {
+    // Fallback to manual handling for any signing errors
+    return await handleManualSignAndSend(transaction, provider)
   }
-
-  // For mobile or when signAndSendTransaction is not available: Use Phantom-recommended pattern
-  // signTransaction + sendRawTransaction (app controls broadcasting)
-  if (provider.signTransaction) {
-    try {
-      const signedTransaction = await provider.signTransaction(transaction)
-      const connection = getSolanaConnection()
-
-      // Serialize and broadcast the signed transaction ourselves per Phantom docs
-      const rawTransaction = signedTransaction.serialize()
-      const signature = await connection.sendRawTransaction(rawTransaction, {
-        skipPreflight: false,
-        preflightCommitment: 'confirmed'
-      })
-
-      return signature
-    } catch (error) {
-      if (isUserRejection(error)) {
-        throw new Error('Transaction was rejected by user')
-      }
-      return handleManualSignAndSend(transaction, provider)
-    }
-  }
-
-  // Final fallback: Use deprecated method if it's the only option
-  if (provider.signAndSendTransaction) {
-    try {
-      const { signature }: { signature: string } =
-        await provider.signAndSendTransaction(transaction)
-      return signature
-    } catch (error) {
-      if (isUserRejection(error)) {
-        throw new Error('Transaction was rejected by user')
-      }
-      return handleManualSignAndSend(transaction, provider)
-    }
-  }
-
-  return handleManualSignAndSend(transaction, provider)
 }
