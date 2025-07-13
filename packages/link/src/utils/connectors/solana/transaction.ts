@@ -24,6 +24,9 @@ const ASSOCIATED_TOKEN_PROGRAM_ID = new PublicKey(
   'ATokenGPvbdGVxr1b2hvZbsiqW5xWH25efTNsLJA8knL'
 )
 
+// QuickNode RPC endpoint for Solana mainnet
+const SOLANA_MAINNET_RPC_ENDPOINT = 'https://alien-newest-vineyard.solana-mainnet.quiknode.pro/ebe5e35661d7edb7a5e48ab84bd9d477e472a40b'
+
 const isUserRejection = (error: unknown): boolean => {
   if (!error || typeof error !== 'object') return false
   const err = error as Record<string, any>
@@ -55,11 +58,23 @@ const isMobileEnvironment = (): boolean => {
 }
 
 /**
+ * Gets a Solana connection for broadcasting transactions
+ */
+const getSolanaConnection = (): Connection => {
+  // Use the same connection logic as in createTransferInstructions
+  return new Connection(
+    SOLANA_MAINNET_RPC_ENDPOINT,
+    'confirmed'
+  )
+}
+
+/**
  * Handles transaction signing and sending with environment-aware approach.
  *
  * For desktop browser extensions (like Phantom): Uses the proven signAndSendTransaction pattern
- * For mobile environments: Uses the recommended signTransaction + sendTransaction pattern
+ * For mobile environments: Uses the recommended signTransaction + sendRawTransaction pattern per Phantom docs
  *
+ * @see https://docs.phantom.com/phantom-deeplinks/provider-methods/signtransaction
  * @see https://docs.phantom.com/phantom-deeplinks/provider-methods/signandsendtransaction
  * @param transaction - The transaction to sign and send
  * @param provider - The Solana provider (e.g., Phantom wallet)
@@ -76,10 +91,20 @@ export async function handleManualSignAndSend(
       return signature
     }
 
-    // For mobile environments: Use recommended signTransaction + sendTransaction pattern
-    if (provider.signTransaction && provider.sendTransaction) {
+    // For mobile environments: Use recommended signTransaction + sendRawTransaction pattern
+    // Per Phantom docs: "After receiving the signature, your app can broadcast the transaction
+    // itself with sendRawTransaction in web3.js"
+    if (provider.signTransaction) {
       const signedTransaction = await provider.signTransaction(transaction)
-      const signature = await provider.sendTransaction(signedTransaction)
+      const connection = getSolanaConnection()
+
+      // Serialize and broadcast the signed transaction ourselves
+      const rawTransaction = signedTransaction.serialize()
+      const signature = await connection.sendRawTransaction(rawTransaction, {
+        skipPreflight: false,
+        preflightCommitment: 'confirmed'
+      })
+
       return signature
     }
 
@@ -89,8 +114,8 @@ export async function handleManualSignAndSend(
       return signature
     }
 
-    // If neither method is available, throw error
-    throw new Error('Provider does not support transaction signing and sending')
+    // If no signing method is available, throw error
+    throw new Error('Provider does not support transaction signing')
   } catch (error: unknown) {
     console.error('Error in handleManualSignAndSend:', error)
     if (error instanceof Error && error.message?.includes('User rejected')) {
@@ -224,7 +249,7 @@ async function createTransferInstructions(config: TransactionConfig) {
       connection = new Connection('https://api.devnet.solana.com', 'confirmed')
     } else {
       connection = new Connection(
-        'https://alien-newest-vineyard.solana-mainnet.quiknode.pro/ebe5e35661d7edb7a5e48ab84bd9d477e472a40b',
+        SOLANA_MAINNET_RPC_ENDPOINT,
         'confirmed'
       )
     }
@@ -345,8 +370,9 @@ export async function getTransferInstructions(
  * Sends a SOL transaction with environment-aware approach.
  *
  * For desktop browser extensions: Uses proven signAndSendTransaction pattern (preserves working behavior)
- * For mobile environments: Uses recommended signTransaction + sendTransaction pattern
+ * For mobile environments: Uses Phantom-recommended signTransaction + web3.js sendRawTransaction pattern
  *
+ * @see https://docs.phantom.com/phantom-deeplinks/provider-methods/signtransaction
  * @see https://docs.phantom.com/phantom-deeplinks/provider-methods/signandsendtransaction
  * @param config - Transaction configuration
  * @returns Transaction signature
@@ -367,7 +393,7 @@ export const sendSOLTransaction = async (
       return await handleManualSignAndSend(transaction, provider)
     }
 
-    // Environment-aware approach: Desktop keeps working pattern, mobile uses new pattern
+    // Environment-aware approach: Desktop keeps working pattern, mobile uses Phantom-recommended pattern
     if (!isMobileEnvironment() && provider.signAndSendTransaction) {
       try {
         const { signature }: { signature: string } =
@@ -383,11 +409,19 @@ export const sendSOLTransaction = async (
       }
     }
 
-    // For mobile or when signAndSendTransaction is not available: Use recommended pattern
-    if (provider.signTransaction && provider.sendTransaction) {
+    // For mobile or when signAndSendTransaction is not available: Use Phantom-recommended pattern
+    // signTransaction + sendRawTransaction (app controls broadcasting)
+    if (provider.signTransaction) {
       try {
         const signedTransaction = await provider.signTransaction(transaction)
-        const signature = await provider.sendTransaction(signedTransaction)
+        const connection = getSolanaConnection()
+
+        // Serialize and broadcast the signed transaction ourselves per Phantom docs
+        const rawTransaction = signedTransaction.serialize()
+        const signature = await connection.sendRawTransaction(rawTransaction, {
+          skipPreflight: false,
+          preflightCommitment: 'confirmed'
+        })
 
         // @TODO: validate that signature was a successful tx
         return signature
@@ -470,8 +504,9 @@ export const sendSOLTransactionWithInstructions = async (
  * Sends a Solana transaction with environment-aware approach.
  *
  * For desktop browser extensions: Uses proven signAndSendTransaction pattern (preserves working behavior)
- * For mobile environments: Uses recommended signTransaction + sendTransaction pattern
+ * For mobile environments: Uses Phantom-recommended signTransaction + web3.js sendRawTransaction pattern
  *
+ * @see https://docs.phantom.com/phantom-deeplinks/provider-methods/signtransaction
  * @see https://docs.phantom.com/phantom-deeplinks/provider-methods/signandsendtransaction
  * @param walletName - Name of the wallet to use
  * @param transaction - The transaction to send
@@ -491,7 +526,7 @@ export const sendSolanaTransfer = async (
     return await handleManualSignAndSend(transaction, provider)
   }
 
-  // Environment-aware approach: Desktop keeps working pattern, mobile uses new pattern
+  // Environment-aware approach: Desktop keeps working pattern, mobile uses Phantom-recommended pattern
   if (!isMobileEnvironment() && provider.signAndSendTransaction) {
     try {
       const { signature }: { signature: string } =
@@ -505,11 +540,20 @@ export const sendSolanaTransfer = async (
     }
   }
 
-  // For mobile or when signAndSendTransaction is not available: Use recommended pattern
-  if (provider.signTransaction && provider.sendTransaction) {
+  // For mobile or when signAndSendTransaction is not available: Use Phantom-recommended pattern
+  // signTransaction + sendRawTransaction (app controls broadcasting)
+  if (provider.signTransaction) {
     try {
       const signedTransaction = await provider.signTransaction(transaction)
-      const signature = await provider.sendTransaction(signedTransaction)
+      const connection = getSolanaConnection()
+
+      // Serialize and broadcast the signed transaction ourselves per Phantom docs
+      const rawTransaction = signedTransaction.serialize()
+      const signature = await connection.sendRawTransaction(rawTransaction, {
+        skipPreflight: false,
+        preflightCommitment: 'confirmed'
+      })
+
       return signature
     } catch (error) {
       if (isUserRejection(error)) {

@@ -44,9 +44,10 @@ export interface SolanaProvider {
     transaction: Transaction | VersionedTransaction
   ): Promise<{ signature: string }>
   /**
-   * Sends a pre-signed transaction.
-   * Used in combination with signTransaction for the recommended pattern.
-   * @see https://docs.phantom.com/phantom-deeplinks/provider-methods/signandsendtransaction
+   * Sends a pre-signed transaction (legacy method).
+   * Note: When using signTransaction, Phantom recommends using web3.js sendRawTransaction instead.
+   * @see https://docs.phantom.com/phantom-deeplinks/provider-methods/signtransaction
+   * @deprecated Use web3.js sendRawTransaction after signTransaction for better control
    */
   sendTransaction?(
     transaction: Transaction | VersionedTransaction
