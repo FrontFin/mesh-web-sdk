@@ -32,7 +32,7 @@ export interface SolanaProvider {
    * This is the recommended approach for transaction signing.
    * @see https://docs.phantom.com/phantom-deeplinks/provider-methods/signandsendtransaction
    */
-  signTransaction(
+  signTransaction?(
     transaction: Transaction | VersionedTransaction
   ): Promise<Transaction | VersionedTransaction>
   /**

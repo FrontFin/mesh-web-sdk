@@ -136,11 +136,6 @@ const executeEnvironmentAwareSignAndSend = async (
     return trySignTransactionAndBroadcast(transaction, provider)
   }
 
-  // Final fallback: Use deprecated method if it's the only option
-  if (typeof provider.signAndSendTransaction === 'function') {
-    return trySignAndSendTransaction(transaction, provider)
-  }
-
   // If no signing method is available, throw error
   throw new Error('Provider does not support transaction signing')
 }
