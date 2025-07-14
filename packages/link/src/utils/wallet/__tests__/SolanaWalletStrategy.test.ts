@@ -143,9 +143,7 @@ describe('SolanaWalletStrategy', () => {
         ),
         fromAddress: mockPayload.account,
         blockhash: mockPayload.blockhash,
-        walletName: mockPayload.walletName,
-        createATA: false,
-        tokenProgram: mockPayload.tokenProgram
+        walletName: mockPayload.walletName
       })
     })
 
@@ -192,9 +190,7 @@ describe('SolanaWalletStrategy', () => {
         blockhash: mockPayload.blockhash,
         walletName: mockPayload.walletName,
         tokenMint: mockPayload.address,
-        tokenDecimals: mockPayload.args[2],
-        createATA: false,
-        tokenProgram: mockPayload.tokenProgram
+        tokenDecimals: mockPayload.args[2]
       })
     })
 
