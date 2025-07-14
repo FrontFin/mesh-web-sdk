@@ -60,6 +60,7 @@ export interface TransactionConfig {
   blockhash: string
   walletName: string
   tokenMint?: string
+  createATA?: boolean
   tokenProgram?: string
   tokenDecimals?: number
 }
