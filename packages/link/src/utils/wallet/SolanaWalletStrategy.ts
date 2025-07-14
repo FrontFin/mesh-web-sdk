@@ -117,7 +117,6 @@ export class SolanaWalletStrategy extends BaseWalletStrategy {
     if (!payload.blockhash) {
       throw new Error('Blockhash is required for Solana transactions')
     }
-    console.log(payload, 'payload')
 
     return await sendSOLTransaction({
       toAddress: payload.args[0] as string,

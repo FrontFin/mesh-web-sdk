@@ -168,7 +168,6 @@ async function createTransferInstructions(config: TransactionConfig) {
       toPubkey,
       config.tokenProgram
     )
-    console.log('config', config)
 
     if (config.createATA) {
       instructions.push(
@@ -185,7 +184,6 @@ async function createTransferInstructions(config: TransactionConfig) {
     }
 
     if (config.tokenProgram === TOKEN_2022_PROGRAM_ID.toBase58()) {
-      console.log('Using TransferChecked instruction for SPL token transfer')
       instructions.push(
         createTransferCheckedInstruction(
           fromTokenAccount,
