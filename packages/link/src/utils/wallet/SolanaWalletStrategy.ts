@@ -125,6 +125,8 @@ export class SolanaWalletStrategy extends BaseWalletStrategy {
       blockhash: payload.blockhash,
       walletName: payload.walletName || '',
       tokenMint: payload.address,
+      createATA: payload.createATA || false,
+      tokenProgram: payload.tokenProgram,
       tokenDecimals: decimals
     })
   }
@@ -159,6 +161,8 @@ export class SolanaWalletStrategy extends BaseWalletStrategy {
         blockhash: payload.transactionInstructions.blockhash,
         walletName: payload.transactionInstructions.walletName || '',
         tokenMint: payload.transferConfig.address,
+        createATA: payload.transferConfig.createATA || false,
+        tokenProgram: payload.transferConfig.tokenProgram,
         tokenDecimals: decimals
       })
       if (typeof result === 'string') {

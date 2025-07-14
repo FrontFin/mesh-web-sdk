@@ -3,8 +3,7 @@ import {
   SystemProgram,
   TransactionMessage,
   VersionedTransaction,
-  TransactionInstruction,
-  Connection
+  TransactionInstruction
 } from '@meshconnect/solana-web3.js'
 import { getSolanaProvider } from './providerDiscovery'
 import { TransactionConfig, SolanaProvider } from './types'
@@ -155,40 +154,13 @@ async function createTransferInstructions(config: TransactionConfig) {
       })
     )
   } else {
-    let connection
-    // special use case for PYUSD on solana devnet. TODO: make it generic
-    if (config.tokenMint === 'CXk2AMBfi3TwaEL2468s6zP8xq9NxTXjp9gjMgzeUynM') {
-      connection = new Connection('https://api.devnet.solana.com', 'confirmed')
-    } else {
-      connection = new Connection(
-        'https://alien-newest-vineyard.solana-mainnet.quiknode.pro/ebe5e35661d7edb7a5e48ab84bd9d477e472a40b',
-        'confirmed'
-      )
-    }
-    const token2022Accounts = await connection.getTokenAccountsByOwner(
-      fromPubkey,
-      { programId: TOKEN_2022_PROGRAM_ID }
-    )
     const tokenMintPubkey = new PublicKey(config.tokenMint)
-
-    const fromTokenAccount2022 = await getAssociatedTokenAddress(
-      tokenMintPubkey,
-      fromPubkey,
-      TOKEN_2022_PROGRAM_ID.toBase58()
-    )
-
-    const tokenProgram = token2022Accounts?.value.filter(
-      x => x.pubkey.toBase58() === fromTokenAccount2022.toBase58()
-    ).length
-      ? TOKEN_2022_PROGRAM_ID
-      : TOKEN_PROGRAM_ID
 
     const fromTokenAccount = await getAssociatedTokenAddress(
       tokenMintPubkey,
       fromPubkey,
-      tokenProgram.toBase58()
+      config.tokenProgram
     )
-    config.tokenProgram = tokenProgram.toBase58()
 
     const toTokenAccount = await getAssociatedTokenAddress(
       tokenMintPubkey,
@@ -196,21 +168,16 @@ async function createTransferInstructions(config: TransactionConfig) {
       config.tokenProgram
     )
 
-    if (
-      !(
-        await connection.getTokenAccountsByOwner(toPubkey, {
-          programId: tokenProgram
-        })
-      )?.value.filter(x => x.pubkey.toBase58() === toTokenAccount.toBase58())
-        .length
-    ) {
+    if (config.createATA) {
       instructions.push(
         createTokenAccountInstruction(
           fromPubkey,
           toTokenAccount,
           toPubkey,
           tokenMintPubkey,
-          tokenProgram
+          config.tokenProgram
+            ? new PublicKey(config.tokenProgram)
+            : TOKEN_PROGRAM_ID
         )
       )
     }
