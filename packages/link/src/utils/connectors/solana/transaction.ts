@@ -3,8 +3,7 @@ import {
   SystemProgram,
   TransactionMessage,
   VersionedTransaction,
-  TransactionInstruction,
-  Connection
+  TransactionInstruction
 } from '@meshconnect/solana-web3.js'
 import { getSolanaProvider } from './providerDiscovery'
 import { TransactionConfig, SolanaProvider } from './types'
