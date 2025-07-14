@@ -188,6 +188,8 @@ describe('SolanaWalletStrategy', () => {
         amount: mockPayload.args[1],
         fromAddress: mockPayload.account,
         blockhash: mockPayload.blockhash,
+        createATA: false,
+        tokenProgram: mockPayload.tokenProgram,
         walletName: mockPayload.walletName,
         tokenMint: mockPayload.address,
         tokenDecimals: mockPayload.args[2]
