@@ -124,7 +124,8 @@ describe('SolanaWalletStrategy', () => {
       walletName: 'Phantom',
       blockhash: 'test_blockhash',
       chainId: 101,
-      network: 'solana'
+      network: 'solana',
+      tokenProgram: 'token_program_id'
     }
 
     it('should successfully send native transfer', async () => {
@@ -142,7 +143,9 @@ describe('SolanaWalletStrategy', () => {
         ),
         fromAddress: mockPayload.account,
         blockhash: mockPayload.blockhash,
-        walletName: mockPayload.walletName
+        walletName: mockPayload.walletName,
+        createATA: false,
+        tokenProgram: mockPayload.tokenProgram
       })
     })
 
@@ -166,7 +169,8 @@ describe('SolanaWalletStrategy', () => {
       args: ['recipient_address', 1000000n, 6],
       account: 'sender_address',
       walletName: 'Phantom',
-      blockhash: 'test_blockhash'
+      blockhash: 'test_blockhash',
+      tokenProgram: 'token_program_id'
     }
 
     it('should successfully send token transfer', async () => {
@@ -188,7 +192,9 @@ describe('SolanaWalletStrategy', () => {
         blockhash: mockPayload.blockhash,
         walletName: mockPayload.walletName,
         tokenMint: mockPayload.address,
-        tokenDecimals: mockPayload.args[2]
+        tokenDecimals: mockPayload.args[2],
+        createATA: false,
+        tokenProgram: mockPayload.tokenProgram
       })
     })
 
