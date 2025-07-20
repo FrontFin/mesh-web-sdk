@@ -6,14 +6,14 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
-      - name: Setup Node.js environment
-        uses: actions/setup-node@v3
+      - name: Setup Bun environment
+        uses: oven-sh/setup-bun@v1
         with:
-          node-version: 18.x
+          bun-version: latest
       - name: Install dependencies
-        run: yarn
+        run: bun i
       - name: Checking for type errors
-        run: yarn typecheck
+        run: bun run build
       - name: Checking for linting errors
         run: yarn lint
       - name: Yarn test

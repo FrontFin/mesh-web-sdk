@@ -41,8 +41,5 @@
     "semver": "^7.6.2",
     "nanoid": "^3.3.8",
     "esbuild": "^0.25.0"
-  },
-  "dependencies": {
-    "@meshconnect/mesh-b2b-sdk": "."
   }
 }

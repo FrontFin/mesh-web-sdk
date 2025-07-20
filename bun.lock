@@ -3,9 +3,6 @@
   "workspaces": {
     "": {
       "name": "@meshconnect/mesh-b2b-sdk",
-      "dependencies": {
-        "@meshconnect/mesh-b2b-sdk": ".",
-      },
       "devDependencies": {
         "@typescript-eslint/eslint-plugin": "^6.21.0",
         "@typescript-eslint/parser": "^6.21.0",
@@ -436,8 +433,6 @@
     "@lerna/create": ["@lerna/create@6.6.2", "", { "dependencies": { "@lerna/child-process": "6.6.2", "dedent": "^0.7.0", "fs-extra": "^9.1.0", "init-package-json": "^3.0.2", "npm-package-arg": "8.1.1", "p-reduce": "^2.1.0", "pacote": "15.1.1", "pify": "^5.0.0", "semver": "^7.3.4", "slash": "^3.0.0", "validate-npm-package-license": "^3.0.4", "validate-npm-package-name": "^4.0.0", "yargs-parser": "20.2.4" } }, "sha512-xQ+1Y7D+9etvUlE+unhG/TwmM6XBzGIdFBaNoW8D8kyOa9M2Jf3vdEtAxVa7mhRz66CENfhL/+I/QkVaa7pwbQ=="],
 
     "@lerna/legacy-package-management": ["@lerna/legacy-package-management@6.6.2", "", { "dependencies": { "@npmcli/arborist": "6.2.3", "@npmcli/run-script": "4.1.7", "@nrwl/devkit": ">=15.5.2 < 16", "@octokit/rest": "19.0.3", "byte-size": "7.0.0", "chalk": "4.1.0", "clone-deep": "4.0.1", "cmd-shim": "5.0.0", "columnify": "1.6.0", "config-chain": "1.1.12", "conventional-changelog-core": "4.2.4", "conventional-recommended-bump": "6.1.0", "cosmiconfig": "7.0.0", "dedent": "0.7.0", "dot-prop": "6.0.1", "execa": "5.0.0", "file-url": "3.0.0", "find-up": "5.0.0", "fs-extra": "9.1.0", "get-port": "5.1.1", "get-stream": "6.0.0", "git-url-parse": "13.1.0", "glob-parent": "5.1.2", "globby": "11.1.0", "graceful-fs": "4.2.10", "has-unicode": "2.0.1", "inquirer": "8.2.4", "is-ci": "2.0.0", "is-stream": "2.0.0", "libnpmpublish": "7.1.4", "load-json-file": "6.2.0", "make-dir": "3.1.0", "minimatch": "3.0.5", "multimatch": "5.0.0", "node-fetch": "2.6.7", "npm-package-arg": "8.1.1", "npm-packlist": "5.1.1", "npm-registry-fetch": "14.0.3", "npmlog": "6.0.2", "p-map": "4.0.0", "p-map-series": "2.1.0", "p-queue": "6.6.2", "p-waterfall": "2.1.1", "pacote": "15.1.1", "pify": "5.0.0", "pretty-format": "29.4.3", "read-cmd-shim": "3.0.0", "read-package-json": "5.0.1", "resolve-from": "5.0.0", "semver": "7.3.8", "signal-exit": "3.0.7", "slash": "3.0.0", "ssri": "9.0.1", "strong-log-transformer": "2.1.0", "tar": "6.1.11", "temp-dir": "1.0.0", "tempy": "1.0.0", "upath": "2.0.1", "uuid": "8.3.2", "write-file-atomic": "4.0.1", "write-pkg": "4.0.0", "yargs": "16.2.0" } }, "sha512-0hZxUPKnHwehUO2xC4ldtdX9bW0W1UosxebDIQlZL2STnZnA2IFmIk2lJVUyFW+cmTPQzV93jfS0i69T9Z+teg=="],
-
-    "@meshconnect/mesh-b2b-sdk": ["@meshconnect/mesh-b2b-sdk@file:", { "dependencies": { "@meshconnect/mesh-b2b-sdk": "." }, "devDependencies": { "@typescript-eslint/eslint-plugin": "^6.21.0", "@typescript-eslint/parser": "^6.21.0", "eslint": "^7.23.0", "eslint-config-prettier": "^8.1.0", "eslint-plugin-import": "^2.22.1", "eslint-plugin-prettier": "^3.4.0", "lerna": "^6.1.0", "prettier": "^2.2.1", "rimraf": "^3.0.0", "typescript": "^5.0.4", "yarn": "^1.22.19" } }],
 
     "@meshconnect/node-api": ["@meshconnect/node-api@workspace:packages/node-api"],
 
@@ -2266,8 +2261,6 @@
     "@lerna/legacy-package-management/minimatch": ["minimatch@3.0.5", "", { "dependencies": { "brace-expansion": "^1.1.7" } }, "sha512-tUpxzX0VAzJHjLu0xUfFv1gwVp9ba3IOuRAVH2EGuRW8a5emA2FlACLqiT/lDVtS1W+TGNwqz3sWaNyLgDJWuw=="],
 
     "@lerna/legacy-package-management/npm-registry-fetch": ["npm-registry-fetch@14.0.3", "", { "dependencies": { "make-fetch-happen": "^11.0.0", "minipass": "^4.0.0", "minipass-fetch": "^3.0.0", "minipass-json-stream": "^1.0.1", "minizlib": "^2.1.2", "npm-package-arg": "^10.0.0", "proc-log": "^3.0.0" } }, "sha512-YaeRbVNpnWvsGOjX2wk5s85XJ7l1qQBGAp724h8e2CZFFhMSuw9enom7K1mWVUtvXO1uUSFIAPofQK0pPN0ZcA=="],
-
-    "@meshconnect/mesh-b2b-sdk/@meshconnect/mesh-b2b-sdk": ["@meshconnect/mesh-b2b-sdk@file:.", {}],
 
     "@meshconnect/node-api/typescript": ["typescript@4.9.5", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-1FXk9E2Hm+QzZQ7z+McJiHL4NW1F2EzMu9Nq9i3zAaGqibafqYwCVU6WyWAuyQRRzOlxou8xZSyXLEN8oKj24g=="],
 
