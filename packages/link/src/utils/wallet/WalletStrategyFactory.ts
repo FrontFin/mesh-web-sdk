@@ -1,4 +1,4 @@
-import { WalletStrategy } from './WalletStrategy'
+import type { WalletStrategy } from './WalletStrategy'
 import { EVMWalletStrategy } from './EVMWalletStrategy'
 import { SolanaWalletStrategy } from './SolanaWalletStrategy'
 

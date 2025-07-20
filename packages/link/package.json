@@ -25,7 +25,7 @@
     "ts-jest": "^29.1.2",
     "util": "^0.12.4"
   },
-  "dependencies": {
+  "peerDependencies": {
     "@meshconnect/node-api": "^2.0.16",
     "@meshconnect/solana-web3.js": "^1.0.4",
     "bs58": "^5.0.0",

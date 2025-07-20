@@ -1,4 +1,4 @@
-import React, { HTMLAttributes, InputHTMLAttributes } from 'react'
+import React, { type HTMLAttributes, type InputHTMLAttributes } from 'react'
 
 // Theme object
 export const theme = {

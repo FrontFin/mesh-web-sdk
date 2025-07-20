@@ -1,5 +1,5 @@
 import { BaseWalletStrategy } from './WalletStrategy'
-import {
+import type {
   WalletBrowserPayload,
   SignRequestPayload,
   ChainSwitchPayload,

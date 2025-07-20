@@ -23,9 +23,9 @@
     "yarn": "^1.22.19"
   },
   "scripts": {
-    "typecheck": "lerna run typecheck",
+    "build": "tsc -b",
+    "watch": "tsc -b -w",
     "lint": "lerna run lint",
-    "build": "lerna run build",
     "test": "lerna run test",
     "test:updateSnapshots": "lerna run test -- -u",
     "test:cov": "lerna run test:cov",
@@ -41,5 +41,8 @@
     "semver": "^7.6.2",
     "nanoid": "^3.3.8",
     "esbuild": "^0.25.0"
+  },
+  "dependencies": {
+    "@meshconnect/mesh-b2b-sdk": "."
   }
 }

@@ -1,5 +1,5 @@
 import { BaseWalletStrategy } from './WalletStrategy'
-import {
+import type {
   WalletBrowserPayload,
   SignRequestPayload,
   ChainSwitchPayload,
@@ -167,7 +167,7 @@ export class EVMWalletStrategy extends BaseWalletStrategy {
 
   getProviders() {
     return findAvailableProviders().map(provider => ({
-      icon: provider.icon,
+      ...(provider.icon ? { icon: provider.icon } : {}),
       id: provider.id,
       name: provider.name,
       type: 'evm'

@@ -1,4 +1,4 @@
-import {
+import type {
   EVMProvider,
   InjectedProviderInfo,
   EIP6963ProviderDetail
@@ -58,7 +58,7 @@ export const findAvailableProviders = (): InjectedProviderInfo[] => {
     providers.push({
       name: wallet.info.name,
       id: wallet.info.uuid,
-      icon: wallet.info.icon,
+      ...(wallet.info.icon ? { icon: wallet.info.icon } : {}),
       injectedData
     })
   })

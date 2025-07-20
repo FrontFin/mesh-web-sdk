@@ -1,6 +1,6 @@
 import { createLink } from './Link'
-import { DoneEvent, LinkEventType } from './utils/event-types'
-import {
+import type { DoneEvent, LinkEventType } from './utils/event-types'
+import type {
   AccessTokenPayload,
   DelayedAuthPayload,
   EventType,
@@ -22,7 +22,7 @@ describe('createLink tests', () => {
   window.open = jest.fn()
 
   beforeEach(() => {
-    document.getElementsByTagName('html')[0].innerHTML = ''
+    document.getElementsByTagName('html')[0]!.innerHTML = ''
   })
 
   test('createLink when invalid link provided should not open popup', () => {

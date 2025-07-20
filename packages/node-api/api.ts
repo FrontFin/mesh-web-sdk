@@ -7924,7 +7924,8 @@ export interface VerifyWalletOptions {
 /** Verification method. */
 export type WalletVerificationMethod = 'signedMessage'
 
-import axios, { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from 'axios'
+import axios from 'axios'
+import type { AxiosInstance, AxiosRequestConfig, AxiosResponse, HeadersDefaults, ResponseType } from "axios"
 
 export type QueryParamsType = Record<string | number, any>
 
@@ -7964,8 +7965,8 @@ export class HttpClient<SecurityDataType = unknown> {
   public instance: AxiosInstance
   private securityData: SecurityDataType | null = null
   private securityWorker?: ApiConfig<SecurityDataType>['securityWorker']
-  private secure?: boolean
-  private format?: ResponseType
+  private secure?: boolean | undefined
+  private format?: ResponseType | undefined
 
   constructor({ securityWorker, secure, format, ...axiosConfig }: ApiConfig<SecurityDataType> = {}) {
     this.instance = axios.create({
@@ -8050,7 +8051,7 @@ export class HttpClient<SecurityDataType = unknown> {
         ...(type && type !== ContentType.FormData ? { 'Content-Type': type } : {})
       },
       params: query,
-      responseType: responseFormat,
+      ...responseFormat ? { responseType: responseFormat } : {},
       data: body,
       url: path
     })
@@ -8147,7 +8148,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
       this.request<AssetPaginationResponseApiResult, ApiResult>({
         path: `/api/v1/assets/${assetType}`,
         method: 'GET',
-        query: query,
+        ...query ? { query } : {},
         secure: true,
         format: 'json',
         ...params
@@ -8201,7 +8202,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
       this.request<B2BFiatPortfolioModelApiResult, ApiResult>({
         path: `/api/v1/balance/portfolio`,
         method: 'GET',
-        query: query,
+        ...query ? { query } : {},
         secure: true,
         format: 'json',
         ...params
@@ -8863,7 +8864,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
       this.request<TransferModelPaginationResponseApiResult, ApiResult>({
         path: `/api/v1/transfers/managed/mesh`,
         method: 'GET',
-        query: query,
+        ...query ? { query } : {},
         secure: true,
         format: 'json',
         ...params
@@ -8997,7 +8998,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
       this.request<StringApiResult, ProblemDetails | void>({
         path: `/api/v1/catalog/solana/getLatestBlockhash`,
         method: 'POST',
-        query: query,
+        ...query ? { query } : {},
         secure: true,
         format: 'json',
         ...params
@@ -9339,7 +9340,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
       this.request<DeFiWalletVerificationResponseApiResult, ApiResult>({
         path: `/api/v1/wallets/verify`,
         method: 'GET',
-        query: query,
+        ...query ? { query } : {},
         secure: true,
         format: 'json',
         ...params

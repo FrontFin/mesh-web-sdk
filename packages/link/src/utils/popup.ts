@@ -1,4 +1,4 @@
-import { LinkStyle } from './types'
+import type { LinkStyle } from './types'
 import { getLinkStyle, getNumber } from './style'
 
 const popupId = 'mesh-link-popup'

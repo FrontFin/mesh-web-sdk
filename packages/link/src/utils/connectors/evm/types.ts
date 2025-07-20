@@ -1,4 +1,4 @@
-import { ethers, Eip1193Provider } from 'ethers'
+import { ethers, type Eip1193Provider } from 'ethers'
 
 export interface EVMConnectResult {
   accounts: string[]

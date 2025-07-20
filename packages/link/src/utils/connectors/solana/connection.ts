@@ -1,7 +1,7 @@
-import { SolanaConnectResult } from './types'
+import type { SolanaConnectResult } from './types'
 import { getSolanaProvider } from './providerDiscovery'
 import { Buffer } from 'buffer'
-import { WalletBrowserPayload } from '../../types'
+import type { WalletBrowserPayload } from '../../types'
 
 if (typeof window !== 'undefined') {
   window.Buffer = window.Buffer || Buffer
