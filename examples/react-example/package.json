@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@meshconnect/node-api": "^2.0.21",
-    "@meshconnect/web-link-sdk": "^3.2.13",
+    "@meshconnect/node-api": "*",
+    "@meshconnect/web-link-sdk": "*",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
     "axios": "^1.8.2",
