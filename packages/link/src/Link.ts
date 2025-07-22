@@ -1,4 +1,4 @@
-import {
+import type {
   LinkOptions,
   Link,
   EventType,
@@ -17,13 +17,13 @@ import {
   SolanaTransferWithInstructionsPayload
 } from './utils/types'
 import { addPopup, iframeId, removePopup } from './utils/popup'
-import { LinkEventType, isLinkEventTypeKey } from './utils/event-types'
+import { type LinkEventType, isLinkEventTypeKey } from './utils/event-types'
 import {
-  WalletBrowserEventType,
+  type WalletBrowserEventType,
   isWalletBrowserEventTypeKey
 } from './utils/wallet-browser-event-types'
 import { sdkSpecs } from './utils/sdk-specs'
-import { WalletStrategyFactory, NetworkType } from './utils/wallet'
+import { WalletStrategyFactory, type NetworkType } from './utils/wallet'
 
 let currentOptions: LinkOptions | undefined
 let targetOrigin: string | undefined

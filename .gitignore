@@ -12,8 +12,9 @@
 /build
 **/dist
 
-**/**/node_modules
 **/**/dist
+**/**/node_modules
+**.tsbuildinfo
 
 # misc
 .DS_Store

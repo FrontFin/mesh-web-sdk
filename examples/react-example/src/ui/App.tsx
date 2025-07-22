@@ -1,9 +1,9 @@
 import React, { useState, useCallback } from 'react'
 import {
   createLink,
-  LinkOptions,
-  LinkPayload,
-  TransferFinishedPayload
+  type LinkOptions,
+  type LinkPayload,
+  type TransferFinishedPayload
 } from '@meshconnect/web-link-sdk'
 import { Section, Button, Input, theme } from '../components/StyledComponents'
 

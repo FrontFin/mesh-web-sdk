@@ -1,6 +1,6 @@
 import {
-  SolanaProvider,
-  WindowWithSolanaProviders,
+  type SolanaProvider,
+  type WindowWithSolanaProviders,
   SolanaWalletType
 } from './types'
 

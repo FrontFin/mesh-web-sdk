@@ -1,5 +1,9 @@
 import { ethers } from 'ethers'
-import { EVMProvider, EVMConnectResult, EIP6963ProviderDetail } from './types'
+import type {
+  EVMProvider,
+  EVMConnectResult,
+  EIP6963ProviderDetail
+} from './types'
 import {
   setActiveEVMProvider,
   getActiveRawProvider,

@@ -1,4 +1,7 @@
-import { AddressLookupTableStateDto, TransactionInstructionDto } from './types'
+import type {
+  AddressLookupTableStateDto,
+  TransactionInstructionDto
+} from './types'
 
 export type WalletBrowserEventType =
   | WalletBrowserInjectedWalletSelected

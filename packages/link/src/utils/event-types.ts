@@ -1,4 +1,4 @@
-import { LinkPayload, TransferFinishedPayload } from './types'
+import type { LinkPayload, TransferFinishedPayload } from './types'
 
 export type LinkEventType =
   | IntegrationConnected

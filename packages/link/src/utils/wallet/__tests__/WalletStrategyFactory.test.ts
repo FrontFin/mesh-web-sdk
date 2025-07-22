@@ -44,9 +44,7 @@ describe('WalletStrategyFactory', () => {
       // Mock the provider methods
       jest
         .spyOn(EVMWalletStrategy.prototype, 'getProviders')
-        .mockReturnValue([
-          { id: 'metamask', type: 'evm', name: 'MetaMask', icon: undefined }
-        ])
+        .mockReturnValue([{ id: 'metamask', type: 'evm', name: 'MetaMask' }])
       jest
         .spyOn(SolanaWalletStrategy.prototype, 'getProviders')
         .mockReturnValue([{ id: 'phantom', type: 'solana' }])

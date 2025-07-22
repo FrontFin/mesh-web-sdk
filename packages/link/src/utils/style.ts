@@ -1,4 +1,4 @@
-import { LinkStyle } from './types'
+import type { LinkStyle } from './types'
 
 export function getLinkStyle(url: string): LinkStyle | undefined {
   try {

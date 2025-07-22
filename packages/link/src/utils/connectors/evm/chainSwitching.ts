@@ -1,4 +1,4 @@
-import { EVMProvider } from './types'
+import type { EVMProvider } from './types'
 import { getChainConfiguration } from './chainConfigs'
 import { getActiveRawProvider } from './provider'
 
