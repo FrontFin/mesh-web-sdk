@@ -8051,7 +8051,7 @@ export class HttpClient<SecurityDataType = unknown> {
         ...(type && type !== ContentType.FormData ? { 'Content-Type': type } : {})
       },
       params: query,
-      ...responseFormat ? { responseType: responseFormat } : {},
+      responseType: responseFormat,
       data: body,
       url: path
     })
@@ -8148,7 +8148,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
       this.request<AssetPaginationResponseApiResult, ApiResult>({
         path: `/api/v1/assets/${assetType}`,
         method: 'GET',
-        ...query ? { query } : {},
+        query,
         secure: true,
         format: 'json',
         ...params
@@ -8202,7 +8202,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
       this.request<B2BFiatPortfolioModelApiResult, ApiResult>({
         path: `/api/v1/balance/portfolio`,
         method: 'GET',
-        ...query ? { query } : {},
+        query,
         secure: true,
         format: 'json',
         ...params
@@ -8864,7 +8864,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
       this.request<TransferModelPaginationResponseApiResult, ApiResult>({
         path: `/api/v1/transfers/managed/mesh`,
         method: 'GET',
-        ...query ? { query } : {},
+        query,
         secure: true,
         format: 'json',
         ...params
@@ -8998,7 +8998,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
       this.request<StringApiResult, ProblemDetails | void>({
         path: `/api/v1/catalog/solana/getLatestBlockhash`,
         method: 'POST',
-        ...query ? { query } : {},
+        query,
         secure: true,
         format: 'json',
         ...params
@@ -9340,7 +9340,7 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
       this.request<DeFiWalletVerificationResponseApiResult, ApiResult>({
         path: `/api/v1/wallets/verify`,
         method: 'GET',
-        ...query ? { query } : {},
+        query,
         secure: true,
         format: 'json',
         ...params

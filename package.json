@@ -19,12 +19,11 @@
     "lerna": "^6.1.0",
     "prettier": "^2.2.1",
     "rimraf": "^3.0.0",
-    "typescript": "^5.0.4",
+    "typescript": "^5.8.3",
     "yarn": "^1.22.19"
   },
   "scripts": {
-    "build": "tsc -b",
-    "watch": "tsc -b -w",
+    "build": "lerna run build",
     "lint": "lerna run lint",
     "test": "lerna run test",
     "test:updateSnapshots": "lerna run test -- -u",

@@ -6,6 +6,7 @@ import type {
   DelayedAuthPayload,
   TransferFinishedPayload,
   LinkPayload,
+  WalletBrowserPayload,
   SignRequestPayload,
   ChainSwitchPayload,
   TransferPayload,
@@ -154,25 +155,21 @@ async function handleWalletBrowserEvent(
   const walletFactory = WalletStrategyFactory.getInstance()
   switch (event.data.type) {
     case 'walletBrowserInjectedWalletSelected': {
-      const { integrationName, networkType, targetChainId } = event.data.payload
+      const payload = event.data.payload as WalletBrowserPayload
       try {
-        const networkType_: NetworkType = networkType?.includes('solana')
-          ? 'solana'
-          : 'evm'
-        const strategy = walletFactory.getStrategy(networkType_)
+        const networkType = (
+          payload.networkType?.includes('solana') ? 'solana' : 'evm'
+        ) as NetworkType
+        const strategy = walletFactory.getStrategy(networkType)
 
-        const result = await strategy.connect({
-          integrationName,
-          networkType: networkType_,
-          targetChainId: String(targetChainId)
-        })
+        const result = await strategy.connect(payload)
 
         sendMessageToIframe({
           type: 'SDKinjectedConnectionCompleted',
           payload: {
             accounts: result.accounts,
             chainId: result.chainId,
-            networkType: networkType_
+            networkType: networkType
           }
         })
       } catch (error) {
@@ -187,9 +184,9 @@ async function handleWalletBrowserEvent(
     case 'walletBrowserSignRequest': {
       const payload = event.data.payload as SignRequestPayload
       try {
-        const networkType: NetworkType = !payload.address.startsWith('0x')
-          ? 'solana'
-          : 'evm'
+        const networkType = (
+          !payload.address.startsWith('0x') ? 'solana' : 'evm'
+        ) as NetworkType
         const strategy = walletFactory.getStrategy(networkType)
 
         const result = await strategy.signMessage(payload)

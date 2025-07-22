@@ -1,6 +1,5 @@
 import { ethers } from 'ethers'
 import { getActiveRawProvider } from './provider'
-import type { BigNumberish } from 'ethers'
 
 const isUserRejection = (error: any): boolean => {
   if (!error) return false
@@ -53,13 +52,13 @@ export const sendEVMTransaction = async (
       const tx = await signer.sendTransaction({
         to: toAddress,
         value: amount,
-        ...(gasLimit ? { gasLimit: BigInt(Math.floor(gasLimit)) } : {}),
-        ...(maxFeePerGas
-          ? { maxFeePerGas: BigInt(Math.floor(maxFeePerGas)) }
-          : {}),
-        ...(maxPriorityFeePerGas
-          ? { maxPriorityFeePerGas: BigInt(Math.floor(maxPriorityFeePerGas)) }
-          : {})
+        gasLimit: gasLimit ? BigInt(Math.floor(gasLimit)) : undefined,
+        maxFeePerGas: maxFeePerGas
+          ? BigInt(Math.floor(maxFeePerGas))
+          : undefined,
+        maxPriorityFeePerGas: maxPriorityFeePerGas
+          ? BigInt(Math.floor(maxPriorityFeePerGas))
+          : undefined
       })
 
       const receipt = await tx.wait()
@@ -131,19 +130,17 @@ export const sendEVMTokenTransaction = async (
         ? toSafeNumber(args[4], 'maxPriorityFeePerGas')
         : undefined
 
-    if (gasLimit) {
-      txOptions.gasLimit = BigInt(Math.floor(gasLimit))
-    }
-    if (maxFeePerGas) {
-      txOptions.maxFeePerGas = BigInt(Math.floor(maxFeePerGas))
-    }
-    if (maxPriorityFeePerGas) {
-      txOptions.maxPriorityFeePerGas = BigInt(Math.floor(maxPriorityFeePerGas))
-    }
+    txOptions.gasLimit = gasLimit ? BigInt(Math.floor(gasLimit)) : undefined
+    txOptions.maxFeePerGas = maxFeePerGas
+      ? BigInt(Math.floor(maxFeePerGas))
+      : undefined
+    txOptions.maxPriorityFeePerGas = maxPriorityFeePerGas
+      ? BigInt(Math.floor(maxPriorityFeePerGas))
+      : undefined
 
     try {
       // Send the transaction
-      const tx = await contract[functionName]!(args[0], args[1], txOptions)
+      const tx = await contract[functionName](args[0], args[1], txOptions)
 
       // Wait for transaction confirmation
       const receipt = await tx.wait()
@@ -216,15 +213,13 @@ export const sendNativeSmartContractTransaction = async (
         ? toSafeNumber(args[3], 'maxPriorityFeePerGas')
         : undefined
 
-    if (gasLimit) {
-      txOptions.gasLimit = BigInt(Math.floor(gasLimit))
-    }
-    if (maxFeePerGas) {
-      txOptions.maxFeePerGas = BigInt(Math.floor(maxFeePerGas))
-    }
-    if (maxPriorityFeePerGas) {
-      txOptions.maxPriorityFeePerGas = BigInt(Math.floor(maxPriorityFeePerGas))
-    }
+    txOptions.gasLimit = gasLimit ? BigInt(Math.floor(gasLimit)) : undefined
+    txOptions.maxFeePerGas = maxFeePerGas
+      ? BigInt(Math.floor(maxFeePerGas))
+      : undefined
+    txOptions.maxPriorityFeePerGas = maxPriorityFeePerGas
+      ? BigInt(Math.floor(maxPriorityFeePerGas))
+      : undefined
 
     if (value) {
       txOptions.value = value
@@ -232,7 +227,7 @@ export const sendNativeSmartContractTransaction = async (
 
     try {
       // Send the transaction
-      const tx = await contract[functionName]!(args[0], txOptions)
+      const tx = await contract[functionName](args[0], txOptions)
 
       // Wait for transaction confirmation
       const receipt = await tx.wait()

@@ -10,7 +10,6 @@
   "repository": "https://github.com/FrontFin/mesh-web-sdk.git",
   "homepage": "https://github.com/FrontFin/mesh-web-sdk",
   "devDependencies": {
-    "typescript": "^4.6.4",
     "swagger-typescript-api": "^12.0.3"
   },
   "scripts": {
