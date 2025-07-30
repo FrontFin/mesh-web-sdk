@@ -16,27 +16,86 @@ const identifyWalletType = (
   return SolanaWalletType.UNKNOWN
 }
 
+// Type-safe validation functions
+type WalletValidationFn = (provider: SolanaProvider) => boolean
+
+const walletValidations: Record<SolanaWalletType, WalletValidationFn> = {
+  [SolanaWalletType.PHANTOM]: (provider: SolanaProvider): boolean =>
+    provider.isPhantom === true &&
+    provider.isSolflare !== true &&
+    provider.isTrust !== true &&
+    provider.isTrustWallet !== true &&
+    provider.isExodus !== true,
+
+  [SolanaWalletType.SOLFLARE]: (provider: SolanaProvider): boolean =>
+    provider.isSolflare === true &&
+    provider.isPhantom !== true &&
+    provider.isTrust !== true &&
+    provider.isTrustWallet !== true &&
+    provider.isExodus !== true,
+
+  [SolanaWalletType.TRUST]: (provider: SolanaProvider): boolean =>
+    (provider.isTrust === true || provider.isTrustWallet === true) &&
+    provider.isPhantom !== true &&
+    provider.isSolflare !== true &&
+    provider.isExodus !== true,
+
+  [SolanaWalletType.EXODUS]: (provider: SolanaProvider): boolean =>
+    provider.isExodus === true &&
+    provider.isSolflare !== true &&
+    provider.isTrust !== true &&
+    provider.isTrustWallet !== true,
+  // Note: Exodus may also inject isPhantom, so we don't exclude it
+
+  [SolanaWalletType.UNKNOWN]: (provider: SolanaProvider): boolean =>
+    provider.isPhantom !== true &&
+    provider.isSolflare !== true &&
+    provider.isTrust !== true &&
+    provider.isTrustWallet !== true &&
+    provider.isExodus !== true
+}
+
 const getProviderByType = (
   type: SolanaWalletType
 ): SolanaProvider | undefined => {
-  // First try to get the provider directly using the wallet name
-  const dynamicProvider = (window as any)[type]?.solana
-  if (dynamicProvider) {
-    return dynamicProvider
-  }
-
   // Then check known provider locations
   switch (type) {
     case SolanaWalletType.PHANTOM:
-      return window.phantom?.solana
+      if (
+        window.phantom?.solana &&
+        walletValidations[type](window.phantom.solana)
+      ) {
+        return window.phantom.solana
+      }
+      return undefined
     case SolanaWalletType.SOLFLARE:
-      return window.solflare
+      if (window.solflare && walletValidations[type](window.solflare)) {
+        return window.solflare
+      }
+      return undefined
     case SolanaWalletType.TRUST:
-      return window.trustwallet?.solana
+      if (
+        window.trustwallet?.solana &&
+        walletValidations[type](window.trustwallet.solana)
+      ) {
+        return window.trustwallet.solana
+      }
+      return undefined
     case SolanaWalletType.EXODUS:
-      return window.exodus?.solana
+      if (
+        window.exodus?.solana &&
+        walletValidations[type](window.exodus.solana)
+      ) {
+        return window.exodus.solana
+      }
+      return undefined
     case SolanaWalletType.UNKNOWN:
-      return window.solana
+      if (window.solana && walletValidations[type](window.solana)) {
+        return window.solana
+      }
+      return undefined
+    default:
+      return undefined
   }
 }
 

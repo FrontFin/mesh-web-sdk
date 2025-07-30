@@ -43,7 +43,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerAccountDetailsResponseApiResult"
                 },
-                "example": {"content":{"integrationName":"Coinbase","firstName":"Firstname","middleName":"Midlename","lastName":"Lastname","accountNumber":"1234567","email":"enduser@domain.com","mobileNumber":"123456798","companyName":"MyCorp Inc.","countryCode":"GB","city":"City Name","postalCode":"4251","idType":"idCard","idNumber":"123","dateOfBirth":574732800},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"integrationName":"Coinbase","firstName":"Firstname","middleName":"Midlename","lastName":"Lastname","accountNumber":"1234567","email":"enduser@domain.com","mobileNumber":"123456798","companyName":"MyCorp Inc.","countryCode":"GB","city":"City Name","postalCode":"4251","idType":"idCard","idNumber":"123","dateOfBirth":574732800},"status":"ok","message":"","errorHash":"0d469941de62be0359aa7d0e0ef481e870d9fb54","errorType":""}
               }
             }
           },
@@ -54,7 +54,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -108,7 +108,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerAccountDetailsResponseApiResult"
                 },
-                "example": {"content":{"integrationName":"Coinbase","firstName":"Firstname","middleName":"Midlename","lastName":"Lastname","accountNumber":"1234567","email":"enduser@domain.com","mobileNumber":"123456798","companyName":"MyCorp Inc.","countryCode":"GB","city":"City Name","postalCode":"4251","idType":"idCard","idNumber":"123","dateOfBirth":574732800},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"integrationName":"Coinbase","firstName":"Firstname","middleName":"Midlename","lastName":"Lastname","accountNumber":"1234567","email":"enduser@domain.com","mobileNumber":"123456798","companyName":"MyCorp Inc.","countryCode":"GB","city":"City Name","postalCode":"4251","idType":"idCard","idNumber":"123","dateOfBirth":574732800},"status":"ok","message":"","errorHash":"0d469941de62be0359aa7d0e0ef481e870d9fb54","errorType":""}
               }
             }
           },
@@ -119,7 +119,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -197,7 +197,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/AssetPaginationResponseApiResult"
                 },
-                "example": {"content":{"items":[{"symbol":"AAPL","name":"Apple Inc","type":"equity"},{"symbol":"MSFT","name":"Microsoft Inc","type":"equity"}],"total":5},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"items":[{"symbol":"AAPL","name":"Apple Inc","type":"equity"},{"symbol":"MSFT","name":"Microsoft Inc","type":"equity"}],"total":5},"status":"ok","message":"","errorHash":"a1271b5e3baf602305f5abd3ce71c0656f04824b","errorType":""}
               }
             }
           },
@@ -208,7 +208,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -252,7 +252,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerAccountBalanceModelApiResult"
                 },
-                "example": {"content":{"balances":[{"cash":158.5,"buyingPower":258.5,"currencyCode":"USD"},{"cash":10,"buyingPower":10,"currencyCode":"EUR"}],"totalCashUsdValue":10,"totalBuyingPowerUsdValue":10},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"balances":[{"cash":158.5,"buyingPower":258.5,"currencyCode":"USD"},{"cash":10,"buyingPower":10,"currencyCode":"EUR"}],"totalCashUsdValue":10,"totalBuyingPowerUsdValue":10},"status":"ok","message":"","errorHash":"3ad8c4a49639522895fbac7cd31e2f80a5a3a2d2","errorType":""}
               }
             }
           },
@@ -263,7 +263,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -311,7 +311,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BFiatPortfolioModelApiResult"
                 },
-                "example": {"content":{"fiatBalances":[{"symbol":"USD","cash":3.099,"buyingPower":3.099},{"symbol":"EUR","cash":-102.880,"buyingPower":1293.596}]},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"fiatBalances":[{"symbol":"USD","cash":3.099,"buyingPower":3.099},{"symbol":"EUR","cash":-102.880,"buyingPower":1293.596}]},"status":"ok","message":"","errorHash":"4f640fa9fdd823255a4603a1e2d32a1ea31e1f21","errorType":""}
               }
             }
           },
@@ -322,7 +322,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -408,7 +408,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/CatalogLinkApiResult"
                 },
-                "example": {"content":{"url":"https://web.meshconnect.com/broker-connect?auth_code={authCode}","iFrameUrl":"https://web.meshconnect.com/b2b-iframe/{clientId}/broker-connect?auth_code={authCode}"},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"url":"https://web.meshconnect.com/broker-connect?auth_code={authCode}","iFrameUrl":"https://web.meshconnect.com/b2b-iframe/{clientId}/broker-connect?auth_code={authCode}"},"status":"ok","message":"","errorHash":"4df84cbbc0b6bdfa1e4907f57c7b4a466b8fc9eb","errorType":""}
               }
             }
           },
@@ -419,7 +419,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -430,7 +430,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -542,7 +542,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/CatalogLinkApiResult"
                 },
-                "example": {"content":{"url":"https://web.meshconnect.com/broker-connect?auth_code={authCode}","iFrameUrl":"https://web.meshconnect.com/b2b-iframe/{clientId}/broker-connect?auth_code={authCode}"},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"url":"https://web.meshconnect.com/broker-connect?auth_code={authCode}","iFrameUrl":"https://web.meshconnect.com/b2b-iframe/{clientId}/broker-connect?auth_code={authCode}"},"status":"ok","message":"","errorHash":"4df84cbbc0b6bdfa1e4907f57c7b4a466b8fc9eb","errorType":""}
               }
             }
           },
@@ -553,7 +553,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -564,7 +564,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -630,7 +630,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/LinkTokenModelApiResult"
                 },
-                "example": {"content":{"linkToken":"aHR0cHM6Ly93ZWIubWVzaGNvbm5lY3QuY29tL2IyYi1pZnJhbWUve2NsaWVudElkfS9icm9rZXItY29ubmVjdD9hdXRoX2NvZGU9e2F1dGhDb2RlfQ=="},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"linkToken":"aHR0cHM6Ly93ZWIubWVzaGNvbm5lY3QuY29tL2IyYi1pZnJhbWUve2NsaWVudElkfS9icm9rZXItY29ubmVjdD9hdXRoX2NvZGU9e2F1dGhDb2RlfQ=="},"status":"ok","message":"","errorHash":"8d443794f77e0525b39e9899429381870f0daefe","errorType":""}
               }
             }
           },
@@ -641,7 +641,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -652,7 +652,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -696,7 +696,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerRefreshTokenResponseApiResult"
                 },
-                "example": {"content":{"status":"succeeded","expiresInSeconds":86400,"brokerAccountTokens":[{"accessToken":"New secret token","refreshToken":"New secret refresh token"}]},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"status":"succeeded","expiresInSeconds":86400,"brokerAccountTokens":[{"accessToken":"New secret token","refreshToken":"New secret refresh token"}]},"status":"ok","message":"","errorHash":"9d3039e805923a44c7bfb5eff261aab0aed7d63b","errorType":""}
               }
             }
           },
@@ -707,7 +707,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Unauthorized token","displayMessage":"Could not refresh the authentication token. The provided data is not correct","errorType":"badRequest"}
+                "example": {"status":"badRequest","message":"Unauthorized token","displayMessage":"Could not refresh the authentication token. The provided data is not correct","errorHash":"1bc4f94fd3324fd4aa7140a1e3139e3524b85d3f","errorType":"badRequest"}
               }
             }
           },
@@ -771,7 +771,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"ok","message":"","errorType":""}
+                "example": {"status":"ok","message":"","errorHash":"e332aa7fb619606d57fdfa20e1790f0bbf0f5547","errorType":""}
               }
             }
           },
@@ -782,7 +782,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -812,7 +812,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokersHealthStatusListApiResult"
                 },
-                "example": {"content":[{"type":"robinhood","name":"Robinhood","isUp":true,"supportedProducts":["balance","holdings","identity","orders","transfers"]},{"type":"celsius","name":"Celsius","isUp":false,"description":"Temporarily disabled","downTimeStart":1655891444,"supportedProducts":["balance","orders","transfers","holdings"]},{"type":"deFiWallet","name":"MetaMask","isUp":false,"supportedProducts":["transfers","holdings"],"deFiWalletData":{"id":"34aeb688-decb-485f-9d80-b66466783394","name":"MetaMask"}}],"status":"ok","message":"","errorType":""}
+                "example": {"content":[{"type":"robinhood","name":"Robinhood","isUp":true,"supportedProducts":["balance","holdings","identity","orders","transfers"]},{"type":"celsius","name":"Celsius","isUp":false,"description":"Temporarily disabled","downTimeStart":1655891444,"supportedProducts":["balance","orders","transfers","holdings"]},{"type":"deFiWallet","name":"MetaMask","isUp":false,"supportedProducts":["transfers","holdings"],"deFiWalletData":{"id":"34aeb688-decb-485f-9d80-b66466783394","name":"MetaMask"}}],"status":"ok","message":"","errorHash":"f585284a491b406db27021ec51c65ae3f295f805","errorType":""}
               }
             }
           },
@@ -850,7 +850,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/BrokerAuthenticationSchemeIReadOnlyCollectionApiResult"
                 },
-                "example": {"content":[{"brokerType":"binanceInternational","authenticationSchemeType":"apiKey","initialAuthenticationModel":{"fields":[{"name":"Username","description":"API key"},{"name":"Password","description":"Secret key"},{"name":"AuthToken","description":"Passphrase"},{"name":"Type","description":"BinanceInternational"}]},"mfaSchemes":[]}],"status":"ok","message":"","errorType":""}
+                "example": {"content":[{"brokerType":"binanceInternational","authenticationSchemeType":"apiKey","initialAuthenticationModel":{"fields":[{"name":"Username","description":"API key"},{"name":"Password","description":"Secret key"},{"name":"AuthToken","description":"Passphrase"},{"name":"Type","description":"BinanceInternational"}]},"mfaSchemes":[]}],"status":"ok","message":"","errorHash":"741d03edb556f769f9ef9da59780dd9bb52eb121","errorType":""}
               }
             }
           }
@@ -899,7 +899,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerAuthResponseApiResult"
                 },
-                "example": {"content":{"status":"succeeded","expiresInSeconds":7200,"accountTokens":[{"account":{"meshAccountId":"00000000-0000-0000-0000-000000000000","frontAccountId":"00000000-0000-0000-0000-000000000000","accountId":"Id of the account","accountName":"Name of the account"},"accessToken":"Access token, allowing access to the integration","refreshToken":"Optional refresh token, allowing to refresh the access token"}]},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"status":"succeeded","expiresInSeconds":7200,"accountTokens":[{"account":{"meshAccountId":"00000000-0000-0000-0000-000000000000","frontAccountId":"00000000-0000-0000-0000-000000000000","accountId":"Id of the account","accountName":"Name of the account"},"accessToken":"Access token, allowing access to the integration","refreshToken":"Optional refresh token, allowing to refresh the access token"}]},"status":"ok","message":"","errorHash":"94041b5b3ea3701cf1f3ce6881d62a394c3e8beb","errorType":""}
               }
             }
           },
@@ -1019,7 +1019,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerAuthPromptResponseApiResult"
                 },
-                "example": {"content":{"status":"redirect","redirectLink":"https://web.meshconnect.com/broker-connect/callback","linkToken":"Link to the integration's site"},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"status":"redirect","redirectLink":"https://web.meshconnect.com/broker-connect/callback","linkToken":"Link to the integration's site"},"status":"ok","message":"","errorHash":"0697abb85a03abc34618ba46b41761f7ce2a1559","errorType":""}
               }
             }
           },
@@ -1051,7 +1051,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/IntegrationsResponseApiResult"
                 },
-                "example": {"content":{"items":[{"id":"47624467-e52e-4938-a41a-7926b6c27acf","name":"Coinbase","type":"coinbase","style":{"fieldActiveLight":"0052FF","buttonPrimaryLight":"0052FF","buttonHoverLight":"014CEC","buttonTextLight":"FFFFFF","buttonTextHoverLight":"FFFFFF","fieldActiveDark":"578BFA","buttonPrimaryDark":"578BFA","buttonHoverDark":"507FE5","buttonTextDark":"0A0B0D","buttonTextHoverDark":"0A0B0D"},"logo":{"logoLightUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Logo_Light.svg","logoDarkUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Logo_Dark.svg","logoWhiteUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Logo_White.svg","logoBlackUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Logo_Black.svg","logoColorUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Logo_Color.svg","iconLightUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Icon_Light.svg","iconDarkUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Icon_Dark.svg","iconWhiteUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Icon_White.svg","iconBlackUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Icon_Black.svg","iconColorUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Icon_Color.svg","base64Logo":"iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAA1VBMVEUAAAAAgP8AVf8AM/8AVdUAROgAQ+kAROkAROkAQ+oAQuoAROoAQ+gAROkAQ+kAQ+kAROkAQ+kAQ+kAROkAQugAQ+kAQ+kAROkAQ+kAQ+kAQ+kAQ+kAQ+kXVesOTuoAQ+kBROkERukFR+kNTeoOTeoUUusZVeshW+wpYe0qYu0uZe0yaO00ae05be5fifFgivGMqvWSr/amvfeqwPi7zfnE0/rO2/vU3/vY4vzc5fze5/zh6fzi6vzl7P3m7f3p7/3u8v7x9f73+f75+/76+//+/v////94Z10/AAAAH3RSTlMAAgMFBk9QUlNUVVZXiImKi4ykptfY2dvc3fHz9Pr8ZrpFhQAAAAFiS0dERhe6+e0AAADPSURBVBgZncHXVsJAFAXQExM6UhJCwEGPYsfesKCiAvf/P8m5swIhPLI3thbUo3gwiKNagJxyn6leCZmdNte0PCy1mdNAqswNRThBn+r0/n3+/XRAKwmg6lTnnyI/s2c6VaiI6kVerzg8phNCdWmNZHHBlRjK0LqVCTMGytC6kwkze1BdWteyGHElhopoHY7l7YZHJ3RCqBrV5VTk9288pKpABT2qs4eP2dfjPq3Eh1PihgJSLebsYslrck3DQ6aYMJUUkONXw44xnbDiY1v/vNIqVzlyMewAAAAASUVORK5CYII="},"cryptoTransfersSupported":true},{"id":"3d8f5c31-9fc0-4b61-bdfb-00fb18cbb9ad","name":"CoinCircle","type":"deFiWallet","deFiWalletProviderId":"36d8d9c0c7fe2957149ce8e878f3a01...","categories":["deFiWallet"],"style":{"fieldActiveLight":"0052FF","buttonPrimaryLight":"0052FF","buttonHoverLight":"014CEC","buttonTextLight":"FFFFFF","buttonTextHoverLight":"FFFFFF","fieldActiveDark":"578BFA","buttonPrimaryDark":"578BFA","buttonHoverDark":"507FE5","buttonTextDark":"0A0B0D","buttonTextHoverDark":"0A0B0D"},"logo":{"logoColorUrl":"https://frontuserfilecdn.azureedge.net/public/logos/CoinCircle_Logo_Color.svg","iconColorUrl":"https://frontuserfilecdn.azureedge.net/public/logos/CoinCircle_Icon_Color.svg"},"cryptoTransfersSupported":true}]},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"items":[{"id":"47624467-e52e-4938-a41a-7926b6c27acf","name":"Coinbase","type":"coinbase","style":{"fieldActiveLight":"0052FF","buttonPrimaryLight":"0052FF","buttonHoverLight":"014CEC","buttonTextLight":"FFFFFF","buttonTextHoverLight":"FFFFFF","fieldActiveDark":"578BFA","buttonPrimaryDark":"578BFA","buttonHoverDark":"507FE5","buttonTextDark":"0A0B0D","buttonTextHoverDark":"0A0B0D"},"logo":{"logoLightUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Logo_Light.svg","logoDarkUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Logo_Dark.svg","logoWhiteUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Logo_White.svg","logoBlackUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Logo_Black.svg","logoColorUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Logo_Color.svg","iconLightUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Icon_Light.svg","iconDarkUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Icon_Dark.svg","iconWhiteUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Icon_White.svg","iconBlackUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Icon_Black.svg","iconColorUrl":"https://frontuserfilecdn.azureedge.net/public/logos/Coinbase_Icon_Color.svg","base64Logo":"iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAMAAADXqc3KAAAA1VBMVEUAAAAAgP8AVf8AM/8AVdUAROgAQ+kAROkAROkAQ+oAQuoAROoAQ+gAROkAQ+kAQ+kAROkAQ+kAQ+kAROkAQugAQ+kAQ+kAROkAQ+kAQ+kAQ+kAQ+kAQ+kXVesOTuoAQ+kBROkERukFR+kNTeoOTeoUUusZVeshW+wpYe0qYu0uZe0yaO00ae05be5fifFgivGMqvWSr/amvfeqwPi7zfnE0/rO2/vU3/vY4vzc5fze5/zh6fzi6vzl7P3m7f3p7/3u8v7x9f73+f75+/76+//+/v////94Z10/AAAAH3RSTlMAAgMFBk9QUlNUVVZXiImKi4ykptfY2dvc3fHz9Pr8ZrpFhQAAAAFiS0dERhe6+e0AAADPSURBVBgZncHXVsJAFAXQExM6UhJCwEGPYsfesKCiAvf/P8m5swIhPLI3thbUo3gwiKNagJxyn6leCZmdNte0PCy1mdNAqswNRThBn+r0/n3+/XRAKwmg6lTnnyI/s2c6VaiI6kVerzg8phNCdWmNZHHBlRjK0LqVCTMGytC6kwkze1BdWteyGHElhopoHY7l7YZHJ3RCqBrV5VTk9288pKpABT2qs4eP2dfjPq3Eh1PihgJSLebsYslrck3DQ6aYMJUUkONXw44xnbDiY1v/vNIqVzlyMewAAAAASUVORK5CYII="},"cryptoTransfersSupported":true},{"id":"3d8f5c31-9fc0-4b61-bdfb-00fb18cbb9ad","name":"CoinCircle","type":"deFiWallet","deFiWalletProviderId":"36d8d9c0c7fe2957149ce8e878f3a01...","categories":["deFiWallet"],"style":{"fieldActiveLight":"0052FF","buttonPrimaryLight":"0052FF","buttonHoverLight":"014CEC","buttonTextLight":"FFFFFF","buttonTextHoverLight":"FFFFFF","fieldActiveDark":"578BFA","buttonPrimaryDark":"578BFA","buttonHoverDark":"507FE5","buttonTextDark":"0A0B0D","buttonTextHoverDark":"0A0B0D"},"logo":{"logoColorUrl":"https://frontuserfilecdn.azureedge.net/public/logos/CoinCircle_Logo_Color.svg","iconColorUrl":"https://frontuserfilecdn.azureedge.net/public/logos/CoinCircle_Icon_Color.svg"},"cryptoTransfersSupported":true}]},"status":"ok","message":"","errorHash":"00089f8d7ac8aada4beba6a67a3e513d3831169d","errorType":""}
               }
             }
           }
@@ -1073,7 +1073,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/NetworkModelResponseApiResult"
                 },
-                "example": {"content":{"networks":[{"networkType":"evm","tokens":[{"symbol":"ETH","logoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/tokens/ETH.svg"},{"symbol":"USDC","logoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/tokens/USDC.svg"},{"symbol":"USDT","logoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/tokens/USDT.svg"}],"supportedBrokerTypes":["deFiWallet","robinhood","coinbase","kraken","binanceInternational","binanceUs"],"supportedTokens":["ETH","USDC","USDT"],"nativeSymbol":"ETH","id":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","name":"Ethereum","chainId":"1","logoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/networks/Ethereum.svg"}]},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"networks":[{"networkType":"evm","tokens":[{"symbol":"ETH","logoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/tokens/ETH.svg"},{"symbol":"USDC","logoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/tokens/USDC.svg"},{"symbol":"USDT","logoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/tokens/USDT.svg"}],"supportedBrokerTypes":["deFiWallet","robinhood","coinbase","kraken","binanceInternational","binanceUs"],"supportedTokens":["ETH","USDC","USDT"],"nativeSymbol":"ETH","id":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","name":"Ethereum","chainId":"1","logoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/networks/Ethereum.svg"}]},"status":"ok","message":"","errorHash":"e08e7897ef295536a17696e9d645cfc20b1c85f3","errorType":""}
               }
             }
           },
@@ -1103,7 +1103,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/IntegrationNetworkResponseApiResult"
                 },
-                "example": {"content":{"integrations":[{"id":"00000000-0000-0000-0000-000000000000","type":"robinhood","networks":[{"supportedDevices":["android","ios","web"],"supportedTokens":["USDC","ETH"],"nativeSymbol":"ETH","id":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","name":"Ethereum","chainId":"1","logoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/networks/Ethereum.svg"},{"supportedDevices":["web"],"supportedTokens":["MATIC","ETH"],"nativeSymbol":"MATIC","id":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","name":"Polygon","chainId":"137","logoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/networks/Polygon.svg"}],"supportsOutgoingTransfers":true,"supportsIncomingTransfers":true}]},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"integrations":[{"id":"00000000-0000-0000-0000-000000000000","type":"robinhood","networks":[{"supportedDevices":["android","ios","web"],"supportedTokens":["USDC","ETH"],"nativeSymbol":"ETH","id":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","name":"Ethereum","chainId":"1","logoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/networks/Ethereum.svg"},{"supportedDevices":["web"],"supportedTokens":["MATIC","ETH"],"nativeSymbol":"MATIC","id":"7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12","name":"Polygon","chainId":"137","logoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/networks/Polygon.svg"}],"supportsOutgoingTransfers":true,"supportsIncomingTransfers":true}]},"status":"ok","message":"","errorHash":"4e3bc1704cfd5038585849d75d32873f985e8c20","errorType":""}
               }
             }
           },
@@ -1133,7 +1133,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/TokenNetworksResponseApiResult"
                 },
-                "example": {"content":{"tokens":[{"token":"ADA","networks":[{"id":"f7a660cd-bac0-4ae8-8ddb-c54d321b55dc","name":"Cardano","logoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/networks/Cardano.svg"}],"supportedIntegrations":["gemini","binanceInternational"]}]},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"tokens":[{"token":"ADA","networks":[{"id":"f7a660cd-bac0-4ae8-8ddb-c54d321b55dc","name":"Cardano","logoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/networks/Cardano.svg"}],"supportedIntegrations":["gemini","binanceInternational"]}]},"status":"ok","message":"","errorHash":"35664305a468caa4347cfb4fcab87e85a1740fa9","errorType":""}
               }
             }
           }
@@ -1168,7 +1168,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/TransferVerificationResponseApiResult"
                 },
-                "example": {"content":{"status":"succeeded","errorMessage":"transfer request verification is successful"},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"status":"succeeded","errorMessage":"transfer request verification is successful"},"status":"ok","message":"","errorHash":"5e4958bff513f2c75f6e9652b781e41ad9926308","errorType":""}
               }
             }
           },
@@ -1179,7 +1179,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -1284,13 +1284,13 @@
                 },
                 "examples": {
                   "Successful transfer configuration": {
-                    "value": {"content":{"status":"succeeded","holdings":[{"symbol":"USDC","availableBalance":130,"availableBalanceInFiat":0,"eligibleForTransfer":true,"networks":[{"name":"Ethereum","id":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","minimumAmount":1,"totalEstimatedTransferFeeInFiat":1.8,"estimatedNetworkGasFee":{"fee":0.000850608941007,"feeCurrency":"ETH","feeInFiat":1.8},"institutionTransferFee":{"fee":0,"feeCurrency":"ETH","feeInFiat":0},"eligibleForTransfer":true,"eligibleForTransferWithFunding":false},{"name":"Solana","id":"0291810a-5947-424d-9a59-e88bb33e999d","minimumAmount":1,"totalEstimatedTransferFeeInFiat":0.1,"estimatedNetworkGasFee":{"fee":0.00025,"feeCurrency":"SOL","feeInFiat":0.1},"institutionTransferFee":{"fee":0,"feeCurrency":"SOL","feeInFiat":0},"eligibleForTransfer":true,"eligibleForTransferWithFunding":false}],"eligibleForTransferWithFunding":false}]},"status":"ok","message":"","errorType":""}
+                    "value": {"content":{"status":"succeeded","holdings":[{"symbol":"USDC","availableBalance":130,"availableBalanceInFiat":0,"eligibleForTransfer":true,"networks":[{"name":"Ethereum","id":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","minimumAmount":1,"totalEstimatedTransferFeeInFiat":1.8,"estimatedNetworkGasFee":{"fee":0.000850608941007,"feeCurrency":"ETH","feeInFiat":1.8},"institutionTransferFee":{"fee":0,"feeCurrency":"ETH","feeInFiat":0},"eligibleForTransfer":true,"eligibleForTransferWithFunding":false},{"name":"Solana","id":"0291810a-5947-424d-9a59-e88bb33e999d","minimumAmount":1,"totalEstimatedTransferFeeInFiat":0.1,"estimatedNetworkGasFee":{"fee":0.00025,"feeCurrency":"SOL","feeInFiat":0.1},"institutionTransferFee":{"fee":0,"feeCurrency":"SOL","feeInFiat":0},"eligibleForTransfer":true,"eligibleForTransferWithFunding":false}],"eligibleForTransferWithFunding":false}]},"status":"ok","message":"","errorHash":"e2c2ef28de0d6a3d5ba68ecbd88c4279790609cc","errorType":""}
                   },
                   "Transfer configuration with failed validation": {
-                    "value": {"status":"badRequest","message":"Either `ToAddresses` or `ToAuthToken` should be provided.","errorType":"invalidField"}
+                    "value": {"status":"badRequest","message":"Either `ToAddresses` or `ToAuthToken` should be provided.","errorHash":"5b3b5191cb87f101b86619c95af98c52fd4b451e","errorType":"invalidField"}
                   },
                   "Transfer configuration with no eligible tokens to transfer": {
-                    "value": {"content":{"status":"succeeded","holdings":[{"symbol":"USDC","availableBalance":1,"availableBalanceInFiat":0,"eligibleForTransfer":false,"eligibleForTransferWithFunding":false},{"symbol":"ETH","availableBalance":0.00001,"availableBalanceInFiat":0,"eligibleForTransfer":false,"eligibleForTransferWithFunding":false}]},"status":"ok","message":"","errorType":""}
+                    "value": {"content":{"status":"succeeded","holdings":[{"symbol":"USDC","availableBalance":1,"availableBalanceInFiat":0,"eligibleForTransfer":false,"eligibleForTransferWithFunding":false},{"symbol":"ETH","availableBalance":0.00001,"availableBalanceInFiat":0,"eligibleForTransfer":false,"eligibleForTransferWithFunding":false}]},"status":"ok","message":"","errorHash":"5c1d8a6d94fb1938b4829a2213b73c55932e2fee","errorType":""}
                   }
                 }
               }
@@ -1303,7 +1303,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -1407,10 +1407,10 @@
                 },
                 "examples": {
                   "Successful transfer preview": {
-                    "value": {"content":{"status":"succeeded","previewResult":{"previewId":"29b185b1-2305-40fb-a0e2-929d61451568","previewExpiresIn":300,"fromAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","toAddress":"0x326a8825472bb0f4719998e708a1eeeb4473ed1b","symbol":"USDT","amount":10,"amountInFiat":10,"totalEstimatedAmount":11.21,"totalEstimatedAmountInFiat":11.21,"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","institutionTransferFee":{"fee":0,"feeCurrency":"USDT","feeInFiat":0},"estimatedNetworkGasFee":{"fee":1.1,"feeCurrency":"USDT","feeInFiat":1.1},"unitPrice":0,"customClientFee":{"fee":0.011,"feeCurrency":"USDT","feeInFiat":0.011},"transferType":"deposit","isCustomClientFeeProvided":false,"amountWithCustomClientFee":"0","isFeeIncluded":false,"amountToReceive":0,"amountToReceiveInFiat":0,"transferAmountToRequest":0,"isMaximumAmount":false,"isBridging":false}},"status":"ok","message":"","errorType":""}
+                    "value": {"content":{"status":"succeeded","previewResult":{"previewId":"29b185b1-2305-40fb-a0e2-929d61451568","previewExpiresIn":300,"fromAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","toAddress":"0x326a8825472bb0f4719998e708a1eeeb4473ed1b","symbol":"USDT","amount":10,"amountInFiat":10,"totalEstimatedAmount":11.21,"totalEstimatedAmountInFiat":11.21,"networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","institutionTransferFee":{"fee":0,"feeCurrency":"USDT","feeInFiat":0},"estimatedNetworkGasFee":{"fee":1.1,"feeCurrency":"USDT","feeInFiat":1.1},"unitPrice":0,"customClientFee":{"fee":0.011,"feeCurrency":"USDT","feeInFiat":0.011},"transferType":"deposit","isCustomClientFeeProvided":false,"amountWithCustomClientFee":"0","isFeeIncluded":false,"amountToReceive":0,"amountToReceiveInFiat":0,"transferAmountToRequest":0,"isMaximumAmount":false,"isBridging":false}},"status":"ok","message":"","errorHash":"69ede01c5463385787ff721701466d988a79c489","errorType":""}
                   },
                   "Failed transfer preview": {
-                    "value": {"status":"badRequest","message":"The\u00A0specified amount is greater than the maximum amount allowed.","displayMessage":"The\u00A0specified amount is greater than the maximum amount allowed.","errorType":"invalidField"}
+                    "value": {"status":"badRequest","message":"The\u00A0specified amount is greater than the maximum amount allowed.","displayMessage":"The\u00A0specified amount is greater than the maximum amount allowed.","errorHash":"160cb7f0107a4b3fd04b449c367f3a22d8b517a6","errorType":"invalidField"}
                   }
                 }
               }
@@ -1423,7 +1423,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -1518,10 +1518,10 @@
                 },
                 "examples": {
                   "Successful transfer preview": {
-                    "value": {"content":{"status":"succeeded","executeTransferResult":{"transferId":"e332336c-de22-11ed-b5ea-0242ac120002","status":"pending","statusDetails":"In progress","fromAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","toAddress":"0x326a8825472bb0f4719998e708a1eeeb4473ed1b","symbol":"USDT","networkName":"Ethereum","networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","hash":"0xdcfd72635a9b16d3bc0e75311f6fe0612970e9714a1e9e93de0ea5acffc6a454","amount":10,"amountInFiat":10,"totalAmountInFiat":11.1,"completedConfirmations":1,"institutionTransferFee":{"fee":0,"feeCurrency":"USDT","feeInFiat":0},"networkGasFee":{"fee":1.1,"feeCurrency":"USDT","feeInFiat":1.1}},"fallbackMfaAvailable":false},"status":"ok","message":"","errorType":""}
+                    "value": {"content":{"status":"succeeded","executeTransferResult":{"transferId":"e332336c-de22-11ed-b5ea-0242ac120002","status":"pending","statusDetails":"In progress","fromAddress":"0x9Bf6207f8A3f4278E0C989527015deFe10e5D7c6","toAddress":"0x326a8825472bb0f4719998e708a1eeeb4473ed1b","symbol":"USDT","networkName":"Ethereum","networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","hash":"0xdcfd72635a9b16d3bc0e75311f6fe0612970e9714a1e9e93de0ea5acffc6a454","amount":10,"amountInFiat":10,"totalAmountInFiat":11.1,"completedConfirmations":1,"institutionTransferFee":{"fee":0,"feeCurrency":"USDT","feeInFiat":0},"networkGasFee":{"fee":1.1,"feeCurrency":"USDT","feeInFiat":1.1}},"fallbackMfaAvailable":false},"status":"ok","message":"","errorHash":"a544e6d1870fba51634a258ca1f20492716c1d65","errorType":""}
                   },
                   "Transfer preview when MFA is required": {
-                    "value": {"content":{"status":"mfaRequired","fallbackMfaAvailable":false},"status":"ok","message":"","errorType":""}
+                    "value": {"content":{"status":"mfaRequired","fallbackMfaAvailable":false},"status":"ok","message":"","errorHash":"cc9d92d02f809c0d3d703f4c456dc64a6f1b30e8","errorType":""}
                   }
                 }
               }
@@ -1534,7 +1534,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -1586,7 +1586,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerCryptocurrencyDepositAddressResponseApiResult"
                 },
-                "example": {"content":{"symbol":"DOGE","address":"D641Fmzx...","chain":"DOGE"},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"symbol":"DOGE","address":"D641Fmzx...","chain":"DOGE"},"status":"ok","message":"","errorHash":"010074a19298a4afea1a5fc2dc51f25ea9313511","errorType":""}
               }
             }
           },
@@ -1597,7 +1597,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -1608,7 +1608,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -1664,7 +1664,7 @@
                 },
                 "examples": {
                   "Successful transfer quote": {
-                    "value": {"content":{"amountInFiat":100,"fiatCurrency":"USD","symbol":"ETH","networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","toAddress":"0xc096a91fDFB100ECED14e4810FA06061C0b3058B","brokerType":"coinbase","isEligible":true,"minEligibleAmount":0.0001,"minEligibleAmountFiat":0,"brokerPrice":2247.5,"price":2246.9,"minAmountFiat":97.08,"maxAmountFiat":97.88,"minAmount":0.0432080770227800702300947973,"maxAmount":0.0435641231307510524722951622,"fees":{"inFiat":{"paymentMethodFeeMaxFiat":0,"tradingFeeMaxFiat":0.80,"withdrawalFeeFiat":0,"partnerFeeFiat":1.00,"networkFeeFiat":1.12,"minFeesFiat":2.12,"maxFeesFiat":2.92},"inCrypto":{"paymentMethodFeeMax":0,"tradingFeeMax":0.0003560461079709822422003649,"withdrawalFee":0,"partnerFee":0.0004450576349637278027504562,"networkFee":0.000496582730658000,"minFees":0.0009416403656217278027504562,"maxFees":0.0012976864735927100449508211}},"fundingOptions":[{"fundingOption":"existingCryptocurrencyBalance","paymentMethodFeeFiat":0,"tradingFeeFiat":0},{"fundingOption":"buyingPowerPurchase","paymentMethodFeeFiat":0,"tradingFeeFiat":0.80},{"fundingOption":"paymentMethodDepositUsage","paymentMethodType":"bankAccount","paymentMethodFeeFiat":0,"tradingFeeFiat":0.80}]},"status":"ok","message":"","errorType":""}
+                    "value": {"content":{"amountInFiat":100,"fiatCurrency":"USD","symbol":"ETH","networkId":"e3c7fdd8-b1fc-4e51-85ae-bb276e075611","toAddress":"0xc096a91fDFB100ECED14e4810FA06061C0b3058B","brokerType":"coinbase","isEligible":true,"minEligibleAmount":0.0001,"minEligibleAmountFiat":0,"brokerPrice":2247.5,"price":2246.9,"minAmountFiat":97.08,"maxAmountFiat":97.88,"minAmount":0.0432080770227800702300947973,"maxAmount":0.0435641231307510524722951622,"fees":{"inFiat":{"paymentMethodFeeMaxFiat":0,"tradingFeeMaxFiat":0.80,"withdrawalFeeFiat":0,"partnerFeeFiat":1.00,"networkFeeFiat":1.12,"minFeesFiat":2.12,"maxFeesFiat":2.92},"inCrypto":{"paymentMethodFeeMax":0,"tradingFeeMax":0.0003560461079709822422003649,"withdrawalFee":0,"partnerFee":0.0004450576349637278027504562,"networkFee":0.000496582730658000,"minFees":0.0009416403656217278027504562,"maxFees":0.0012976864735927100449508211}},"fundingOptions":[{"fundingOption":"existingCryptocurrencyBalance","paymentMethodFeeFiat":0,"tradingFeeFiat":0},{"fundingOption":"buyingPowerPurchase","paymentMethodFeeFiat":0,"tradingFeeFiat":0.80},{"fundingOption":"paymentMethodDepositUsage","paymentMethodType":"bankAccount","paymentMethodFeeFiat":0,"tradingFeeFiat":0.80}]},"status":"ok","message":"","errorHash":"6aa9559560799608507a68dc603d1b97ad5b6b23","errorType":""}
                   }
                 }
               }
@@ -1677,7 +1677,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -1854,7 +1854,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/TransferModelPaginationResponseApiResult"
                 },
-                "example": {"content":{"items":[{"id":"8e25acb5-a9e2-4d00-8772-a255f010a2a9","clientTransactionId":"123456","institutionTransactionId":"456789","userId":"123456798","status":"succeeded","amountInFiat":1000.3,"amountToReceiveInFiat":0,"amountInFiatCurrencyCode":"USD","amount":10.123,"amountToReceive":0,"symbol":"WETH","tokenAddress":"0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619","networkName":"Polygon","networkId":"00000000-0000-0000-0000-000000000000","networkLogoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/networks/Polygon.svg","createdTimestamp":1653211113,"from":{"logoUrl":"https://logo.com/logo.jpg","id":"8e25acb5-a9e2-4d00-8772-a255f010a2a9","type":"robinhood","name":"Robinhood"},"hash":"0x77f3a280aa5cfe956a5759c24cf774325504070b32b4159...","infoUrl":"https://polygonscan.com/tx/0x5b0ac59e43b63f2985d78994b6270d747f1019777201ca18ebb36ad1e1a8693e","gasFee":{"fee":0.0001,"feeCurrency":"MATIC","feeInFiat":0.1},"withdrawalFee":{"fee":0.0001,"feeCurrency":"WETH","feeInFiat":0.1},"processingFee":{"fee":0.0001,"feeCurrency":"WETH","feeInFiat":0.1},"executedTimestamp":1707462614,"transferType":"payment","isFeeIncluded":false,"sourceAmount":10.122,"destinationAmount":10,"totalFeesAmountInFiat":0.5,"totalTransactionAmountInFiat":1000.5,"fundingMethods":[{"type":"cryptocurrencyConversion","amount":2,"amountInFiat":20,"toSymbol":"WETH","fromAmount":1,"fromSymbol":"BTC","fee":{"fee":0.0001,"feeCurrency":"ETH","feeInFiat":0.1}},{"type":"paymentMethodDepositUsage","amount":3,"amountInFiat":30,"toSymbol":"WETH","fromAmount":1,"fromSymbol":"USD","paymentMethodType":"bankAccount","fee":{"fee":0.0001,"feeCurrency":"USD","feeInFiat":0.1}},{"type":"existingCryptocurrencyBalance","amount":5,"amountInFiat":50,"toSymbol":"WETH","fromAmount":5,"fromSymbol":"ETH"}]},{"id":"12345678-a9e2-4d00-8772-a255f010a2a9","clientTransactionId":"123456","institutionTransactionId":"456789","userId":"123456798","status":"failed","amountInFiat":10.3,"amountToReceiveInFiat":0,"amountInFiatCurrencyCode":"USD","amount":0.123,"amountToReceive":0,"symbol":"WETH","tokenAddress":"0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619","networkName":"Polygon","networkId":"00000000-0000-0000-0000-000000000000","createdTimestamp":1653211113,"from":{"logoUrl":"https://logo.com/logo.jpg","id":"8e25acb5-a9e2-4d00-8772-a255f010a2a9","type":"deFiWallet","name":"MetaMask"},"hash":"0x77f3a280aa5cfe956a5759c24cf774325504070b32b4159...","isFeeIncluded":false,"totalFeesAmountInFiat":0,"totalTransactionAmountInFiat":10.3,"fundingMethods":[]}],"total":10},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"items":[{"id":"8e25acb5-a9e2-4d00-8772-a255f010a2a9","clientTransactionId":"123456","institutionTransactionId":"456789","userId":"123456798","status":"succeeded","amountInFiat":1000.3,"amountToReceiveInFiat":0,"amountInFiatCurrencyCode":"USD","amount":10.123,"amountToReceive":0,"symbol":"WETH","tokenAddress":"0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619","networkName":"Polygon","networkId":"00000000-0000-0000-0000-000000000000","networkLogoUrl":"https://frontuserfilecdn.azureedge.net/public/logos/networks/Polygon.svg","createdTimestamp":1653211113,"from":{"logoUrl":"https://logo.com/logo.jpg","id":"8e25acb5-a9e2-4d00-8772-a255f010a2a9","type":"robinhood","name":"Robinhood"},"hash":"0x77f3a280aa5cfe956a5759c24cf774325504070b32b4159...","infoUrl":"https://polygonscan.com/tx/0x5b0ac59e43b63f2985d78994b6270d747f1019777201ca18ebb36ad1e1a8693e","gasFee":{"fee":0.0001,"feeCurrency":"MATIC","feeInFiat":0.1},"withdrawalFee":{"fee":0.0001,"feeCurrency":"WETH","feeInFiat":0.1},"processingFee":{"fee":0.0001,"feeCurrency":"WETH","feeInFiat":0.1},"executedTimestamp":1707462614,"transferType":"payment","isFeeIncluded":false,"sourceAmount":10.122,"destinationAmount":10,"totalFeesAmountInFiat":0.5,"totalTransactionAmountInFiat":1000.5,"fundingMethods":[{"type":"cryptocurrencyConversion","amount":2,"amountInFiat":20,"toSymbol":"WETH","fromAmount":1,"fromSymbol":"BTC","fee":{"fee":0.0001,"feeCurrency":"ETH","feeInFiat":0.1}},{"type":"paymentMethodDepositUsage","amount":3,"amountInFiat":30,"toSymbol":"WETH","fromAmount":1,"fromSymbol":"USD","paymentMethodType":"bankAccount","fee":{"fee":0.0001,"feeCurrency":"USD","feeInFiat":0.1}},{"type":"existingCryptocurrencyBalance","amount":5,"amountInFiat":50,"toSymbol":"WETH","fromAmount":5,"fromSymbol":"ETH"}]},{"id":"12345678-a9e2-4d00-8772-a255f010a2a9","clientTransactionId":"123456","institutionTransactionId":"456789","userId":"123456798","status":"failed","amountInFiat":10.3,"amountToReceiveInFiat":0,"amountInFiatCurrencyCode":"USD","amount":0.123,"amountToReceive":0,"symbol":"WETH","tokenAddress":"0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619","networkName":"Polygon","networkId":"00000000-0000-0000-0000-000000000000","createdTimestamp":1653211113,"from":{"logoUrl":"https://logo.com/logo.jpg","id":"8e25acb5-a9e2-4d00-8772-a255f010a2a9","type":"deFiWallet","name":"MetaMask"},"hash":"0x77f3a280aa5cfe956a5759c24cf774325504070b32b4159...","isFeeIncluded":false,"totalFeesAmountInFiat":0,"totalTransactionAmountInFiat":10.3,"fundingMethods":[]}],"total":10},"status":"ok","message":"","errorHash":"bf6d53f3027502c21e73e99148e1041759ce0048","errorType":""}
               }
             }
           },
@@ -1865,7 +1865,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -1943,7 +1943,7 @@
                 },
                 "examples": {
                   "Successful transfer update": {
-                    "value": {"content":{"status":"succeeded","statusDetails":"unknown","transferResult":{"id":"e332336c-de22-11ed-b5ea-0242ac120002","clientTransactionId":"client-transaction-id","status":"succeeded","amountInFiat":10,"amount":10,"symbol":"USDT","networkName":"Ethereum","createdTimestamp":0,"hash":"0xdcfd72635a9b16d3bc0e75311f6fe0612970e9714a1e9e93de0ea5acffc6a454"}},"status":"ok","message":"","errorType":""}
+                    "value": {"content":{"status":"succeeded","statusDetails":"unknown","transferResult":{"id":"e332336c-de22-11ed-b5ea-0242ac120002","clientTransactionId":"client-transaction-id","status":"succeeded","amountInFiat":10,"amount":10,"symbol":"USDT","networkName":"Ethereum","createdTimestamp":0,"hash":"0xdcfd72635a9b16d3bc0e75311f6fe0612970e9714a1e9e93de0ea5acffc6a454"}},"status":"ok","message":"","errorHash":"be48162d83a5494030473f27f685995d27d9e07b","errorType":""}
                   }
                 }
               }
@@ -1956,7 +1956,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -2010,10 +2010,10 @@
                 },
                 "examples": {
                   "Trading platform example": {
-                    "value": {"content":{"equityPositions":[{"symbol":"AAPL","amount":3,"costBasis":109},{"symbol":"F","amount":27,"costBasis":7.05791}],"cryptocurrencyPositions":[{"marketValue":75.15,"lastPrice":0.05,"symbol":"DOGE","amount":1503,"costBasis":0.033},{"symbol":"BTC","amount":3.00016720,"costBasis":18000}],"status":"succeeded","errorMessage":"","displayMessage":"","notSupportedEquityPositions":[{"symbol":"CUSIP38259P508","amount":1}],"notSupportedCryptocurrencyPositions":[],"nftPositions":[],"optionPositions":[],"type":"robinhood","accountId":"5FUVPB0","institutionName":"Robinhood","accountName":"Margin account"},"status":"ok","message":"","errorType":""}
+                    "value": {"content":{"equityPositions":[{"symbol":"AAPL","amount":3,"costBasis":109},{"symbol":"F","amount":27,"costBasis":7.05791}],"cryptocurrencyPositions":[{"marketValue":75.15,"lastPrice":0.05,"symbol":"DOGE","amount":1503,"costBasis":0.033},{"symbol":"BTC","amount":3.00016720,"costBasis":18000}],"status":"succeeded","errorMessage":"","displayMessage":"","notSupportedEquityPositions":[{"symbol":"CUSIP38259P508","amount":1}],"notSupportedCryptocurrencyPositions":[],"nftPositions":[],"optionPositions":[],"type":"robinhood","accountId":"5FUVPB0","institutionName":"Robinhood","accountName":"Margin account"},"status":"ok","message":"","errorHash":"fdad22ed1554b3a30e5251998ff7a38eab09d32e","errorType":""}
                   },
                   "Self-custody cryptocurrency wallet example": {
-                    "value": {"content":{"equityPositions":[],"cryptocurrencyPositions":[{"marketValue":75.15,"lastPrice":0.05,"symbol":"DOGE","amount":1503,"costBasis":0.033,"distribution":[{"caipNetworkId":"eip155:1","address":"0x1111111111111111111111111111111111111111","amount":1500},{"caipNetworkId":"eip155:42161","address":"0x1111111111111111111111111111111111111111","amount":3}]},{"symbol":"BTC","amount":3.00016720,"costBasis":18000,"distribution":[{"caipNetworkId":"bip122:000000000019d6689c085ae165831e93","address":"bc1q5cyxnuxmeuwuvkwfem96lxyepd5t0gd5nqf6h4","amount":1},{"caipNetworkId":"bip122:000000000019d6689c085ae165831e93","address":"bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf7du0","amount":1},{"caipNetworkId":"bip122:000000000019d6689c085ae165831e93","address":"bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh","amount":1.00016720}]}],"status":"succeeded","errorMessage":"","displayMessage":"","notSupportedEquityPositions":[],"notSupportedCryptocurrencyPositions":[],"nftPositions":[],"optionPositions":[],"type":"deFiWallet","accountId":"8c02d545753b596075ecbc20e2b7d3fb5b380c52","institutionName":"DeFiWallet","accountName":"MetaMask wallet"},"status":"ok","message":"","errorType":""}
+                    "value": {"content":{"equityPositions":[],"cryptocurrencyPositions":[{"marketValue":75.15,"lastPrice":0.05,"symbol":"DOGE","amount":1503,"costBasis":0.033,"distribution":[{"caipNetworkId":"eip155:1","address":"0x1111111111111111111111111111111111111111","amount":1500},{"caipNetworkId":"eip155:42161","address":"0x1111111111111111111111111111111111111111","amount":3}]},{"symbol":"BTC","amount":3.00016720,"costBasis":18000,"distribution":[{"caipNetworkId":"bip122:000000000019d6689c085ae165831e93","address":"bc1q5cyxnuxmeuwuvkwfem96lxyepd5t0gd5nqf6h4","amount":1},{"caipNetworkId":"bip122:000000000019d6689c085ae165831e93","address":"bc1qar0srrr7xfkvy5l643lydnw9re59gtzzwf7du0","amount":1},{"caipNetworkId":"bip122:000000000019d6689c085ae165831e93","address":"bc1qxy2kgdygjrsqtzq2n0yrf2493p83kkfjhx0wlh","amount":1.00016720}]}],"status":"succeeded","errorMessage":"","displayMessage":"","notSupportedEquityPositions":[],"notSupportedCryptocurrencyPositions":[],"nftPositions":[],"optionPositions":[],"type":"deFiWallet","accountId":"8c02d545753b596075ecbc20e2b7d3fb5b380c52","institutionName":"DeFiWallet","accountName":"MetaMask wallet"},"status":"ok","message":"","errorHash":"fdad22ed1554b3a30e5251998ff7a38eab09d32e","errorType":""}
                   }
                 }
               }
@@ -2026,7 +2026,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -2079,7 +2079,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/BrokerPortfolioValueModelApiResult"
                 },
-                "example": {"content":{"totalValue":186.03,"totalPerformance":6.23,"equitiesValue":100.12,"equitiesPerformance":5.3457,"cryptocurrenciesValue":50.37,"cryptocurrenciesPerformance":7.23,"nftsValue":15.34,"fiatValue":20.2},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"totalValue":186.03,"totalPerformance":6.23,"equitiesValue":100.12,"equitiesPerformance":5.3457,"cryptocurrenciesValue":50.37,"cryptocurrenciesPerformance":7.23,"nftsValue":15.34,"fiatValue":20.2},"status":"ok","message":"","errorHash":"f2b4f62e1213f3c50e84ea6f6be7cf8698746d6b","errorType":""}
               }
             }
           },
@@ -2090,7 +2090,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -2150,10 +2150,10 @@
                 },
                 "examples": {
                   "CEX example": {
-                    "value": {"content":{"portfolioCostBasis":1819.90,"actualPortfolioPerformance":6.1,"equitiesValue":1934.78,"cryptocurrenciesValue":1185.12,"nftsValue":0,"equityPositions":[{"portfolioPercentage":0.44,"totalReturn":-1.30,"returnPercentage":-8.67,"companyName":"Tesla","totalDailyReturn":0.45,"dailyReturnPercentage":3.45,"marketValue":13.69,"lastPrice":214.44,"symbol":"TSLA","amount":0.063,"costBasis":234.80},{"portfolioPercentage":38.98,"totalReturn":144.97,"returnPercentage":13.71,"companyName":"Apple","totalDailyReturn":31.65,"dailyReturnPercentage":2.70,"marketValue":1201.67,"lastPrice":147.27,"symbol":"AAPL","amount":8.15,"costBasis":129.50}],"cryptocurrencyPositions":[{"portfolioPercentage":11.4018,"totalReturn":-592.6533,"returnPercentage":-62.7737,"companyName":"Ethereum","totalDailyReturn":-3.6081,"dailyReturnPercentage":-1.0162,"marketValue":351.4570,"lastPrice":1350.07,"symbol":"ETH","amount":0.260325000,"costBasis":3626.660},{"portfolioPercentage":7.80,"totalReturn":-85.45,"returnPercentage":-26.20,"companyName":"Dogecoin","totalDailyReturn":-2.45,"dailyReturnPercentage":-1.0103,"marketValue":240.5754,"lastPrice":0.05977,"symbol":"DOGE","amount":4025.02,"costBasis":0.081}],"nftPositions":[]},"status":"ok","message":"","errorType":""}
+                    "value": {"content":{"portfolioCostBasis":1819.90,"actualPortfolioPerformance":6.1,"equitiesValue":1934.78,"cryptocurrenciesValue":1185.12,"nftsValue":0,"equityPositions":[{"portfolioPercentage":0.44,"totalReturn":-1.30,"returnPercentage":-8.67,"companyName":"Tesla","totalDailyReturn":0.45,"dailyReturnPercentage":3.45,"marketValue":13.69,"lastPrice":214.44,"symbol":"TSLA","amount":0.063,"costBasis":234.80},{"portfolioPercentage":38.98,"totalReturn":144.97,"returnPercentage":13.71,"companyName":"Apple","totalDailyReturn":31.65,"dailyReturnPercentage":2.70,"marketValue":1201.67,"lastPrice":147.27,"symbol":"AAPL","amount":8.15,"costBasis":129.50}],"cryptocurrencyPositions":[{"portfolioPercentage":11.4018,"totalReturn":-592.6533,"returnPercentage":-62.7737,"companyName":"Ethereum","totalDailyReturn":-3.6081,"dailyReturnPercentage":-1.0162,"marketValue":351.4570,"lastPrice":1350.07,"symbol":"ETH","amount":0.260325000,"costBasis":3626.660},{"portfolioPercentage":7.80,"totalReturn":-85.45,"returnPercentage":-26.20,"companyName":"Dogecoin","totalDailyReturn":-2.45,"dailyReturnPercentage":-1.0103,"marketValue":240.5754,"lastPrice":0.05977,"symbol":"DOGE","amount":4025.02,"costBasis":0.081}],"nftPositions":[]},"status":"ok","message":"","errorHash":"fdad22ed1554b3a30e5251998ff7a38eab09d32e","errorType":""}
                   },
                   "Self-custody cryptocurrency wallet example": {
-                    "value": {"content":{"portfolioCostBasis":3626.74,"actualPortfolioPerformance":5.4,"equitiesValue":0,"cryptocurrenciesValue":592.03,"nftsValue":0,"equityPositions":[],"cryptocurrencyPositions":[{"portfolioPercentage":11.4018,"totalReturn":-592.6533,"returnPercentage":-62.7737,"companyName":"Ethereum","totalDailyReturn":-3.6081,"dailyReturnPercentage":-1.0162,"marketValue":351.4570,"lastPrice":1350.07,"symbol":"ETH","amount":0.260325000,"costBasis":3626.660,"distribution":[{"caipNetworkId":"eip155:1","address":"0x1111111111111111111111111111111111111111","amount":0.16},{"caipNetworkId":"eip155:42161","address":"0x1111111111111111111111111111111111111111","amount":0.100325000}]},{"portfolioPercentage":7.80,"totalReturn":-85.45,"returnPercentage":-26.20,"companyName":"Dogecoin","totalDailyReturn":-2.45,"dailyReturnPercentage":-1.0103,"marketValue":240.5754,"lastPrice":0.05977,"symbol":"DOGE","amount":4025.02,"costBasis":0.081,"distribution":[{"caipNetworkId":"eip155:1","address":"0x1111111111111111111111111111111111111111","amount":2025.02},{"caipNetworkId":"eip155:42161","address":"0x1111111111111111111111111111111111111111","amount":2000}]}],"nftPositions":[]},"status":"ok","message":"","errorType":""}
+                    "value": {"content":{"portfolioCostBasis":3626.74,"actualPortfolioPerformance":5.4,"equitiesValue":0,"cryptocurrenciesValue":592.03,"nftsValue":0,"equityPositions":[],"cryptocurrencyPositions":[{"portfolioPercentage":11.4018,"totalReturn":-592.6533,"returnPercentage":-62.7737,"companyName":"Ethereum","totalDailyReturn":-3.6081,"dailyReturnPercentage":-1.0162,"marketValue":351.4570,"lastPrice":1350.07,"symbol":"ETH","amount":0.260325000,"costBasis":3626.660,"distribution":[{"caipNetworkId":"eip155:1","address":"0x1111111111111111111111111111111111111111","amount":0.16},{"caipNetworkId":"eip155:42161","address":"0x1111111111111111111111111111111111111111","amount":0.100325000}]},{"portfolioPercentage":7.80,"totalReturn":-85.45,"returnPercentage":-26.20,"companyName":"Dogecoin","totalDailyReturn":-2.45,"dailyReturnPercentage":-1.0103,"marketValue":240.5754,"lastPrice":0.05977,"symbol":"DOGE","amount":4025.02,"costBasis":0.081,"distribution":[{"caipNetworkId":"eip155:1","address":"0x1111111111111111111111111111111111111111","amount":2025.02},{"caipNetworkId":"eip155:42161","address":"0x1111111111111111111111111111111111111111","amount":2000}]}],"nftPositions":[]},"status":"ok","message":"","errorHash":"fdad22ed1554b3a30e5251998ff7a38eab09d32e","errorType":""}
                   }
                 }
               }
@@ -2166,7 +2166,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"ok","message":"","errorType":""}
+                "example": {"status":"ok","message":"","errorHash":"e332aa7fb619606d57fdfa20e1790f0bbf0f5547","errorType":""}
               }
             }
           },
@@ -2230,6 +2230,102 @@
         }
       }
     },
+    "/api/v1/catalog/solana/getTokenProgram": {
+      "post": {
+        "tags": [
+          "QuickNode"
+        ],
+        "parameters": [
+          {
+            "name": "chainId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "token",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringApiResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
+    "/api/v1/catalog/solana/isTokenAddressCreated": {
+      "post": {
+        "tags": [
+          "QuickNode"
+        ],
+        "parameters": [
+          {
+            "name": "chainId",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "address",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/StringApiResult"
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad Request",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProblemDetails"
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Internal Server Error"
+          }
+        }
+      }
+    },
     "/api/v1/transactions/list": {
       "post": {
         "tags": [
@@ -2259,7 +2355,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerOrderListResponseApiResult"
                 },
-                "example": {"content":{"transactions":[{"id":"17EC1243-D91A-48B6-B0CE-ECFDB134F8A0","side":"buy","symbol":"AAPL","name":"APPLE INC","assetType":"option","paymentSymbol":"USD","paymentType":"fiat","amount":1,"price":120,"value":120,"createdTimestamp":1653215676,"updatedTimestamp":1653215697,"status":"success","orderType":"market","timeInForce":"goodForDay","brokerType":"robinhood","transactionType":"order","optionDetails":{"optionType":"call","direction":"buyToOpen","strikePrice":200,"expirationTimestamp":1673215697,"numberOfSharesInContract":100,"complexOrderStrategyType":"NONE"}},{"id":"F9E932AE-A780-42F3-B887-82D888D594E5","side":"sell","symbol":"AAPL","name":"APPLE INC","assetType":"equity","paymentSymbol":"USD","paymentType":"fiat","amount":2,"price":130,"value":260,"createdTimestamp":1651739676,"updatedTimestamp":1651739781,"status":"success","orderType":"market","timeInForce":"goodTillCanceled","brokerType":"robinhood","transactionType":"order"},{"id":"9B5827E4-7D08-4A71-B4C0-B1B4E5562592","side":"buy","symbol":"BTC","name":"Bitcoin","assetType":"cryptocurrency","paymentSymbol":"ETH","paymentType":"cryptocurrency","amount":0.3,"price":18604.8197,"value":5581.44591,"createdTimestamp":1651739676,"updatedTimestamp":1651739781,"status":"success","orderType":"limit","timeInForce":"goodTillCanceled","brokerType":"robinhood","transactionType":"order"}],"cursor":"N2VkZDI0MDMtNmRhYy01NThhLTk5NDUDYzI12M3GQ3ZmQ2","total":3,"earliestTimestamp":1651739676},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"transactions":[{"id":"17EC1243-D91A-48B6-B0CE-ECFDB134F8A0","side":"buy","symbol":"AAPL","name":"APPLE INC","assetType":"option","paymentSymbol":"USD","paymentType":"fiat","amount":1,"price":120,"value":120,"createdTimestamp":1653215676,"updatedTimestamp":1653215697,"status":"success","orderType":"market","timeInForce":"goodForDay","brokerType":"robinhood","transactionType":"order","optionDetails":{"optionType":"call","direction":"buyToOpen","strikePrice":200,"expirationTimestamp":1673215697,"numberOfSharesInContract":100,"complexOrderStrategyType":"NONE"}},{"id":"F9E932AE-A780-42F3-B887-82D888D594E5","side":"sell","symbol":"AAPL","name":"APPLE INC","assetType":"equity","paymentSymbol":"USD","paymentType":"fiat","amount":2,"price":130,"value":260,"createdTimestamp":1651739676,"updatedTimestamp":1651739781,"status":"success","orderType":"market","timeInForce":"goodTillCanceled","brokerType":"robinhood","transactionType":"order"},{"id":"9B5827E4-7D08-4A71-B4C0-B1B4E5562592","side":"buy","symbol":"BTC","name":"Bitcoin","assetType":"cryptocurrency","paymentSymbol":"ETH","paymentType":"cryptocurrency","amount":0.3,"price":18604.8197,"value":5581.44591,"createdTimestamp":1651739676,"updatedTimestamp":1651739781,"status":"success","orderType":"limit","timeInForce":"goodTillCanceled","brokerType":"robinhood","transactionType":"order"}],"cursor":"N2VkZDI0MDMtNmRhYy01NThhLTk5NDUDYzI12M3GQ3ZmQ2","total":3,"earliestTimestamp":1651739676},"status":"ok","message":"","errorHash":"410f5a714ec3ff858c578664aa05579f4a2034e2","errorType":""}
               }
             }
           },
@@ -2383,7 +2479,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerTradingFeatureInfoApiResult"
                 },
-                "example": {"content":{"brokerType":"robinhood","accountId":"5K9N3VO1","cryptocurrencyOrders":{"supported":true,"supportsFiatCurrencyPayment":true,"supportsCryptocurrencyPayment":false,"supportsMarginOrders":true,"supportedCryptocurrencySymbols":["BTC","ETH","SOL","DOGE"],"supportedFiatCurrencies":["USD"],"marketType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":true,"supportsPlacingSellOrdersInBaseSymbolAmount":true},"limitType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":true,"supportsPlacingSellOrdersInBaseSymbolAmount":true},"stopLossType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":true,"supportsPlacingSellOrdersInBaseSymbolAmount":true}},"stockOrders":{"supported":true,"supportsFiatCurrencyPayment":true,"supportsCryptocurrencyPayment":false,"supportsMarginOrders":true,"supportedFiatCurrencies":["USD"],"marketType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":false,"supportsPlacingSellOrdersInBaseSymbolAmount":false},"limitType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":false,"supportsPlacingSellOrdersInBaseSymbolAmount":false},"stopLossType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":false,"supportsPlacingSellOrdersInBaseSymbolAmount":false}},"cryptocurrencyAssetPairTrading":{"supported":true,"supportedCryptocurrencySymbols":["BTC","ETH","SOL","DOGE"],"supportedFiatCurrencies":["USD"],"supportedTradingPairs":["BTC-ETH","BTC-USD","ETH-SOL","ETH-USD","SOL-USD","DOGE-USD"],"marketType":{"supported":true,"supportedTimeInForceList":["immediateOrCancel"],"supportsPlacingBuyOrdersInBaseSymbolAmount":false,"supportsPlacingSellOrdersInBaseSymbolAmount":true,"supportsPlacingBuyOrdersInQuoteSymbolAmount":true,"supportsPlacingSellOrdersInQuoteSymbolAmount":false},"limitType":{"supported":true,"supportedTimeInForceList":["goodTillCanceled","goodTillDate"],"supportsPlacingBuyOrdersInBaseSymbolAmount":true,"supportsPlacingSellOrdersInBaseSymbolAmount":true,"supportsPlacingBuyOrdersInQuoteSymbolAmount":true,"supportsPlacingSellOrdersInQuoteSymbolAmount":true}},"cryptocurrencyConversion":{"supported":true,"supportsPreview":true,"supportedCryptocurrencySymbols":["BTC","ETH","SOL","DOGE"],"supportedFiatCurrencies":["USD"]},"status":"succeeded","supportsOrderPreview":true,"supportsPriceQuotes":false,"supportsOrderCancellation":true,"isIntegrationUp":true,"isTradingSupported":true,"fiatBalances":[{"cash":1355,"buyingPower":1355,"cryptocurrencyBuyingPower":1355,"currencyCode":"USD"}],"usesSpreads":false},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"brokerType":"robinhood","accountId":"5K9N3VO1","cryptocurrencyOrders":{"supported":true,"supportsFiatCurrencyPayment":true,"supportsCryptocurrencyPayment":false,"supportsMarginOrders":true,"supportedCryptocurrencySymbols":["BTC","ETH","SOL","DOGE"],"supportedFiatCurrencies":["USD"],"marketType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":true,"supportsPlacingSellOrdersInBaseSymbolAmount":true},"limitType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":true,"supportsPlacingSellOrdersInBaseSymbolAmount":true},"stopLossType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":true,"supportsPlacingSellOrdersInBaseSymbolAmount":true}},"stockOrders":{"supported":true,"supportsFiatCurrencyPayment":true,"supportsCryptocurrencyPayment":false,"supportsMarginOrders":true,"supportedFiatCurrencies":["USD"],"marketType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":false,"supportsPlacingSellOrdersInBaseSymbolAmount":false},"limitType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":false,"supportsPlacingSellOrdersInBaseSymbolAmount":false},"stopLossType":{"supported":true,"supportsFractionalShares":true,"supportsExtendedMarketHours":true,"supportsPlacingBuyOrdersInFiatAmount":false,"supportsPlacingSellOrdersInFiatAmount":false,"supportedTimeInForceList":["fillOrKill","goodForDay","goodTillCanceled","immediateOrCancel"],"supportsPlacingBuyOrdersInPaymentSymbolAmount":false,"supportsPlacingSellOrdersInPaymentSymbolAmount":false,"supportsPlacingBuyOrdersInBaseSymbolAmount":false,"supportsPlacingSellOrdersInBaseSymbolAmount":false}},"cryptocurrencyAssetPairTrading":{"supported":true,"supportedCryptocurrencySymbols":["BTC","ETH","SOL","DOGE"],"supportedFiatCurrencies":["USD"],"supportedTradingPairs":["BTC-ETH","BTC-USD","ETH-SOL","ETH-USD","SOL-USD","DOGE-USD"],"marketType":{"supported":true,"supportedTimeInForceList":["immediateOrCancel"],"supportsPlacingBuyOrdersInBaseSymbolAmount":false,"supportsPlacingSellOrdersInBaseSymbolAmount":true,"supportsPlacingBuyOrdersInQuoteSymbolAmount":true,"supportsPlacingSellOrdersInQuoteSymbolAmount":false},"limitType":{"supported":true,"supportedTimeInForceList":["goodTillCanceled","goodTillDate"],"supportsPlacingBuyOrdersInBaseSymbolAmount":true,"supportsPlacingSellOrdersInBaseSymbolAmount":true,"supportsPlacingBuyOrdersInQuoteSymbolAmount":true,"supportsPlacingSellOrdersInQuoteSymbolAmount":true}},"cryptocurrencyConversion":{"supported":true,"supportsPreview":true,"supportedCryptocurrencySymbols":["BTC","ETH","SOL","DOGE"],"supportedFiatCurrencies":["USD"]},"status":"succeeded","supportsOrderPreview":true,"supportsPriceQuotes":false,"supportsOrderCancellation":true,"isIntegrationUp":true,"isTradingSupported":true,"fiatBalances":[{"cash":1355,"buyingPower":1355,"cryptocurrencyBuyingPower":1355,"currencyCode":"USD"}],"usesSpreads":false},"status":"ok","message":"","errorHash":"93d38efbec33ce6de37cc382c97e01f2f93f57b2","errorType":""}
               }
             }
           },
@@ -2466,7 +2562,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerPreviewOrderResultApiResult"
                 },
-                "example": {"content":{"brokerType":"robinhood","fee":1.99,"feeText":"","amount":1,"side":"buy","status":"success","paymentSymbol":"USD","paymentIsCryptocurrency":false,"estimatedUnitPrice":1200},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"brokerType":"robinhood","fee":1.99,"feeText":"","amount":1,"side":"buy","status":"success","paymentSymbol":"USD","paymentIsCryptocurrency":false,"estimatedUnitPrice":1200},"status":"ok","message":"","errorHash":"f2e9b177be6ab6b8f33aa2e88004835af59bd5f3","errorType":""}
               }
             }
           },
@@ -2557,7 +2653,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerCreateOrderResultApiResult"
                 },
-                "example": {"content":{"orderId":"6713DCDC-3D2E-46BC-ACB6-CF5FDE431CE2","brokerType":"robinhood","side":"buy","amount":1,"price":1200,"value":1200,"fee":1.99,"timestamp":1661904014,"status":"success","statusDetails":"Executed successfully","timeInForce":"goodTillCanceled"},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"orderId":"6713DCDC-3D2E-46BC-ACB6-CF5FDE431CE2","brokerType":"robinhood","side":"buy","amount":1,"price":1200,"value":1200,"fee":1.99,"timestamp":1661904014,"status":"success","statusDetails":"Executed successfully","timeInForce":"goodTillCanceled"},"status":"ok","message":"","errorHash":"ce4a383d9da9b89923404e8ad8ce8cb7e85abf55","errorType":""}
               }
             }
           },
@@ -2690,7 +2786,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerOrderSymbolInfoApiResult"
                 },
-                "example": {"content":{"fractionalTradingAllowance":"fractionalTradingAllowed","minimumOrderValue":0.001,"precisionScale":6},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"fractionalTradingAllowance":"fractionalTradingAllowed","minimumOrderValue":0.001,"precisionScale":6},"status":"ok","message":"","errorHash":"5a06da277bca621ea20b8b251e84ab99e4633b66","errorType":""}
               }
             }
           },
@@ -2744,7 +2840,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerTransactionsListModelApiResult"
                 },
-                "example": {"content":{"transfers":[{"id":"8E25ACB5-A9E2-4D00-8772-A255F010A2A9","status":"succeeded","type":"deposit","fromAddress":"D5PumQwt...","targetAddress":"D641Fmzx...","symbol":"DOGE","hash":"3310c6202aaeb44754a118ce11f255382d012060ade0d6d9f...","amount":15,"transactionAmount":10,"createdTimestamp":1653215600,"updatedTimestamp":1653215600,"networkTransactionFee":{"amount":5,"symbol":"DOGE"},"confirmations":17,"blockchainMethod":"transfer"},{"id":"70E6E3CF-5ACF-49C5-A4E1-5FB85A567F26","status":"succeeded","type":"withdrawal","fromAddress":"0x7BDE8361Fe587daD0e35448E754...","targetAddress":"0x83C8F28c26bF6aaca652Df1DbBE...","symbol":"ETH","hash":"0x77f3a280aa5cfe956a5759c24cf774325504070b32b4159...","amount":0.1,"transactionAmount":0.099,"createdTimestamp":1653211113,"updatedTimestamp":1653211113,"networkTransactionFee":{"amount":0.001,"symbol":"ETH"},"confirmations":18,"blockchainMethod":"transfer"}],"total":2,"cursor":"N2VkZDI0MDMtNmRhYy01NThhLTk5NDUDYzI12M3GQ3ZmQ2","earliestTimestamp":1653211113},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"transfers":[{"id":"8E25ACB5-A9E2-4D00-8772-A255F010A2A9","status":"succeeded","type":"deposit","fromAddress":"D5PumQwt...","targetAddress":"D641Fmzx...","symbol":"DOGE","hash":"3310c6202aaeb44754a118ce11f255382d012060ade0d6d9f...","amount":15,"transactionAmount":10,"createdTimestamp":1653215600,"updatedTimestamp":1653215600,"networkTransactionFee":{"amount":5,"symbol":"DOGE"},"confirmations":17,"blockchainMethod":"transfer"},{"id":"70E6E3CF-5ACF-49C5-A4E1-5FB85A567F26","status":"succeeded","type":"withdrawal","fromAddress":"0x7BDE8361Fe587daD0e35448E754...","targetAddress":"0x83C8F28c26bF6aaca652Df1DbBE...","symbol":"ETH","hash":"0x77f3a280aa5cfe956a5759c24cf774325504070b32b4159...","amount":0.1,"transactionAmount":0.099,"createdTimestamp":1653211113,"updatedTimestamp":1653211113,"networkTransactionFee":{"amount":0.001,"symbol":"ETH"},"confirmations":18,"blockchainMethod":"transfer"}],"total":2,"cursor":"N2VkZDI0MDMtNmRhYy01NThhLTk5NDUDYzI12M3GQ3ZmQ2","earliestTimestamp":1653211113},"status":"ok","message":"","errorHash":"37c012c29d3ec88fdf5c8ecb48e857212a520151","errorType":""}
               }
             }
           },
@@ -2755,7 +2851,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -2807,7 +2903,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerCryptocurrencyTransactionApiResult"
                 },
-                "example": {"content":{"id":"8E25ACB5-A9E2-4D00-8772-A255F010A2A9","status":"succeeded","type":"deposit","fromAddress":"D5PumQwt...","targetAddress":"D641Fmzx...","symbol":"DOGE","hash":"3310c6202aaeb44754a118ce11f255382d012060ade0d6d9f...","amount":15,"transactionAmount":10,"createdTimestamp":1653215600,"updatedTimestamp":1653215600,"networkTransactionFee":{"amount":5,"symbol":"DOGE"},"confirmations":17,"blockchainMethod":"transfer"},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"id":"8E25ACB5-A9E2-4D00-8772-A255F010A2A9","status":"succeeded","type":"deposit","fromAddress":"D5PumQwt...","targetAddress":"D641Fmzx...","symbol":"DOGE","hash":"3310c6202aaeb44754a118ce11f255382d012060ade0d6d9f...","amount":15,"transactionAmount":10,"createdTimestamp":1653215600,"updatedTimestamp":1653215600,"networkTransactionFee":{"amount":5,"symbol":"DOGE"},"confirmations":17,"blockchainMethod":"transfer"},"status":"ok","message":"","errorHash":"803a2abde021498f0cbea765632f3e608098c8d2","errorType":""}
               }
             }
           },
@@ -2818,7 +2914,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -2845,7 +2941,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           }
@@ -2888,7 +2984,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerCreateCryptocurrencyTransactionResponseApiResult"
                 },
-                "example": {"content":{"failed":false,"status":"pending","statusDetails":"Accepted","transaction":{"id":"8E25ACB5-A9E2-4D00-8772-A255F010A2A9","status":"pending","type":"withdrawal","fromAddress":"D5PumQwt...","targetAddress":"D641Fmzx...","symbol":"DOGE","hash":"3310c6202aaeb44754a118ce11f255382d012060ade0d6d9f...","amount":105,"transactionAmount":100,"createdTimestamp":1653215600,"updatedTimestamp":1653215600,"networkTransactionFee":{"amount":5,"symbol":"DOGE"},"confirmations":3,"blockchainMethod":"transfer"},"fallbackMfaAvailable":false},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"failed":false,"status":"pending","statusDetails":"Accepted","transaction":{"id":"8E25ACB5-A9E2-4D00-8772-A255F010A2A9","status":"pending","type":"withdrawal","fromAddress":"D5PumQwt...","targetAddress":"D641Fmzx...","symbol":"DOGE","hash":"3310c6202aaeb44754a118ce11f255382d012060ade0d6d9f...","amount":105,"transactionAmount":100,"createdTimestamp":1653215600,"updatedTimestamp":1653215600,"networkTransactionFee":{"amount":5,"symbol":"DOGE"},"confirmations":3,"blockchainMethod":"transfer"},"fallbackMfaAvailable":false},"status":"ok","message":"","errorHash":"6a2e74202c527e69edb089f1e990c2ae4deeeab7","errorType":""}
               }
             }
           },
@@ -2899,7 +2995,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -2952,7 +3048,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerCryptocurrencyDepositAddressResponseApiResult"
                 },
-                "example": {"content":{"symbol":"DOGE","address":"D641Fmzx...","chain":"DOGE"},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"symbol":"DOGE","address":"D641Fmzx...","chain":"DOGE"},"status":"ok","message":"","errorHash":"010074a19298a4afea1a5fc2dc51f25ea9313511","errorType":""}
               }
             }
           },
@@ -2963,7 +3059,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -2974,7 +3070,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -3018,7 +3114,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/B2BBrokerCryptocurrencySymbolDetailsResponseApiResult"
                 },
-                "example": {"content":{"symbol":"ETH","addressTypes":["ethAddress"],"chains":[{"chain":"Ethereum","fee":0.00001}]},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"symbol":"ETH","addressTypes":["ethAddress"],"chains":[{"chain":"Ethereum","fee":0.00001}]},"status":"ok","message":"","errorHash":"2028c79cf4076e7d508f48f84872b38f29106653","errorType":""}
               }
             }
           },
@@ -3029,7 +3125,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -3040,7 +3136,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"notFound","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -3087,7 +3183,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/DeFiWalletVerificationResponseApiResult"
                 },
-                "example": {"content":{"verifications":[{"userId":"user-1","address":"address-1","networkType":"evm","verificationMethod":"signedMessage","message":"Some test message","signedMessageHash":"signature-1","timestamp":1733896980},{"userId":"user-1","address":"address-2","networkType":"evm","verificationMethod":"signedMessage","message":"Some test message","signedMessageHash":"signature-2","timestamp":1733896980}]},"status":"ok","message":"","errorType":""}
+                "example": {"content":{"verifications":[{"userId":"user-1","address":"address-1","networkType":"evm","verificationMethod":"signedMessage","message":"Some test message","signedMessageHash":"signature-1","timestamp":1733896980},{"userId":"user-1","address":"address-2","networkType":"evm","verificationMethod":"signedMessage","message":"Some test message","signedMessageHash":"signature-2","timestamp":1733896980}]},"status":"ok","message":"","errorHash":"bd54059170af0b1ad0553813b7854ccfa7bf4d0f","errorType":""}
               }
             }
           },
@@ -3098,7 +3194,7 @@
                 "schema": {
                   "$ref": "#/components/schemas/ApiResult"
                 },
-                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorType":"missingField"}
+                "example": {"status":"badRequest","message":"Error message","displayMessage":"Optional display message","errorHash":"7dcbb73da80e0e072abdb7eacf844bf42e417afc","errorType":"missingField"}
               }
             }
           },
@@ -3165,6 +3261,12 @@
             "type": "string",
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
+          },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
           },
           "errorType": {
             "type": "string",
@@ -3267,6 +3369,12 @@
             "type": "string",
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
+          },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
           },
           "errorType": {
             "type": "string",
@@ -3447,6 +3555,12 @@
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
           },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
+          },
           "errorType": {
             "type": "string",
             "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
@@ -3590,6 +3704,12 @@
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
           },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
+          },
           "errorType": {
             "type": "string",
             "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
@@ -3671,6 +3791,12 @@
             "type": "string",
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
+          },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
           },
           "errorType": {
             "type": "string",
@@ -4042,6 +4168,12 @@
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
           },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
+          },
           "errorType": {
             "type": "string",
             "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
@@ -4217,6 +4349,12 @@
             "type": "string",
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
+          },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
           },
           "errorType": {
             "type": "string",
@@ -4622,6 +4760,12 @@
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
           },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
+          },
           "errorType": {
             "type": "string",
             "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
@@ -4751,6 +4895,12 @@
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
           },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
+          },
           "errorType": {
             "type": "string",
             "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
@@ -4875,6 +5025,12 @@
             "type": "string",
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
+          },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
           },
           "errorType": {
             "type": "string",
@@ -5094,6 +5250,12 @@
             "type": "string",
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
+          },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
           },
           "errorType": {
             "type": "string",
@@ -5445,6 +5607,12 @@
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
           },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
+          },
           "errorType": {
             "type": "string",
             "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
@@ -5630,6 +5798,12 @@
             "type": "string",
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
+          },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
           },
           "errorType": {
             "type": "string",
@@ -5830,6 +6004,12 @@
             "type": "string",
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
+          },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
           },
           "errorType": {
             "type": "string",
@@ -6049,6 +6229,12 @@
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
           },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
+          },
           "errorType": {
             "type": "string",
             "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
@@ -6158,6 +6344,12 @@
             "type": "string",
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
+          },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
           },
           "errorType": {
             "type": "string",
@@ -6620,6 +6812,12 @@
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
           },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
+          },
           "errorType": {
             "type": "string",
             "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
@@ -6752,6 +6950,12 @@
             "type": "string",
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
+          },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
           },
           "errorType": {
             "type": "string",
@@ -6923,6 +7127,12 @@
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
           },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
+          },
           "errorType": {
             "type": "string",
             "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
@@ -6987,6 +7197,12 @@
             "type": "string",
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
+          },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
           },
           "errorType": {
             "type": "string",
@@ -7235,6 +7451,12 @@
             "type": "string",
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
+          },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
           },
           "errorType": {
             "type": "string",
@@ -7751,6 +7973,12 @@
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
           },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
+          },
           "errorType": {
             "type": "string",
             "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
@@ -8019,6 +8247,11 @@
                 "$ref": "#/components/schemas/TransferTravelRuleOptions"
               }
             ],
+            "nullable": true
+          },
+          "previewId": {
+            "type": "string",
+            "description": "Store the preview id to be used for the transaction. Can be used as idempotency key for external API calls.",
             "nullable": true
           }
         },
@@ -8588,6 +8821,12 @@
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
           },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
+          },
           "errorType": {
             "type": "string",
             "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
@@ -8996,6 +9235,12 @@
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
           },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
+          },
           "errorType": {
             "type": "string",
             "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
@@ -9268,6 +9513,12 @@
             "type": "string",
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
+          },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
           },
           "errorType": {
             "type": "string",
@@ -9684,6 +9935,12 @@
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
           },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
+          },
           "errorType": {
             "type": "string",
             "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
@@ -9961,6 +10218,12 @@
             "type": "string",
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
+          },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
           },
           "errorType": {
             "type": "string",
@@ -10441,6 +10704,12 @@
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
           },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
+          },
           "errorType": {
             "type": "string",
             "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
@@ -10920,6 +11189,12 @@
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
           },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
+          },
           "errorType": {
             "type": "string",
             "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
@@ -11142,6 +11417,12 @@
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
           },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
+          },
           "errorType": {
             "type": "string",
             "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
@@ -11208,6 +11489,12 @@
             "type": "string",
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
+          },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
           },
           "errorType": {
             "type": "string",
@@ -11480,6 +11767,12 @@
             "type": "string",
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
+          },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
           },
           "errorType": {
             "type": "string",
@@ -12489,6 +12782,12 @@
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
           },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
+          },
           "errorType": {
             "type": "string",
             "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
@@ -13260,6 +13559,12 @@
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
           },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
+          },
           "errorType": {
             "type": "string",
             "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
@@ -13327,6 +13632,12 @@
             "type": "string",
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
+          },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
           },
           "errorType": {
             "type": "string",
@@ -13432,6 +13743,12 @@
             "type": "string",
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
+          },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
           },
           "errorType": {
             "type": "string",
@@ -14769,6 +15086,12 @@
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
           },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
+          },
           "errorType": {
             "type": "string",
             "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
@@ -15007,6 +15330,12 @@
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
           },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
+          },
           "errorType": {
             "type": "string",
             "description": "Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.\r\nAll possible error types are available in the documentation.",
@@ -15202,6 +15531,11 @@
                 "$ref": "#/components/schemas/TransferTravelRuleOptions"
               }
             ],
+            "nullable": true
+          },
+          "previewId": {
+            "type": "string",
+            "description": "Store the preview id to be used for the transaction. Can be used as idempotency key for external API calls.",
             "nullable": true
           }
         },
@@ -15749,6 +16083,12 @@
             "type": "string",
             "description": "User-friendly display message that can be presented to the end user",
             "nullable": true
+          },
+          "errorHash": {
+            "type": "string",
+            "description": "An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping",
+            "nullable": true,
+            "readOnly": true
           },
           "errorType": {
             "type": "string",
