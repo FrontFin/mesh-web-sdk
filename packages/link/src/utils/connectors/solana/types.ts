@@ -36,16 +36,16 @@ export interface SolanaProvider {
   sendTransaction?(
     transaction: Transaction | VersionedTransaction
   ): Promise<string>
+  // Wallet checks
+  isPhantom?: boolean
+  isSolflare?: boolean
+  isTrust?: boolean
+  isTrustWallet?: boolean
+  isExodus?: boolean
 }
 
 export interface WindowWithSolanaProviders extends Window {
-  solana?: SolanaProvider & {
-    isPhantom?: boolean
-    isSolflare?: boolean
-    isTrust?: boolean
-    isTrustWallet?: boolean
-    isExodus?: boolean
-  }
+  solana?: SolanaProvider
   phantom?: { solana?: SolanaProvider }
   exodus?: { solana?: SolanaProvider }
   trustwallet?: { solana?: SolanaProvider }

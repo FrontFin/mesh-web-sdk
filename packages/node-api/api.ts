@@ -39,6 +39,8 @@ export interface ApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -89,6 +91,8 @@ export interface AssetPaginationResponseApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -167,6 +171,8 @@ export interface B2BBrokerAccountBalanceModelApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -223,6 +229,8 @@ export interface B2BBrokerAccountDetailsResponseApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -254,6 +262,8 @@ export interface B2BBrokerAuthPromptResponseApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -447,6 +457,8 @@ export interface B2BBrokerAuthResponseApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -520,6 +532,8 @@ export interface B2BBrokerCreateCryptocurrencyTransactionResponseApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -766,6 +780,8 @@ export interface B2BBrokerCreateOrderResultApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -829,6 +845,8 @@ export interface B2BBrokerCryptocurrencyDepositAddressResponseApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -871,6 +889,8 @@ export interface B2BBrokerCryptocurrencySymbolDetailsResponseApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -995,6 +1015,8 @@ export interface B2BBrokerCryptocurrencyTransactionApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -1177,6 +1199,8 @@ export interface B2BBrokerOrderApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -1307,6 +1331,8 @@ export interface B2BBrokerOrderListResponseApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -1428,6 +1454,8 @@ export interface B2BBrokerOrderSymbolInfoApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -1537,6 +1565,8 @@ export interface B2BBrokerPreviewOrderResultApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -1577,6 +1607,8 @@ export interface B2BBrokerRefreshTokenResponseApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -1827,6 +1859,8 @@ export interface B2BBrokerTradingFeatureInfoApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -1903,6 +1937,8 @@ export interface B2BBrokerTransactionsListModelApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -2008,6 +2044,8 @@ export interface B2BBrokersHealthStatusListApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -2037,6 +2075,8 @@ export interface B2BFiatPortfolioModelApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -2164,6 +2204,8 @@ export interface B2BPortfolioModelApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -2500,6 +2542,8 @@ export interface BrokerAuthenticationSchemeIReadOnlyCollectionApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -2687,6 +2731,8 @@ export interface BrokerCreateCryptocurrencyTransactionRequest {
   challengeId?: string | null
   tryAnotherMfa?: boolean
   travelRuleOptions?: TransferTravelRuleOptions | null
+  /** Store the preview id to be used for the transaction. Can be used as idempotency key for external API calls. */
+  previewId?: string | null
 }
 
 export interface BrokerCryptocurrencyChain {
@@ -3058,6 +3104,8 @@ export interface BrokerPortfolioValueModelApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -3342,6 +3390,8 @@ export interface CatalogLinkApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -3512,6 +3562,8 @@ export interface ConfigureTransferResponseApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -3752,6 +3804,8 @@ export interface DeFiWalletVerificationResponseApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -3903,6 +3957,8 @@ export interface ExecuteTransferResponseApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -4178,6 +4234,8 @@ export interface HoldingsModelApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -4490,6 +4548,8 @@ export interface IntegrationNetworkResponseApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -4618,6 +4678,8 @@ export interface IntegrationsResponseApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -4648,6 +4710,8 @@ export interface LinkTokenModelApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -4834,6 +4898,8 @@ export interface NetworkModelResponseApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -5494,6 +5560,8 @@ export interface PreviewTransferResponseApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -6020,6 +6088,8 @@ export interface QuoteTransferResponseApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -6054,6 +6124,8 @@ export interface StringApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -6096,6 +6168,8 @@ export interface TokenNetworksResponseApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -7099,6 +7173,8 @@ export interface TransferModelPaginationResponseApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -7210,6 +7286,8 @@ export interface TransferVerificationResponseApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -7367,6 +7445,8 @@ export interface TransfersBrokerCreateCryptocurrencyTransactionRequest {
   challengeId?: string | null
   tryAnotherMfa?: boolean
   travelRuleOptions?: TransferTravelRuleOptions | null
+  /** Store the preview id to be used for the transaction. Can be used as idempotency key for external API calls. */
+  previewId?: string | null
 }
 
 export interface TransfersBrokerCryptocurrencyDepositAddressRequest {
@@ -7815,6 +7895,8 @@ export interface UpdateTransferResponseApiResult {
   message?: string | null
   /** User-friendly display message that can be presented to the end user */
   displayMessage?: string | null
+  /** An error grouping hash from string components and caller information. Used by bugsnag on FE for correct error grouping */
+  readonly errorHash?: string | null
   /**
    * Strictly-typed error type that is explaining the reason of an unsuccessful status of the operation.
    * All possible error types are available in the documentation.
@@ -8996,6 +9078,60 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
     ) =>
       this.request<StringApiResult, ProblemDetails | void>({
         path: `/api/v1/catalog/solana/getLatestBlockhash`,
+        method: 'POST',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * No description
+     *
+     * @tags QuickNode
+     * @name V1CatalogSolanaGetTokenProgramCreate
+     * @request POST:/api/v1/catalog/solana/getTokenProgram
+     * @secure
+     * @response `200` `StringApiResult` OK
+     * @response `400` `ProblemDetails` Bad Request
+     * @response `500` `void` Internal Server Error
+     */
+    v1CatalogSolanaGetTokenProgramCreate: (
+      query?: {
+        chainId?: string
+        token?: string
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<StringApiResult, ProblemDetails | void>({
+        path: `/api/v1/catalog/solana/getTokenProgram`,
+        method: 'POST',
+        query: query,
+        secure: true,
+        format: 'json',
+        ...params
+      }),
+
+    /**
+     * No description
+     *
+     * @tags QuickNode
+     * @name V1CatalogSolanaIsTokenAddressCreatedCreate
+     * @request POST:/api/v1/catalog/solana/isTokenAddressCreated
+     * @secure
+     * @response `200` `StringApiResult` OK
+     * @response `400` `ProblemDetails` Bad Request
+     * @response `500` `void` Internal Server Error
+     */
+    v1CatalogSolanaIsTokenAddressCreatedCreate: (
+      query?: {
+        chainId?: string
+        address?: string
+      },
+      params: RequestParams = {}
+    ) =>
+      this.request<StringApiResult, ProblemDetails | void>({
+        path: `/api/v1/catalog/solana/isTokenAddressCreated`,
         method: 'POST',
         query: query,
         secure: true,
