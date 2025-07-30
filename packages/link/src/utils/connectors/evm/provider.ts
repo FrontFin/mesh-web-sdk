@@ -1,5 +1,5 @@
 import { ethers } from 'ethers'
-import { EVMProvider } from './types'
+import type { EVMProvider } from './types'
 
 // Keep track of the active provider
 let activeEVMProvider: ethers.BrowserProvider | null = null

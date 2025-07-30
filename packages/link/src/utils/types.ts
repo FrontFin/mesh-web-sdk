@@ -1,5 +1,5 @@
 import type { BrokerType } from '@meshconnect/node-api'
-import { SessionSummary, LinkEventType } from './event-types'
+import type { SessionSummary, LinkEventType } from './event-types'
 
 export type EventType =
   | 'brokerageAccountAccessToken'

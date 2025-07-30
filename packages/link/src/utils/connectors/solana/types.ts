@@ -59,8 +59,8 @@ export interface TransactionConfig {
   fromAddress: string
   blockhash: string
   walletName: string
-  tokenMint?: string
-  createATA?: boolean
-  tokenProgram?: string
-  tokenDecimals?: number
+  tokenMint?: string | undefined
+  createATA?: boolean | undefined
+  tokenProgram?: string | undefined
+  tokenDecimals?: number | undefined
 }

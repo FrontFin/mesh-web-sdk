@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import {
-  Link,
-  LinkPayload,
-  TransferFinishedPayload,
+  type Link,
+  type LinkPayload,
+  type TransferFinishedPayload,
   createLink
 } from '@meshconnect/web-link-sdk'
 import { clientId } from '../utility/config'

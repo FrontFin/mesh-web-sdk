@@ -6,8 +6,8 @@ import {
   TransactionInstruction
 } from '@meshconnect/solana-web3.js'
 import { getSolanaProvider } from './providerDiscovery'
-import { TransactionConfig, SolanaProvider } from './types'
-import {
+import type { TransactionConfig, SolanaProvider } from './types'
+import type {
   SolanaAccountMeta,
   SolanaTransferWithInstructionsPayload,
   TransactionInstructionDto
@@ -238,7 +238,7 @@ export async function getTransferInstructions(
   const result: TransactionInstruction[] = []
 
   for (let instrIndex = 0; instrIndex < instructions.length; instrIndex++) {
-    const ix = instructions[instrIndex]
+    const ix = instructions[instrIndex]!
     const programId = new PublicKey(ix.programId)
 
     const keys = ix.accounts.map(

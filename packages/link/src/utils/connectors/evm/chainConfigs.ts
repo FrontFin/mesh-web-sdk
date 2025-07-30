@@ -1,4 +1,4 @@
-import { ChainConfig } from './types'
+import type { ChainConfig } from './types'
 
 // Chain configurations
 const chainConfigs: Record<number, ChainConfig> = {
