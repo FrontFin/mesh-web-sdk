@@ -1,6 +1,6 @@
 # @meshconnect/node-api
 
-Official API library for Node JS, which is regularly updated for breaking and non-breaking API changes. This client library is generated from our API reference [here](https://docs.meshconnect.io/api/).
+Official API library for Node JS, which is regularly updated for breaking and non-breaking API changes. This client library is generated from our API reference [here](https://docs.meshconnect.com/guides/getting-started).
 
 ### Install
 
