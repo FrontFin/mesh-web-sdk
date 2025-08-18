@@ -1,0 +1,47 @@
+# .github/workflows/require-changeset.yml
+name: Require Changeset
+on:
+  pull_request:
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+jobs:
+  require-changeset:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Exit early if labeled to skip
+        id: labelcheck
+        uses: actions-ecosystem/action-has-labels@v1
+        with:
+          labels: skip-changeset
+        continue-on-error: true
+
+      - name: Install Node
+        if: steps.labelcheck.outcome != 'success'
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18.x
+
+      - name: Detect package changes
+        if: steps.labelcheck.outcome != 'success'
+        run: |
+          git fetch origin ${{ github.base_ref }} --depth=1
+          CHANGED_FILES=$(git diff --name-only origin/${{ github.base_ref }}...HEAD)
+          echo "$CHANGED_FILES" | tee /tmp/changed.txt
+
+          # Consider these as requiring a changeset (tweak as needed)
+          REQUIRES_CHANGESET=$(grep -E '^packages/|^apps/' /tmp/changed.txt || true)
+          echo "requires_changeset=$([ -n "$REQUIRES_CHANGESET" ] && echo true || echo false)" >> $GITHUB_OUTPUT
+        id: detect
+
+      - name: Check .changeset presence
+        if: steps.labelcheck.outcome != 'success' && steps.detect.outputs.requires_changeset == 'true'
+        run: |
+          HAS_CHANGESET=$(git diff --name-only origin/${{ github.base_ref }}...HEAD | grep -E '^\.changeset/.*\.md$' || true)
+          if [ -z "$HAS_CHANGESET" ]; then
+            echo "No changeset found for code changes. Run 'yarn changeset' and commit the generated file."
+            exit 1
+          fi

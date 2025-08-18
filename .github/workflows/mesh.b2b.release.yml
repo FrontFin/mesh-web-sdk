@@ -1,0 +1,93 @@
+name: Release Changed Packages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  version-bump:
+    name: Version bump with Changesets
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      # Apply version bumps for changed packages
+      - name: Apply version bump
+        run: yarn changeset version
+
+      # Commit version bumps safely
+      - name: Commit version bump
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add .
+          git commit -m "chore: version bump via Changesets [skip ci]" || echo "No changes to commit"
+
+      # Push version bumps to main
+      - name: Push version bump to main
+        run: git push origin main
+
+  publish:
+    name: Publish packages & create GitHub releases
+    runs-on: ubuntu-latest
+    needs: version-bump
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      # Publish changed packages to npm
+      - name: Publish changed packages
+        run: yarn changeset publish
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # Generate release info JSON
+      - name: Generate release data
+        id: release_data
+        run: yarn changeset status --json > release-data.json
+
+      # Build assets (tgz packages)
+      - name: Build package assets
+        run: |
+          mkdir -p release-assets
+          for pkg in packages/*; do
+            pkgname=$(basename $pkg)
+            version=$(jq -r ".releases[] | select(.name==\"$pkgname\") | .newVersion" release-data.json || echo "")
+            if [ -n "$version" ]; then
+              (cd $pkg && yarn pack --filename ../../release-assets/$pkgname-$version.tgz)
+            fi
+          done
+
+      # Create Git tags and GitHub release per package
+      - name: Create GitHub releases per package
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: |
+          releases=$(jq -c '.releases[]' release-data.json)
+          for r in $releases; do
+            name=$(echo $r | jq -r '.name')
+            version=$(echo $r | jq -r '.newVersion')
+            summary=$(echo $r | jq -r '.summary')
+            contributors=$(echo $r | jq -r '.contributors | join(", ")')
+            body="### $name@$version\n$summary\nContributors: $contributors"
+            tag="$name@$version"
+
+            echo "Creating Git tag: $tag"
+            git tag -a "$tag" -m "Release $tag"
+            git push origin "$tag"
+
+            # Attach specific asset
+            asset="release-assets/$name-$version.tgz"
+            if [ -f "$asset" ]; then
+              gh release create "$tag" "$asset" --title "Release $tag" --notes "$body" --repo $REPO --target main
+            else
+              gh release create "$tag" --title "Release $tag" --notes "$body" --repo $REPO --target main
+            fi
+          done
