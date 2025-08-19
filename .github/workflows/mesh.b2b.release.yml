@@ -41,12 +41,6 @@ jobs:
       - name: Install dependencies
         run: yarn install --frozen-lockfile
 
-      # Publish changed packages to npm
-      - name: Publish changed packages
-        run: yarn changeset publish
-        env:
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-
       # Generate release info JSON
       - name: Generate release data
         id: release_data
@@ -91,3 +85,9 @@ jobs:
               gh release create "$tag" --title "Release $tag" --notes "$body" --repo $REPO --target main
             fi
           done
+
+      # # Publish changed packages to npm AFTER GitHub releases
+      # - name: Publish changed packages to npm
+      #   run: yarn changeset publish
+      #   env:
+      #     NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
