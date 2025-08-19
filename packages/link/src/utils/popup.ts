@@ -44,6 +44,7 @@ const getStylesContent = (style?: LinkStyle) => `
 
   #${popupContentId} {
     position: absolute;
+    top: 22px;
     height: 80%;
     max-height: 710px;
     min-height: 685px;
@@ -67,6 +68,7 @@ const getStylesContent = (style?: LinkStyle) => `
 
   @media only screen and (max-width: 768px) {
     #${popupContentId} {
+      top: 0;
       height: 100vh;
       width: 100vw;
       max-width: 100%;
