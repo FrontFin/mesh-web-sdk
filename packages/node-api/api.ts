@@ -2353,9 +2353,13 @@ export type BridgingOperationStatus =
   | 'providerProcessedPayment'
   | 'providerSetUndeliverable'
   | 'returned'
+  | 'refundRegisteredInProvider'
+  | 'providerAwaitingSourceRefundTransfer'
+  | 'providerRefundFundsReceived'
+  | 'providerProcessingRefundPayment'
+  | 'providerProcessedRefundPayment'
   | 'refunded'
   | 'canceled'
-  | 'succeeded'
   | 'failed'
 
 export interface BridgingTimelineEvent {
@@ -2377,9 +2381,13 @@ export interface BridgingTransferDetailsModel {
     | 'providerProcessedPayment'
     | 'providerSetUndeliverable'
     | 'returned'
+    | 'refundRegisteredInProvider'
+    | 'providerAwaitingSourceRefundTransfer'
+    | 'providerRefundFundsReceived'
+    | 'providerProcessingRefundPayment'
+    | 'providerProcessedRefundPayment'
     | 'refunded'
     | 'canceled'
-    | 'succeeded'
     | 'failed'
   statusDescription?: string | null
   targetSide?: BridgingTransferSide | null
@@ -7338,6 +7346,7 @@ export interface TransfersBrokerCreateCryptocurrencyTransactionRequest {
    * ```BinancePay```
    * ```ParibuOAuth```
    * ```PayPalConnect```
+   * ```CoinbaseRamp```
    * ```DeFiWallet```
    */
   type:
@@ -7488,6 +7497,7 @@ export interface TransfersBrokerCryptocurrencyDepositAddressRequest {
    * ```BinancePay```
    * ```ParibuOAuth```
    * ```PayPalConnect```
+   * ```CoinbaseRamp```
    * ```DeFiWallet```
    */
   type:
@@ -7602,6 +7612,7 @@ export interface TransfersBrokerCryptocurrencyTransactionDetailsRequest {
    * ```BinancePay```
    * ```ParibuOAuth```
    * ```PayPalConnect```
+   * ```CoinbaseRamp```
    * ```DeFiWallet```
    */
   type:
@@ -7710,6 +7721,7 @@ export interface TransfersBrokerTransactionsListRequest {
    * ```BinancePay```
    * ```ParibuOAuth```
    * ```PayPalConnect```
+   * ```CoinbaseRamp```
    * ```DeFiWallet```
    */
   type:
@@ -8939,6 +8951,8 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         SubClientId?: string
         /** Value indicating if ordering is descending. */
         DescendingOrder?: boolean
+        /** Value indicating if Env is Sandbox. */
+        IsSandBox?: boolean
       },
       params: RequestParams = {}
     ) =>
