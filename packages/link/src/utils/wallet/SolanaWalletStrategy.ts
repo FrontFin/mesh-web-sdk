@@ -64,14 +64,22 @@ export class SolanaWalletStrategy extends BaseWalletStrategy {
   }
 
   /**
-   * @note Solana doesn't support chain switching as it's a single-chain network
-   * This method is implemented to satisfy the interface but will always return mainnet (101)
+   * Handles chain switching for Solana networks
+   * Supports both mainnet (101) and devnet (103)
    */
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  async switchChain(_payload: ChainSwitchPayload): Promise<{
+  async switchChain(payload: ChainSwitchPayload): Promise<{
     chainId: string
     accounts: string[]
   }> {
+    // Check if the requested chainId is for Solana Devnet (103)
+    if (payload.chainId === 103) {
+      return {
+        chainId: '103',
+        accounts: []
+      }
+    }
+    
+    // Default to mainnet (101) for all other cases
     return {
       chainId: '101',
       accounts: []
