@@ -8,12 +8,7 @@
   ],
   "commit": false,
   "fixed": [],
-  "linked": [
-    [
-      "@meshconnect/web-link-sdk",
-      "@meshconnect/node-api"
-    ]
-  ],
+  "linked": [],
   "access": "public",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
