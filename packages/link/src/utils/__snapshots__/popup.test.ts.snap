@@ -4,7 +4,7 @@ exports[`Popup tests addPopup should add correct popup 1`] = `
 <style
   id="mesh-link-popup__styles"
 >
-
+  
   body {
     position: fixed;
     left: 0;
