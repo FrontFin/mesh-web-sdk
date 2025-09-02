@@ -24,6 +24,7 @@ import {
 } from './utils/wallet-browser-event-types'
 import { sdkSpecs } from './utils/sdk-specs'
 import { WalletStrategyFactory, NetworkType } from './utils/wallet'
+import { BridgeParent } from '@meshconnect/uwc-bridge-parent'
 
 let currentOptions: LinkOptions | undefined
 let targetOrigin: string | undefined
@@ -465,6 +466,11 @@ export const createLink = (options: LinkOptions): Link => {
     window.addEventListener('message', eventsListener)
 
     targetOrigin = window.location.origin
+
+    const iframe = iframeElement()
+    if (iframe) {
+      new BridgeParent(iframe)
+    }
   }
 
   const closeLink = () => {
