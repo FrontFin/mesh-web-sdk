@@ -9,6 +9,10 @@ import {
   TransferFinishedPayload
 } from './utils/types'
 
+jest.mock('@meshconnect/uwc-bridge-parent', () => ({
+  BridgeParent: jest.fn()
+}))
+
 type EventPayload = {
   type: EventType
   payload?: AccessTokenPayload | DelayedAuthPayload | TransferFinishedPayload
