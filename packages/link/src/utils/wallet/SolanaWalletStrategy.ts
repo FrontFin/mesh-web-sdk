@@ -78,7 +78,7 @@ export class SolanaWalletStrategy extends BaseWalletStrategy {
         accounts: []
       }
     }
-    
+
     // Default to mainnet (101) for all other cases
     return {
       chainId: '101',
