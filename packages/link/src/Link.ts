@@ -30,6 +30,7 @@ let currentOptions: LinkOptions | undefined
 let targetOrigin: string | undefined
 let linkTokenOrigin: string | undefined
 let currentIframeId = iframeId
+let bridgeParent: BridgeParent | null = null
 
 const iframeElement = () => {
   return document.getElementById(currentIframeId) as HTMLIFrameElement
@@ -108,6 +109,7 @@ async function handleLinkEvent(
     case 'done': {
       const payload = event.data?.payload
       currentOptions?.onExit?.(payload?.errorMessage, payload)
+      bridgeParent?.destroy()
       removePopup()
       break
     }
@@ -468,12 +470,14 @@ export const createLink = (options: LinkOptions): Link => {
     targetOrigin = window.location.origin
 
     const iframe = iframeElement()
+
     if (iframe) {
-      new BridgeParent(iframe)
+      bridgeParent = new BridgeParent(iframe)
     }
   }
 
   const closeLink = () => {
+    bridgeParent?.destroy()
     removePopup()
     window.removeEventListener('message', eventsListener)
     options.onExit?.()
