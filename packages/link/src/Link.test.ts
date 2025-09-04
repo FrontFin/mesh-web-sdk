@@ -10,7 +10,9 @@ import {
 } from './utils/types'
 
 jest.mock('@meshconnect/uwc-bridge-parent', () => ({
-  BridgeParent: jest.fn()
+  BridgeParent: jest.fn().mockImplementation(() => ({
+    destroy: jest.fn()
+  }))
 }))
 
 type EventPayload = {
