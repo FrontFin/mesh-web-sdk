@@ -46,6 +46,21 @@ describe('createLink tests', () => {
     expect(iframeElement).toBeFalsy()
   })
 
+  test('createLink when invalid link url provided should not open popup', () => {
+    const exitFunction = jest.fn<void, [string | undefined]>()
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onExit: exitFunction
+    })
+
+    frontConnection.openLink('amF2YXNjcmlwdDphbGVydChkb2N1bWVudC5kb21haW4pLy8=')
+
+    expect(exitFunction).toHaveBeenCalledWith('Invalid link token!')
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
+    expect(iframeElement).toBeFalsy()
+  })
+
   test('createLink when valid link provided should open popup', () => {
     const frontConnection = createLink({
       clientId: 'test',
