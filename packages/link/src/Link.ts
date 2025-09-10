@@ -446,6 +446,13 @@ export const createLink = (options: LinkOptions): Link => {
 
     currentOptions = options
     let linkUrl = window.atob(linkToken)
+    const isProtocolValid =
+      linkUrl.startsWith('http://') || linkUrl.startsWith('https://')
+    if (!isProtocolValid) {
+      options?.onExit?.('Invalid link token!')
+      return
+    }
+
     linkUrl = addLanguage(linkUrl, currentOptions?.language)
     linkTokenOrigin = new URL(linkUrl).origin
     window.removeEventListener('message', eventsListener)
