@@ -11,5 +11,10 @@ export default defineConfig({
     outDir: './build',
     emptyOutDir: true
   },
-  plugins: [react()]
+  plugins: [react()],
+  resolve: {
+    alias: {
+      '@solana/web3.js': '@meshconnect/solana-web3.js'
+    }
+  }
 })

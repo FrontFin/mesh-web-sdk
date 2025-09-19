@@ -4,6 +4,7 @@
   "private": true,
   "dependencies": {
     "@meshconnect/node-api": "*",
+    "@meshconnect/solana-web3.js": "*",
     "@meshconnect/web-link-sdk": "*",
     "@types/react": "^18.0.9",
     "@types/react-dom": "^18.0.4",
