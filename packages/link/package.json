@@ -1,6 +1,6 @@
 {
   "name": "@meshconnect/web-link-sdk",
-  "version": "3.3.3",
+  "version": "3.3.4",
   "description": "A client-side JS library for integrating with Mesh Connect",
   "main": "./src/index.ts",
   "module": "./src/index.ts",
@@ -26,12 +26,8 @@
     "util": "^0.12.4"
   },
   "dependencies": {
-    "@meshconnect/node-api": "^2.0.16",
-    "@meshconnect/solana-web3.js": "^1.0.4",
-    "@meshconnect/uwc-bridge-parent": "1.0.0",
-    "bs58": "^5.0.0",
-    "buffer": "^6.0.3",
-    "ethers": "^6.11.1"
+    "@meshconnect/node-api": "^2.0.24",
+    "@meshconnect/uwc-bridge-parent": "1.0.1"
   },
   "scripts": {
     "build": "yarn updateVersion && rimraf dist && yarn build:esm && yarn copy",

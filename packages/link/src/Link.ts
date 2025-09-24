@@ -5,25 +5,11 @@ import {
   AccessTokenPayload,
   DelayedAuthPayload,
   TransferFinishedPayload,
-  LinkPayload,
-  WalletBrowserPayload,
-  SignRequestPayload,
-  ChainSwitchPayload,
-  TransferPayload,
-  SmartContractPayload,
-  DisconnectPayload,
-  TransactionBatchPayload,
-  WalletCapabilitiesPayload,
-  SolanaTransferWithInstructionsPayload
+  LinkPayload
 } from './utils/types'
 import { addPopup, iframeId, removePopup } from './utils/popup'
 import { LinkEventType, isLinkEventTypeKey } from './utils/event-types'
-import {
-  WalletBrowserEventType,
-  isWalletBrowserEventTypeKey
-} from './utils/wallet-browser-event-types'
 import { sdkSpecs } from './utils/sdk-specs'
-import { WalletStrategyFactory, NetworkType } from './utils/wallet'
 import { BridgeParent } from '@meshconnect/uwc-bridge-parent'
 
 let currentOptions: LinkOptions | undefined
@@ -119,15 +105,6 @@ async function handleLinkEvent(
         payload: { ...sdkSpecs }
       })
 
-      // Get all providers using the wallet factory
-      const walletFactory = WalletStrategyFactory.getInstance()
-      const allProviders = walletFactory.getAllProviders()
-
-      sendMessageToIframe({
-        type: 'SDKinjectedWalletProviders',
-        payload: allProviders
-      })
-
       if (currentOptions?.accessTokens) {
         sendMessageToIframe({
           type: 'frontAccessTokens',
@@ -152,289 +129,14 @@ async function handleLinkEvent(
   }
 }
 
-async function handleWalletBrowserEvent(
-  event: MessageEvent<WalletBrowserEventType>
-) {
-  const walletFactory = WalletStrategyFactory.getInstance()
-  switch (event.data.type) {
-    case 'walletBrowserInjectedWalletSelected': {
-      const payload = event.data.payload as WalletBrowserPayload
-      try {
-        const networkType = (
-          payload.networkType?.includes('solana') ? 'solana' : 'evm'
-        ) as NetworkType
-        const strategy = walletFactory.getStrategy(networkType)
-
-        const result = await strategy.connect(payload)
-
-        sendMessageToIframe({
-          type: 'SDKinjectedConnectionCompleted',
-          payload: {
-            accounts: result.accounts,
-            chainId: result.chainId,
-            networkType: networkType
-          }
-        })
-      } catch (error) {
-        console.error('Connection error:', error)
-        handleErrorAndSendMessage(
-          error as Error,
-          'SDKinjectedConnectionCompleted'
-        )
-      }
-      break
-    }
-    case 'walletBrowserSignRequest': {
-      const payload = event.data.payload as SignRequestPayload
-      try {
-        const networkType = (
-          !payload.address.startsWith('0x') ? 'solana' : 'evm'
-        ) as NetworkType
-        const strategy = walletFactory.getStrategy(networkType)
-
-        const result = await strategy.signMessage(payload)
-
-        sendMessageToIframe({
-          type: 'SDKsignRequestCompleted',
-          payload: result
-        })
-      } catch (error) {
-        handleErrorAndSendMessage(error as Error, 'SDKsignRequestCompleted')
-      }
-      break
-    }
-    case 'walletBrowserChainSwitchRequest': {
-      const payload = event.data.payload as ChainSwitchPayload
-      try {
-        const networkType = (
-          payload.networkType === 'solana' ? 'solana' : 'evm'
-        ) as NetworkType
-        const strategy = walletFactory.getStrategy(networkType)
-
-        const result = await strategy.switchChain(payload)
-
-        sendMessageToIframe({
-          type: 'SDKswitchChainCompleted',
-          payload: {
-            chainId: result.chainId,
-            accounts: result.accounts,
-            networkType: networkType
-          }
-        })
-      } catch (error) {
-        console.error('Chain switch failed:', error)
-        handleErrorAndSendMessage(error as Error, 'SDKswitchChainCompleted')
-      }
-      break
-    }
-    case 'walletBrowserNativeTransferRequest': {
-      const payload = event.data.payload as TransferPayload
-      try {
-        const networkType = (
-          payload.network === 'solana' ? 'solana' : 'evm'
-        ) as NetworkType
-        const strategy = walletFactory.getStrategy(networkType)
-
-        const result = await strategy.sendNativeTransfer(payload)
-
-        sendMessageToIframe({
-          type: 'SDKnativeTransferCompleted',
-          payload: result
-        })
-      } catch (error) {
-        handleErrorAndSendMessage(error as Error, 'SDKnativeTransferCompleted')
-      }
-      break
-    }
-    case 'walletBrowserNonNativeTransferRequest':
-    case 'walletBrowserNonNativeSmartDeposit': {
-      const payload = event.data.payload as SmartContractPayload
-      const getResponseType = (type: WalletBrowserEventType['type']) => {
-        switch (type) {
-          case 'walletBrowserNonNativeTransferRequest':
-            return 'SDKnonNativeTransferCompleted'
-          case 'walletBrowserNativeSmartDeposit':
-            return 'SDKnativeSmartDepositCompleted'
-          case 'walletBrowserNonNativeSmartDeposit':
-            return 'SDKnonNativeSmartDepositCompleted'
-          default:
-            return 'SDKnonNativeTransferCompleted'
-        }
-      }
-
-      try {
-        const networkType = (
-          payload.address.startsWith('0x') ? 'evm' : 'solana'
-        ) as NetworkType
-        const strategy = walletFactory.getStrategy(networkType)
-        const result = await strategy.sendSmartContractInteraction(payload)
-
-        const responseType = getResponseType(event.data.type)
-
-        sendMessageToIframe({
-          type: responseType,
-          payload: {
-            txHash: result
-          }
-        })
-      } catch (error) {
-        const errorType = getResponseType(event.data.type)
-        handleErrorAndSendMessage(error as Error, errorType)
-      }
-      break
-    }
-    case 'walletBrowserNativeSmartDeposit': {
-      const payload = event.data.payload as SmartContractPayload
-      const getResponseType = (type: WalletBrowserEventType['type']) => {
-        switch (type) {
-          case 'walletBrowserNonNativeTransferRequest':
-            return 'SDKnonNativeTransferCompleted'
-          case 'walletBrowserNativeSmartDeposit':
-            return 'SDKnativeSmartDepositCompleted'
-          case 'walletBrowserNonNativeSmartDeposit':
-            return 'SDKnonNativeSmartDepositCompleted'
-          default:
-            return 'SDKnonNativeTransferCompleted'
-        }
-      }
-
-      try {
-        const networkType = (
-          payload.address.startsWith('0x') ? 'evm' : 'solana'
-        ) as NetworkType
-        const strategy = walletFactory.getStrategy(networkType)
-        const result = await strategy.sendNativeSmartContractInteraction(
-          payload
-        )
-
-        const responseType = getResponseType(event.data.type)
-
-        sendMessageToIframe({
-          type: responseType,
-          payload: {
-            txHash: result
-          }
-        })
-      } catch (error) {
-        const errorType = getResponseType(event.data.type)
-        handleErrorAndSendMessage(error as Error, errorType)
-      }
-      break
-    }
-    case 'walletBrowserTransactionBatchRequest': {
-      const payload = event.data.payload as TransactionBatchPayload
-      const responseType = 'SDKtransactionBatchCompleted'
-
-      try {
-        const networkType = (
-          payload.from.startsWith('0x') ? 'evm' : 'solana'
-        ) as NetworkType
-        const strategy = walletFactory.getStrategy(networkType)
-        const result = await strategy.sendTransactionBatch(payload)
-
-        sendMessageToIframe({
-          type: responseType,
-          payload: {
-            txHash: result
-          }
-        })
-      } catch (error) {
-        handleErrorAndSendMessage(error as Error, responseType)
-      }
-      break
-    }
-    case 'walletBrowserWalletCapabilities': {
-      const payload = event.data.payload as WalletCapabilitiesPayload
-      const responseType = 'SDKwalletCapabilitiesCompleted'
-      try {
-        const networkType = (
-          payload.from.startsWith('0x') ? 'evm' : 'solana'
-        ) as NetworkType
-        const strategy = walletFactory.getStrategy(networkType)
-        const result = await strategy.getWalletCapabilities(payload)
-
-        sendMessageToIframe({
-          type: responseType,
-          payload: result
-        })
-      } catch (error) {
-        handleErrorAndSendMessage(error as Error, responseType)
-      }
-      break
-      break
-    }
-    case 'walletBrowserDisconnect': {
-      const payload = event.data.payload as DisconnectPayload
-
-      try {
-        if (payload?.networkType) {
-          const networkType = (
-            payload.networkType === 'solana' ? 'solana' : 'evm'
-          ) as NetworkType
-          const strategy = walletFactory.getStrategy(networkType)
-          await strategy.disconnect(payload)
-        } else {
-          // Disconnect from all if no specific network type
-          await Promise.all([
-            walletFactory.getStrategy('solana').disconnect(payload),
-            walletFactory.getStrategy('evm').disconnect(payload)
-          ])
-        }
-
-        sendMessageToIframe({
-          type: 'SDKdisconnectSuccess'
-        })
-      } catch (error) {
-        console.error('Error during disconnect:', error)
-        handleErrorAndSendMessage(error as Error, 'SDKdisconnectSuccess')
-      }
-      break
-    }
-    case 'walletBrowserSolanaTransferWithInstructionsRequest': {
-      const payload = event.data
-        .payload as SolanaTransferWithInstructionsPayload
-
-      try {
-        const networkType = 'solana' as NetworkType
-        const strategy = walletFactory.getStrategy(networkType)
-        const result = await strategy.sendTransactionWithInstructions(payload)
-        sendMessageToIframe({
-          type: 'SDKnonNativeTransferCompleted',
-          payload: {
-            txHash: result
-          }
-        })
-      } catch (error) {
-        handleErrorAndSendMessage(error as Error, 'SDKdisconnectSuccess')
-      }
-      break
-    }
-  }
-}
-
 async function eventsListener(
-  event: MessageEvent<
-    LinkEventType | WalletBrowserEventType | { type: EventType }
-  >
+  event: MessageEvent<LinkEventType | { type: EventType }>
 ) {
   if (event.origin !== targetOrigin && event.origin !== linkTokenOrigin) {
     console.warn('Received message from untrusted origin:', event.origin)
-  } else if (isWalletBrowserEventTypeKey(event.data.type)) {
-    await handleWalletBrowserEvent(
-      event as MessageEvent<WalletBrowserEventType>
-    )
   } else {
     await handleLinkEvent(event as MessageEvent<{ type: EventType }>)
   }
-}
-
-function handleErrorAndSendMessage(error: Error, messageType: string) {
-  sendMessageToIframe({
-    type: messageType,
-    payload: {
-      error: error
-    }
-  })
 }
 
 export const createLink = (options: LinkOptions): Link => {
