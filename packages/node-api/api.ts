@@ -331,6 +331,7 @@ export interface B2BBrokerAuthRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   phone?: string | null
   username?: string | null
   password?: string | null
@@ -355,6 +356,7 @@ export interface B2BBrokerAuthRequest {
     | 'password'
     | 'roaming'
     | 'mobile'
+    | 'passkey'
   deviceInfo?: string | null
   webData?: string | null
   authFlowStep?: AuthFlowStep | null
@@ -607,6 +609,7 @@ export interface B2BBrokerCreateOrderRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -627,8 +630,11 @@ export interface B2BBrokerCreateOrderRequest {
    * @format double
    */
   price?: number
-  /** Some Stock and Crypto symbols can intersect, so the type of the asset needs to be specified explicitly. */
-  isCryptocurrency: boolean
+  /**
+   * Some Stock and Crypto symbols can intersect, so the type of the asset needs to be specified explicitly.
+   * @deprecated
+   */
+  isCryptocurrency?: boolean
   /** Indicates whether the `PaymentSymbol` is fiat or cryptocurrency */
   paymentIsCryptocurrency: boolean
   /** @deprecated */
@@ -720,6 +726,7 @@ export interface B2BBrokerCreateOrderResult {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /** Side of the order. */
   side?: 'unknown' | 'buy' | 'sell'
   /**
@@ -1164,6 +1171,7 @@ export interface B2BBrokerOrder {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /** Type of the transaction */
   transactionType?:
     | 'order'
@@ -1274,6 +1282,7 @@ export interface B2BBrokerOrderListRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /**
    * The cursor to retrieve the next page of transactions.
    * Providing it will cause the response to only return changes after this update.
@@ -1408,6 +1417,7 @@ export interface B2BBrokerOrderRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /** @minLength 1 */
   id: string
   /** Should be provided for Coinbase. */
@@ -1536,6 +1546,7 @@ export interface B2BBrokerPreviewOrderResult {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /** @format double */
   fee?: number | null
   feeText?: string | null
@@ -1682,6 +1693,7 @@ export interface B2BBrokerSymbolInfoForOrderRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -1702,8 +1714,11 @@ export interface B2BBrokerSymbolInfoForOrderRequest {
    * @format double
    */
   price?: number
-  /** Some Stock and Crypto symbols can intersect, so the type of the asset needs to be specified explicitly. */
-  isCryptocurrency: boolean
+  /**
+   * Some Stock and Crypto symbols can intersect, so the type of the asset needs to be specified explicitly.
+   * @deprecated
+   */
+  isCryptocurrency?: boolean
   /** Indicates whether the `PaymentSymbol` is fiat or cryptocurrency */
   paymentIsCryptocurrency: boolean
   /** @deprecated */
@@ -1807,6 +1822,7 @@ export interface B2BBrokerTradingFeatureInfo {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /** Account Id of the integration. */
   accountId?: string | null
   /** Model, describing the ability to place cryptocurrency orders. */
@@ -2007,6 +2023,7 @@ export interface B2BBrokersHealthStatus {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /** Name of the integration */
   name?: string | null
   /** Is the communication with the integration up */
@@ -2026,7 +2043,7 @@ export interface B2BBrokersHealthStatus {
   /** Get products supported by the financial institution */
   supportedProducts?: BrokerFeature[] | null
   /** Short information about DeFiWallet */
-  deFiWalletData: DeFiWalletHealthStatusInfo | null
+  deFiWalletData?: DeFiWalletHealthStatusInfo | null
 }
 
 export interface B2BBrokersHealthStatusListApiResult {
@@ -2331,6 +2348,7 @@ export interface BalanceBrokerBaseRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
 }
 
 export interface BridgingDetails {
@@ -2522,6 +2540,7 @@ export interface BrokerAuthenticationScheme {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /** Type of authentication for the integration. */
   authenticationSchemeType?: 'usernamePassword' | 'oAuth' | 'apiKey' | 'blockchainAddress' | 'trueAuth'
   /** Set of fields that should be provided in the initial POST `authenticate` request. */
@@ -2625,6 +2644,7 @@ export interface BrokerBaseRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
 }
 
 export interface BrokerCreateCryptocurrencyTransactionRequest {
@@ -2691,6 +2711,7 @@ export interface BrokerCreateCryptocurrencyTransactionRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /** Additional data to send on-chain (optional, depends on an integration) */
   data?: string | null
   /**
@@ -2823,6 +2844,7 @@ export interface BrokerCryptocurrencyDepositAddressRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
    * Can be used instead of the `AddressType` field.
@@ -2924,6 +2946,7 @@ export interface BrokerCryptocurrencyTransactionDetailsRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /** Type of the address of the transferred asset. Can be used instead of the `Symbol` field. */
   addressType?: CryptocurrencyAddressType | null
   /** Transaction Id by the financial institution */
@@ -3181,6 +3204,7 @@ export interface BrokerRefreshTokenRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /** @minLength 1 */
   refreshToken: string
   /**
@@ -3269,6 +3293,7 @@ export interface BrokerTransactionsListRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /**
    * Number of records to include in the response.
    *
@@ -3369,6 +3394,7 @@ export type BrokerType =
   | 'binanceTrDirect'
   | 'coinbaseRamp'
   | 'bybitDirectMobile'
+  | 'sandbox'
 
 export interface CatalogLink {
   /**
@@ -3485,6 +3511,7 @@ export interface ConfigureTransferRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /**
    * The authentication token of the target integration. Can be used alternatively to the list of requested address (`toAddresses`).
    * If used, `toType` should also be provided.
@@ -3905,6 +3932,7 @@ export interface ExecuteTransferRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /**
    * Id of the Preview of the transfer.
    * @format uuid
@@ -4215,6 +4243,7 @@ export interface HoldingsModel {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /** External institution's account id (returned by the institution) */
   accountId?: string | null
   /** Friendly name of the connected institution */
@@ -4317,6 +4346,7 @@ export interface HoldingsRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   includeMarketValue?: boolean
 }
 
@@ -4458,6 +4488,7 @@ export interface IntegrationModel {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /** DeFi wallet provider identifier. */
   deFiWalletProviderId?: string | null
   /** Integration categories. */
@@ -4535,6 +4566,7 @@ export interface IntegrationNetwork {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
 }
 
 export interface IntegrationNetworkResponse {
@@ -4631,6 +4663,7 @@ export interface IntegrationNetworksModelResponse {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /** Name of the integration. */
   name?: string | null
   /** The list of supported networks and corresponding tokens for the integration. */
@@ -4852,6 +4885,7 @@ export interface ManagedBrokerCryptocurrencyDepositAddressRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
    * Can be used instead of the `AddressType` field.
@@ -4886,6 +4920,7 @@ export type MfaType =
   | 'password'
   | 'roaming'
   | 'mobile'
+  | 'passkey'
 
 export interface NetworkModelResponse {
   networks?: NetworkResponseWithIntegrations[] | null
@@ -5011,6 +5046,7 @@ export type NetworkTransferIneligibilityReason =
   | 'requestedAmountAboveClientMaximum'
   | 'noPrice'
   | 'nyCoinbaseUserRestrictions'
+  | 'gasFeeAssetAndBalanceNotEnough'
 
 export type NetworkType =
   | 'unknown'
@@ -5197,6 +5233,7 @@ export interface PortfolioBrokerBaseRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
 }
 
 export interface PortfolioFiatBalance {
@@ -5320,6 +5357,7 @@ export interface PortfolioHoldingsRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   includeMarketValue?: boolean
 }
 
@@ -5501,6 +5539,7 @@ export interface PreviewTransferRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /**
    * The authentication token of the target integration. Can be used alternatively to the address in the `ToAddress` field.
    * If used, `toType` should also be provided.
@@ -5719,6 +5758,11 @@ export interface PreviewTransferResult {
   isBridging?: boolean
   /** Details of the bridging operation, in case the transfer is a bridging transfer. */
   bridgingDetails?: BridgingDetails | null
+  /**
+   * Total amount of the transfer including all fees (include smart funding conversion fees), converted to fiat.
+   * @format double
+   */
+  totalEstimatedAmountPlusConversionFeesInFiat?: number
 }
 
 export type PreviewTransferStatus = 'succeeded' | 'failed' | 'requiresFunding'
@@ -5934,6 +5978,7 @@ export interface QuoteTransferRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /**
    * Flat fee in crypto to be charged as a partner fee
    * @format double
@@ -6021,6 +6066,7 @@ export interface QuoteTransferResponse {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /** Is the transaction is possible based on the minimum transfer amount of the selected exchange */
   isEligible?: boolean
   /**
@@ -6277,6 +6323,7 @@ export interface TransactionsB2BBrokerCreateOrderRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -6297,8 +6344,11 @@ export interface TransactionsB2BBrokerCreateOrderRequest {
    * @format double
    */
   price?: number
-  /** Some Stock and Crypto symbols can intersect, so the type of the asset needs to be specified explicitly. */
-  isCryptocurrency: boolean
+  /**
+   * Some Stock and Crypto symbols can intersect, so the type of the asset needs to be specified explicitly.
+   * @deprecated
+   */
+  isCryptocurrency?: boolean
   /** Indicates whether the `PaymentSymbol` is fiat or cryptocurrency */
   paymentIsCryptocurrency: boolean
   /** @deprecated */
@@ -6419,6 +6469,7 @@ export interface TransactionsB2BBrokerOrderListRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /**
    * The cursor to retrieve the next page of transactions.
    * Providing it will cause the response to only return changes after this update.
@@ -6534,6 +6585,7 @@ export interface TransactionsB2BBrokerOrderRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /** @minLength 1 */
   id: string
   /** Should be provided for Coinbase. */
@@ -6636,6 +6688,7 @@ export interface TransactionsB2BBrokerSymbolInfoForOrderRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /**
    * Symbol to trade. For example, `AAPL` or `ETH`
    * @minLength 1
@@ -6656,8 +6709,11 @@ export interface TransactionsB2BBrokerSymbolInfoForOrderRequest {
    * @format double
    */
   price?: number
-  /** Some Stock and Crypto symbols can intersect, so the type of the asset needs to be specified explicitly. */
-  isCryptocurrency: boolean
+  /**
+   * Some Stock and Crypto symbols can intersect, so the type of the asset needs to be specified explicitly.
+   * @deprecated
+   */
+  isCryptocurrency?: boolean
   /** Indicates whether the `PaymentSymbol` is fiat or cryptocurrency */
   paymentIsCryptocurrency: boolean
   /** @deprecated */
@@ -6779,6 +6835,7 @@ export interface TransactionsBrokerBaseRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
 }
 
 export interface TransferBalanceFundingAvailability {
@@ -6964,6 +7021,7 @@ export interface TransferIntegrationModel {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /** Name of integration. */
   name?: string | null
 }
@@ -7032,6 +7090,7 @@ export interface TransferIntegrationWithLogoModel {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /** Name of integration. */
   name?: string | null
   /** Integration logo URL. */
@@ -7344,9 +7403,11 @@ export interface TransfersBrokerCreateCryptocurrencyTransactionRequest {
    * ```BinanceConnect```
    * ```RevolutConnect```
    * ```BinancePay```
+   * ```BybitDirect```
    * ```ParibuOAuth```
    * ```PayPalConnect```
    * ```CoinbaseRamp```
+   * ```BybitDirectMobile```
    * ```DeFiWallet```
    */
   type:
@@ -7406,6 +7467,7 @@ export interface TransfersBrokerCreateCryptocurrencyTransactionRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /** Additional data to send on-chain (optional, depends on an integration) */
   data?: string | null
   /**
@@ -7495,9 +7557,11 @@ export interface TransfersBrokerCryptocurrencyDepositAddressRequest {
    * ```BinanceConnect```
    * ```RevolutConnect```
    * ```BinancePay```
+   * ```BybitDirect```
    * ```ParibuOAuth```
    * ```PayPalConnect```
    * ```CoinbaseRamp```
+   * ```BybitDirectMobile```
    * ```DeFiWallet```
    */
   type:
@@ -7557,6 +7621,7 @@ export interface TransfersBrokerCryptocurrencyDepositAddressRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /**
    * Symbol of the required cryptocurrency, e.g. ETH or BTC.
    * Can be used instead of the `AddressType` field.
@@ -7610,9 +7675,11 @@ export interface TransfersBrokerCryptocurrencyTransactionDetailsRequest {
    * ```BinanceConnect```
    * ```RevolutConnect```
    * ```BinancePay```
+   * ```BybitDirect```
    * ```ParibuOAuth```
    * ```PayPalConnect```
    * ```CoinbaseRamp```
+   * ```BybitDirectMobile```
    * ```DeFiWallet```
    */
   type:
@@ -7672,6 +7739,7 @@ export interface TransfersBrokerCryptocurrencyTransactionDetailsRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /** Type of the address of the transferred asset. Can be used instead of the `Symbol` field. */
   addressType?: CryptocurrencyAddressType | null
   /** Transaction Id by the financial institution */
@@ -7719,9 +7787,11 @@ export interface TransfersBrokerTransactionsListRequest {
    * ```BinanceConnect```
    * ```RevolutConnect```
    * ```BinancePay```
+   * ```BybitDirect```
    * ```ParibuOAuth```
    * ```PayPalConnect```
    * ```CoinbaseRamp```
+   * ```BybitDirectMobile```
    * ```DeFiWallet```
    */
   type:
@@ -7781,6 +7851,7 @@ export interface TransfersBrokerTransactionsListRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /**
    * Number of records to include in the response.
    *
@@ -7982,6 +8053,7 @@ export interface UpdateTransferStatusRequest {
     | 'binanceTrDirect'
     | 'coinbaseRamp'
     | 'bybitDirectMobile'
+    | 'sandbox'
   /**
    * Id of the executed transfer.
    * @minLength 1
@@ -8648,7 +8720,8 @@ export class FrontApi<SecurityDataType extends unknown> extends HttpClient<Secur
         | 'payPalConnect'
         | 'binanceTrDirect'
         | 'coinbaseRamp'
-        | 'bybitDirectMobile',
+        | 'bybitDirectMobile'
+        | 'sandbox',
       query: {
         /** Id of the end-user */
         userId: string
