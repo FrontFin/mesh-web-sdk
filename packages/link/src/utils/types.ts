@@ -156,6 +156,12 @@ export interface LinkOptions {
    * Link UI language. Supported: 'en', 'ru'. Can be set as 'en-US', 'ru-RU', etc.
    */
   language?: string
+
+  /**
+   * The currency to display a fiat equivalent of the crypto amount in Link UI.
+   * Default: 'USD'
+   */
+  displayFiatCurrency?: string
 }
 
 export interface LinkStyle {
