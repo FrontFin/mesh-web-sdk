@@ -156,6 +156,10 @@ export const createLink = (options: LinkOptions): Link => {
     }
 
     linkUrl = addLanguage(linkUrl, currentOptions?.language)
+    linkUrl = addDisplayFiatCurrency(
+      linkUrl,
+      currentOptions?.displayFiatCurrency
+    )
     linkTokenOrigin = new URL(linkUrl).origin
     window.removeEventListener('message', eventsListener)
     if (customIframeId) {
@@ -207,4 +211,16 @@ function addLanguage(linkUrl: string, language: string | undefined) {
   }
 
   return `${linkUrl}${linkUrl.includes('?') ? '&' : '?'}lng=${language || 'en'}`
+}
+
+function addDisplayFiatCurrency(
+  linkUrl: string,
+  displayFiatCurrency: string | undefined
+) {
+  if (displayFiatCurrency) {
+    return `${linkUrl}${
+      linkUrl.includes('?') ? '&' : '?'
+    }fiatCur=${displayFiatCurrency}`
+  }
+  return linkUrl
 }
