@@ -20,6 +20,7 @@ export const LinkComponent: React.FC<{
       createLink({
         clientId: clientId,
         language: 'en',
+        displayFiatCurrency: 'USD',
         onIntegrationConnected: authData => {
           console.info('[MESH CONNECTED]', authData)
           onIntegrationConnected(authData)

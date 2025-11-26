@@ -104,6 +104,7 @@ After successfull authentication on the Link session, the popup will be closed a
 | `onEvent`                | `(payload: LinkEventType) => void`                     | A callback function that is called when various events occur within the Front iframe |
 | `accessTokens`           | `IntegrationAccessToken[]`                             | An array of integration access tokens                                                |
 | `language`               | `'en' \| undefined`                                    | Link UI language                                                                     |
+| `displayFiatCurrency`    | `'USD' \| undefined`                                   | A fiat currency to display fiat equivalent of a crypto amount                        |
 
 #### `createLink` return value
 
