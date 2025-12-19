@@ -105,6 +105,7 @@ After successfull authentication on the Link session, the popup will be closed a
 | `accessTokens`           | `IntegrationAccessToken[]`                             | An array of integration access tokens                                                |
 | `language`               | `'en' \| undefined`                                    | Link UI language                                                                     |
 | `displayFiatCurrency`    | `'USD' \| undefined`                                   | A fiat currency to display fiat equivalent of a crypto amount                        |
+| `theme`                  | `'dark' \| 'light' \| 'system' \| undefined`           | Color theme of Link UI interface                                                     |
 
 #### `createLink` return value
 

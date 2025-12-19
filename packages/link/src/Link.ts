@@ -160,6 +160,7 @@ export const createLink = (options: LinkOptions): Link => {
       linkUrl,
       currentOptions?.displayFiatCurrency
     )
+    linkUrl = addTheme(linkUrl, currentOptions?.theme)
     linkTokenOrigin = new URL(linkUrl).origin
     window.removeEventListener('message', eventsListener)
     if (customIframeId) {
@@ -221,6 +222,13 @@ function addDisplayFiatCurrency(
     return `${linkUrl}${
       linkUrl.includes('?') ? '&' : '?'
     }fiatCur=${displayFiatCurrency}`
+  }
+  return linkUrl
+}
+
+function addTheme(linkUrl: string, theme: LinkOptions['theme']) {
+  if (theme) {
+    return `${linkUrl}${linkUrl.includes('?') ? '&' : '?'}th=${theme}`
   }
   return linkUrl
 }

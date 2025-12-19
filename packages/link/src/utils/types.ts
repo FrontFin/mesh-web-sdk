@@ -162,6 +162,11 @@ export interface LinkOptions {
    * Default: 'USD'
    */
   displayFiatCurrency?: string
+
+  /**
+   * Link UI theme. Possible values: 'dark', 'light' and 'system'.
+   */
+  theme?: 'dark' | 'light' | 'system'
 }
 
 export interface LinkStyle {
