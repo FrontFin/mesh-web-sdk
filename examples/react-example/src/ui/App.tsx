@@ -29,6 +29,7 @@ export const App: React.FC = () => {
         clientId: 'directLinkToken',
         language: 'en',
         displayFiatCurrency: 'USD',
+        theme: 'dark',
         onIntegrationConnected: payload => {
           setPayload(payload)
           console.info('[MESH CONNECTED]', payload)
