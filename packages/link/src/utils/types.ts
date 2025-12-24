@@ -167,6 +167,16 @@ export interface LinkOptions {
    * Link UI theme. Possible values: 'dark', 'light' and 'system'.
    */
   theme?: 'dark' | 'light' | 'system'
+
+  /**
+   * (Optional) Control iframe pre-warming behavior.
+   * When enabled (default), a hidden iframe is created automatically on the first createLink() call
+   * and immediately starts loading the catalog in the background. This allows static assets
+   * (JS, CSS, images) to load before the user initiates a connection, reducing perceived load time.
+   * Set to false to disable automatic pre-warming.
+   * Default: true (automatically enabled)
+   */
+  prewarm?: boolean
 }
 
 export interface LinkStyle {

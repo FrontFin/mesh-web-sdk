@@ -7,7 +7,14 @@ import {
   TransferFinishedPayload,
   LinkPayload
 } from './utils/types'
-import { addPopup, iframeId, removePopup } from './utils/popup'
+import {
+  addPopup,
+  iframeId,
+  removePopup,
+  createPrewarmIframe,
+  removePrewarmIframe,
+  getPrewarmIframeId
+} from './utils/popup'
 import { LinkEventType, isLinkEventTypeKey } from './utils/event-types'
 import { sdkSpecs } from './utils/sdk-specs'
 import { BridgeParent } from '@meshconnect/uwc-bridge-parent'
@@ -17,6 +24,7 @@ let targetOrigin: string | undefined
 let linkTokenOrigin: string | undefined
 let currentIframeId = iframeId
 let bridgeParent: BridgeParent | null = null
+let hasPrewarmed = false
 
 const iframeElement = () => {
   return document.getElementById(currentIframeId) as HTMLIFrameElement
@@ -140,6 +148,14 @@ async function eventsListener(
 }
 
 export const createLink = (options: LinkOptions): Link => {
+  currentOptions = options
+
+  // Automatically prewarm on first createLink call (can be disabled with prewarm: false)
+  if (!hasPrewarmed && options.prewarm !== false) {
+    hasPrewarmed = true
+    createPrewarmIframe()
+  }
+
   const openLink = (linkToken: string, customIframeId?: string) => {
     if (!linkToken) {
       options?.onExit?.('Invalid link token!')
@@ -161,8 +177,22 @@ export const createLink = (options: LinkOptions): Link => {
       currentOptions?.displayFiatCurrency
     )
     linkUrl = addTheme(linkUrl, currentOptions?.theme)
+
+    // If pre-warming happened, add a flag to skip the splash screen
+    if (options.prewarm !== false && getPrewarmIframeId()) {
+      linkUrl = `${linkUrl}${linkUrl.includes('?') ? '&' : '?'}skipSplash=1`
+    }
+
     linkTokenOrigin = new URL(linkUrl).origin
     window.removeEventListener('message', eventsListener)
+
+    // Check if we can use the pre-warmed iframe
+    const prewarmIframeId = getPrewarmIframeId()
+    const shouldUsePrewarm =
+      options.prewarm !== false && // Not explicitly disabled
+      prewarmIframeId && // Prewarm iframe exists
+      !customIframeId // Not using custom iframe
+
     if (customIframeId) {
       const iframe = document.getElementById(
         customIframeId
@@ -173,6 +203,41 @@ export const createLink = (options: LinkOptions): Link => {
         currentIframeId = customIframeId
       } else {
         console.warn(`Mesh SDK: No iframe found with id ${customIframeId}`)
+      }
+    } else if (shouldUsePrewarm) {
+      // Use the pre-warmed iframe
+      const prewarmIframe = document.getElementById(
+        prewarmIframeId
+      ) as HTMLIFrameElement
+
+      if (prewarmIframe) {
+        // Navigate the pre-warmed iframe to the actual link URL
+        prewarmIframe.src = linkUrl
+        prewarmIframe.allow = 'clipboard-read *; clipboard-write *'
+        currentIframeId = prewarmIframeId
+
+        // Create the popup structure
+        addPopup(linkUrl)
+
+        // Move the pre-warmed iframe into the popup
+        const popupContent = document.getElementById(
+          'mesh-link-popup__popup-content'
+        )
+        const popupIframe = document.getElementById(iframeId)
+
+        if (popupContent && popupIframe) {
+          // Replace the popup's iframe with the pre-warmed one
+          prewarmIframe.id = iframeId
+          popupIframe.replaceWith(prewarmIframe)
+          currentIframeId = iframeId
+
+          // Clean up the prewarm container
+          removePrewarmIframe()
+        }
+      } else {
+        // Fallback if prewarm iframe is not found
+        currentIframeId = iframeId
+        addPopup(linkUrl)
       }
     } else {
       currentIframeId = iframeId
@@ -193,6 +258,7 @@ export const createLink = (options: LinkOptions): Link => {
   const closeLink = () => {
     bridgeParent?.destroy()
     removePopup()
+    removePrewarmIframe()
     window.removeEventListener('message', eventsListener)
     options.onExit?.()
   }
