@@ -1,0 +1,40 @@
+name: Post release announcements
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0 # REQUIRED for tags
+
+      - name: Determine version bump
+        id: version_details
+        uses: ./.github/actions/version-details
+
+      - name: Send release announcement to Slack
+        uses: slackapi/slack-github-action@v2.1.1
+        with:
+          webhook: ${{ secrets.SLACK_WEBHOOK_URL }}
+          webhook-type: incoming-webhook
+          payload: |
+            blocks:
+              - type: "header"
+                text:
+                  type: "plain_text"
+                  text: ":react: Web SDK Release: ${{ github.event.release.tag_name}}"
+                  emoji: true
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: "${{ steps.version_details.outputs.message }}"
+              - type: "section"
+                text:
+                  type: "mrkdwn"
+                  text: "<!subteam^S091246FEDR> view release on <${{ github.event.release.html_url }}|${{ github.repository }}>"

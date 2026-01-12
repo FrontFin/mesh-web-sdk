@@ -1,0 +1,38 @@
+name: Determine Version Bump
+description: Compare the two latest git tags and return major, minor, or patch
+
+outputs:
+  message:
+    description: Version bump
+    value: ${{ steps.version_details.outputs.message }}
+
+runs:
+  using: composite
+  steps:
+    - shell: bash
+      id: version_details
+      run: |
+        set -e
+
+        TAGS=$(git tag --sort=-v:refname | head -n 2)
+
+        LATEST_TAG=$(echo "$TAGS" | sed -n '1p')
+        PREVIOUS_TAG=$(echo "$TAGS" | sed -n '2p')
+
+        echo "Latest tag: $LATEST_TAG"
+        echo "Previous tag: $PREVIOUS_TAG"
+
+        IFS='.' read -r L_MAJOR L_MINOR L_PATCH <<< "$LATEST_TAG"
+        IFS='.' read -r P_MAJOR P_MINOR P_PATCH <<< "$PREVIOUS_TAG"
+
+        if [[ "$L_MAJOR" -gt "$P_MAJOR" ]]; then
+          MESSAGE=":exclamation: Major (breaking change)"
+
+        elif [[ "$L_MINOR" -gt "$P_MINOR" ]]; then
+          MESSAGE=":yo-yo: Minor (non-breaking change, new feature)"
+
+        else
+          MESSAGE=":test_tube: Patch (non-breaking change, bugfix or improvement)"
+        fi
+
+        echo "message=$MESSAGE" >> "$GITHUB_OUTPUT"
