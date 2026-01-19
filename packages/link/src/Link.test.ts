@@ -1,5 +1,6 @@
 import { createLink } from './Link'
 import { DoneEvent, LinkEventType } from './utils/event-types'
+import { createPrewarmIframe, removePrewarmIframe } from './utils/prewarm'
 import {
   AccessTokenPayload,
   DelayedAuthPayload,
@@ -13,6 +14,11 @@ jest.mock('@meshconnect/uwc-bridge-parent', () => ({
   BridgeParent: jest.fn().mockImplementation(() => ({
     destroy: jest.fn()
   }))
+}))
+
+jest.mock('./utils/prewarm', () => ({
+  createPrewarmIframe: jest.fn(),
+  removePrewarmIframe: jest.fn()
 }))
 
 type EventPayload = {
@@ -29,6 +35,8 @@ describe('createLink tests', () => {
 
   beforeEach(() => {
     document.getElementsByTagName('html')[0].innerHTML = ''
+    const removePrewarmIframeMock = removePrewarmIframe as jest.Mock
+    removePrewarmIframeMock.mockReset()
   })
 
   test('createLink when invalid link provided should not open popup', () => {
@@ -44,6 +52,7 @@ describe('createLink tests', () => {
     expect(exitFunction).toHaveBeenCalledWith('Invalid link token!')
     const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeFalsy()
+    expect(createPrewarmIframe).toHaveBeenCalled()
   })
 
   test('createLink when invalid link url provided should not open popup', () => {
@@ -130,6 +139,7 @@ describe('createLink tests', () => {
     expect(iframeElement).toBeFalsy()
 
     expect(exitFunction).toHaveBeenCalled()
+    expect(removePrewarmIframe).toHaveBeenCalled()
   })
 
   test.each(['close', 'done'] as const)(

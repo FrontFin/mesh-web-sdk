@@ -11,6 +11,7 @@ import { addPopup, iframeId, removePopup } from './utils/popup'
 import { LinkEventType, isLinkEventTypeKey } from './utils/event-types'
 import { sdkSpecs } from './utils/sdk-specs'
 import { BridgeParent } from '@meshconnect/uwc-bridge-parent'
+import { createPrewarmIframe, removePrewarmIframe } from './utils/prewarm'
 
 let currentOptions: LinkOptions | undefined
 let targetOrigin: string | undefined
@@ -46,17 +47,14 @@ function sendMessageToIframe<T extends { type: string }>(message: T) {
   }
 }
 
+type MessageLinkEvent = {
+  type: EventType
+  payload?: AccessTokenPayload | DelayedAuthPayload | TransferFinishedPayload
+  link?: string
+}
+
 async function handleLinkEvent(
-  event:
-    | MessageEvent<{
-        type: EventType
-        payload?:
-          | AccessTokenPayload
-          | DelayedAuthPayload
-          | TransferFinishedPayload
-        link?: string
-      }>
-    | MessageEvent<LinkEventType>
+  event: MessageEvent<MessageLinkEvent> | MessageEvent<LinkEventType>
 ) {
   switch (event.data.type) {
     case 'brokerageAccountAccessToken': {
@@ -141,6 +139,8 @@ async function eventsListener(
 
 export const createLink = (options: LinkOptions): Link => {
   const openLink = (linkToken: string, customIframeId?: string) => {
+    removePrewarmIframe()
+
     if (!linkToken) {
       options?.onExit?.('Invalid link token!')
       return
@@ -219,9 +219,8 @@ function addDisplayFiatCurrency(
   displayFiatCurrency: string | undefined
 ) {
   if (displayFiatCurrency) {
-    return `${linkUrl}${
-      linkUrl.includes('?') ? '&' : '?'
-    }fiatCur=${displayFiatCurrency}`
+    const queryString = linkUrl.includes('?') ? '&' : '?'
+    return `${linkUrl}${queryString}fiatCur=${displayFiatCurrency}`
   }
   return linkUrl
 }
@@ -231,4 +230,8 @@ function addTheme(linkUrl: string, theme: LinkOptions['theme']) {
     return `${linkUrl}${linkUrl.includes('?') ? '&' : '?'}th=${theme}`
   }
   return linkUrl
+}
+
+if (!window.meshLinkShouldSkipPrewarm) {
+  createPrewarmIframe()
 }
