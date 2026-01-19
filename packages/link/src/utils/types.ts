@@ -173,3 +173,9 @@ export interface LinkStyle {
   ir: number
   io: number
 }
+
+declare global {
+  interface Window {
+    meshLinkShouldSkipPrewarm?: boolean
+  }
+}
