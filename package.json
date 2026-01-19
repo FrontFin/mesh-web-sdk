@@ -36,6 +36,7 @@
     "postinstall": "cd packages/link && yarn updateVersion"
   },
   "resolutions": {
-    "tar": "^7.5.3"
+    "tar": "^7.5.3",
+    "js-yaml": "^4.1.1"
   }
 }
