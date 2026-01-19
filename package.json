@@ -16,7 +16,7 @@
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.4.0",
-    "lerna": "^7.4.2",
+    "lerna": "^8.2.4",
     "prettier": "^2.2.1",
     "rimraf": "^4.4.1",
     "typescript": "^5.0.4",
@@ -34,5 +34,8 @@
     "updateApi": "cd packages/node-api && yarn updateApi",
     "publish:npm": "lerna run publish:npm",
     "postinstall": "cd packages/link && yarn updateVersion"
+  },
+  "resolutions": {
+    "tar": "^7.5.3"
   }
 }
