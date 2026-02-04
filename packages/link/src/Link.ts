@@ -109,12 +109,7 @@ async function handleLinkEvent(
           payload: currentOptions.accessTokens
         })
       }
-      if (currentOptions?.transferDestinationTokens) {
-        sendMessageToIframe({
-          type: 'frontTransferDestinationTokens',
-          payload: currentOptions.transferDestinationTokens
-        })
-      }
+
       currentOptions?.onEvent?.({ type: 'pageLoaded' })
       break
     }
