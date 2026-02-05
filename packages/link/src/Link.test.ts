@@ -299,20 +299,10 @@ describe('createLink tests', () => {
         brokerName: 'A'
       }
     ]
-    const destinationTokens: IntegrationAccessToken[] = [
-      {
-        accessToken: 'ttoken',
-        accountId: 'tid',
-        accountName: 'tname',
-        brokerType: 'acorns',
-        brokerName: 'tbrokername'
-      }
-    ]
     const frontConnection = createLink({
       clientId: 'test',
       onIntegrationConnected: jest.fn(),
-      accessTokens: tokens,
-      transferDestinationTokens: destinationTokens
+      accessTokens: tokens
     })
 
     frontConnection.openLink(BASE64_ENCODED_URL)
@@ -354,11 +344,6 @@ describe('createLink tests', () => {
 
     expect(postMessageSpy).toHaveBeenCalledWith(
       { type: 'frontAccessTokens', payload: tokens },
-      'http://localhost'
-    )
-
-    expect(postMessageSpy).toHaveBeenCalledWith(
-      { type: 'frontTransferDestinationTokens', payload: destinationTokens },
       'http://localhost'
     )
   })

@@ -147,12 +147,6 @@ export interface LinkOptions {
   accessTokens?: IntegrationAccessToken[]
 
   /**
-   * (Optional) An array of integration access tokens.
-   * Can be used to initialize the crypto transfers flow as an alternative to the target addresses.
-   */
-  transferDestinationTokens?: IntegrationAccessToken[]
-
-  /**
    * Link UI language. Supported: 'en', 'ru'. Can be set as 'en-US', 'ru-RU', etc.
    */
   language?: string
