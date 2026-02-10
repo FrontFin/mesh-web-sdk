@@ -27,7 +27,7 @@
   },
   "dependencies": {
     "@meshconnect/node-api": "^2.0.24",
-    "@meshconnect/uwc-bridge-parent": "1.0.1"
+    "@meshconnect/uwc-bridge-parent": "1.1.0"
   },
   "scripts": {
     "build": "yarn updateVersion && rimraf dist && yarn build:esm && yarn copy",
