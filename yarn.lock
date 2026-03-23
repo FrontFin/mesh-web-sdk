@@ -1508,10 +1508,10 @@
     rpc-websockets "^9.0.2"
     superstruct "^2.0.2"
 
-"@meshconnect/uwc-bridge-parent@1.2.0":
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/@meshconnect/uwc-bridge-parent/-/uwc-bridge-parent-1.2.0.tgz#58908635efd66223c6615fba82eb476c0c1af8c4"
-  integrity sha512-bo9yEEOgKxk0keZxmSFhYFo8D4G4NixHmN3K0KXFDv7w32FKTFhrxrYYztd2rhigaxD7Z9UJUQ88AZe6849nSA==
+"@meshconnect/uwc-bridge-parent@1.2.1":
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/@meshconnect/uwc-bridge-parent/-/uwc-bridge-parent-1.2.1.tgz#8e44e504f595e1cc4a5bd0d7186d634319881243"
+  integrity sha512-KBJ7UnDT3sBuDElF2Cg45RyGMiFuM1BRjeGyvIoqmTIULDI4kAevVqCCL79YCWqatlStMINFXrA+G0mx9WMJqw==
   dependencies:
     "@solana/wallet-adapter-base" "^0.9.23"
     "@solana/wallet-standard-wallet-adapter-base" "^1.1.4"
