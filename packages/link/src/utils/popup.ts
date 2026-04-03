@@ -29,7 +29,7 @@ const getStylesContent = (style?: LinkStyle) => `
     align-items: center;
     justify-content: center;
     z-index: 10000;
-    pointer-events: all;
+    pointer-events: auto;
   }
 
   #${backdropId} {

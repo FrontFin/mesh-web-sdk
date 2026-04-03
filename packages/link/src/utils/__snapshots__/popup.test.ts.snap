@@ -26,6 +26,7 @@ exports[`Popup tests addPopup should add correct popup 1`] = `
     align-items: center;
     justify-content: center;
     z-index: 10000;
+    pointer-events: auto;
   }
 
   #mesh-link-popup__backdrop {
