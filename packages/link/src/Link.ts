@@ -227,6 +227,9 @@ function addTheme(linkUrl: string, theme: LinkOptions['theme']) {
   return linkUrl
 }
 
-if (!window.meshLinkShouldSkipPrewarm) {
+if (
+  typeof window !== 'undefined' &&
+  !window.meshLinkShouldSkipPrewarm
+) {
   createPrewarmIframe()
 }
