@@ -7,6 +7,8 @@ delete packageModel.module
 delete packageModel.types
 delete packageModel.scripts
 delete packageModel.type
+delete packageModel.devDependencies
+delete packageModel.jest
 
 packageModel.exports = './index.js'
 packageModel.module = './index.js'
