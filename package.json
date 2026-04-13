@@ -39,6 +39,8 @@
     "@typescript-eslint/**/brace-expansion": "2.0.3",
     "@typescript-eslint/**/minimatch": "9.0.9",
     "flatted": "3.4.2",
-    "handlebars": "4.7.9"
+    "handlebars": "4.7.9",
+    "axios": "1.15.0",
+    "bn.js": "5.2.3"
   }
 }
