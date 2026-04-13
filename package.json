@@ -16,9 +16,9 @@
     "eslint-config-prettier": "^8.1.0",
     "eslint-plugin-import": "^2.22.1",
     "eslint-plugin-prettier": "^3.4.0",
-    "lerna": "^8.2.4",
+    "lerna": "^9.0.7",
     "prettier": "^2.2.1",
-    "rimraf": "^4.4.1",
+    "rimraf": "^5.0.10",
     "typescript": "^5.0.4",
     "yarn": "^1.22.19"
   },
@@ -36,8 +36,11 @@
     "postinstall": "cd packages/link && yarn updateVersion"
   },
   "resolutions": {
-    "tar": "^7.5.13",
-    "js-yaml": "^4.1.1",
-    "brace-expansion": "^2.0.2"
+    "@typescript-eslint/**/brace-expansion": "2.0.3",
+    "@typescript-eslint/**/minimatch": "9.0.9",
+    "flatted": "3.4.2",
+    "handlebars": "4.7.9",
+    "axios": "1.15.0",
+    "bn.js": "5.2.3"
   }
 }
