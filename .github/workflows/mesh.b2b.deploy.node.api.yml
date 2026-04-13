@@ -29,9 +29,9 @@ jobs:
         with:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
-      - run: yarn
       # Yarn v1 defaults to registry.yarnpkg.com; align with setup-node / npm publish
       - run: yarn config set registry https://registry.npmjs.org/
+      - run: yarn
       - run: cd packages/node-api && yarn publish:npm
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
