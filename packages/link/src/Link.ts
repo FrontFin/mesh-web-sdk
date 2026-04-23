@@ -10,6 +10,7 @@ import {
 import { addPopup, iframeId, removePopup } from './utils/popup'
 import { LinkEventType, isLinkEventTypeKey } from './utils/event-types'
 import { sdkSpecs } from './utils/sdk-specs'
+import { appendQueryParam } from './utils/url'
 import { BridgeParent } from '@meshconnect/uwc-bridge-parent'
 import { createPrewarmIframe, removePrewarmIframe } from './utils/prewarm'
 
@@ -141,6 +142,14 @@ export const createLink = (options: LinkOptions): Link => {
       return
     }
 
+    if (options?.renderType === 'embedded' && !customIframeId) {
+      const msg =
+        'Mesh SDK: Failed to open link - renderType "embedded" requires a customIframeId'
+      console.error(msg)
+      options?.onExit?.(msg)
+      return
+    }
+
     currentOptions = options
     let linkUrl = window.atob(linkToken)
     const isProtocolValid =
@@ -156,6 +165,7 @@ export const createLink = (options: LinkOptions): Link => {
       currentOptions?.displayFiatCurrency
     )
     linkUrl = addTheme(linkUrl, currentOptions?.theme)
+    linkUrl = addRenderType(linkUrl, currentOptions?.renderType)
     linkTokenOrigin = new URL(linkUrl).origin
     window.removeEventListener('message', eventsListener)
     if (customIframeId) {
@@ -206,7 +216,7 @@ function addLanguage(linkUrl: string, language: string | undefined) {
         : undefined
   }
 
-  return `${linkUrl}${linkUrl.includes('?') ? '&' : '?'}lng=${language || 'en'}`
+  return appendQueryParam(linkUrl, 'lng', language || 'en')
 }
 
 function addDisplayFiatCurrency(
@@ -214,15 +224,21 @@ function addDisplayFiatCurrency(
   displayFiatCurrency: string | undefined
 ) {
   if (displayFiatCurrency) {
-    const queryString = linkUrl.includes('?') ? '&' : '?'
-    return `${linkUrl}${queryString}fiatCur=${displayFiatCurrency}`
+    return appendQueryParam(linkUrl, 'fiatCur', displayFiatCurrency)
   }
   return linkUrl
 }
 
 function addTheme(linkUrl: string, theme: LinkOptions['theme']) {
   if (theme) {
-    return `${linkUrl}${linkUrl.includes('?') ? '&' : '?'}th=${theme}`
+    return appendQueryParam(linkUrl, 'th', theme)
+  }
+  return linkUrl
+}
+
+function addRenderType(linkUrl: string, renderType: LinkOptions['renderType']) {
+  if (renderType === 'embedded') {
+    return appendQueryParam(linkUrl, 'rt', 'embedded')
   }
   return linkUrl
 }

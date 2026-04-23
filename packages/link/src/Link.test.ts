@@ -448,4 +448,83 @@ describe('createLink tests', () => {
 
     expect(exitFunction).toHaveBeenCalled()
   })
+
+  test('createLink with renderType "embedded" and no customIframeId should log error, call onExit, and not open popup', () => {
+    const exitFunction = jest.fn<void, [string | undefined]>()
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation()
+
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onExit: exitFunction,
+      renderType: 'embedded'
+    })
+
+    frontConnection.openLink(BASE64_ENCODED_URL)
+
+    expect(consoleErrorSpy).toHaveBeenCalledWith(
+      'Mesh SDK: Failed to open link - renderType "embedded" requires a customIframeId'
+    )
+    expect(exitFunction).toHaveBeenCalledWith(
+      'Mesh SDK: Failed to open link - renderType "embedded" requires a customIframeId'
+    )
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
+    expect(iframeElement).toBeFalsy()
+
+    consoleErrorSpy.mockRestore()
+  })
+
+  test('createLink with renderType "embedded" and customIframeId should not call onExit and should append rt=embedded to src', () => {
+    const exitFunction = jest.fn<void, [string | undefined]>()
+    const customIframeId = 'embedded-iframe'
+    const customIframeElement = document.createElement('iframe')
+    customIframeElement.id = customIframeId
+    document.body.appendChild(customIframeElement)
+
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onExit: exitFunction,
+      renderType: 'embedded',
+      language: 'en'
+    })
+
+    frontConnection.openLink(BASE64_ENCODED_URL, customIframeId)
+
+    expect(exitFunction).not.toHaveBeenCalled()
+    expect(customIframeElement.attributes.getNamedItem('src')?.nodeValue).toBe(
+      'http://localhost/1?lng=en&rt=embedded'
+    )
+  })
+
+  test('createLink with renderType "overlay" should not append rt param to src', () => {
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      renderType: 'overlay',
+      language: 'en'
+    })
+
+    frontConnection.openLink(BASE64_ENCODED_URL)
+
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
+    expect(iframeElement?.attributes.getNamedItem('src')?.nodeValue).toBe(
+      'http://localhost/1?lng=en'
+    )
+  })
+
+  test('createLink without renderType should not append rt param to src', () => {
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      language: 'en'
+    })
+
+    frontConnection.openLink(BASE64_ENCODED_URL)
+
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
+    expect(iframeElement?.attributes.getNamedItem('src')?.nodeValue).toBe(
+      'http://localhost/1?lng=en'
+    )
+  })
 })
