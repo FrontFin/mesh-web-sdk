@@ -161,6 +161,13 @@ export interface LinkOptions {
    * Link UI theme. Possible values: 'dark', 'light' and 'system'.
    */
   theme?: 'dark' | 'light' | 'system'
+
+  /**
+   * Controls how the Link UI is rendered.
+   * - 'overlay' (default): renders as a full-screen popup managed by the SDK.
+   * - 'embedded': renders inside a client-supplied iframe for a more native UI experience. Requires `customIframeId` in `openLink`.
+   */
+  renderType?: 'overlay' | 'embedded'
 }
 
 export interface LinkStyle {

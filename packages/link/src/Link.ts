@@ -141,6 +141,14 @@ export const createLink = (options: LinkOptions): Link => {
       return
     }
 
+    if (options?.renderType === 'embedded' && !customIframeId) {
+      const msg =
+        'Mesh SDK: Failed to open link - renderType "embedded" requires a customIframeId'
+      console.error(msg)
+      options?.onExit?.(msg)
+      return
+    }
+
     currentOptions = options
     let linkUrl = window.atob(linkToken)
     const isProtocolValid =
@@ -156,6 +164,7 @@ export const createLink = (options: LinkOptions): Link => {
       currentOptions?.displayFiatCurrency
     )
     linkUrl = addTheme(linkUrl, currentOptions?.theme)
+    linkUrl = addRenderType(linkUrl, currentOptions?.renderType)
     linkTokenOrigin = new URL(linkUrl).origin
     window.removeEventListener('message', eventsListener)
     if (customIframeId) {
@@ -223,6 +232,13 @@ function addDisplayFiatCurrency(
 function addTheme(linkUrl: string, theme: LinkOptions['theme']) {
   if (theme) {
     return `${linkUrl}${linkUrl.includes('?') ? '&' : '?'}th=${theme}`
+  }
+  return linkUrl
+}
+
+function addRenderType(linkUrl: string, renderType: LinkOptions['renderType']) {
+  if (renderType === 'embedded') {
+    return `${linkUrl}${linkUrl.includes('?') ? '&' : '?'}rt=embedded`
   }
   return linkUrl
 }
