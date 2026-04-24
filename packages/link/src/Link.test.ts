@@ -250,105 +250,9 @@ describe('createLink tests', () => {
     })
   })
 
-  test('createLink "transferFinished" event should send transfer payload', () => {
-    const onEventHandler = jest.fn<void, [LinkEventType]>()
-    const onTransferFinishedHandler = jest.fn<void, [TransferFinishedPayload]>()
-    const frontConnection = createLink({
-      clientId: 'test',
-      onIntegrationConnected: jest.fn(),
-      onEvent: onEventHandler,
-      onTransferFinished: onTransferFinishedHandler
-    })
-
-    frontConnection.openLink(BASE64_ENCODED_URL)
-
-    const payload: TransferFinishedPayload = {
-      status: 'success',
-      txId: 'tid',
-      fromAddress: 'fa',
-      toAddress: 'ta',
-      symbol: 'BTC',
-      amount: 0.001,
-      networkId: 'nid',
-      userId: 'uid',
-      clientTransactionId: 'ctid',
-      amountInFiat: 9.77,
-      totalAmountInFiat: 10.02,
-      networkName: 'Bitcoin',
-      txHash: 'txHash',
-      transferId: 'trid'
-    }
-    window.dispatchEvent(
-      new MessageEvent<EventPayload>('message', {
-        data: {
-          type: 'transferFinished',
-          payload: payload
-        },
-        origin: 'http://localhost'
-      })
-    )
-
-    expect(onEventHandler).toHaveBeenCalledWith({
-      type: 'transferCompleted',
-      payload: payload
-    })
-    expect(onTransferFinishedHandler).toHaveBeenCalledWith(payload)
-  })
-
-  test('createLink "transferFinished" event without userId or clientTransactionId should still send transfer payload', () => {
-    const onEventHandler = jest.fn<void, [LinkEventType]>()
-    const onTransferFinishedHandler = jest.fn<void, [TransferFinishedPayload]>()
-    const frontConnection = createLink({
-      clientId: 'test',
-      onIntegrationConnected: jest.fn(),
-      onEvent: onEventHandler,
-      onTransferFinished: onTransferFinishedHandler
-    })
-
-    frontConnection.openLink(BASE64_ENCODED_URL)
-
-    const payload: TransferFinishedPayload = {
-      status: 'success',
-      txId: 'tid',
-      fromAddress: 'fa',
-      toAddress: 'ta',
-      symbol: 'BTC',
-      amount: 0.001,
-      networkId: 'nid'
-    }
-    window.dispatchEvent(
-      new MessageEvent<EventPayload>('message', {
-        data: {
-          type: 'transferFinished',
-          payload: payload
-        },
-        origin: 'http://localhost'
-      })
-    )
-
-    expect(onEventHandler).toHaveBeenCalledWith({
-      type: 'transferCompleted',
-      payload: payload
-    })
-    expect(onTransferFinishedHandler).toHaveBeenCalledWith(payload)
-    expect(onTransferFinishedHandler.mock.calls[0][0].userId).toBeUndefined()
-    expect(
-      onTransferFinishedHandler.mock.calls[0][0].clientTransactionId
-    ).toBeUndefined()
-  })
-
-  test('createLink "transferExecuted" event forwards userId and clientTransactionId via onEvent', () => {
-    const onEventHandler = jest.fn<void, [LinkEventType]>()
-    const frontConnection = createLink({
-      clientId: 'test',
-      onIntegrationConnected: jest.fn(),
-      onEvent: onEventHandler
-    })
-
-    frontConnection.openLink(BASE64_ENCODED_URL)
-
-    const event: TransferExecuted = {
-      type: 'transferExecuted',
+  test.each<{ name: string; payload: TransferFinishedPayload }>([
+    {
+      name: 'with all fields',
       payload: {
         status: 'success',
         txId: 'tid',
@@ -358,31 +262,16 @@ describe('createLink tests', () => {
         amount: 0.001,
         networkId: 'nid',
         userId: 'uid',
-        clientTransactionId: 'ctid'
+        clientTransactionId: 'ctid',
+        amountInFiat: 9.77,
+        totalAmountInFiat: 10.02,
+        networkName: 'Bitcoin',
+        txHash: 'txHash',
+        transferId: 'trid'
       }
-    }
-    window.dispatchEvent(
-      new MessageEvent<LinkEventType>('message', {
-        data: event,
-        origin: 'http://localhost'
-      })
-    )
-
-    expect(onEventHandler).toHaveBeenCalledWith(event)
-  })
-
-  test('createLink "transferExecuted" event without userId or clientTransactionId still forwards via onEvent', () => {
-    const onEventHandler = jest.fn<void, [LinkEventType]>()
-    const frontConnection = createLink({
-      clientId: 'test',
-      onIntegrationConnected: jest.fn(),
-      onEvent: onEventHandler
-    })
-
-    frontConnection.openLink(BASE64_ENCODED_URL)
-
-    const event: TransferExecuted = {
-      type: 'transferExecuted',
+    },
+    {
+      name: 'without userId or clientTransactionId',
       payload: {
         status: 'success',
         txId: 'tid',
@@ -393,18 +282,79 @@ describe('createLink tests', () => {
         networkId: 'nid'
       }
     }
-    window.dispatchEvent(
-      new MessageEvent<LinkEventType>('message', {
-        data: event,
-        origin: 'http://localhost'
+  ])(
+    'createLink "transferFinished" event $name should send transfer payload',
+    ({ payload }) => {
+      const onEventHandler = jest.fn<void, [LinkEventType]>()
+      const onTransferFinishedHandler = jest.fn<
+        void,
+        [TransferFinishedPayload]
+      >()
+      const frontConnection = createLink({
+        clientId: 'test',
+        onIntegrationConnected: jest.fn(),
+        onEvent: onEventHandler,
+        onTransferFinished: onTransferFinishedHandler
       })
-    )
 
-    expect(onEventHandler).toHaveBeenCalledWith(event)
-    const forwarded = onEventHandler.mock.calls[0][0] as TransferExecuted
-    expect(forwarded.payload.userId).toBeUndefined()
-    expect(forwarded.payload.clientTransactionId).toBeUndefined()
-  })
+      frontConnection.openLink(BASE64_ENCODED_URL)
+
+      window.dispatchEvent(
+        new MessageEvent<EventPayload>('message', {
+          data: { type: 'transferFinished', payload: payload },
+          origin: 'http://localhost'
+        })
+      )
+
+      expect(onEventHandler).toHaveBeenCalledWith({
+        type: 'transferCompleted',
+        payload: payload
+      })
+      expect(onTransferFinishedHandler).toHaveBeenCalledWith(payload)
+    }
+  )
+
+  test.each([
+    {
+      name: 'with userId and clientTransactionId',
+      extra: { userId: 'uid', clientTransactionId: 'ctid' }
+    },
+    { name: 'without userId or clientTransactionId', extra: {} }
+  ])(
+    'createLink "transferExecuted" event $name forwards via onEvent',
+    ({ extra }) => {
+      const onEventHandler = jest.fn<void, [LinkEventType]>()
+      const frontConnection = createLink({
+        clientId: 'test',
+        onIntegrationConnected: jest.fn(),
+        onEvent: onEventHandler
+      })
+
+      frontConnection.openLink(BASE64_ENCODED_URL)
+
+      const event: TransferExecuted = {
+        type: 'transferExecuted',
+        payload: {
+          status: 'success',
+          txId: 'tid',
+          fromAddress: 'fa',
+          toAddress: 'ta',
+          symbol: 'BTC',
+          amount: 0.001,
+          networkId: 'nid',
+          ...extra
+        }
+      }
+      window.dispatchEvent(
+        new MessageEvent<LinkEventType>('message', {
+          data: event,
+          origin: 'http://localhost'
+        })
+      )
+
+      expect(onEventHandler).toHaveBeenCalledWith(event)
+    }
+  )
 
   test('createLink "loaded" event should trigger the passing for tokens', () => {
     const tokens: IntegrationAccessToken[] = [
