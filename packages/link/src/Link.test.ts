@@ -1,9 +1,5 @@
 import { createLink } from './Link'
-import {
-  DoneEvent,
-  LinkEventType,
-  TransferExecuted
-} from './utils/event-types'
+import { DoneEvent, LinkEventType, TransferExecuted } from './utils/event-types'
 import { createPrewarmIframe, removePrewarmIframe } from './utils/prewarm'
 import {
   AccessTokenPayload,
