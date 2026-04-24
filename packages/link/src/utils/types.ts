@@ -95,6 +95,8 @@ export interface TransferFinishedPayload {
   symbol: string
   amount: number
   networkId: string
+  userId?: string
+  clientTransactionId?: string
   amountInFiat?: number
   totalAmountInFiat?: number
   networkName?: string

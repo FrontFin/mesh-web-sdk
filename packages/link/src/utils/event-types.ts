@@ -149,6 +149,8 @@ export interface TransferExecuted extends LinkEventBase {
     symbol: string
     amount: number
     networkId: string
+    userId?: string
+    clientTransactionId?: string
   }
 }
 
