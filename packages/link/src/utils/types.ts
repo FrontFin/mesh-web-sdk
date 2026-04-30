@@ -1,8 +1,6 @@
 import type { BrokerType } from '@meshconnect/node-api'
 import { SessionSummary, LinkEventType } from './event-types'
 
-export type { BrokerType }
-
 export type EventType =
   | 'brokerageAccountAccessToken'
   | 'delayedAuthentication'

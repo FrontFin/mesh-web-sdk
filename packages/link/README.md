@@ -131,7 +131,7 @@ TypeScript definitions for `@meshconnect/web-link-sdk` are built into the npm pa
 | `DelayedAuthPayload`     | Delayed auth details within `LinkPayload`                                             |
 | `IntegrationAccessToken` | Access token shape used in the `accessTokens` option                                  |
 | `TransferFinishedPayload`| Payload passed to `onTransferFinished`                                                |
-| `BrokerType`             | Enum of supported broker/integration types (re-exported from `@meshconnect/node-api`) |
+| `BrokerType`             | Union of supported broker/integration type strings (re-exported from `@meshconnect/node-api`) |
 | `LinkOptions`            | Full options object passed to `createLink`                                            |
 | `Link`                   | Return type of `createLink`                                                           |
 | `AccountToken`           | Account token within `AccessTokenPayload`                                             |
