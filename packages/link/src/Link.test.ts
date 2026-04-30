@@ -576,6 +576,37 @@ describe('createLink tests', () => {
     )
   })
 
+  test('createLink closeLink in embedded mode should send closeRequested message to iframe instead of closing', () => {
+    const exitFunction = jest.fn<void, [string | undefined]>()
+    const customIframeId = 'embedded-close-iframe'
+    const customIframeElement = document.createElement('iframe')
+    customIframeElement.id = customIframeId
+    document.body.appendChild(customIframeElement)
+
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onExit: exitFunction,
+      renderType: 'embedded',
+      language: 'en'
+    })
+
+    frontConnection.openLink(BASE64_ENCODED_URL, customIframeId)
+
+    const postMessageSpy = jest.spyOn(
+      customIframeElement.contentWindow as Window,
+      'postMessage'
+    )
+
+    frontConnection.closeLink()
+
+    expect(postMessageSpy).toHaveBeenCalledWith(
+      { type: 'closeRequested' },
+      'http://localhost'
+    )
+    expect(exitFunction).not.toHaveBeenCalled()
+  })
+
   test('createLink without renderType should not append rt param to src', () => {
     const frontConnection = createLink({
       clientId: 'test',

@@ -196,6 +196,10 @@ export const createLink = (options: LinkOptions): Link => {
   }
 
   const closeLink = () => {
+    if (currentOptions?.renderType === 'embedded') {
+      sendMessageToIframe({ type: 'closeRequested' })
+      return
+    }
     bridgeParent?.destroy()
     removePopup()
     window.removeEventListener('message', eventsListener)
