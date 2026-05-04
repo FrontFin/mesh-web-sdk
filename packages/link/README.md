@@ -121,3 +121,19 @@ You can use broker tokens to perform requests to get current balance, assets and
 ## Typescript support
 
 TypeScript definitions for `@meshconnect/web-link-sdk` are built into the npm package.
+
+### Exported types
+
+| type                     | description                                                                           |
+| ------------------------ | ------------------------------------------------------------------------------------- |
+| `LinkPayload`            | Payload passed to `onIntegrationConnected`                                            |
+| `AccessTokenPayload`     | Broker access token details within `LinkPayload`                                      |
+| `DelayedAuthPayload`     | Delayed auth details within `LinkPayload`                                             |
+| `IntegrationAccessToken` | Access token shape used in the `accessTokens` option                                  |
+| `TransferFinishedPayload`| Payload passed to `onTransferFinished`                                                |
+| `BrokerType`             | Union of supported broker/integration type strings (re-exported from `@meshconnect/node-api`) |
+| `LinkOptions`            | Full options object passed to `createLink`                                            |
+| `Link`                   | Return type of `createLink`                                                           |
+| `AccountToken`           | Account token within `AccessTokenPayload`                                             |
+| `Account`                | Account details within `AccountToken`                                                 |
+| `BrandInfo`              | Integration brand/logo info                                                           |
