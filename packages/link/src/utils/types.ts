@@ -115,7 +115,7 @@ export interface IntegrationAccessToken {
 
 export interface LinkOptions {
   /**
-   * Client ID that can be obtained at https://dashboard.meshconnect.com/company/keys
+   * @deprecated This property is unused and will be removed in the next major version.
    */
   clientId?: string
 

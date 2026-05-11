@@ -40,7 +40,6 @@ import { createLink } from '@meshconnect/web-link-sdk';
 // ...
 
 const linkConnection = createLink({
-  clientId: '<Your Mesh Connect Client Id>',
   onIntegrationConnected: (data: LinkPayload) => {
     // use broker account data
   },
@@ -97,7 +96,7 @@ After successfull authentication on the Link session, the popup will be closed a
 
 | key                      | type                                                   | description                                                                          |
 | ------------------------ | ------------------------------------------------------ | ------------------------------------------------------------------------------------ |
-| `clientId`               | `string`                                               | Keys from https://dashboard.meshconnect.com/company/keys page                        |
+| ~~`clientId`~~           | `string`                                               | **Deprecated.** This property is unused and will be removed in the next major version. |
 | `onIntegrationConnected` | `(payload: LinkPayload) => void`                       | Callback called when users connects their accounts                                   |
 | `onExit`                 | `((error?: string \| undefined) => void) \| undefined` | Called if connection not happened                                                    |
 | `onTransferFinished`     | `(payload: TransferFinishedPayload) => void`           | Callback called when a crypto transfer is executed                                   |
