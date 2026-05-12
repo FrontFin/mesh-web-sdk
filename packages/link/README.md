@@ -96,7 +96,6 @@ After successfull authentication on the Link session, the popup will be closed a
 
 | key                      | type                                                   | description                                                                          |
 | ------------------------ | ------------------------------------------------------ | ------------------------------------------------------------------------------------ |
-| ~~`clientId`~~           | `string`                                               | **Deprecated.** This property is unused and will be removed in the next major version. |
 | `onIntegrationConnected` | `(payload: LinkPayload) => void`                       | Callback called when users connects their accounts                                   |
 | `onExit`                 | `((error?: string \| undefined) => void) \| undefined` | Called if connection not happened                                                    |
 | `onTransferFinished`     | `(payload: TransferFinishedPayload) => void`           | Callback called when a crypto transfer is executed                                   |
@@ -123,16 +122,16 @@ TypeScript definitions for `@meshconnect/web-link-sdk` are built into the npm pa
 
 ### Exported types
 
-| type                     | description                                                                           |
-| ------------------------ | ------------------------------------------------------------------------------------- |
-| `LinkPayload`            | Payload passed to `onIntegrationConnected`                                            |
-| `AccessTokenPayload`     | Broker access token details within `LinkPayload`                                      |
-| `DelayedAuthPayload`     | Delayed auth details within `LinkPayload`                                             |
-| `IntegrationAccessToken` | Access token shape used in the `accessTokens` option                                  |
-| `TransferFinishedPayload`| Payload passed to `onTransferFinished`                                                |
-| `BrokerType`             | Union of supported broker/integration type strings (re-exported from `@meshconnect/node-api`) |
-| `LinkOptions`            | Full options object passed to `createLink`                                            |
-| `Link`                   | Return type of `createLink`                                                           |
-| `AccountToken`           | Account token within `AccessTokenPayload`                                             |
-| `Account`                | Account details within `AccountToken`                                                 |
-| `BrandInfo`              | Integration brand/logo info                                                           |
+| type                      | description                                                                                   |
+| ------------------------- | --------------------------------------------------------------------------------------------- |
+| `LinkPayload`             | Payload passed to `onIntegrationConnected`                                                    |
+| `AccessTokenPayload`      | Broker access token details within `LinkPayload`                                              |
+| `DelayedAuthPayload`      | Delayed auth details within `LinkPayload`                                                     |
+| `IntegrationAccessToken`  | Access token shape used in the `accessTokens` option                                          |
+| `TransferFinishedPayload` | Payload passed to `onTransferFinished`                                                        |
+| `BrokerType`              | Union of supported broker/integration type strings (re-exported from `@meshconnect/node-api`) |
+| `LinkOptions`             | Full options object passed to `createLink`                                                    |
+| `Link`                    | Return type of `createLink`                                                                   |
+| `AccountToken`            | Account token within `AccessTokenPayload`                                                     |
+| `Account`                 | Account details within `AccountToken`                                                         |
+| `BrandInfo`               | Integration brand/logo info                                                                   |
