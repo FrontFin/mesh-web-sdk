@@ -104,13 +104,15 @@ After successfull authentication on the Link session, the popup will be closed a
 | `language`               | `'en' \| undefined`                                    | Link UI language                                                                     |
 | `displayFiatCurrency`    | `'USD' \| undefined`                                   | A fiat currency to display fiat equivalent of a crypto amount                        |
 | `theme`                  | `'dark' \| 'light' \| 'system' \| undefined`           | Color theme of Link UI interface                                                     |
+| `renderType`             | `'overlay' \| 'embedded' \| undefined`                 | `'overlay'` (default) renders a full-screen popup; `'embedded'` renders inside a client-supplied iframe (requires `customIframeId` in `openLink`) |
 
 #### `createLink` return value
 
-| key         | type                                   | description              |
-| ----------- | -------------------------------------- | ------------------------ |
-| `openLink`  | `(linkToken: string) => Promise<void>` | Opens the Link UI popup  |
-| `closeLink` | `() => Promise<void>`                  | Closes the Link UI popup |
+| key                  | type                                                        | description                                                                                                |
+| -------------------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `openLink`           | `(linkToken: string, customIframeId?: string) => void`      | Opens the Link UI popup. Optionally targets an existing iframe by ID instead of creating a new popup       |
+| `closeLink`          | `() => void`                                                | Closes the Link UI popup immediately                                                                       |
+| `closeLinkRequested` | `() => void`                                                | Requests graceful close in `embedded` mode (sends `closeRequested` to iframe); closes immediately otherwise  |
 
 ### Using tokens
 
