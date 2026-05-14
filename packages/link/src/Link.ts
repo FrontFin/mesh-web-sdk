@@ -202,9 +202,18 @@ export const createLink = (options: LinkOptions): Link => {
     options.onExit?.()
   }
 
+  const closeLinkRequested = () => {
+    if (currentOptions?.renderType === 'embedded') {
+      sendMessageToIframe({ type: 'closeRequested' })
+    } else {
+      closeLink()
+    }
+  }
+
   return {
-    openLink: openLink,
-    closeLink: closeLink
+    openLink,
+    closeLink,
+    closeLinkRequested
   }
 }
 

@@ -18,6 +18,10 @@ export interface Link {
    * A function to close Link UI popup
    */
   closeLink: () => void
+  /**
+   * A function to request Link UI to close gracefully in embedded mode.
+   */
+  closeLinkRequested: () => void
 }
 
 export interface AccountToken {
