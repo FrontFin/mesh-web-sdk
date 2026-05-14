@@ -590,4 +590,47 @@ describe('createLink tests', () => {
       'http://localhost/1?lng=en'
     )
   })
+
+  test('closeLinkRequested in embedded mode sends closeRequested postMessage to iframe', () => {
+    const customIframeId = 'embedded-iframe-close-requested'
+    const customIframeElement = document.createElement('iframe')
+    customIframeElement.id = customIframeId
+    document.body.appendChild(customIframeElement)
+
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      renderType: 'embedded'
+    })
+
+    frontConnection.openLink(BASE64_ENCODED_URL, customIframeId)
+
+    const postMessageSpy = jest.spyOn(
+      customIframeElement.contentWindow as Window,
+      'postMessage'
+    )
+
+    frontConnection.closeLinkRequested()
+
+    expect(postMessageSpy).toHaveBeenCalledWith(
+      { type: 'closeRequested' },
+      'http://localhost'
+    )
+  })
+
+  test('closeLinkRequested in overlay mode closes the popup immediately', () => {
+    const exitFunction = jest.fn<void, [string | undefined]>()
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onExit: exitFunction
+    })
+
+    frontConnection.openLink(BASE64_ENCODED_URL)
+    frontConnection.closeLinkRequested()
+
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
+    expect(iframeElement).toBeFalsy()
+    expect(exitFunction).toHaveBeenCalled()
+  })
 })
