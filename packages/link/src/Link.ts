@@ -252,6 +252,9 @@ function addRenderType(linkUrl: string, renderType: LinkOptions['renderType']) {
   return linkUrl
 }
 
-if (!window.meshLinkShouldSkipPrewarm) {
+if (
+  typeof window !== 'undefined' &&
+  !window.meshLinkShouldSkipPrewarm
+) {
   createPrewarmIframe()
 }
