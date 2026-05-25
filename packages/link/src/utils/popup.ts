@@ -90,6 +90,12 @@ const getStylesContent = (style?: LinkStyle) => `
   }
 `
 
+const SUMSUB_ORIGINS = 'https://api.sumsub.com https://api.sns-stage.sumsub.com'
+
+export function buildIframeAllowPolicy(origin: string): string {
+  return `clipboard-read *; clipboard-write *; camera ${origin} ${SUMSUB_ORIGINS}; microphone ${origin} ${SUMSUB_ORIGINS}`
+}
+
 export function removePopup(): void {
   const existingPopup = window.document.getElementById(popupId)
   existingPopup?.parentElement?.removeChild(existingPopup)
@@ -117,7 +123,7 @@ export function addPopup(iframeLink: string): void {
   const iframeElement = document.createElement('iframe')
   iframeElement.id = iframeId
   iframeElement.src = iframeLink
-  iframeElement.allow = `clipboard-read *; clipboard-write *; camera ${new URL(iframeLink).origin}`
+  iframeElement.allow = buildIframeAllowPolicy(new URL(iframeLink).origin)
   popupContentElement.appendChild(iframeElement)
   popupRootElement.appendChild(popupContentElement)
   window.document.body.appendChild(popupRootElement)
