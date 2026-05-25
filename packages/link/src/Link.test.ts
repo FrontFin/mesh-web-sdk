@@ -122,6 +122,7 @@ describe('createLink tests', () => {
     expect(customIframeElement.attributes.getNamedItem('src')?.nodeValue).toBe(
       'http://localhost/1?lng=en'
     )
+    expect(customIframeElement.allow).toContain('camera http://localhost')
   })
 
   test('createLink closePopup should close popup', () => {

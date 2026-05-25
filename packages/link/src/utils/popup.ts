@@ -117,7 +117,7 @@ export function addPopup(iframeLink: string): void {
   const iframeElement = document.createElement('iframe')
   iframeElement.id = iframeId
   iframeElement.src = iframeLink
-  iframeElement.allow = 'clipboard-read *; clipboard-write *; camera *'
+  iframeElement.allow = `clipboard-read *; clipboard-write *; camera ${new URL(iframeLink).origin}`
   popupContentElement.appendChild(iframeElement)
   popupRootElement.appendChild(popupContentElement)
   window.document.body.appendChild(popupRootElement)
