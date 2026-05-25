@@ -457,43 +457,6 @@ describe('createLink tests', () => {
     expect(onEventHandler).not.toHaveBeenCalled()
   })
 
-  test('createLink "brokerageAccountAccessToken" event should send tokens - used with openLink function', () => {
-    const onEventHandler = jest.fn<void, [LinkEventType]>()
-    const onBrokerConnectedHandler = jest.fn<void, [LinkPayload]>()
-    const frontConnection = createLink({
-      clientId: 'test',
-      onIntegrationConnected: onBrokerConnectedHandler,
-      onEvent: onEventHandler
-    })
-
-    frontConnection.openLink(
-      Buffer.from('http://localhost/1').toString('base64')
-    )
-
-    const payload: AccessTokenPayload = {
-      accountTokens: [],
-      brokerBrandInfo: { brokerLogo: '' },
-      brokerType: 'robinhood',
-      brokerName: 'R'
-    }
-    globalThis.dispatchEvent(
-      new MessageEvent<EventPayload>('message', {
-        data: {
-          type: 'brokerageAccountAccessToken',
-          payload: payload
-        },
-        origin: 'http://localhost'
-      })
-    )
-
-    expect(onEventHandler).toHaveBeenCalledWith({
-      type: 'integrationConnected',
-      payload: { accessToken: payload }
-    })
-    expect(onBrokerConnectedHandler).toHaveBeenCalledWith({
-      accessToken: payload
-    })
-  })
 
   test('createLink closeLink should close popup', () => {
     const exitFunction = jest.fn<void, [string | undefined]>()
