@@ -90,10 +90,8 @@ const getStylesContent = (style?: LinkStyle) => `
   }
 `
 
-const SUMSUB_ORIGINS = 'https://api.sumsub.com https://api.sns-stage.sumsub.com'
-
 export function buildIframeAllowPolicy(origin: string): string {
-  return `clipboard-read *; clipboard-write *; camera ${origin} ${SUMSUB_ORIGINS}; microphone ${origin} ${SUMSUB_ORIGINS}`
+  return `clipboard-read *; clipboard-write *; camera ${origin}; microphone ${origin}`
 }
 
 export function removePopup(): void {

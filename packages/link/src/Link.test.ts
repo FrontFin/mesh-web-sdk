@@ -124,7 +124,6 @@ describe('createLink tests', () => {
     )
     expect(customIframeElement.allow).toContain('camera http://localhost')
     expect(customIframeElement.allow).toContain('microphone http://localhost')
-    expect(customIframeElement.allow).toContain('https://api.sumsub.com')
   })
 
   test('createLink closePopup should close popup', () => {

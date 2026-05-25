@@ -17,7 +17,6 @@ describe('Popup tests', () => {
     expect(iframeElement?.attributes.getNamedItem('src')?.nodeValue).toBe(link)
     expect((iframeElement as HTMLIFrameElement).allow).toContain('camera https://some.domain')
     expect((iframeElement as HTMLIFrameElement).allow).toContain('microphone https://some.domain')
-    expect((iframeElement as HTMLIFrameElement).allow).toContain('https://api.sumsub.com')
   })
 
   test('addPopup when popup already added should replace popup', () => {
