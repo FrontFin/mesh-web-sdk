@@ -173,7 +173,7 @@ export const createLink = (options: LinkOptions): Link => {
         customIframeId
       ) as HTMLIFrameElement
       if (iframe) {
-        iframe.allow = `clipboard-read *; clipboard-write *; camera ${new URL(linkUrl).origin}`
+        iframe.allow = `clipboard-read *; clipboard-write *; camera ${linkTokenOrigin}`
         iframe.src = linkUrl
         currentIframeId = customIframeId
       } else {
