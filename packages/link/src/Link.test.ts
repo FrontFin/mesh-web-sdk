@@ -457,7 +457,6 @@ describe('createLink tests', () => {
     expect(onEventHandler).not.toHaveBeenCalled()
   })
 
-
   test('createLink closeLink should close popup', () => {
     const exitFunction = jest.fn<void, [string | undefined]>()
     const frontConnection = createLink({
