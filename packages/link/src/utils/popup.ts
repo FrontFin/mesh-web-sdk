@@ -90,6 +90,10 @@ const getStylesContent = (style?: LinkStyle) => `
   }
 `
 
+export function buildIframeAllowPolicy(origin: string): string {
+  return `clipboard-read *; clipboard-write *; camera ${origin}; microphone ${origin}`
+}
+
 export function removePopup(): void {
   const existingPopup = window.document.getElementById(popupId)
   existingPopup?.parentElement?.removeChild(existingPopup)
@@ -117,7 +121,7 @@ export function addPopup(iframeLink: string): void {
   const iframeElement = document.createElement('iframe')
   iframeElement.id = iframeId
   iframeElement.src = iframeLink
-  iframeElement.allow = 'clipboard-read *; clipboard-write *'
+  iframeElement.allow = buildIframeAllowPolicy(new URL(iframeLink).origin)
   popupContentElement.appendChild(iframeElement)
   popupRootElement.appendChild(popupContentElement)
   window.document.body.appendChild(popupRootElement)

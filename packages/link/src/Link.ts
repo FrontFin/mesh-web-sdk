@@ -7,7 +7,12 @@ import {
   TransferFinishedPayload,
   LinkPayload
 } from './utils/types'
-import { addPopup, iframeId, removePopup } from './utils/popup'
+import {
+  addPopup,
+  buildIframeAllowPolicy,
+  iframeId,
+  removePopup
+} from './utils/popup'
 import { LinkEventType, isLinkEventTypeKey } from './utils/event-types'
 import { sdkSpecs } from './utils/sdk-specs'
 import { appendQueryParam } from './utils/url'
@@ -173,7 +178,7 @@ export const createLink = (options: LinkOptions): Link => {
         customIframeId
       ) as HTMLIFrameElement
       if (iframe) {
-        iframe.allow = 'clipboard-read *; clipboard-write *'
+        iframe.allow = buildIframeAllowPolicy(linkTokenOrigin!)
         iframe.src = linkUrl
         currentIframeId = customIframeId
       } else {

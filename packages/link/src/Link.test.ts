@@ -31,7 +31,7 @@ type EventPayload = {
 const BASE64_ENCODED_URL = Buffer.from('http://localhost/1').toString('base64')
 
 describe('createLink tests', () => {
-  window.open = jest.fn()
+  globalThis.open = jest.fn()
 
   beforeEach(() => {
     document.getElementsByTagName('html')[0].innerHTML = ''
@@ -122,6 +122,8 @@ describe('createLink tests', () => {
     expect(customIframeElement.attributes.getNamedItem('src')?.nodeValue).toBe(
       'http://localhost/1?lng=en'
     )
+    expect(customIframeElement.allow).toContain('camera http://localhost')
+    expect(customIframeElement.allow).toContain('microphone http://localhost')
   })
 
   test('createLink closePopup should close popup', () => {
@@ -157,7 +159,7 @@ describe('createLink tests', () => {
         errorMessage: 'some msg'
       }
       frontConnection.openLink(BASE64_ENCODED_URL)
-      window.dispatchEvent(
+      globalThis.dispatchEvent(
         new MessageEvent<LinkEventType>('message', {
           data: {
             type: eventName,
@@ -191,7 +193,7 @@ describe('createLink tests', () => {
       brokerType: 'robinhood',
       brokerName: 'R'
     }
-    window.dispatchEvent(
+    globalThis.dispatchEvent(
       new MessageEvent<EventPayload>('message', {
         data: {
           type: 'brokerageAccountAccessToken',
@@ -227,7 +229,7 @@ describe('createLink tests', () => {
       brokerName: 'R',
       refreshToken: 'rt'
     }
-    window.dispatchEvent(
+    globalThis.dispatchEvent(
       new MessageEvent<EventPayload>('message', {
         data: {
           type: 'delayedAuthentication',
@@ -295,7 +297,7 @@ describe('createLink tests', () => {
 
       frontConnection.openLink(BASE64_ENCODED_URL)
 
-      window.dispatchEvent(
+      globalThis.dispatchEvent(
         new MessageEvent<EventPayload>('message', {
           data: { type: 'transferFinished', payload: payload },
           origin: 'http://localhost'
@@ -341,7 +343,7 @@ describe('createLink tests', () => {
           ...extra
         }
       }
-      window.dispatchEvent(
+      globalThis.dispatchEvent(
         new MessageEvent<LinkEventType>('message', {
           data: event,
           origin: 'http://localhost'
@@ -380,7 +382,7 @@ describe('createLink tests', () => {
       'postMessage'
     )
 
-    window.dispatchEvent(
+    globalThis.dispatchEvent(
       new MessageEvent<EventPayload>('message', {
         data: {
           type: 'loaded'
@@ -421,7 +423,7 @@ describe('createLink tests', () => {
 
     frontConnection.openLink(BASE64_ENCODED_URL)
 
-    window.dispatchEvent(
+    globalThis.dispatchEvent(
       new MessageEvent('message', {
         data: {
           type: 'integrationConnected'
@@ -443,7 +445,7 @@ describe('createLink tests', () => {
 
     frontConnection.openLink(BASE64_ENCODED_URL)
 
-    window.dispatchEvent(
+    globalThis.dispatchEvent(
       new MessageEvent('message', {
         data: {
           type: 'unknown'
@@ -453,44 +455,6 @@ describe('createLink tests', () => {
     )
 
     expect(onEventHandler).not.toHaveBeenCalled()
-  })
-
-  test('createLink "brokerageAccountAccessToken" event should send tokens - used with openLink function', () => {
-    const onEventHandler = jest.fn<void, [LinkEventType]>()
-    const onBrokerConnectedHandler = jest.fn<void, [LinkPayload]>()
-    const frontConnection = createLink({
-      clientId: 'test',
-      onIntegrationConnected: onBrokerConnectedHandler,
-      onEvent: onEventHandler
-    })
-
-    frontConnection.openLink(
-      Buffer.from('http://localhost/1').toString('base64')
-    )
-
-    const payload: AccessTokenPayload = {
-      accountTokens: [],
-      brokerBrandInfo: { brokerLogo: '' },
-      brokerType: 'robinhood',
-      brokerName: 'R'
-    }
-    window.dispatchEvent(
-      new MessageEvent<EventPayload>('message', {
-        data: {
-          type: 'brokerageAccountAccessToken',
-          payload: payload
-        },
-        origin: 'http://localhost'
-      })
-    )
-
-    expect(onEventHandler).toHaveBeenCalledWith({
-      type: 'integrationConnected',
-      payload: { accessToken: payload }
-    })
-    expect(onBrokerConnectedHandler).toHaveBeenCalledWith({
-      accessToken: payload
-    })
   })
 
   test('createLink closeLink should close popup', () => {
