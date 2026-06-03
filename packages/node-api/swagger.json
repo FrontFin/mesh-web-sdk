@@ -12991,14 +12991,16 @@
             "enum": [
               "deposit",
               "payment",
-              "onramp"
+              "onramp",
+              "fiatOnRamp",
+              "fiatOffRamp"
             ],
             "allOf": [
               {
                 "$ref": "#/components/schemas/TransferTypeEnum"
               }
             ],
-            "description": "Deposit: The user is transferring crypto to a wallet they own on your platform.\r\nPayment: The user is transferring crypto to a wallet your company owns in exchange for receiving a good or service.\r\nOnramp: The user is using balances and linked payment methods in an exchange account to fund the purchase of crypto in their wallet on your platform."
+            "description": "Deposit: The user is transferring crypto to a wallet they own on your platform.\r\nPayment: The user is transferring crypto to a wallet your company owns in exchange for receiving a good or service.\r\nOnramp: The user is using balances and linked payment methods in an exchange account to fund the purchase of crypto in their wallet on your platform.\r\nFiatOnRamp: The user is purchasing crypto using a bank transfer (e.g. SPEI, SEPA).\r\nFiatOffRamp: The user is selling crypto to receive fiat via a bank transfer."
           },
           "isCustomClientFeeProvided": {
             "type": "boolean"
@@ -15292,7 +15294,9 @@
         "enum": [
           "deposit",
           "payment",
-          "onramp"
+          "onramp",
+          "fiatOnRamp",
+          "fiatOffRamp"
         ],
         "type": "string"
       },

@@ -4383,6 +4383,8 @@ export interface InitializeTransfersForLinkRequest {
    * Deposit (default): The user is transferring crypto to a wallet they own on your platform.
    * Payment: The user is transferring crypto to a wallet your company owns in exchange for receiving a good or service.
    * Onramp: The user is using balances and linked payment methods in an exchange account to fund the purchase of crypto in their wallet on your platform.
+   * FiatOnRamp: The user is purchasing crypto using a bank transfer (e.g. SPEI, SEPA).
+   * FiatOffRamp: The user is selling crypto to receive fiat via a bank transfer.
    */
   transferType?: TransferTypeEnum | null
   /**
@@ -4796,6 +4798,8 @@ export interface LinkTokenTransferOptions {
    * Deposit: The user is transferring crypto to a wallet they own on your platform.
    * Payment: The user is transferring crypto to a wallet your company owns in exchange for receiving a good or service.
    * Onramp: The user is using balances and linked payment methods in an exchange account to fund the purchase of crypto in their wallet on your platform.
+   * FiatOnRamp: The user is purchasing crypto using a bank transfer (e.g. SPEI, SEPA).
+   * FiatOffRamp: The user is selling crypto to receive fiat via a bank transfer.
    */
   transferType?: TransferTypeEnum | null
   /**
@@ -5720,7 +5724,7 @@ export interface PreviewTransferResult {
    * FiatOnRamp: The user is purchasing crypto using a bank transfer (e.g. SPEI, SEPA).
    * FiatOffRamp: The user is selling crypto to receive fiat via a bank transfer.
    */
-  transferType?: 'deposit' | 'payment' | 'onramp' | 'fiatOnRamp' | 'fiatOffRamp'
+  transferType?: TransferTypeEnum | null
   isCustomClientFeeProvided?: boolean
   /**
    * Amount in symbol after the client fees are applied. This field represents the exact amount
