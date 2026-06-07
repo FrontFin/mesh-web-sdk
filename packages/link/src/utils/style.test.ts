@@ -10,7 +10,19 @@ describe('Test style utils', () => {
   test('verify function returns nothing on missing query param', () => {
     const link = 'https://some.domain?other=12'
     const received = getLinkStyle(link)
-    expect(received).toBeNull()
+    expect(received).toBeUndefined()
+  })
+
+  test('verify function returns nothing when atob is unavailable', () => {
+    const link = 'https://some.domain?link_style=eyJpciI6IDI0LCAiaW8iOiAwLjF9'
+    const originalAtob = global.atob
+    // @ts-expect-error testing runtime fallback when atob is unavailable
+    global.atob = undefined
+
+    const received = getLinkStyle(link)
+    expect(received).toBeUndefined()
+
+    global.atob = originalAtob
   })
 
   test('verify function returns nothing on wrong encoded value', () => {
