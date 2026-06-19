@@ -1,0 +1,23 @@
+name: Dependency Review
+
+# The reusable workflow requires `labeled` and `unlabeled` in the trigger so
+# that applying / removing the `dep-review-override` label re-runs the check
+# and clears the required-status failure. Without these types, the gate stays
+# red until the next push even after the override label is applied.
+on:
+  pull_request:
+    branches: [main]
+    types: [opened, synchronize, reopened, labeled, unlabeled]
+
+# All API access flows through the App token minted inside the reusable
+# workflow; the default GITHUB_TOKEN gets zero scope at the caller level.
+permissions: {}
+
+jobs:
+  dependency-review:
+    name: Dependabot SLA gate
+    uses: FrontFin/cicd-templates/.github/workflows/reusable-dependency-review.yaml@d5409328431fd7ba18f2939d7b599b52331fab02
+    with:
+      github-app-client-id: ${{ vars.DEPENDABOT_SLA_CLIENT_ID }}
+    secrets:
+      github-app-private-key: ${{ secrets.DEPENDABOT_SLA_PRIVATE_KEY }}
