@@ -40,7 +40,12 @@ describe('Event types tests', () => {
     'executeFundingStep',
     'fundingOptionsUpdated',
     'fundingOptionsViewed',
-    'gasIncreaseWarning'
+    'gasIncreaseWarning',
+    'linkTransferQRGenerated',
+    'methodSelected',
+    'defiWalletError',
+    'paypalComplianceDeclined',
+    'homePageLoaded'
   ])(
     'isLinkEventTypeKey should return true if parameter is "%s"',
     eventType => {
