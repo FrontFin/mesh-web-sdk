@@ -10,6 +10,7 @@ export type LinkEventType =
   | TransferPreviewed
   | TransferPreviewError
   | TransferExecutionError
+  | TransferConfigureError
   | PageLoaded
   | IntegrationMfaRequired
   | IntegrationMfaEntered
@@ -38,6 +39,12 @@ export type LinkEventType =
   | ExecuteFundingStep
   | LinkTransferQrGenerated
   | HomePageMethodSelected
+  | ConnectionUnavailable
+  | ConnectionDeclined
+  | TransferDeclined
+  | DefiWalletError
+  | PaypalComplianceDeclined
+  | HomePageLoaded
 
 const LINK_EVENT_TYPE_KEYS = [
   'integrationConnected',
@@ -53,6 +60,7 @@ const LINK_EVENT_TYPE_KEYS = [
   'transferPreviewed',
   'transferPreviewError',
   'transferExecutionError',
+  'transferConfigureError',
   'pageLoaded',
   'transferAssetSelected',
   'transferNetworkSelected',
@@ -67,7 +75,6 @@ const LINK_EVENT_TYPE_KEYS = [
   'verifyDonePage',
   'verifyWalletRejected',
   'connectionDeclined',
-  'transferConfigureError',
   'connectionUnavailable',
   'transferDeclined',
   'done',
@@ -80,7 +87,10 @@ const LINK_EVENT_TYPE_KEYS = [
   'fundingOptionsViewed',
   'gasIncreaseWarning',
   'linkTransferQRGenerated',
-  'methodSelected'
+  'methodSelected',
+  'defiWalletError',
+  'paypalComplianceDeclined',
+  'homePageLoaded'
 ] as const
 
 export type LinkEventTypeKeys = (typeof LINK_EVENT_TYPE_KEYS)[number]
@@ -92,6 +102,61 @@ export function isLinkEventTypeKey(key: string): key is LinkEventTypeKeys {
 interface LinkEventBase {
   type: LinkEventTypeKeys
 }
+
+export type Pages =
+  | 'startPage'
+  | 'integrationsCatalogPage'
+  | 'integrationLoginPage'
+  | 'integrationMfaPage'
+  | 'integrationAccountSelectPage'
+  | 'integrationConnectedPage'
+  | 'errorPage'
+  | 'accessDeniedPage'
+  | 'transferKycPage'
+  | 'setupMfaPage'
+  | 'transferInsufficientBalancePage'
+  | 'transferHoldingSelectionPage'
+  | 'transferNetworkSelectionPage'
+  | 'transferAmountSelectionPage'
+  | 'transferPreviewPage'
+  | 'transferAddressWhitelistPage'
+  | 'transferMfaPage'
+  | 'transferFundingPage'
+  | 'transferExecutedPage'
+  | 'termsAndConditionPage'
+  | 'transferKycRobinhooPage'
+  | 'generateKeyPage'
+  | 'fundingHoldingSelectionPage'
+  | 'verifyAddressPage'
+  | 'verifyDonePage'
+  | 'sessionExpiredPage'
+  | 'externalTransferSelectAddressPage'
+  | 'homePage'
+
+export type AssetIneligibilityReason =
+  | 'noEligibleNetworks'
+  | 'symbolDoesNotMatch'
+  | 'notSupportedForTransferByTarget'
+  | 'notSupportedForTransferBySource'
+  | 'eligibleWithFunding'
+  | 'amountNotSufficient'
+
+export type NetworkIneligibilityReason =
+  | 'gasFeeAssetBalanceNotEnough'
+  | 'gasFeeAssetAndBalanceNotEnough'
+  | 'noTargetNetworkFound'
+  | 'refusedByInstitution'
+  | 'eligibleWithFunding'
+  | 'balanceBelowRequestedAmount'
+  | 'requestedAmountBelowMinimum'
+  | 'balanceBelowMinimum'
+  | 'nyCoinbaseUserRestrictions'
+
+export type NoAssetsType =
+  | 'noAssets'
+  | 'noEligibleAssets'
+  | 'notEnoughAsset'
+  | 'cannotFund'
 
 export interface PageLoaded {
   type: 'pageLoaded'
@@ -106,6 +171,7 @@ export interface IntegrationConnectionError extends LinkEventBase {
   type: 'integrationConnectionError'
   payload: {
     errorMessage: string
+    requestId?: string
   }
 }
 
@@ -119,6 +185,8 @@ export interface IntegrationSelected extends LinkEventBase {
   payload: {
     integrationType: string
     integrationName: string
+    nativeLink?: string
+    userSearched?: boolean
   }
 }
 
@@ -128,6 +196,10 @@ export interface CredentialsEntered extends LinkEventBase {
 
 export interface TransferStarted extends LinkEventBase {
   type: 'transferStarted'
+  payload: {
+    integrationType?: string
+    integrationName: string
+  }
 }
 
 export interface TransferInitiated extends LinkEventBase {
@@ -159,12 +231,12 @@ export interface TransferNoEligibleAssets extends LinkEventBase {
   payload: {
     integrationType?: string
     integrationName: string
-    noAssetsType?: string
+    noAssetsType?: NoAssetsType
     arrayOfTokensHeld: {
       symbol: string
       amount: number
       amountInFiat?: number
-      ineligibilityReason?: string
+      ineligibilityReason?: AssetIneligibilityReason | NetworkIneligibilityReason
     }[]
   }
 }
@@ -179,6 +251,9 @@ export interface TransferPreviewed extends LinkEventBase {
     previewId: string
     networkName?: string
     amountInFiat?: number
+    fiatCurrency?: string
+    integrationType?: string
+    integrationName?: string
     estimatedNetworkGasFee?: {
       fee?: number
       feeCurrency?: string
@@ -187,10 +262,13 @@ export interface TransferPreviewed extends LinkEventBase {
   }
 }
 
+export type TransferPreviewedPayload = TransferPreviewed['payload']
+
 export interface TransferPreviewError extends LinkEventBase {
   type: 'transferPreviewError'
   payload: {
     errorMessage: string
+    requestId?: string
   }
 }
 
@@ -198,6 +276,15 @@ export interface TransferExecutionError extends LinkEventBase {
   type: 'transferExecutionError'
   payload: {
     errorMessage: string
+    requestId?: string
+  }
+}
+
+export interface TransferConfigureError extends LinkEventBase {
+  type: 'transferConfigureError'
+  payload: {
+    errorMessage: string
+    requestId?: string
   }
 }
 
@@ -248,6 +335,40 @@ export interface TransferKycRequired extends LinkEventBase {
   type: 'transferKycRequired'
 }
 
+export interface ConnectionUnavailable extends LinkEventBase {
+  type: 'connectionUnavailable'
+  payload: {
+    integrationType?: string
+    integrationName: string
+    reason: string
+  }
+}
+
+export interface ConnectionDeclined extends LinkEventBase {
+  type: 'connectionDeclined'
+  payload: {
+    integrationType?: string
+    integrationName: string
+    reason: string
+    networkId?: string
+    toAddress?: string
+    errorMessage?: string
+  }
+}
+
+export interface TransferDeclined extends LinkEventBase {
+  type: 'transferDeclined'
+  payload: {
+    integrationType?: string
+    integrationName: string
+    toAddress?: string
+    token?: string
+    network?: string
+    amount?: number
+    status: string
+  }
+}
+
 export interface DoneEvent extends LinkEventBase {
   type: 'done'
   payload: SessionSummary
@@ -266,7 +387,29 @@ export interface WalletMessageSigned extends LinkEventBase {
     address: string
     timeStamp: number
     isVerified: boolean
+    verifiedAddresses?: string[]
   }
+}
+
+export interface DefiWalletError extends LinkEventBase {
+  type: 'defiWalletError'
+  payload: {
+    integrationName: string
+    errorType: 'timeout' | 'verifyMismatch'
+    details: {
+      requestedAddress?: string
+      connectedAddress?: string
+      requestedNetwork?: string
+      connectedNetwork?: string
+      connectUri?: string
+    }
+    timeStamp: number
+  }
+}
+
+export interface PaypalComplianceDeclined extends LinkEventBase {
+  type: 'paypalComplianceDeclined'
+  payload: TransferPreviewedPayload
 }
 
 export interface VerifyDonePage extends LinkEventBase {
@@ -278,34 +421,13 @@ export interface VerifyWalletRejected extends LinkEventBase {
 }
 
 export interface SessionSummary {
-  /**
-   *   Current page of application. Possible values:
-   * `startPage`
-   * `integrationsCatalogPage`
-   * `integrationLoginPage`
-   * `integrationMfaPage`
-   * `integrationAccountSelectPage`
-   * `integrationConnectedPage`
-   * `errorPage`
-   * `transferKycPage`
-   * `transferHoldingSelectionPage`
-   * `transferNetworkSelectionPage`
-   * `transferAmountSelectionPage`
-   * `transferPreviewPage`
-   * `transferMfaPage`
-   * `transferFundingPage`
-   * `transferExecutedPage`
-   * `termsAndConditionPage`
-   *
-   * This list may change in future.
-   */
-  page: string
-  /** Selected integration */
+  page: Pages | string
   selectedIntegration?: {
     id?: string
     name?: string
+    integrationType?: string
+    integrationName?: string
   }
-  /** Transfer information */
   transfer?: {
     previewId?: string
     symbol?: string
@@ -370,4 +492,8 @@ export interface HomePageMethodSelected {
   payload: {
     method: 'embedded' | 'manual' | 'buy'
   }
+}
+
+export interface HomePageLoaded extends LinkEventBase {
+  type: 'homePageLoaded'
 }
