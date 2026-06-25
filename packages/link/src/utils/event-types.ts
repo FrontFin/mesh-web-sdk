@@ -421,7 +421,7 @@ export interface VerifyWalletRejected extends LinkEventBase {
 }
 
 export interface SessionSummary {
-  page: Pages | string
+  page: Pages
   selectedIntegration?: {
     id?: string
     name?: string
