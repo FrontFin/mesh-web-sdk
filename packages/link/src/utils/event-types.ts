@@ -123,8 +123,8 @@ export type Pages =
   | 'transferMfaPage'
   | 'transferFundingPage'
   | 'transferExecutedPage'
-  | 'termsAndConditionPage'
-  | 'transferKycRobinhooPage'
+  | 'termsAndConditionPage' // sic — intentional spelling per Link v1 contract
+  | 'transferKycRobinhooPage' // sic — intentional spelling per Link v1 contract
   | 'generateKeyPage'
   | 'fundingHoldingSelectionPage'
   | 'verifyAddressPage'
