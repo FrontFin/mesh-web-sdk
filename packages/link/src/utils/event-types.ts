@@ -186,6 +186,29 @@ export interface TransferNoEligibleAssets extends LinkEventBase {
   }
 }
 
+export interface TransferFee {
+  fee?: number
+  feeCurrency?: string
+  feeInFiat?: number
+}
+
+export interface CryptocurrencyFundingOption {
+  cryptocurrencyFundingOptionType?: string
+  name?: string
+  paymentMethodType?: string
+  usedAmountInCryptocurrency?: number
+  usedAmountInFiat?: number
+  cryptocurrencySymbol?: string
+  fee?: {
+    amountInFiat?: number
+    fiatSymbol?: string
+    amountInCryptocurrency?: number
+    cryptocurrencySymbol?: string
+    isInclusive?: boolean
+    usedCurrencyType?: string
+  }
+}
+
 export interface TransferPreviewed extends LinkEventBase {
   type: 'transferPreviewed'
   payload: {
@@ -199,11 +222,12 @@ export interface TransferPreviewed extends LinkEventBase {
     fiatCurrency?: string
     integrationType?: string
     integrationName?: string
-    estimatedNetworkGasFee?: {
-      fee?: number
-      feeCurrency?: string
-      feeInFiat?: number
-    }
+    estimatedNetworkGasFee?: TransferFee
+    institutionTransferFee?: TransferFee
+    customClientFee?: TransferFee
+    cryptocurrencyFundingOptions?: CryptocurrencyFundingOption[]
+    userId?: string
+    clientTransactionId?: string
   }
 }
 
@@ -366,6 +390,7 @@ export interface VerifyWalletRejected extends LinkEventBase {
 }
 
 export interface SessionSummary {
+  /** The page the user was on when the session ended (e.g. 'transferExecutedPage', 'integrationConnectedPage'). */
   page: string
   selectedIntegration?: {
     id?: string

@@ -103,7 +103,7 @@ export interface TransferFinishedPayload {
   clientTransactionId?: string
   amountInFiat?: number
   totalAmountInFiat?: number
-  networkName?: string
+  networkName: string
   txHash?: string
   transferId?: string
   refundAddress?: string
