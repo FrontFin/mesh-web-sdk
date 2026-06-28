@@ -103,61 +103,6 @@ interface LinkEventBase {
   type: LinkEventTypeKeys
 }
 
-export type Pages =
-  | 'startPage'
-  | 'integrationsCatalogPage'
-  | 'integrationLoginPage'
-  | 'integrationMfaPage'
-  | 'integrationAccountSelectPage'
-  | 'integrationConnectedPage'
-  | 'errorPage'
-  | 'accessDeniedPage'
-  | 'transferKycPage'
-  | 'setupMfaPage'
-  | 'transferInsufficientBalancePage'
-  | 'transferHoldingSelectionPage'
-  | 'transferNetworkSelectionPage'
-  | 'transferAmountSelectionPage'
-  | 'transferPreviewPage'
-  | 'transferAddressWhitelistPage'
-  | 'transferMfaPage'
-  | 'transferFundingPage'
-  | 'transferExecutedPage'
-  | 'termsAndConditionPage' // sic — intentional spelling per Link v1 contract
-  | 'transferKycRobinhooPage' // sic — intentional spelling per Link v1 contract
-  | 'generateKeyPage'
-  | 'fundingHoldingSelectionPage'
-  | 'verifyAddressPage'
-  | 'verifyDonePage'
-  | 'sessionExpiredPage'
-  | 'externalTransferSelectAddressPage'
-  | 'homePage'
-
-export type AssetIneligibilityReason =
-  | 'noEligibleNetworks'
-  | 'symbolDoesNotMatch'
-  | 'notSupportedForTransferByTarget'
-  | 'notSupportedForTransferBySource'
-  | 'eligibleWithFunding'
-  | 'amountNotSufficient'
-
-export type NetworkIneligibilityReason =
-  | 'gasFeeAssetBalanceNotEnough'
-  | 'gasFeeAssetAndBalanceNotEnough'
-  | 'noTargetNetworkFound'
-  | 'refusedByInstitution'
-  | 'eligibleWithFunding'
-  | 'balanceBelowRequestedAmount'
-  | 'requestedAmountBelowMinimum'
-  | 'balanceBelowMinimum'
-  | 'nyCoinbaseUserRestrictions'
-
-export type NoAssetsType =
-  | 'noAssets'
-  | 'noEligibleAssets'
-  | 'notEnoughAsset'
-  | 'cannotFund'
-
 export interface PageLoaded {
   type: 'pageLoaded'
 }
@@ -231,12 +176,12 @@ export interface TransferNoEligibleAssets extends LinkEventBase {
   payload: {
     integrationType?: string
     integrationName: string
-    noAssetsType?: NoAssetsType
+    noAssetsType?: string
     arrayOfTokensHeld: {
       symbol: string
       amount: number
       amountInFiat?: number
-      ineligibilityReason?: AssetIneligibilityReason | NetworkIneligibilityReason
+      ineligibilityReason?: string
     }[]
   }
 }
@@ -421,7 +366,7 @@ export interface VerifyWalletRejected extends LinkEventBase {
 }
 
 export interface SessionSummary {
-  page: Pages
+  page: string
   selectedIntegration?: {
     id?: string
     name?: string
