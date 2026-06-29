@@ -43,7 +43,6 @@ export type LinkEventType =
   | ConnectionDeclined
   | TransferDeclined
   | DefiWalletError
-  | PaypalComplianceDeclined
   | HomePageLoaded
 
 const LINK_EVENT_TYPE_KEYS = [
@@ -89,7 +88,6 @@ const LINK_EVENT_TYPE_KEYS = [
   'linkTransferQRGenerated',
   'methodSelected',
   'defiWalletError',
-  'paypalComplianceDeclined',
   'homePageLoaded'
 ] as const
 
@@ -230,8 +228,6 @@ export interface TransferPreviewed extends LinkEventBase {
     clientTransactionId?: string
   }
 }
-
-export type TransferPreviewedPayload = TransferPreviewed['payload']
 
 export interface TransferPreviewError extends LinkEventBase {
   type: 'transferPreviewError'
@@ -376,10 +372,6 @@ export interface DefiWalletError extends LinkEventBase {
   }
 }
 
-export interface PaypalComplianceDeclined extends LinkEventBase {
-  type: 'paypalComplianceDeclined'
-  payload: TransferPreviewedPayload
-}
 
 export interface VerifyDonePage extends LinkEventBase {
   type: 'verifyDonePage'
