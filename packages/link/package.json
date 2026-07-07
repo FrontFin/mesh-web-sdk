@@ -36,7 +36,7 @@
     "lint": "eslint **/*.ts",
     "copy": "node ./tools/copy",
     "updateVersion": "node ./tools/update-version",
-    "publish:npm": "yarn build && cd dist && yarn publish --access public",
+    "publish:npm": "yarn build && cd dist && npm publish --access public --provenance",
     "test": "jest",
     "test:cov": "jest --ci --coverage"
   },
