@@ -21,7 +21,7 @@
     "lint": "eslint . --ext ts,js",
     "copy": "node ./tools/copy",
     "updateApi": "node ./tools/updateSwagger && swagger-typescript-api -p ./swagger.json -r --union-enums --add-readonly --axios --api-class-name FrontApi -n api.ts --module-name-first-tag",
-    "publish:npm": "yarn build && cd dist && yarn publish --access public"
+    "publish:npm": "yarn build && cd dist && npm publish --access public --provenance"
   },
   "dependencies": {
     "axios": "1.18.0"

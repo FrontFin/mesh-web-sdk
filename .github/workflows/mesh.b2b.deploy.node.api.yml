@@ -22,6 +22,9 @@ jobs:
     runs-on: ubuntu-latest
     needs:
       - build-and-test
+    permissions:
+      id-token: write # required for npm OIDC trusted publishing
+      contents: read
     steps:
       - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
       # Setup .npmrc file to publish to npm
@@ -29,7 +32,7 @@ jobs:
         with:
           node-version: '20.x'
           registry-url: 'https://registry.npmjs.org'
+      # OIDC trusted publishing requires npm >= 11.5.1; pin for reproducible releases
+      - run: npm install -g npm@11.5.1
       - run: yarn
       - run: cd packages/node-api && yarn publish:npm
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
