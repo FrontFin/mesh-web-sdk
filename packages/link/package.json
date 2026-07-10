@@ -36,7 +36,7 @@
     "lint": "eslint **/*.ts",
     "copy": "node ./tools/copy",
     "updateVersion": "node ./tools/update-version",
-    "publish:npm": "yarn build && cd dist && npm publish --access public --provenance",
+    "publish:npm": "yarn build && cd dist && npm publish --access public --provenance --registry https://registry.npmjs.org",
     "test": "jest",
     "test:cov": "jest --ci --coverage"
   },
