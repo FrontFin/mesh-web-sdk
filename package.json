@@ -36,17 +36,8 @@
     "postinstall": "cd packages/link && yarn updateVersion"
   },
   "resolutions": {
-    "@typescript-eslint/**/brace-expansion": "2.0.3",
-    "@typescript-eslint/**/minimatch": "9.0.9",
-    "flatted": "3.4.2",
-    "handlebars": "4.7.9",
     "axios": "1.18.0",
-    "bn.js": "5.2.3",
-    "esbuild": "0.25.12",
-    "rollup": "4.62.0",
-    "nanoid": "3.3.12",
-    "lodash": "4.18.1",
-    "@tootallnate/once": "2.0.1",
-    "tar": "7.5.16"
+    "tar": "^7.5.16",
+    "minimatch": "^9.0.7"
   }
 }
