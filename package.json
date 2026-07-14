@@ -40,7 +40,21 @@
     "@typescript-eslint/**/minimatch": "9.0.9",
     "flatted": "3.4.2",
     "handlebars": "4.7.9",
-    "axios": "1.15.0",
-    "bn.js": "5.2.3"
+    "axios": "1.18.0",
+    "bn.js": "5.2.3",
+    "esbuild": "0.25.12",
+    "vite": "6.4.3",
+    "rollup": "4.62.0",
+    "postcss": "8.5.15",
+    "nanoid": "3.3.12",
+    "lodash": "4.18.1",
+    "fast-uri": "3.1.2",
+    "follow-redirects": "1.16.0",
+    "ip-address": "10.2.0",
+    "@babel/plugin-transform-modules-systemjs": "7.29.7",
+    "@tootallnate/once": "2.0.1",
+    "form-data": "4.0.6",
+    "tmp": "0.2.7",
+    "tar": "7.5.16"
   }
 }

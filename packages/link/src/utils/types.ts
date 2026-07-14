@@ -124,6 +124,7 @@ export interface LinkOptions {
   clientId?: string
 
   /**
+   * @deprecated This callback is now obsolete. Please use server-side webhooks instead for 'integration connected' events.
    * A callback function that is called when an integration is successfully connected.
    * It receives a payload of type `LinkPayload`.
    */
@@ -135,18 +136,21 @@ export interface LinkOptions {
   onExit?: (error?: string, summary?: SessionSummary) => void
 
   /**
+   * @deprecated This callback is now obsolete. Please use server-side webhooks instead for 'transfer finished' events.
    * (Optional) A callback function that is called when a transfer is finished.
    * It receives a payload of type `TransferFinishedPayload`.
    */
   onTransferFinished?: (payload: TransferFinishedPayload) => void
 
   /**
+   * @deprecated This callback is now obsolete. Please use server-side webhooks instead for all events.
    * (Optional) A callback function that is called when various events occur within the Front iframe.
    * It receives an object with type `LinkEventTypeKeys` indicating the event, and an optional 'payload' containing additional data.
    */
   onEvent?: (event: LinkEventType) => void
 
   /**
+   * @deprecated This property is now obsolete.
    * (Optional) An array of integration access tokens.
    * These access tokens are used to initialize crypto transfers flow at 'Select asset step'
    */

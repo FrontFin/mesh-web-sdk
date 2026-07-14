@@ -1,6 +1,6 @@
 {
   "name": "@meshconnect/node-api",
-  "version": "2.0.26",
+  "version": "2.0.28",
   "description": "A node.js client library for the Mesh API",
   "type": "module",
   "main": "./index.ts",
@@ -24,9 +24,9 @@
     "lint": "eslint . --ext ts,js",
     "copy": "node ./tools/copy",
     "updateApi": "node ./tools/updateSwagger && swagger-typescript-api -p ./swagger.json -r --union-enums --add-readonly --axios --api-class-name FrontApi -n api.ts --module-name-first-tag",
-    "publish:npm": "yarn build && cd dist && yarn publish --access public"
+    "publish:npm": "yarn build && cd dist && npm publish --access public --provenance --registry https://registry.npmjs.org"
   },
   "dependencies": {
-    "axios": "1.15.0"
+    "axios": "1.18.0"
   }
 }
