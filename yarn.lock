@@ -1732,10 +1732,10 @@
     rpc-websockets "^9.0.2"
     superstruct "^2.0.2"
 
-"@meshconnect/uwc-bridge-parent@1.4.2":
-  version "1.4.2"
-  resolved "https://registry.yarnpkg.com/@meshconnect/uwc-bridge-parent/-/uwc-bridge-parent-1.4.2.tgz#f91b7dde80c655ff355458e7d737b244c0e2fb67"
-  integrity sha512-5BP11/N4BvEYMs8I8au0VgsWnluMbLXvu7boVAqHIDeGK4A+qWSn1gXHh/KXCvjSgm9zivdu0lvTYuNkutWHsg==
+"@meshconnect/uwc-bridge-parent@1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@meshconnect/uwc-bridge-parent/-/uwc-bridge-parent-1.5.0.tgz#5bac77dcdff8a9dd69c072d45c8ae5b6cfacfc84"
+  integrity sha512-ah8zvZf9i2CIxNsL1XI5Jfib6/XLZYVBngDeicEOXjqg9C6uVSPacDJZwWFnt1PJyghxiqU3CdJyJOgI0lqLUA==
   dependencies:
     "@solana/wallet-adapter-base" "^0.9.23"
     "@solana/wallet-standard-wallet-adapter-base" "^1.1.4"
