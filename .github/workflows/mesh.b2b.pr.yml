@@ -18,6 +18,7 @@ on:
       - 'pnpm-workspace.yaml'
       - 'pnpm-lock.yaml'
       - 'lerna.json'
+      - '.npmrc'
 jobs:
   build-and-test:
     runs-on: ubuntu-latest
