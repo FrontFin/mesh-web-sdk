@@ -6,13 +6,13 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 Need to set up your Mesh Connect Client Id and Secret key in .env file.
 
-Run `yarn` to install all dependencies.
+Run `pnpm install` to install all dependencies.
 
 ## Available Scripts
 
 In the project directory, you can run:
 
-### `yarn start`
+### `pnpm start`
 
 Runs the app in the development mode.\
 Open [http://localhost:3006](http://localhost:3006) to view it in the browser.

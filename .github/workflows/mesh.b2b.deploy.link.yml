@@ -6,18 +6,22 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      # Must precede setup-node: `cache: pnpm` shells out to `pnpm store path`
+      - name: Setup pnpm
+        uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
       - name: Setup Node.js environment
         uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
-          node-version: 20.x
+          node-version: 22.x
+          cache: 'pnpm'
       - name: Install dependencies
-        run: yarn install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
       - name: Checking for type errors
-        run: yarn typecheck
+        run: pnpm typecheck
       - name: Checking for linting errors
-        run: yarn lint
-      - name: Yarn test
-        run: yarn test
+        run: pnpm lint
+      - name: Test
+        run: pnpm test
   deploy:
     runs-on: ubuntu-latest
     # Publishing is gated by whatever protection rules production-npm carries
@@ -30,12 +34,15 @@ jobs:
       contents: read
     steps:
       - uses: actions/checkout@fbc6f3992d24b796d5a048ff273f7fcc4a7b6c09 # v5.1.0
+      - uses: pnpm/action-setup@0977fd99725f1db4007ccb2928dbb4e90d06cc86 # v6.0.10
       # Setup .npmrc file to publish to npm
       - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5.0.0
         with:
-          node-version: '20.x'
+          node-version: '22.x'
           registry-url: 'https://registry.npmjs.org'
-      # OIDC trusted publishing requires npm >= 11.5.1; pin for reproducible releases
+          cache: 'pnpm'
+      # OIDC trusted publishing requires npm >= 11.5.1; pin for reproducible releases.
+      # The publish itself is still `npm publish` from dist/, so this stays.
       - run: npm install -g npm@11.5.1
-      - run: yarn install --frozen-lockfile
-      - run: cd packages/link && yarn publish:npm
+      - run: pnpm install --frozen-lockfile
+      - run: cd packages/link && pnpm run publish:npm

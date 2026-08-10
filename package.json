@@ -5,10 +5,7 @@
   "private": true,
   "type": "module",
   "license": "MIT",
-  "workspaces": [
-    "examples/*",
-    "packages/*"
-  ],
+  "packageManager": "pnpm@11.21.0",
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^6.21.0",
     "@typescript-eslint/parser": "^6.21.0",
@@ -19,8 +16,7 @@
     "lerna": "^9.0.7",
     "prettier": "^2.2.1",
     "rimraf": "^5.0.10",
-    "typescript": "^5.0.4",
-    "yarn": "^1.22.19"
+    "typescript": "^5.0.4"
   },
   "scripts": {
     "typecheck": "lerna run typecheck",
@@ -30,31 +26,9 @@
     "test:updateSnapshots": "lerna run test -- -u",
     "test:cov": "lerna run test:cov",
     "lint:fix": "lerna run lint -- --fix",
-    "start:demo": "cd examples/react-example && yarn start",
-    "updateApi": "cd packages/node-api && yarn updateApi",
+    "start:demo": "cd examples/react-example && pnpm run start",
+    "updateApi": "cd packages/node-api && pnpm run updateApi",
     "publish:npm": "lerna run publish:npm",
-    "postinstall": "cd packages/link && yarn updateVersion"
-  },
-  "resolutions": {
-    "@typescript-eslint/**/brace-expansion": "2.0.3",
-    "@typescript-eslint/**/minimatch": "9.0.9",
-    "flatted": "3.4.2",
-    "handlebars": "4.7.9",
-    "axios": "1.18.0",
-    "bn.js": "5.2.3",
-    "esbuild": "0.25.12",
-    "vite": "6.4.3",
-    "rollup": "4.62.0",
-    "postcss": "8.5.15",
-    "nanoid": "3.3.12",
-    "lodash": "4.18.1",
-    "fast-uri": "3.1.2",
-    "follow-redirects": "1.16.0",
-    "ip-address": "10.2.0",
-    "@babel/plugin-transform-modules-systemjs": "7.29.7",
-    "@tootallnate/once": "2.0.1",
-    "form-data": "4.0.6",
-    "tmp": "0.2.7",
-    "tar": "7.5.16"
+    "postinstall": "cd packages/link && pnpm run updateVersion"
   }
 }

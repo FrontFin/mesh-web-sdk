@@ -9,6 +9,7 @@ delete packageModel.scripts
 delete packageModel.type
 delete packageModel.devDependencies
 delete packageModel.resolutions
+delete packageModel.packageManager
 
 packageModel.exports = './index.js'
 packageModel.module = './index.js'

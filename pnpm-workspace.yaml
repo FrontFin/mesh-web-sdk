@@ -1,0 +1,61 @@
+packages:
+  - 'examples/*'
+  - 'packages/*'
+
+# --- Supply-chain policy (PRG-324 / SR-16 Dependency Security) ---
+# 1440 minutes = 24h cooldown before a freshly published version can be resolved.
+# This is also pnpm 11's default; it is set explicitly so the control is auditable
+# in-repo and survives a change to the upstream default.
+# Strict mode makes a violation a hard install failure rather than a silent
+# fallback to an older version.
+minimumReleaseAge: 1440
+minimumReleaseAgeStrict: true
+minimumReleaseAgeExclude:
+  # SR-16 exempts packages published to a registry under our own control.
+  # Required in practice: @meshconnect/uwc-bridge-parent is pinned to an exact
+  # version, so a same-day bump would otherwise fail the install.
+  - '@meshconnect/*'
+
+# pnpm 11 defaults link-workspace-packages to false, which would resolve
+# @meshconnect/node-api and @meshconnect/web-link-sdk from the registry instead
+# of linking the local sources the way yarn workspaces did.
+linkWorkspacePackages: true
+
+# pnpm 11 renamed onlyBuiltDependencies (array) to allowBuilds (map), and
+# strictDepBuilds now defaults to true, so any dependency with an install script
+# that is missing here is a hard install failure and pnpm rewrites this file with
+# placeholders. Keep this list complete.
+allowBuilds:
+  esbuild: true # postinstall: fetches/links the platform binary (via vite)
+  nx: true # postinstall (via lerna 9)
+  bufferutil: true # node-gyp-build; optional dep of rpc-websockets
+  utf-8-validate: true # node-gyp-build; optional dep of rpc-websockets
+
+# --- Security pins, migrated 1:1 from the "resolutions" field in package.json ---
+# pnpm 11 does not read "resolutions" (nor the "pnpm" field) from package.json,
+# so these must live here or they are silently dropped.
+overrides:
+  # These two were "@typescript-eslint/**/<pkg>" under yarn. pnpm has no `**`
+  # glob - its only nesting selector is parent>child and matches the direct
+  # parent only. Scoping by version range instead pins the affected 9.x / 2.x
+  # lines while leaving the minimatch 3.x chain that eslint 7 and glob 7 need.
+  'minimatch@9': '9.0.9'
+  'brace-expansion@2': '2.0.3'
+  'flatted': '3.4.2'
+  'handlebars': '4.7.9'
+  'axios': '1.18.0'
+  'bn.js': '5.2.3'
+  'esbuild': '0.25.12'
+  'vite': '6.4.3'
+  'rollup': '4.62.0'
+  'postcss': '8.5.15'
+  'nanoid': '3.3.12'
+  'lodash': '4.18.1'
+  'fast-uri': '3.1.2'
+  'follow-redirects': '1.16.0'
+  'ip-address': '10.2.0'
+  '@babel/plugin-transform-modules-systemjs': '7.29.7'
+  '@tootallnate/once': '2.0.1'
+  'form-data': '4.0.6'
+  'tmp': '0.2.7'
+  'tar': '7.5.16'
