@@ -20,6 +20,9 @@ jobs:
         run: yarn test
   deploy:
     runs-on: ubuntu-latest
+    # Publishing is gated by whatever protection rules production-npm carries
+    # (required reviewers, branch policy). Configured in repo settings, not here.
+    environment: production-npm
     needs:
       - build-and-test
     permissions:
