@@ -13,7 +13,7 @@
     "eslint": "^7.23.0",
     "rimraf": "^5.0.10",
     "typescript": "^4.6.4",
-    "swagger-typescript-api": "^12.0.3"
+    "swagger-typescript-api": "^13.12.6"
   },
   "scripts": {
     "build": "rimraf dist && pnpm run build:esm && pnpm run build:cjs && pnpm run copy",
@@ -22,7 +22,7 @@
     "typecheck": "tsc --noEmit",
     "lint": "eslint . --ext ts,js",
     "copy": "node ./tools/copy",
-    "updateApi": "node ./tools/updateSwagger && swagger-typescript-api -p ./swagger.json -r --union-enums --add-readonly --axios --api-class-name FrontApi -n api.ts --module-name-first-tag",
+    "updateApi": "node ./tools/updateSwagger && swagger-typescript-api generate -p ./swagger.json -r --enum-style=union --add-readonly --axios --api-class-name FrontApi -n api.ts --module-name-first-tag",
     "publish:npm": "pnpm run build && cd dist && npm publish --access public --provenance --registry https://registry.npmjs.org"
   },
   "dependencies": {
