@@ -10,6 +10,9 @@
   "license": "MIT",
   "repository": "https://github.com/FrontFin/mesh-web-sdk.git",
   "homepage": "https://github.com/FrontFin/mesh-web-sdk",
+  "bugs": {
+    "url": "https://github.com/FrontFin/mesh-web-sdk/issues"
+  },
   "devDependencies": {
     "@babel/preset-env": "^7.20.0",
     "@babel/preset-typescript": "^7.20.0",
