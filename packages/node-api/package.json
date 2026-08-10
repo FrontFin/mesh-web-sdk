@@ -10,6 +10,8 @@
   "repository": "https://github.com/FrontFin/mesh-web-sdk.git",
   "homepage": "https://github.com/FrontFin/mesh-web-sdk",
   "devDependencies": {
+    "eslint": "^7.23.0",
+    "rimraf": "^5.0.10",
     "typescript": "^4.6.4",
     "swagger-typescript-api": "^12.0.3"
   },

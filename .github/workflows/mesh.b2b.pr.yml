@@ -14,7 +14,7 @@ on:
       - '.github/**'
       - 'packages/**'
       - 'examples/**'
-      - 'packages.json'
+      - 'package.json'
       - 'yarn.lock'
 jobs:
   build-and-test:
