@@ -20,6 +20,8 @@ jobs:
         run: yarn test
   deploy:
     runs-on: ubuntu-latest
+    # Requires approval from a second person before publishing to public npm
+    environment: production-npm
     needs:
       - build-and-test
     permissions:
