@@ -34,5 +34,5 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       # OIDC trusted publishing requires npm >= 11.5.1; pin for reproducible releases
       - run: npm install -g npm@11.5.1
-      - run: yarn
+      - run: yarn install --ignore-scripts
       - run: cd packages/link && yarn publish:npm
