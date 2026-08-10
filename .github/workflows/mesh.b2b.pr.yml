@@ -32,8 +32,12 @@ jobs:
         with:
           node-version: 22.x
           cache: 'pnpm'
+      # --ignore-scripts blocks dependency lifecycle scripts (SR-16). Our own
+      # required postinstall is run explicitly in the next step instead.
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile --ignore-scripts
+      - name: Generate SDK version file
+        run: pnpm --filter @meshconnect/web-link-sdk run updateVersion
       - name: Checking for type errors
         run: pnpm typecheck
       - name: Checking for linting errors

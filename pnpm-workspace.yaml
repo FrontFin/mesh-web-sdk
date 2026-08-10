@@ -21,6 +21,9 @@ minimumReleaseAgeExclude:
 # of linking the local sources the way yarn workspaces did.
 linkWorkspacePackages: true
 
+# Governs local/dev installs. CI installs with --ignore-scripts, so no dependency
+# script runs there at all, and the one script we do need is a separate CI step.
+#
 # pnpm 11 renamed onlyBuiltDependencies (array) to allowBuilds (map), and
 # strictDepBuilds now defaults to true, so any dependency with an install script
 # that is missing here is a hard install failure and pnpm rewrites this file with
