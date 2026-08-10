@@ -11,7 +11,7 @@ jobs:
         with:
           node-version: 22.x
       - name: Install dependencies
-        run: yarn
+        run: yarn install --frozen-lockfile
       - name: Checking for type errors
         run: yarn typecheck
       - name: Checking for linting errors
@@ -20,6 +20,9 @@ jobs:
         run: yarn test
   deploy:
     runs-on: ubuntu-latest
+    # Publishing is gated by whatever protection rules production-npm carries
+    # (required reviewers, branch policy). Configured in repo settings, not here.
+    environment: production-npm
     needs:
       - build-and-test
     permissions:
@@ -34,5 +37,5 @@ jobs:
           registry-url: 'https://registry.npmjs.org'
       # OIDC trusted publishing requires npm >= 11.5.1; pin for reproducible releases
       - run: npm install -g npm@11.5.1
-      - run: yarn install --ignore-scripts
+      - run: yarn install --frozen-lockfile
       - run: cd packages/link && yarn publish:npm
