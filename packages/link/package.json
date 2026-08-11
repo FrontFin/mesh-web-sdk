@@ -1,6 +1,6 @@
 {
   "name": "@meshconnect/web-link-sdk",
-  "version": "3.11.0",
+  "version": "3.12.0",
   "description": "A client-side JS library for integrating with Mesh Connect",
   "main": "./src/index.ts",
   "module": "./src/index.ts",
@@ -10,6 +10,9 @@
   "license": "MIT",
   "repository": "https://github.com/FrontFin/mesh-web-sdk.git",
   "homepage": "https://github.com/FrontFin/mesh-web-sdk",
+  "engines": {
+    "node": ">=22"
+  },
   "devDependencies": {
     "@babel/preset-env": "^7.20.0",
     "@babel/preset-typescript": "^7.20.0",
@@ -27,7 +30,7 @@
   },
   "dependencies": {
     "@meshconnect/node-api": "^2.0.27",
-    "@meshconnect/uwc-bridge-parent": "1.5.0"
+    "@meshconnect/uwc-bridge-parent": "1.6.0"
   },
   "scripts": {
     "build": "yarn updateVersion && rimraf dist && yarn build:esm && yarn copy",
