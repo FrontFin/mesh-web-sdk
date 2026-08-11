@@ -8,13 +8,16 @@ packages:
 # in-repo and survives a change to the upstream default.
 # Strict mode makes a violation a hard install failure rather than a silent
 # fallback to an older version.
+#
+# Deliberately NO minimumReleaseAgeExclude, not even for our own @meshconnect
+# scope. A compromised publish token on a legitimate scope is exactly the attack
+# this mitigates (cf. the nx and chalk/debug incidents, both legitimate-scope
+# publishes), and @meshconnect is a scope on public npm, not a registry under our
+# control - so SR-16's carve-out for internally hosted registries does not apply.
+# The cost is a 24h wait before a same-day internal release can be consumed here,
+# which is the intended behaviour rather than a problem to work around.
 minimumReleaseAge: 1440
 minimumReleaseAgeStrict: true
-minimumReleaseAgeExclude:
-  # SR-16 exempts packages published to a registry under our own control.
-  # Required in practice: @meshconnect/uwc-bridge-parent is pinned to an exact
-  # version, so a same-day bump would otherwise fail the install.
-  - '@meshconnect/*'
 
 # pnpm 11 defaults link-workspace-packages to false, which would resolve
 # @meshconnect/node-api and @meshconnect/web-link-sdk from the registry instead
