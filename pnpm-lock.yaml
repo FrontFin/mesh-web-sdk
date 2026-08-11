@@ -129,8 +129,8 @@ importers:
         specifier: ^2.0.27
         version: link:../node-api
       '@meshconnect/uwc-bridge-parent':
-        specifier: 1.5.0
-        version: 1.5.0(bs58@6.0.0)(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@6.0.6)
+        specifier: 1.6.0
+        version: 1.6.0(bs58@6.0.0)(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@6.0.6)
     devDependencies:
       '@babel/preset-env':
         specifier: ^7.20.0
@@ -1309,8 +1309,8 @@ packages:
   '@meshconnect/solana-web3.js@1.0.4':
     resolution: {integrity: sha512-9NC7rHrkVO3XEshZ1k5n4368BHbfHz6Nak8chiZlrNNHceNyecKrvlHiUG87gaJhC39zNsZYfaKrIYolp5D7Qg==}
 
-  '@meshconnect/uwc-bridge-parent@1.5.0':
-    resolution: {integrity: sha512-ah8zvZf9i2CIxNsL1XI5Jfib6/XLZYVBngDeicEOXjqg9C6uVSPacDJZwWFnt1PJyghxiqU3CdJyJOgI0lqLUA==}
+  '@meshconnect/uwc-bridge-parent@1.6.0':
+    resolution: {integrity: sha512-k+KY9sFlajdG15DmwM1bE3/l6030GWCs/OCldX+dye043JEaaChEpdSmARaqZWDFVtsre911Ba7rIGd7izCHfw==}
 
   '@napi-rs/wasm-runtime@0.2.4':
     resolution: {integrity: sha512-9zESzOO5aDByvhIAsOy9TbpZ0Ur2AJbUI7UT73kcUTS2mxAMHOBaa1st/jAymNoCtvrit99kkzT1FZuXVcgfIQ==}
@@ -6944,7 +6944,7 @@ snapshots:
       - encoding
       - utf-8-validate
 
-  '@meshconnect/uwc-bridge-parent@1.5.0(bs58@6.0.0)(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@6.0.6)':
+  '@meshconnect/uwc-bridge-parent@1.6.0(bs58@6.0.0)(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@6.0.6)':
     dependencies:
       '@solana/wallet-adapter-base': 0.9.27(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@6.0.6))
       '@solana/wallet-standard-wallet-adapter-base': 1.1.5(@solana/web3.js@1.98.4(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@6.0.6))(bs58@6.0.0)
