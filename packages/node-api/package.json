@@ -11,7 +11,7 @@
   "homepage": "https://github.com/FrontFin/mesh-web-sdk",
   "devDependencies": {
     "typescript": "^4.6.4",
-    "swagger-typescript-api": "^12.0.3"
+    "swagger-typescript-api": "^13.12.2"
   },
   "scripts": {
     "build": "rimraf dist && yarn build:esm && yarn build:cjs && yarn copy",
