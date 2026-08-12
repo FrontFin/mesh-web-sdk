@@ -44,34 +44,5 @@
     "publish:npm": "pnpm run build && cd dist && npm publish --access public --provenance --registry https://registry.npmjs.org",
     "test": "jest",
     "test:cov": "jest --ci --coverage"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "jsdom",
-    "setupFiles": [
-      "./jest.setup.ts"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/dist/"
-    ],
-    "coverageDirectory": "./coverage",
-    "transform": {
-      "^.+\\.[tj]sx?$": [
-        "babel-jest",
-        {
-          "presets": [
-            "@babel/preset-env",
-            "@babel/preset-typescript"
-          ]
-        }
-      ]
-    },
-    "transformIgnorePatterns": [
-      "/node_modules/(?!\\.pnpm/|(@meshconnect/solana-web3\\.js|uuid|jayson|superstruct|@noble|@meshconnect|ethers)/)"
-    ],
-    "testEnvironmentOptions": {
-      "url": "http://localhost/"
-    }
   }
 }
