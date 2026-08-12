@@ -32,7 +32,7 @@
 //
 // Under yarn's flat layout only boundary 2 exists, so behaviour is unchanged.
 const ESM_DEPS = [
-  '@meshconnect/solana-web3\\.js',
+  String.raw`@meshconnect/solana-web3\.js`,
   'uuid',
   'jayson',
   'superstruct',
@@ -54,7 +54,7 @@ module.exports = {
     ]
   },
   transformIgnorePatterns: [
-    `/node_modules/(?!\\.pnpm/|(${ESM_DEPS.join('|')})/)`
+    String.raw`/node_modules/(?!\.pnpm/|(${ESM_DEPS.join('|')})/)`
   ],
   testEnvironmentOptions: { url: 'http://localhost/' }
 }
