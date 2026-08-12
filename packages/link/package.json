@@ -25,7 +25,9 @@
     "jest": "^29.7.0",
     "jest-environment-jsdom": "^29.7.0",
     "prettier": "^2.2.1",
+    "rimraf": "^5.0.10",
     "ts-jest": "^29.1.2",
+    "typescript": "^5.0.4",
     "util": "^0.12.4"
   },
   "dependencies": {
@@ -33,43 +35,14 @@
     "@meshconnect/uwc-bridge-parent": "1.6.0"
   },
   "scripts": {
-    "build": "yarn updateVersion && rimraf dist && yarn build:esm && yarn copy",
+    "build": "pnpm run updateVersion && rimraf dist && pnpm run build:esm && pnpm run copy",
     "build:esm": "tsc --outDir dist",
     "typecheck": "tsc --noEmit --skipLibCheck",
     "lint": "eslint **/*.ts",
     "copy": "node ./tools/copy",
     "updateVersion": "node ./tools/update-version",
-    "publish:npm": "yarn build && cd dist && npm publish --access public --provenance --registry https://registry.npmjs.org",
+    "publish:npm": "pnpm run build && cd dist && npm publish --access public --provenance --registry https://registry.npmjs.org",
     "test": "jest",
     "test:cov": "jest --ci --coverage"
-  },
-  "jest": {
-    "preset": "ts-jest",
-    "testEnvironment": "jsdom",
-    "setupFiles": [
-      "./jest.setup.ts"
-    ],
-    "testPathIgnorePatterns": [
-      "/node_modules/",
-      "/dist/"
-    ],
-    "coverageDirectory": "./coverage",
-    "transform": {
-      "^.+\\.[tj]sx?$": [
-        "babel-jest",
-        {
-          "presets": [
-            "@babel/preset-env",
-            "@babel/preset-typescript"
-          ]
-        }
-      ]
-    },
-    "transformIgnorePatterns": [
-      "/node_modules/(?!(@meshconnect/solana-web3.js|uuid|jayson|superstruct|@noble|@meshconnect|ethers)/)"
-    ],
-    "testEnvironmentOptions": {
-      "url": "http://localhost/"
-    }
   }
 }
