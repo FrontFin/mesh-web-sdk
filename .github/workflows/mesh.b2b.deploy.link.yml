@@ -47,6 +47,6 @@ jobs:
           cache: 'pnpm'
       # OIDC trusted publishing requires npm >= 11.5.1; pin for reproducible releases.
       # The publish itself is still `npm publish` from dist/, so this stays.
-      - run: npm install -g npm@11.5.1
+      - run: npm install -g npm@11.5.1 --ignore-scripts
       - run: pnpm install --frozen-lockfile --ignore-scripts
       - run: cd packages/link && pnpm run publish:npm
