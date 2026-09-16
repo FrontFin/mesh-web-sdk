@@ -7116,7 +7116,7 @@ export interface TransferModel {
   /** Client's user identifier. */
   userId?: string | null
   /** Transfer status. */
-  status?: 'pending' | 'succeeded' | 'failed'
+  status?: 'pending' | 'succeeded' | 'failed' | 'expired'
   /**
    * Transfer amount in fiat.
    * @format double
@@ -7903,7 +7903,7 @@ export interface UpdateTransferModel {
   /** Client's user identifier. */
   userId?: string | null
   /** Transfer status. */
-  status?: 'pending' | 'succeeded' | 'failed'
+  status?: 'pending' | 'succeeded' | 'failed' | 'expired'
   /**
    * Transfer amount in fiat.
    * @format double
@@ -7938,7 +7938,7 @@ export interface UpdateTransferModel {
 
 export interface UpdateTransferResponse {
   /** The status of the transfer. */
-  status?: 'pending' | 'succeeded' | 'failed'
+  status?: 'pending' | 'succeeded' | 'failed' | 'expired'
   /** The status details of the transfer. */
   statusDetails?:
     | 'unknown'
