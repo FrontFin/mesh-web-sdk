@@ -7268,7 +7268,7 @@ export type TransferOrderByFields =
   | 'symbol'
   | 'networkName'
 
-export type TransferStatus = 'pending' | 'succeeded' | 'failed'
+export type TransferStatus = 'pending' | 'succeeded' | 'failed' | 'expired'
 
 export interface TransferToAddress {
   /**
