@@ -7,8 +7,13 @@ import {
   EventType,
   LinkPayload,
   IntegrationAccessToken,
-  TransferFinishedPayload
+  TransferFinishedPayload,
+  MeshBackupConfig
 } from './utils/types'
+import {
+  BACKUP_CONFIG_MESSAGE_TYPE,
+  DEFAULT_BACKUP_WIDGET_ORIGIN
+} from './utils/backup'
 
 jest.mock('@meshconnect/uwc-bridge-parent', () => ({
   BridgeParent: jest.fn().mockImplementation(() => ({
@@ -596,5 +601,325 @@ describe('createLink tests', () => {
     const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeFalsy()
     expect(exitFunction).toHaveBeenCalled()
+  })
+})
+
+describe('openLinkBackup tests', () => {
+  globalThis.open = jest.fn()
+
+  const BACKUP_SESSION: MeshBackupConfig = {
+    clientId: 'client-1',
+    userId: 'user-1',
+    destinations: [{ networkId: 'net-1', symbol: 'USDC', address: '0xabc' }]
+  }
+
+  beforeEach(() => {
+    document.getElementsByTagName('html')[0].innerHTML = ''
+    const removePrewarmIframeMock = removePrewarmIframe as jest.Mock
+    removePrewarmIframeMock.mockReset()
+  })
+
+  test('openLinkBackup with no session calls onExit and does not open popup', () => {
+    const exitFunction = jest.fn<void, [string | undefined]>()
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onExit: exitFunction
+    })
+
+    frontConnection.openLinkBackup(undefined as unknown as MeshBackupConfig)
+
+    expect(exitFunction).toHaveBeenCalledWith('Invalid backup session!')
+    expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
+    expect(removePrewarmIframe).toHaveBeenCalled()
+  })
+
+  test('openLinkBackup opens popup at DEFAULT_BACKUP_WIDGET_ORIGIN with display hints', () => {
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn()
+    })
+
+    frontConnection.openLinkBackup(BACKUP_SESSION)
+
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
+    expect(iframeElement).toBeTruthy()
+    const src = iframeElement?.attributes.getNamedItem('src')?.nodeValue
+    expect(
+      src?.startsWith(
+        `${DEFAULT_BACKUP_WIDGET_ORIGIN}?platform=web&sdkVersion=`
+      )
+    ).toBe(true)
+    // No link token is ever decoded in backup mode, and no theme param unless set.
+    expect(src).not.toContain('theme=')
+  })
+
+  test('openLinkBackup honours widgetOrigin override, normalises trailing slash, and appends theme', () => {
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      theme: 'dark'
+    })
+
+    frontConnection.openLinkBackup(BACKUP_SESSION, {
+      widgetOrigin: 'https://demo-widget.cascadecode.com/'
+    })
+
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
+    const src = iframeElement?.attributes.getNamedItem('src')?.nodeValue
+    expect(
+      src?.startsWith(
+        'https://demo-widget.cascadecode.com?platform=web&sdkVersion='
+      )
+    ).toBe(true)
+    expect(src).toContain('&theme=dark')
+  })
+
+  test('openLinkBackup does not append theme for theme "system"', () => {
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      theme: 'system'
+    })
+
+    frontConnection.openLinkBackup(BACKUP_SESSION)
+
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
+    const src = iframeElement?.attributes.getNamedItem('src')?.nodeValue
+    expect(src).not.toContain('theme=')
+  })
+
+  test('openLinkBackup with renderType "embedded" and no customIframeId logs error, calls onExit, and does not open popup', () => {
+    const exitFunction = jest.fn<void, [string | undefined]>()
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation()
+
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onExit: exitFunction,
+      renderType: 'embedded'
+    })
+
+    frontConnection.openLinkBackup(BACKUP_SESSION)
+
+    const msg =
+      'Mesh SDK: Failed to open backup link - renderType "embedded" requires a customIframeId'
+    expect(consoleErrorSpy).toHaveBeenCalledWith(msg)
+    expect(exitFunction).toHaveBeenCalledWith(msg)
+    expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
+
+    consoleErrorSpy.mockRestore()
+  })
+
+  test('openLinkBackup with renderType "embedded" and customIframeId sets src and allow on the custom iframe', () => {
+    const customIframeId = 'backup-embedded-iframe'
+    const customIframeElement = document.createElement('iframe')
+    customIframeElement.id = customIframeId
+    document.body.appendChild(customIframeElement)
+
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      renderType: 'embedded'
+    })
+
+    frontConnection.openLinkBackup(BACKUP_SESSION, { customIframeId })
+
+    expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
+    const src = customIframeElement.attributes.getNamedItem('src')?.nodeValue
+    expect(
+      src?.startsWith(`${DEFAULT_BACKUP_WIDGET_ORIGIN}?platform=web`)
+    ).toBe(true)
+    expect(customIframeElement.allow).toContain(
+      `camera ${DEFAULT_BACKUP_WIDGET_ORIGIN}`
+    )
+    expect(customIframeElement.allow).toContain(
+      `microphone ${DEFAULT_BACKUP_WIDGET_ORIGIN}`
+    )
+  })
+
+  test('openLinkBackup delivers the config to the widget on the "loaded" handshake', () => {
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn()
+    })
+
+    frontConnection.openLinkBackup(BACKUP_SESSION)
+
+    const iframeElement = document.getElementById(
+      'mesh-link-popup__iframe'
+    ) as HTMLIFrameElement | null
+    expect(iframeElement?.contentWindow).toBeTruthy()
+
+    const postMessageSpy = jest.spyOn(
+      iframeElement?.contentWindow as Window,
+      'postMessage'
+    )
+
+    globalThis.dispatchEvent(
+      new MessageEvent<{ type: EventType }>('message', {
+        data: { type: 'loaded' },
+        origin: 'http://localhost'
+      })
+    )
+
+    // Config is posted to the widget's own origin, not the host page origin.
+    expect(postMessageSpy).toHaveBeenCalledWith(
+      { type: BACKUP_CONFIG_MESSAGE_TYPE, payload: BACKUP_SESSION },
+      DEFAULT_BACKUP_WIDGET_ORIGIN
+    )
+  })
+
+  test('backup callbacks reuse the host event contract (transferFinished / onExit)', () => {
+    const onTransferFinished = jest.fn<void, [TransferFinishedPayload]>()
+    const onExit = jest.fn<void, [string | undefined]>()
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onTransferFinished,
+      onExit
+    })
+
+    frontConnection.openLinkBackup(BACKUP_SESSION)
+
+    const payload: TransferFinishedPayload = {
+      status: 'success',
+      txId: 'tid',
+      fromAddress: 'fa',
+      toAddress: 'ta',
+      symbol: 'USDC',
+      amount: 1,
+      networkId: 'net-1'
+    }
+    globalThis.dispatchEvent(
+      new MessageEvent('message', {
+        data: { type: 'transferFinished', payload },
+        origin: 'http://localhost'
+      })
+    )
+    expect(onTransferFinished).toHaveBeenCalledWith(payload)
+
+    globalThis.dispatchEvent(
+      new MessageEvent('message', {
+        data: { type: 'close', payload: { errorMessage: 'bye' } },
+        origin: 'http://localhost'
+      })
+    )
+    expect(onExit).toHaveBeenCalledWith('bye', { errorMessage: 'bye' })
+    expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
+  })
+
+  test('openLink after openLinkBackup does not leak the backup config on "loaded"', () => {
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn()
+    })
+
+    // A backup session, then a switch back to the primary (token) path.
+    frontConnection.openLinkBackup(BACKUP_SESSION)
+    frontConnection.openLink(BASE64_ENCODED_URL)
+
+    const iframeElement = document.getElementById(
+      'mesh-link-popup__iframe'
+    ) as HTMLIFrameElement | null
+    const postMessageSpy = jest.spyOn(
+      iframeElement?.contentWindow as Window,
+      'postMessage'
+    )
+
+    globalThis.dispatchEvent(
+      new MessageEvent<{ type: EventType }>('message', {
+        data: { type: 'loaded' },
+        origin: 'http://localhost'
+      })
+    )
+
+    const leaked = postMessageSpy.mock.calls.find(
+      ([message]) =>
+        (message as { type?: string })?.type === BACKUP_CONFIG_MESSAGE_TYPE
+    )
+    expect(leaked).toBeUndefined()
+  })
+
+  test('openLinkBackup does not forward integration access tokens to the backup widget on "loaded"', () => {
+    const tokens: IntegrationAccessToken[] = [
+      {
+        accessToken: 'at',
+        accountId: 'aid',
+        accountName: 'an',
+        brokerType: 'acorns',
+        brokerName: 'A'
+      }
+    ]
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      accessTokens: tokens
+    })
+
+    frontConnection.openLinkBackup(BACKUP_SESSION)
+
+    const iframeElement = document.getElementById(
+      'mesh-link-popup__iframe'
+    ) as HTMLIFrameElement | null
+    const postMessageSpy = jest.spyOn(
+      iframeElement?.contentWindow as Window,
+      'postMessage'
+    )
+
+    globalThis.dispatchEvent(
+      new MessageEvent<{ type: EventType }>('message', {
+        data: { type: 'loaded' },
+        origin: 'http://localhost'
+      })
+    )
+
+    // The deposit-only backup widget must never receive integration credentials.
+    const forwardedTokens = postMessageSpy.mock.calls.find(
+      ([message]) =>
+        (message as { type?: string })?.type === 'frontAccessTokens'
+    )
+    expect(forwardedTokens).toBeUndefined()
+    // The backup config is still delivered.
+    expect(postMessageSpy).toHaveBeenCalledWith(
+      { type: BACKUP_CONFIG_MESSAGE_TYPE, payload: BACKUP_SESSION },
+      DEFAULT_BACKUP_WIDGET_ORIGIN
+    )
+  })
+
+  test('openLinkBackup with a malformed widgetOrigin calls onExit and opens no popup', () => {
+    const exitFunction = jest.fn<void, [string | undefined]>()
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onExit: exitFunction
+    })
+
+    frontConnection.openLinkBackup(BACKUP_SESSION, {
+      widgetOrigin: 'not-a-url'
+    })
+
+    expect(exitFunction).toHaveBeenCalledWith('Invalid backup widget origin!')
+    expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
+  })
+
+  test('openLinkBackup embedded with a missing customIframeId warns and opens no popup', () => {
+    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation()
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      renderType: 'embedded'
+    })
+
+    frontConnection.openLinkBackup(BACKUP_SESSION, {
+      customIframeId: 'does-not-exist'
+    })
+
+    expect(consoleWarnSpy).toHaveBeenCalledWith(
+      'Mesh SDK: No iframe found with id does-not-exist'
+    )
+    expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
+
+    consoleWarnSpy.mockRestore()
   })
 })

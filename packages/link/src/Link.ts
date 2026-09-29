@@ -5,7 +5,9 @@ import {
   AccessTokenPayload,
   DelayedAuthPayload,
   TransferFinishedPayload,
-  LinkPayload
+  LinkPayload,
+  MeshBackupConfig,
+  MeshBackupOptions
 } from './utils/types'
 import {
   addPopup,
@@ -16,6 +18,11 @@ import {
 import { LinkEventType, isLinkEventTypeKey } from './utils/event-types'
 import { sdkSpecs } from './utils/sdk-specs'
 import { appendQueryParam } from './utils/url'
+import {
+  BACKUP_CONFIG_MESSAGE_TYPE,
+  DEFAULT_BACKUP_WIDGET_ORIGIN,
+  buildBackupWidgetUrl
+} from './utils/backup'
 import { BridgeParent } from '@meshconnect/uwc-bridge-parent'
 import { createPrewarmIframe, removePrewarmIframe } from './utils/prewarm'
 
@@ -24,6 +31,10 @@ let targetOrigin: string | undefined
 let linkTokenOrigin: string | undefined
 let currentIframeId = iframeId
 let bridgeParent: BridgeParent | null = null
+// Set by `openLinkBackup`, delivered to the widget on its `loaded` handshake.
+// Cleared by `openLink` so a prior backup session can never leak its deposit
+// config into a subsequent primary (token) flow.
+let backupSession: MeshBackupConfig | undefined
 
 const iframeElement = () => {
   return document.getElementById(currentIframeId) as HTMLIFrameElement
@@ -101,6 +112,8 @@ async function handleLinkEvent(
       currentOptions?.onExit?.(payload?.errorMessage, payload)
       bridgeParent?.destroy()
       removePopup()
+      // A closed backup session must not be re-delivered to a later iframe.
+      backupSession = undefined
       break
     }
     case 'loaded': {
@@ -109,10 +122,21 @@ async function handleLinkEvent(
         payload: { ...sdkSpecs }
       })
 
-      if (currentOptions?.accessTokens) {
+      // Never forward integration access tokens to the backup widget: it is a
+      // deposit-only flow served from an independent origin (no shared failure
+      // domain with Mesh) and has no use for them — forwarding would leak the
+      // user's credentials cross-origin.
+      if (currentOptions?.accessTokens && !backupSession) {
         sendMessageToIframe({
           type: 'frontAccessTokens',
           payload: currentOptions.accessTokens
+        })
+      }
+
+      if (backupSession) {
+        sendMessageToIframe({
+          type: BACKUP_CONFIG_MESSAGE_TYPE,
+          payload: backupSession
         })
       }
 
@@ -141,6 +165,7 @@ async function eventsListener(
 export const createLink = (options: LinkOptions): Link => {
   const openLink = (linkToken: string, customIframeId?: string) => {
     removePrewarmIframe()
+    backupSession = undefined
 
     if (!linkToken) {
       options?.onExit?.('Invalid link token!')
@@ -200,6 +225,81 @@ export const createLink = (options: LinkOptions): Link => {
     }
   }
 
+  const openLinkBackup = (
+    session: MeshBackupConfig,
+    backupOptions?: MeshBackupOptions
+  ) => {
+    removePrewarmIframe()
+
+    if (!session) {
+      options?.onExit?.('Invalid backup session!')
+      return
+    }
+
+    const customIframeId = backupOptions?.customIframeId
+
+    if (options?.renderType === 'embedded' && !customIframeId) {
+      const msg =
+        'Mesh SDK: Failed to open backup link - renderType "embedded" requires a customIframeId'
+      console.error(msg)
+      options?.onExit?.(msg)
+      return
+    }
+
+    currentOptions = options
+    backupSession = session
+
+    const widgetOrigin =
+      backupOptions?.widgetOrigin || DEFAULT_BACKUP_WIDGET_ORIGIN
+
+    let widgetUrl: string
+    try {
+      // The widget reads only `theme=dark|light`; `system`/unset is left to its
+      // own `prefers-color-scheme` fallback.
+      const theme =
+        currentOptions?.theme === 'dark' || currentOptions?.theme === 'light'
+          ? currentOptions.theme
+          : undefined
+      widgetUrl = buildBackupWidgetUrl(widgetOrigin, {
+        platform: sdkSpecs.platform,
+        sdkVersion: sdkSpecs.version,
+        theme
+      })
+      linkTokenOrigin = new URL(widgetUrl).origin
+    } catch {
+      backupSession = undefined
+      options?.onExit?.('Invalid backup widget origin!')
+      return
+    }
+
+    window.removeEventListener('message', eventsListener)
+    if (customIframeId) {
+      const iframe = document.getElementById(
+        customIframeId
+      ) as HTMLIFrameElement
+      if (iframe) {
+        iframe.allow = buildIframeAllowPolicy(linkTokenOrigin!)
+        iframe.src = widgetUrl
+        currentIframeId = customIframeId
+      } else {
+        console.warn(`Mesh SDK: No iframe found with id ${customIframeId}`)
+      }
+    } else {
+      currentIframeId = iframeId
+      addPopup(widgetUrl)
+    }
+
+    window.addEventListener('message', eventsListener)
+
+    targetOrigin = window.location.origin
+
+    const iframe = iframeElement()
+
+    if (iframe) {
+      bridgeParent = new BridgeParent(iframe)
+    }
+  }
+
   const closeLink = () => {
     bridgeParent?.destroy()
     removePopup()
@@ -217,6 +317,7 @@ export const createLink = (options: LinkOptions): Link => {
 
   return {
     openLink,
+    openLinkBackup,
     closeLink,
     closeLinkRequested
   }

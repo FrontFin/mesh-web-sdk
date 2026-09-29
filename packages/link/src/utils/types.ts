@@ -15,6 +15,20 @@ export interface Link {
    */
   openLink: (linkToken: string, customIframeId?: string) => void
   /**
+   * Opens the standalone backup deposit widget for use when the primary Mesh API
+   * is unavailable. Unlike {@link openLink} there is no link token — the widget is
+   * a static SPA served from an independent origin, hydrated with `session` over
+   * the message bridge after it loads. The host event contract
+   * (`onIntegrationConnected` / `onTransferFinished` / `onEvent` / `onExit`) is
+   * unchanged, so the same handlers passed to `createLink` apply to both paths.
+   * @param session - Backup deposit configuration, assembled server-side (canonical shape: OR-446).
+   * @param options - Optional `widgetOrigin` (defaults to `DEFAULT_BACKUP_WIDGET_ORIGIN`) and `customIframeId` for embedded mode.
+   */
+  openLinkBackup: (
+    session: MeshBackupConfig,
+    options?: MeshBackupOptions
+  ) => void
+  /**
    * A function to close Link UI popup
    */
   closeLink: () => void
@@ -22,6 +36,89 @@ export interface Link {
    * A function to request Link UI to close gracefully in embedded mode.
    */
   closeLinkRequested: () => void
+}
+
+/**
+ * A single deposit destination offered by the backup widget. When `address` is
+ * omitted it is resolved at runtime via the client-hosted JIT endpoints in
+ * {@link MeshBackupJitConfig} — so `jit` is required whenever any destination
+ * omits `address`.
+ */
+export interface MeshBackupDestination {
+  /** Mesh network id for this destination. */
+  networkId: string
+  /** Token symbol (e.g. `USDC`). */
+  symbol: string
+  /** Static deposit address. Omit to resolve just-in-time via `jit`. */
+  address?: string
+  /** Destination tag / memo, for networks that require one (e.g. XRP). */
+  addressTag?: string | null
+}
+
+/**
+ * Client-hosted JIT (just-in-time) address endpoints, required when any
+ * destination omits `address`. The widget calls these directly, presenting the
+ * `token` as `Authorization: Bearer <token>`. Mesh never sees or validates the
+ * token — the client owns its issuance and validation.
+ */
+export interface MeshBackupJitConfig {
+  /** `POST` endpoint that begins address resolution. */
+  initiateUrl: string
+  /** `GET` endpoint the widget polls until an address is `ready`. */
+  statusUrl: string
+  /**
+   * Short-lived (≤10 min), user-scoped bearer token, minted by the client
+   * server-side at outage-detection time. Treat as exposed — it lives in the
+   * widget iframe.
+   */
+  token: string
+}
+
+/**
+ * Configuration handed to the backup deposit widget. Assemble this server-side
+ * (destinations and any JIT token should not be built in untrusted client code)
+ * and pass it to {@link Link.openLinkBackup}; it is delivered to the widget over
+ * the message bridge after the widget loads. Canonical shape: OR-446.
+ */
+export interface MeshBackupConfig {
+  /** The client's Mesh client id. */
+  clientId: string
+  /**
+   * The client's end-user identifier. Echoed by JIT and used for analytics —
+   * it is **not** an authentication credential.
+   */
+  userId: string
+  /** Deposit destinations to offer. At least one is required. */
+  destinations: MeshBackupDestination[]
+  /**
+   * Preselect a token symbol, skipping the token-select screen. Must match one
+   * of the destination symbols; an unknown symbol falls back to token select.
+   */
+  preselectedSymbol?: string
+  /** Required when any destination omits `address`. */
+  jit?: MeshBackupJitConfig
+  /**
+   * Your correlation id, echoed to your JIT Initiate/Status endpoints so you can
+   * tie the resolved deposit address to a transaction in your system.
+   */
+  transactionId?: string
+}
+
+/**
+ * Optional arguments to {@link Link.openLinkBackup}.
+ */
+export interface MeshBackupOptions {
+  /**
+   * Origin serving the standalone backup widget. Defaults to
+   * `DEFAULT_BACKUP_WIDGET_ORIGIN`. Override for staging, demo, or self-hosting.
+   */
+  widgetOrigin?: string
+  /**
+   * Custom ID for an existing iframe element, mirroring {@link Link.openLink}'s
+   * embedded-mode param. Required when `createLink` was called with
+   * `renderType: 'embedded'`.
+   */
+  customIframeId?: string
 }
 
 export interface AccountToken {
