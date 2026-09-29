@@ -3,9 +3,18 @@ import {
   createLink,
   LinkOptions,
   LinkPayload,
+  LinkEventType,
   TransferFinishedPayload
 } from '@meshconnect/web-link-sdk'
 import { Section, Button, Input, theme } from '../components/StyledComponents'
+import {
+  DEMO_BACKUP_CONFIG,
+  JIT_BACKUP_CONFIG,
+  DEMO_BACKUP_WIDGET_ORIGIN,
+  DEAD_BACKUP_WIDGET_ORIGIN,
+  demoOnAddressInit,
+  demoOnStatusPoll
+} from '../utility/backupConfig'
 
 export const App: React.FC = () => {
   const [error, setError] = useState<string | null>(null)
@@ -13,6 +22,58 @@ export const App: React.FC = () => {
   const [transferFinishedData, setTransferFinishedData] =
     useState<TransferFinishedPayload | null>(null)
   const [directLinkToken, setDirectLinkToken] = useState('')
+
+  // --- Backup / outage demo state ---
+  const [forceTier2, setForceTier2] = useState(false)
+  const [forceJit, setForceJit] = useState(false)
+  const [backupTier, setBackupTier] = useState<'tier1' | 'tier2'>('tier1')
+  const [backupStatus, setBackupStatus] = useState<string | null>(null)
+
+  const handleOpenBackup = useCallback(() => {
+    setError(null)
+    setBackupTier('tier1')
+    setBackupStatus('Backup widget opening…')
+
+    const widgetOrigin = forceTier2
+      ? DEAD_BACKUP_WIDGET_ORIGIN
+      : DEMO_BACKUP_WIDGET_ORIGIN
+
+    const meshLink = createLink({
+      clientId: DEMO_BACKUP_CONFIG.clientId,
+      theme: 'dark',
+      onIntegrationConnected: () => {
+        // Deposit-only backup does not connect accounts.
+      },
+      // JIT callbacks — required only when a destination omits `address` (the
+      // "Force JIT" path). They run here in the host app and call the local mock
+      // backend (run `pnpm mock`).
+      onAddressInit: demoOnAddressInit,
+      onStatusPoll: demoOnStatusPoll,
+      onTransferFinished: transferData => {
+        console.info('[MESH BACKUP TRANSFER FINISHED]', transferData)
+        setTransferFinishedData(transferData)
+      },
+      onExit: (err, summary) => {
+        if (err) console.error(`[MESH BACKUP ERROR] ${err}`)
+        if (summary) console.log('Summary', summary)
+        setError(err || null)
+        setBackupStatus(err ? `Exited: ${err}` : 'Backup flow closed')
+      },
+      onEvent: (ev: LinkEventType) => {
+        console.info('[MESH BACKUP Event]', ev)
+        // Surface the Tier-1 → Tier-2 cascade so the demo shows which tier
+        // actually rendered the deposit (OR-475).
+        if (ev.type === 'backupTierChanged') {
+          setBackupTier(ev.payload.to)
+          setBackupStatus(`Cascaded to ${ev.payload.to} (${ev.payload.reason})`)
+        }
+      }
+    })
+
+    meshLink.openLinkBackup(forceJit ? JIT_BACKUP_CONFIG : DEMO_BACKUP_CONFIG, {
+      widgetOrigin
+    })
+  }, [forceTier2, forceJit])
 
   const prepareLink = useCallback(
     (linkOptions?: Partial<LinkOptions>) => {
@@ -117,6 +178,50 @@ export const App: React.FC = () => {
         >
           Launch with Link Token in custom frame
         </Button>
+      </Section>
+
+      <Section title="Backup / Outage Flow (openLinkBackup)">
+        <p style={{ color: theme.colors.text, marginTop: 0 }}>
+          Deposit-only flow for when the primary Mesh API is down. No link token
+          — it loads the standalone backup widget and takes a client-assembled
+          config. Tier&nbsp;1 loads from the backup origin; on failure the SDK
+          cascades to the SDK-bundled Tier&nbsp;2 offline widget.
+        </p>
+
+        <label style={{ display: 'block', marginBottom: theme.spacing.sm }}>
+          <input
+            type="checkbox"
+            checked={forceTier2}
+            onChange={e => setForceTier2(e.target.checked)}
+          />{' '}
+          Force Tier-2 fallback (point at an unreachable origin → cascade to the
+          bundled offline widget)
+        </label>
+
+        <label style={{ display: 'block', marginBottom: theme.spacing.md }}>
+          <input
+            type="checkbox"
+            checked={forceJit}
+            onChange={e => setForceJit(e.target.checked)}
+          />{' '}
+          Force JIT (drop static addresses → resolve via onAddressInit /
+          onStatusPoll → local mock backend; run <code>pnpm mock</code>)
+        </label>
+
+        <Button onClick={handleOpenBackup}>Open backup deposit</Button>
+
+        <p style={{ color: theme.colors.text, marginBottom: 0 }}>
+          <strong>Active tier:</strong>{' '}
+          {backupTier === 'tier2'
+            ? '● Tier 2 · bundled offline widget (no Mesh network)'
+            : '○ Tier 1 · backup origin'}
+          {backupStatus && (
+            <>
+              <br />
+              <small>{backupStatus}</small>
+            </>
+          )}
+        </p>
       </Section>
 
       {error && (

@@ -16,7 +16,8 @@
   "scripts": {
     "start": "vite",
     "build": "tsc && vite build",
-    "typecheck": "tsc --noEmit --skipLibCheck"
+    "typecheck": "tsc --noEmit --skipLibCheck",
+    "mock": "node mock-backend/server.mjs"
   },
   "browserslist": {
     "production": [
