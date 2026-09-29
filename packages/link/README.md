@@ -110,8 +110,8 @@ All callbacks are optional.
 
 #### Withdrawal events
 
-When a user confirms a withdrawal, `onEvent` receives a `withdrawalRequested` event, followed by `onExit` as Link closes.
-Use it to continue the withdrawal in your app, for example to prompt for your own 2FA.
+When a user confirms a withdrawal, `onEvent` receives a `withdrawalRequested` event, then Link closes and calls `onExit`.
+Keep the `transferId` and continue the withdrawal once Link has closed, for example with your own 2FA prompt.
 The payload carries no address or amount: read the transfer details from the webhook or the transfer API.
 
 ```ts
