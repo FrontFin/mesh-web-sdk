@@ -50,7 +50,19 @@ the React Native example.
   pnpm start:https
   ```
 
-  (Self-signed cert via `@vitejs/plugin-basic-ssl`; accept the browser warning.)
+  By default this uses a self-signed cert (`@vitejs/plugin-basic-ssl`), so the
+  browser shows **`ERR_CERT_AUTHORITY_INVALID`** — click **Advanced → Proceed to
+  localhost**, or in Chrome type **`thisisunsafe`** on the warning page. To avoid
+  the warning entirely, generate a locally-trusted cert with
+  [mkcert](https://github.com/FiloSottile/mkcert):
+
+  ```
+  brew install mkcert && mkcert -install
+  mkdir -p certs
+  mkcert -key-file certs/localhost-key.pem -cert-file certs/localhost.pem localhost
+  pnpm start:https   # now uses the trusted cert automatically (certs/ is gitignored)
+  ```
+
   Plain `pnpm start` (http) still works for **Tier-2** (loaded via `srcdoc`, not
   subject to `frame-ancestors`) and for pointing at a **local widget**.
 - **JIT needs a callback-capable widget.** The Tier-2 bundle shipped in the SDK is
