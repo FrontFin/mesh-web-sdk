@@ -6,9 +6,17 @@ import type {
 // --- Backup / outage demo -------------------------------------------------
 // The deposit-only backup flow runs when the primary Mesh API is unavailable.
 // It needs no link token: `openLinkBackup` loads the standalone backup widget
-// from its origin and takes a client-assembled MeshBackupConfig. This origin is
-// the live demo widget (OR-449); in production it is the shipped backup origin.
-export const DEMO_BACKUP_WIDGET_ORIGIN = 'https://demo-widget.cascadecode.com'
+// from its origin and takes a client-assembled MeshBackupConfig.
+//
+// Default is the live demo widget (OR-449). NOTE two things about it for local
+// testing: (1) it sends `Content-Security-Policy: frame-ancestors https:`, so it
+// can only be iframed by an https page — serve this example over https, or point
+// at a local widget below; (2) it is currently the pre-callback build, so the JIT
+// path ("Force JIT") needs a callback-capable widget (mesh-backup-widget PR #14)
+// — run that locally and set VITE_BACKUP_WIDGET_ORIGIN to its dev URL.
+export const DEMO_BACKUP_WIDGET_ORIGIN =
+  (import.meta.env.VITE_BACKUP_WIDGET_ORIGIN as string) ||
+  'https://demo-widget.cascadecode.com'
 
 // A deliberately unreachable origin (reserved `.invalid` TLD, RFC 6761). With
 // "Force Tier-2 fallback" on, the backup flow is pointed here so the Tier-1 load

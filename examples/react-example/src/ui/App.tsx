@@ -26,6 +26,7 @@ export const App: React.FC = () => {
   // --- Backup / outage demo state ---
   const [forceTier2, setForceTier2] = useState(false)
   const [forceJit, setForceJit] = useState(false)
+  const [tier1Origin, setTier1Origin] = useState(DEMO_BACKUP_WIDGET_ORIGIN)
   const [backupTier, setBackupTier] = useState<'tier1' | 'tier2'>('tier1')
   const [backupStatus, setBackupStatus] = useState<string | null>(null)
 
@@ -34,9 +35,7 @@ export const App: React.FC = () => {
     setBackupTier('tier1')
     setBackupStatus('Backup widget opening…')
 
-    const widgetOrigin = forceTier2
-      ? DEAD_BACKUP_WIDGET_ORIGIN
-      : DEMO_BACKUP_WIDGET_ORIGIN
+    const widgetOrigin = forceTier2 ? DEAD_BACKUP_WIDGET_ORIGIN : tier1Origin
 
     const meshLink = createLink({
       clientId: DEMO_BACKUP_CONFIG.clientId,
@@ -73,7 +72,7 @@ export const App: React.FC = () => {
     meshLink.openLinkBackup(forceJit ? JIT_BACKUP_CONFIG : DEMO_BACKUP_CONFIG, {
       widgetOrigin
     })
-  }, [forceTier2, forceJit])
+  }, [forceTier2, forceJit, tier1Origin])
 
   const prepareLink = useCallback(
     (linkOptions?: Partial<LinkOptions>) => {
@@ -188,6 +187,24 @@ export const App: React.FC = () => {
           cascades to the SDK-bundled Tier&nbsp;2 offline widget.
         </p>
 
+        <Input
+          label="Tier-1 widget origin:"
+          value={tier1Origin}
+          onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+            setTier1Origin(e.target.value)
+          }
+          placeholder={DEMO_BACKUP_WIDGET_ORIGIN}
+          disabled={forceTier2}
+        />
+        <p
+          style={{ marginTop: 0, fontSize: '0.85em', color: theme.colors.text }}
+        >
+          The hosted demo sends <code>frame-ancestors https:</code>, so it only
+          frames from an <strong>https</strong> page. Over http, either serve
+          this example with https or run a widget locally and paste its URL
+          here.
+        </p>
+
         <label style={{ display: 'block', marginBottom: theme.spacing.sm }}>
           <input
             type="checkbox"
@@ -195,7 +212,7 @@ export const App: React.FC = () => {
             onChange={e => setForceTier2(e.target.checked)}
           />{' '}
           Force Tier-2 fallback (point at an unreachable origin → cascade to the
-          bundled offline widget)
+          bundled offline widget; loads via srcdoc, no https/CSP constraint)
         </label>
 
         <label style={{ display: 'block', marginBottom: theme.spacing.md }}>
@@ -207,6 +224,15 @@ export const App: React.FC = () => {
           Force JIT (drop static addresses → resolve via onAddressInit /
           onStatusPoll → local mock backend; run <code>pnpm mock</code>)
         </label>
+        <p
+          style={{ marginTop: 0, fontSize: '0.85em', color: theme.colors.text }}
+        >
+          JIT needs a <strong>callback-capable widget</strong>{' '}
+          (mesh-backup-widget PR #14). The hosted demo and the currently-bundled
+          Tier-2 widget are the pre-callback build and will reject an
+          address-less config with &ldquo;requires a jit config&rdquo;. Leave
+          JIT off to test the static-address deposit + cascade.
+        </p>
 
         <Button onClick={handleOpenBackup}>Open backup deposit</Button>
 
