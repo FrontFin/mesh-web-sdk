@@ -106,6 +106,22 @@ After successfull authentication on the Link session, the popup will be closed a
 | `theme`                  | `'dark' \| 'light' \| 'system' \| undefined`           | Color theme of Link UI interface                                                     |
 | `renderType`             | `'overlay' \| 'embedded' \| undefined`                 | `'overlay'` (default) renders a full-screen popup; `'embedded'` renders inside a client-supplied iframe (requires `customIframeId` in `openLink`) |
 
+All callbacks are optional.
+
+#### Withdrawal events
+
+When a user confirms a withdrawal, `onEvent` receives a `withdrawalRequested` event, followed by `onExit` as Link closes.
+Use it to continue the withdrawal in your app, for example to prompt for your own 2FA.
+The payload carries no address or amount: read the transfer details from the webhook or the transfer API.
+
+```ts
+onEvent: event => {
+  if (event.type === 'withdrawalRequested') {
+    const { transferId, status } = event.payload // 'pending' or 'success'; treat any other value as pending
+  }
+}
+```
+
 #### `createLink` return value
 
 | key                  | type                                                        | description                                                                                                |
