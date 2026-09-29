@@ -26,10 +26,11 @@ The **"Backup / Outage Flow"** section demonstrates the deposit-only flow the SD
 runs when the primary Mesh API is down (SDK Backup / Redundancy Flow). It mirrors
 the React Native example.
 
-1. **Open backup deposit** — calls `link.openLinkBackup(config, { widgetOrigin })`
-   against the live demo widget (`https://demo-widget.cascadecode.com`). Pick a
-   token/network and see the QR / deposit address. No link token, no primary Mesh
-   API call.
+1. **Open backup deposit** — calls `link.openLinkBackup(config, { widgetOrigin })`.
+   Pick a token/network and see the QR / deposit address. No link token, no
+   primary Mesh API call. The **Tier-1 widget origin** field (or
+   `VITE_BACKUP_WIDGET_ORIGIN`) sets where the widget loads from; default is the
+   hosted demo `https://demo-widget.cascadecode.com`.
 2. **Force Tier-2 fallback** — points the flow at an unreachable origin so the
    Tier-1 load never completes its ready handshake; after ~5s the SDK cascades to
    the **bundled Tier-2 offline widget** (no Mesh-owned network dependency) via an
@@ -38,6 +39,24 @@ the React Native example.
 3. **Force JIT** — drops the static addresses so each destination resolves via
    the `onAddressInit` / `onStatusPoll` callbacks, which run in this app and call
    a **local mock backend**.
+
+### Two local gotchas
+
+- **The hosted demo requires https.** It sends `Content-Security-Policy:
+  frame-ancestors https:`, so a browser will only iframe it from an **https** page.
+  Run the example over https to test Tier-1 against it:
+
+  ```
+  pnpm start:https
+  ```
+
+  (Self-signed cert via `@vitejs/plugin-basic-ssl`; accept the browser warning.)
+  Plain `pnpm start` (http) still works for **Tier-2** (loaded via `srcdoc`, not
+  subject to `frame-ancestors`) and for pointing at a **local widget**.
+- **JIT needs a callback-capable widget.** The Tier-2 bundle shipped in the SDK is
+  the callback build, so **Force Tier-2 + Force JIT works locally over http**. For
+  **Tier-1 JIT**, point the Tier-1 origin at a callback-capable widget (run
+  `mesh-backup-widget` locally, or the hosted demo once it's redeployed).
 
 ### Local mock backend (for the JIT path)
 
@@ -53,5 +72,9 @@ pnpm mock
 It listens on `http://localhost:8770` (override with `MOCK_BACKEND_PORT`, or point
 the app elsewhere with `VITE_MOCK_BACKEND_URL`). It reports `pending` for the
 first couple of polls per token/network, then returns a **demo** address — never
-send real funds. With the mock running, turn on **Force JIT** and open the backup
-deposit to watch the poll loop resolve an address over the bridge.
+send real funds.
+
+> Recommended JIT test (all http, no mixed-content issues): `pnpm start` +
+> `pnpm mock`, turn on **Force Tier-2** and **Force JIT**, then open the backup
+> deposit and watch the poll loop resolve an address over the bridge. (An https
+> page cannot fetch the http mock, so keep the JIT path on http.)
