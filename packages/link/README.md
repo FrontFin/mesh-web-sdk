@@ -96,7 +96,7 @@ After successfull authentication on the Link session, the popup will be closed a
 
 | key                      | type                                                   | description                                                                          |
 | ------------------------ | ------------------------------------------------------ | ------------------------------------------------------------------------------------ |
-| `onIntegrationConnected` | `(payload: LinkPayload) => void`                       | Callback called when users connects their accounts                                   |
+| `onIntegrationConnected` | `((payload: LinkPayload) => void) \| undefined`        | Callback called when users connects their accounts                                   |
 | `onExit`                 | `((error?: string \| undefined) => void) \| undefined` | Called if connection not happened                                                    |
 | `onTransferFinished`     | `(payload: TransferFinishedPayload) => void`           | Callback called when a crypto transfer is executed                                   |
 | `onEvent`                | `(payload: LinkEventType) => void`                     | A callback function that is called when various events occur within the Front iframe |
