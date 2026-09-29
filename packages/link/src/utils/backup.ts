@@ -25,6 +25,45 @@ export const DEFAULT_BACKUP_WIDGET_ORIGIN = 'https://backup-widget.invalid'
  */
 export const BACKUP_CONFIG_MESSAGE_TYPE = 'meshBackupConfig'
 
+/**
+ * JIT-over-bridge RPC message types (OR-452). An address-less destination is
+ * resolved by the widget invoking the host's `onAddressInit`/`onStatusPoll`
+ * callbacks over this same postMessage bridge, correlated by `callId` — the
+ * widget never calls a client HTTP endpoint and holds no token.
+ *
+ * - Widget → host: `{ type: JIT_REQUEST_MESSAGE_TYPE, payload: MeshBackupJitRequestPayload }`
+ * - Host → widget: `{ type: JIT_RESPONSE_MESSAGE_TYPE, payload: MeshBackupJitResponsePayload }`
+ *
+ * ⚠️ KEEP IN SYNC with `mesh-backup-widget`'s `src/bridge/contract.ts` — the
+ * string values and payload shapes are the frozen cross-repo contract.
+ */
+export const JIT_REQUEST_MESSAGE_TYPE = 'meshBackupJitRequest'
+export const JIT_RESPONSE_MESSAGE_TYPE = 'meshBackupJitResponse'
+
+/**
+ * How long to wait for the Tier-1 widget's ready handshake (its `loaded`
+ * message) after the iframe starts loading the backup origin, before treating
+ * the origin as unreachable and cascading to the bundled Tier-2 assets.
+ *
+ * On the web this is the **authoritative** Tier-1 failure signal: a cross-origin
+ * iframe does not reliably fire a load `error` event for a network/DNS failure
+ * (and `onload` fires even for an error page), so a served-but-broken, hung, or
+ * captive-portal-intercepted origin is only caught by the absence of the ready
+ * handshake. 5000 ms absorbs a slow mobile network with margin (the widget shell
+ * is ~24 KB on a CDN) while keeping the degraded-path UX acceptable. Per-SDK
+ * tunable constant (design §5H).
+ */
+export const TIER1_READY_TIMEOUT_MS = 5000
+
+/**
+ * Fail-closed safety net for Tier 2: the bundled assets are inlined into the
+ * iframe (`srcdoc`), so they should complete the ready handshake near-instantly.
+ * If they somehow do not within this window, the flow exits with an error rather
+ * than sitting on a blank screen (design §5A/§5H — never a blank QR). Deliberately
+ * generous because a Tier-2 timeout should be effectively unreachable.
+ */
+export const TIER2_READY_TIMEOUT_MS = 8000
+
 export interface BackupWidgetUrlParams {
   /** SDK platform identifier (`'web'`). */
   platform: string

@@ -12,7 +12,11 @@ import {
 } from './utils/types'
 import {
   BACKUP_CONFIG_MESSAGE_TYPE,
-  DEFAULT_BACKUP_WIDGET_ORIGIN
+  DEFAULT_BACKUP_WIDGET_ORIGIN,
+  JIT_REQUEST_MESSAGE_TYPE,
+  JIT_RESPONSE_MESSAGE_TYPE,
+  TIER1_READY_TIMEOUT_MS,
+  TIER2_READY_TIMEOUT_MS
 } from './utils/backup'
 
 jest.mock('@meshconnect/uwc-bridge-parent', () => ({
@@ -25,6 +29,17 @@ jest.mock('./utils/prewarm', () => ({
   createPrewarmIframe: jest.fn(),
   removePrewarmIframe: jest.fn()
 }))
+
+// Stub the bundled Tier-2 asset so cascade tests don't load the ~135 KB HTML and
+// don't depend on the dynamic-import transform for the real file.
+jest.mock('./backup-bundle', () => ({
+  getBundledOfflineWidget: () => ({
+    html: '<!doctype html><title>tier2-bundle</title>'
+  })
+}))
+
+/** Flush pending microtasks (awaited promises), for async message handlers. */
+const flushPromises = () => Promise.resolve().then().then().then()
 
 type EventPayload = {
   type: EventType
@@ -921,5 +936,301 @@ describe('openLinkBackup tests', () => {
     expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
 
     consoleWarnSpy.mockRestore()
+  })
+})
+
+describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
+  globalThis.open = jest.fn()
+
+  const BACKUP_SESSION: MeshBackupConfig = {
+    clientId: 'client-1',
+    userId: 'user-1',
+    // Address-less ⇒ resolved via the JIT callbacks over the bridge.
+    destinations: [{ networkId: 'net-1', symbol: 'USDC' }]
+  }
+
+  beforeEach(() => {
+    document.getElementsByTagName('html')[0].innerHTML = ''
+    ;(removePrewarmIframe as jest.Mock).mockReset()
+  })
+
+  const openBackupAndSpy = (options: Parameters<typeof createLink>[0]) => {
+    const frontConnection = createLink(options)
+    frontConnection.openLinkBackup(BACKUP_SESSION)
+    const iframe = document.getElementById(
+      'mesh-link-popup__iframe'
+    ) as HTMLIFrameElement
+    // Complete the Tier-1 ready handshake (also cancels the cascade timer).
+    globalThis.dispatchEvent(
+      new MessageEvent('message', {
+        data: { type: 'loaded' },
+        origin: 'http://localhost'
+      })
+    )
+    const postMessageSpy = jest.spyOn(
+      iframe.contentWindow as Window,
+      'postMessage'
+    )
+    return { frontConnection, iframe, postMessageSpy }
+  }
+
+  const dispatchJitRequest = (payload: {
+    callId: string
+    method: 'addressInit' | 'statusPoll'
+    symbol: string
+    networkId: string
+  }) =>
+    globalThis.dispatchEvent(
+      new MessageEvent('message', {
+        data: { type: JIT_REQUEST_MESSAGE_TYPE, payload },
+        origin: DEFAULT_BACKUP_WIDGET_ORIGIN
+      })
+    )
+
+  test('relays addressInit to onAddressInit and replies ok', async () => {
+    const onAddressInit = jest.fn().mockResolvedValue(undefined)
+    const { postMessageSpy } = openBackupAndSpy({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onAddressInit,
+      onStatusPoll: jest.fn()
+    })
+
+    dispatchJitRequest({
+      callId: 'a1',
+      method: 'addressInit',
+      symbol: 'USDC',
+      networkId: 'net-1'
+    })
+    await flushPromises()
+
+    expect(onAddressInit).toHaveBeenCalledWith('USDC', 'net-1')
+    expect(postMessageSpy).toHaveBeenCalledWith(
+      { type: JIT_RESPONSE_MESSAGE_TYPE, payload: { callId: 'a1', ok: true } },
+      DEFAULT_BACKUP_WIDGET_ORIGIN
+    )
+  })
+
+  test('relays statusPoll to onStatusPoll and returns its result', async () => {
+    const result = { status: 'ready' as const, address: '0xabc' }
+    const onStatusPoll = jest.fn().mockResolvedValue(result)
+    const { postMessageSpy } = openBackupAndSpy({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onAddressInit: jest.fn(),
+      onStatusPoll
+    })
+
+    dispatchJitRequest({
+      callId: 'p1',
+      method: 'statusPoll',
+      symbol: 'USDC',
+      networkId: 'net-1'
+    })
+    await flushPromises()
+
+    expect(onStatusPoll).toHaveBeenCalledWith('USDC', 'net-1')
+    expect(postMessageSpy).toHaveBeenCalledWith(
+      {
+        type: JIT_RESPONSE_MESSAGE_TYPE,
+        payload: { callId: 'p1', ok: true, result }
+      },
+      DEFAULT_BACKUP_WIDGET_ORIGIN
+    )
+  })
+
+  test('replies ok:false when a JIT callback throws', async () => {
+    const onStatusPoll = jest.fn().mockRejectedValue(new Error('backend down'))
+    const { postMessageSpy } = openBackupAndSpy({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onAddressInit: jest.fn(),
+      onStatusPoll
+    })
+
+    dispatchJitRequest({
+      callId: 'p2',
+      method: 'statusPoll',
+      symbol: 'USDC',
+      networkId: 'net-1'
+    })
+    await flushPromises()
+
+    expect(postMessageSpy).toHaveBeenCalledWith(
+      {
+        type: JIT_RESPONSE_MESSAGE_TYPE,
+        payload: { callId: 'p2', ok: false, error: 'backend down' }
+      },
+      DEFAULT_BACKUP_WIDGET_ORIGIN
+    )
+  })
+
+  test('fails closed (ok:false) when the required JIT callback is not provided', async () => {
+    const { postMessageSpy } = openBackupAndSpy({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn()
+      // no onStatusPoll
+    })
+
+    dispatchJitRequest({
+      callId: 'p3',
+      method: 'statusPoll',
+      symbol: 'USDC',
+      networkId: 'net-1'
+    })
+    await flushPromises()
+
+    const call = postMessageSpy.mock.calls.find(
+      ([m]) => (m as { type?: string })?.type === JIT_RESPONSE_MESSAGE_TYPE
+    )
+    expect(call?.[0]).toMatchObject({
+      type: JIT_RESPONSE_MESSAGE_TYPE,
+      payload: { callId: 'p3', ok: false }
+    })
+  })
+
+  test('cascades to the bundled Tier-2 widget and emits backupTierChanged on the ready timeout', async () => {
+    jest.useFakeTimers()
+    try {
+      const onEvent = jest.fn<void, [LinkEventType]>()
+      const frontConnection = createLink({
+        clientId: 'test',
+        onIntegrationConnected: jest.fn(),
+        onEvent
+      })
+      frontConnection.openLinkBackup(BACKUP_SESSION)
+
+      // No Tier-1 `loaded` arrives → the ready-handshake timeout fires.
+      jest.advanceTimersByTime(TIER1_READY_TIMEOUT_MS)
+
+      expect(onEvent).toHaveBeenCalledWith({
+        type: 'backupTierChanged',
+        payload: { from: 'tier1', to: 'tier2', reason: 'readyTimeout' }
+      })
+
+      // Flush the dynamic import + srcdoc swap.
+      await flushPromises()
+
+      const iframe = document.getElementById(
+        'mesh-link-popup__iframe'
+      ) as HTMLIFrameElement
+      expect(iframe.getAttribute('srcdoc')).toContain('tier2-bundle')
+      expect(iframe.getAttribute('src')).toBeNull()
+    } finally {
+      jest.clearAllTimers()
+      jest.useRealTimers()
+    }
+  })
+
+  test('a Tier-1 ready handshake prevents the cascade', () => {
+    jest.useFakeTimers()
+    try {
+      const onEvent = jest.fn<void, [LinkEventType]>()
+      const frontConnection = createLink({
+        clientId: 'test',
+        onIntegrationConnected: jest.fn(),
+        onEvent
+      })
+      frontConnection.openLinkBackup(BACKUP_SESSION)
+
+      globalThis.dispatchEvent(
+        new MessageEvent('message', {
+          data: { type: 'loaded' },
+          origin: 'http://localhost'
+        })
+      )
+      jest.advanceTimersByTime(TIER1_READY_TIMEOUT_MS * 2)
+
+      const cascaded = onEvent.mock.calls.some(
+        ([e]) => e.type === 'backupTierChanged'
+      )
+      expect(cascaded).toBe(false)
+    } finally {
+      jest.clearAllTimers()
+      jest.useRealTimers()
+    }
+  })
+
+  test('fails closed via onExit if Tier-2 itself never becomes ready', async () => {
+    jest.useFakeTimers()
+    try {
+      const onExit = jest.fn<void, [string | undefined]>()
+      const frontConnection = createLink({
+        clientId: 'test',
+        onIntegrationConnected: jest.fn(),
+        onExit
+      })
+      frontConnection.openLinkBackup(BACKUP_SESSION)
+
+      jest.advanceTimersByTime(TIER1_READY_TIMEOUT_MS) // cascade to tier2
+      await flushPromises() // swap srcdoc
+
+      // Tier-2 never handshakes → the fail-closed safety net fires.
+      jest.advanceTimersByTime(TIER2_READY_TIMEOUT_MS)
+      expect(onExit).toHaveBeenCalledWith('Backup deposit flow is unavailable')
+    } finally {
+      jest.clearAllTimers()
+      jest.useRealTimers()
+    }
+  })
+
+  test('a late Tier-1 message after cascade cannot cancel the Tier-2 fail-closed timer', async () => {
+    jest.useFakeTimers()
+    try {
+      const onExit = jest.fn<void, [string | undefined]>()
+      const frontConnection = createLink({
+        clientId: 'test',
+        onIntegrationConnected: jest.fn(),
+        onExit
+      })
+      frontConnection.openLinkBackup(BACKUP_SESSION)
+
+      jest.advanceTimersByTime(TIER1_READY_TIMEOUT_MS) // cascade to tier2
+      await flushPromises() // swap srcdoc; origin re-pinned to host
+
+      // A late `loaded` from the abandoned (cross-origin) Tier-1 surface must be
+      // dropped at the origin gate, so it cannot markReady and cancel fail-closed.
+      globalThis.dispatchEvent(
+        new MessageEvent('message', {
+          data: { type: 'loaded' },
+          origin: DEFAULT_BACKUP_WIDGET_ORIGIN
+        })
+      )
+
+      jest.advanceTimersByTime(TIER2_READY_TIMEOUT_MS)
+      expect(onExit).toHaveBeenCalledWith('Backup deposit flow is unavailable')
+    } finally {
+      jest.clearAllTimers()
+      jest.useRealTimers()
+    }
+  })
+
+  test('a JIT request is ignored when there is no active backup session', async () => {
+    const onStatusPoll = jest.fn()
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onStatusPoll
+    })
+
+    // Primary (token) flow — no backup session active.
+    frontConnection.openLink(BASE64_ENCODED_URL)
+    globalThis.dispatchEvent(
+      new MessageEvent('message', {
+        data: {
+          type: JIT_REQUEST_MESSAGE_TYPE,
+          payload: {
+            callId: 'x',
+            method: 'statusPoll',
+            symbol: 'USDC',
+            networkId: 'net-1'
+          }
+        },
+        origin: 'http://localhost'
+      })
+    )
+    await flushPromises()
+
+    expect(onStatusPoll).not.toHaveBeenCalled()
   })
 })

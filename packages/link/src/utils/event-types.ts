@@ -44,6 +44,7 @@ export type LinkEventType =
   | TransferDeclined
   | DefiWalletError
   | HomePageLoaded
+  | BackupTierChanged
 
 const LINK_EVENT_TYPE_KEYS = [
   'integrationConnected',
@@ -88,7 +89,8 @@ const LINK_EVENT_TYPE_KEYS = [
   'linkTransferQRGenerated',
   'methodSelected',
   'defiWalletError',
-  'homePageLoaded'
+  'homePageLoaded',
+  'backupTierChanged'
 ] as const
 
 export type LinkEventTypeKeys = (typeof LINK_EVENT_TYPE_KEYS)[number]
@@ -372,7 +374,6 @@ export interface DefiWalletError extends LinkEventBase {
   }
 }
 
-
 export interface VerifyDonePage extends LinkEventBase {
   type: 'verifyDonePage'
 }
@@ -458,4 +459,19 @@ export interface HomePageMethodSelected {
 
 export interface HomePageLoaded extends LinkEventBase {
   type: 'homePageLoaded'
+}
+
+/**
+ * Emitted once when the backup deposit flow cascades from Tier 1 (the widget
+ * loaded from the independent backup origin) to Tier 2 (the SDK-bundled offline
+ * widget), because the backup origin was unreachable (design §5H). Lets clients
+ * measure the real fallback rate.
+ */
+export interface BackupTierChanged extends LinkEventBase {
+  type: 'backupTierChanged'
+  payload: {
+    from: 'tier1'
+    to: 'tier2'
+    reason: 'loadError' | 'readyTimeout'
+  }
 }

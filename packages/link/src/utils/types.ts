@@ -40,52 +40,34 @@ export interface Link {
 
 /**
  * A single deposit destination offered by the backup widget. When `address` is
- * omitted it is resolved at runtime via the client-hosted JIT endpoints in
- * {@link MeshBackupJitConfig} — so `jit` is required whenever any destination
- * omits `address`.
+ * omitted it is resolved at runtime via the host's `onAddressInit` /
+ * `onStatusPoll` callbacks (see {@link LinkOptions}) — so those callbacks are
+ * required whenever any destination omits `address`.
  */
 export interface MeshBackupDestination {
   /** Mesh network id for this destination. */
   networkId: string
   /** Token symbol (e.g. `USDC`). */
   symbol: string
-  /** Static deposit address. Omit to resolve just-in-time via `jit`. */
+  /** Static deposit address. Omit to resolve just-in-time via the JIT callbacks. */
   address?: string
   /** Destination tag / memo, for networks that require one (e.g. XRP). */
-  addressTag?: string | null
-}
-
-/**
- * Client-hosted JIT (just-in-time) address endpoints, required when any
- * destination omits `address`. The widget calls these directly, presenting the
- * `token` as `Authorization: Bearer <token>`. Mesh never sees or validates the
- * token — the client owns its issuance and validation.
- */
-export interface MeshBackupJitConfig {
-  /** `POST` endpoint that begins address resolution. */
-  initiateUrl: string
-  /** `GET` endpoint the widget polls until an address is `ready`. */
-  statusUrl: string
-  /**
-   * Short-lived (≤10 min), user-scoped bearer token, minted by the client
-   * server-side at outage-detection time. Treat as exposed — it lives in the
-   * widget iframe.
-   */
-  token: string
+  addressTag?: string
 }
 
 /**
  * Configuration handed to the backup deposit widget. Assemble this server-side
- * (destinations and any JIT token should not be built in untrusted client code)
- * and pass it to {@link Link.openLinkBackup}; it is delivered to the widget over
- * the message bridge after the widget loads. Canonical shape: OR-446.
+ * (destinations should not be built in untrusted client code) and pass it to
+ * {@link Link.openLinkBackup}; it is delivered to the widget over the message
+ * bridge after the widget loads. Canonical shape: OR-446 (updated OR-452 — there
+ * is no `jit` block or token; JIT is resolved through host callbacks).
  */
 export interface MeshBackupConfig {
   /** The client's Mesh client id. */
   clientId: string
   /**
-   * The client's end-user identifier. Echoed by JIT and used for analytics —
-   * it is **not** an authentication credential.
+   * The client's end-user identifier. Used for analytics — it is **not** an
+   * authentication credential.
    */
   userId: string
   /** Deposit destinations to offer. At least one is required. */
@@ -95,13 +77,54 @@ export interface MeshBackupConfig {
    * of the destination symbols; an unknown symbol falls back to token select.
    */
   preselectedSymbol?: string
-  /** Required when any destination omits `address`. */
-  jit?: MeshBackupJitConfig
-  /**
-   * Your correlation id, echoed to your JIT Initiate/Status endpoints so you can
-   * tie the resolved deposit address to a transaction in your system.
-   */
-  transactionId?: string
+}
+
+/**
+ * The state an {@link LinkOptions.onStatusPoll} poll reports back. `pending`
+ * ⇒ the widget polls again; `ready` ⇒ the widget renders the deposit address
+ * (after its own echo + format fail-closed checks); `failed` ⇒ the widget
+ * surfaces an error.
+ */
+export type MeshBackupJitStatus = 'pending' | 'ready' | 'failed'
+
+/**
+ * What {@link LinkOptions.onStatusPoll} resolves to. On `ready`, `address` is
+ * required and must be a valid deposit address for the requested network;
+ * `addressTag` is required for memo-chain networks (XRP, XLM, …) and omitted
+ * otherwise. For a given `(symbol, networkId)` the resolved address/tag MUST be
+ * idempotent — always return the same one.
+ */
+export interface MeshBackupStatusResult {
+  status: MeshBackupJitStatus
+  address?: string
+  addressTag?: string
+}
+
+/** The two JIT calls the widget can make over the bridge (client spec §5/§6). */
+export type MeshBackupJitMethod = 'addressInit' | 'statusPoll'
+
+/**
+ * Widget → host JIT RPC request payload (OR-452). Correlated to the host's async
+ * response by `callId`. Mirrors `mesh-backup-widget`'s `BackupJitRequestPayload`.
+ */
+export interface MeshBackupJitRequestPayload {
+  callId: string
+  method: MeshBackupJitMethod
+  symbol: string
+  networkId: string
+}
+
+/**
+ * Host → widget JIT RPC response payload (OR-452). `ok: true` with a `result`
+ * (for `statusPoll`) means the host callback resolved; `ok: false` with an
+ * `error` means it threw/rejected (or the callback was not provided). Mirrors
+ * `mesh-backup-widget`'s `BackupJitResponsePayload`.
+ */
+export interface MeshBackupJitResponsePayload {
+  callId: string
+  ok: boolean
+  result?: MeshBackupStatusResult
+  error?: string
 }
 
 /**
@@ -271,6 +294,29 @@ export interface LinkOptions {
    * - 'embedded': renders inside a client-supplied iframe for a more native UI experience. Requires `customIframeId` in `openLink`.
    */
   renderType?: 'overlay' | 'embedded'
+
+  /**
+   * (Backup flow only) Called once when the user confirms a token/network for a
+   * destination that omits `address`, to kick off just-in-time address
+   * generation against your own backend (with your own session). The return
+   * value is ignored — the widget moves straight to polling {@link onStatusPoll}
+   * — but a thrown error / rejected promise is treated as a generation failure.
+   * Required whenever any backup destination omits `address`.
+   */
+  onAddressInit?: (symbol: string, networkId: string) => void | Promise<unknown>
+
+  /**
+   * (Backup flow only) Polled (~every 2–3s) after {@link onAddressInit} until it
+   * resolves `ready` or `failed`. Resolve to `{ status: 'ready', address, addressTag? }`
+   * once the address is available; `{ status: 'pending' }` to be polled again; or
+   * `{ status: 'failed' }` to abort. For a given `(symbol, networkId)` the
+   * resolved address MUST be idempotent. Required whenever any backup destination
+   * omits `address`.
+   */
+  onStatusPoll?: (
+    symbol: string,
+    networkId: string
+  ) => Promise<MeshBackupStatusResult>
 }
 
 export interface LinkStyle {
