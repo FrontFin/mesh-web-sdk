@@ -9,7 +9,8 @@ import {
   MeshBackupConfig,
   MeshBackupOptions,
   MeshBackupJitRequestPayload,
-  MeshBackupJitResponsePayload
+  MeshBackupJitResponsePayload,
+  MeshBackupStatusResult
 } from './utils/types'
 import {
   addPopup,
@@ -240,10 +241,18 @@ async function handleLinkEvent(
 async function eventsListener(
   event: MessageEvent<LinkEventType | { type: EventType }>
 ) {
-  // Tier 2 runs sandboxed with an opaque origin (event.origin === 'null'), so it
-  // can't be origin-pinned — authenticate by the source window instead.
+  // Tier 2 runs sandboxed with an opaque origin (event.origin === 'null').
+  // Authenticate by BOTH the source window AND the opaque origin: navigating the
+  // iframe from Tier 1 to the blob doc does NOT change its WindowProxy, so a late
+  // Tier-1 message queued before the swap still has `event.source ===
+  // backupIframeWindow` — but it carries the Tier-1 (non-'null') origin, so the
+  // origin check rejects it and it can't spuriously complete the Tier-2 handshake.
   if (backupTier2) {
-    if (event.source && event.source === backupIframeWindow) {
+    if (
+      event.source &&
+      event.source === backupIframeWindow &&
+      event.origin === 'null'
+    ) {
       await handleLinkEvent(event as MessageEvent<{ type: EventType }>)
     } else {
       console.warn('Ignored backup Tier-2 message from an unexpected source')
@@ -318,16 +327,29 @@ async function handleBackupJitRequest(
         )
       }
       const result = await onStatusPoll(symbol, networkId)
-      respond({ callId, ok: true, result })
+      // Post only the contract fields to the widget's (independent) origin. The
+      // callback's return may structurally contain extra fields (e.g. a raw
+      // backend response with identifiers/credentials); never forward those.
+      const safeResult: MeshBackupStatusResult =
+        result?.status === 'ready'
+          ? result.addressTag
+            ? {
+                status: 'ready',
+                address: result.address,
+                addressTag: result.addressTag
+              }
+            : { status: 'ready', address: result.address }
+          : { status: result?.status === 'failed' ? 'failed' : 'pending' }
+      respond({ callId, ok: true, result: safeResult })
     } else {
       throw new Error(`Unknown backup JIT method: ${String(method)}`)
     }
   } catch (e) {
-    respond({
-      callId,
-      ok: false,
-      error: e instanceof Error ? e.message : 'JIT callback failed'
-    })
+    // Log the real error host-side, but send the widget a fixed, non-revealing
+    // message — callback exceptions can contain URLs / identifiers / credentials,
+    // which must not cross to the independent widget origin.
+    console.error('Mesh SDK: backup JIT callback failed', e)
+    respond({ callId, ok: false, error: 'JIT callback failed' })
   }
 }
 
@@ -351,13 +373,14 @@ function failBackupClosed(errorMessage: string) {
  * Cascade the backup flow from Tier 1 (widget from the backup origin) to Tier 2
  * (the SDK-bundled offline widget) when the backup origin is unreachable (design
  * §5H). Emits `backupTierChanged`, then swaps the current iframe to the bundled
- * HTML via `srcdoc`. The bundle is imported dynamically so Tier-1-only consumers
- * can code-split the ~135 KB asset out of their main chunk.
+ * widget loaded as a SANDBOXED, opaque-origin `blob:` URL (not `srcdoc`) — see the
+ * detailed rationale at the swap below. The bundle is imported dynamically so
+ * Tier-1-only consumers can code-split the ~135 KB asset out of their main chunk.
  *
- * Tier 2 is our own inline document, same-origin with the host page, so the
- * message origin is re-pinned to `window.location.origin`: this also drops any
- * late message from the abandoned (cross-origin) Tier-1 surface at the origin
- * gate, so it cannot re-`markReady` and defeat the Tier-2 fail-closed timer.
+ * ⚠️ Host CSP: navigating the iframe to a `blob:` URL requires the embedding page's
+ * CSP to permit `blob:` in `frame-src`/`child-src` (or `default-src`). A host that
+ * only allows the Tier-1 origin there will block the Tier-2 frame and the fallback
+ * will time out — this is a documented integration requirement (see README).
  */
 async function cascadeBackupToTier2(
   reason: BackupTierFallbackReason,
@@ -367,6 +390,10 @@ async function cascadeBackupToTier2(
     type: 'backupTierChanged',
     payload: { from: 'tier1', to: 'tier2', reason }
   })
+
+  // `onEvent` ran consumer code synchronously; if it opened a new flow,
+  // `resetBackupState` advanced the session id — bail before touching any iframe.
+  if (backupSessionId !== sessionId) return
 
   // Tear down the Tier-1 surface synchronously (before the async import) so
   // nothing from it races the swap.

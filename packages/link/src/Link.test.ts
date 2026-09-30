@@ -1051,8 +1051,48 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
     )
   })
 
-  test('replies ok:false when a JIT callback throws', async () => {
-    const onStatusPoll = jest.fn().mockRejectedValue(new Error('backend down'))
+  test('strips extra fields from the statusPoll result before posting to the widget', async () => {
+    // A real backend response may carry extra fields (e.g. credentials); only the
+    // contract fields may cross to the widget's independent origin.
+    const onStatusPoll = jest.fn().mockResolvedValue({
+      status: 'ready',
+      address: '0xabc',
+      addressTag: 'memo1',
+      secretToken: 'do-not-leak',
+      internalUrl: 'https://internal/x'
+    })
+    const { postMessageSpy } = openBackupAndSpy({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onAddressInit: jest.fn(),
+      onStatusPoll
+    })
+
+    dispatchJitRequest({
+      callId: 'p9',
+      method: 'statusPoll',
+      symbol: 'USDC',
+      networkId: 'net-1'
+    })
+    await flushPromises()
+
+    expect(postMessageSpy).toHaveBeenCalledWith(
+      {
+        type: JIT_RESPONSE_MESSAGE_TYPE,
+        payload: {
+          callId: 'p9',
+          ok: true,
+          result: { status: 'ready', address: '0xabc', addressTag: 'memo1' }
+        }
+      },
+      DEFAULT_BACKUP_WIDGET_ORIGIN
+    )
+  })
+
+  test('replies ok:false with a fixed error when a JIT callback throws (no host detail leaked)', async () => {
+    const onStatusPoll = jest
+      .fn()
+      .mockRejectedValue(new Error('secret backend url https://internal/x'))
     const { postMessageSpy } = openBackupAndSpy({
       clientId: 'test',
       onIntegrationConnected: jest.fn(),
@@ -1068,10 +1108,11 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
     })
     await flushPromises()
 
+    // The host exception text must NOT cross to the widget origin — fixed message.
     expect(postMessageSpy).toHaveBeenCalledWith(
       {
         type: JIT_RESPONSE_MESSAGE_TYPE,
-        payload: { callId: 'p2', ok: false, error: 'backend down' }
+        payload: { callId: 'p2', ok: false, error: 'JIT callback failed' }
       },
       DEFAULT_BACKUP_WIDGET_ORIGIN
     )
@@ -1248,16 +1289,22 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
       })
       frontConnection.openLinkBackup(BACKUP_SESSION)
 
+      const iframe = document.getElementById(
+        'mesh-link-popup__iframe'
+      ) as HTMLIFrameElement
+
       jest.advanceTimersByTime(TIER1_READY_TIMEOUT_MS) // cascade to tier2
       await flushPromises() // blob/sandbox swap
 
-      // A late `loaded` from the abandoned Tier-1 surface (not the Tier-2 window)
-      // must be dropped by the source gate, so it can't markReady and cancel the
-      // fail-closed timer.
+      // A navigation does NOT replace the iframe's window, so a late Tier-1
+      // `loaded` (queued before the swap) still has source === the Tier-2 window —
+      // but it carries the Tier-1 origin, not the opaque 'null'. The origin gate
+      // must reject it so it can't markReady and cancel the fail-closed timer.
       globalThis.dispatchEvent(
         new MessageEvent('message', {
           data: { type: 'loaded' },
-          origin: DEFAULT_BACKUP_WIDGET_ORIGIN
+          origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
+          source: iframe.contentWindow
         })
       )
 

@@ -33,9 +33,12 @@ the React Native example.
    CI-deployed backup widget (the `link-backup` Cloudflare Worker).
 2. **Force Tier-2 fallback** — points the flow at an unreachable origin so the
    Tier-1 load never completes its ready handshake; after ~5s the SDK cascades to
-   the **bundled Tier-2 offline widget** (no Mesh-owned network dependency) via an
-   iframe `srcdoc`. The "Active tier" line flips to Tier 2 (from the
-   `backupTierChanged` event).
+   the **bundled Tier-2 offline widget** (no Mesh-owned network dependency), loaded
+   as a **sandboxed, opaque-origin `blob:` iframe** (isolated from the host, and not
+   subject to the host's `script-src`). The "Active tier" line flips to Tier 2 (from
+   the `backupTierChanged` event). **Host CSP note:** the host page must allow
+   `blob:` in `frame-src`/`child-src` (or `default-src`) for the Tier-2 frame to
+   load — otherwise the fallback times out.
 3. **Force JIT** — drops the static addresses so each destination resolves via
    the `onAddressInit` / `onStatusPoll` callbacks, which run in this app and call
    a **local mock backend**.
@@ -58,8 +61,8 @@ the React Native example.
   ```
 
   Without a cert, `pnpm start:https` warns and serves http. Plain `pnpm start`
-  (http) still works for **Tier-2** (loaded via `srcdoc`, not subject to
-  `frame-ancestors`) and for pointing at a **local widget**.
+  (http) still works for **Tier-2** (a sandboxed `blob:` iframe, not subject to the
+  hosted widget's `frame-ancestors`) and for pointing at a **local widget**.
 - **JIT needs a callback-capable widget.** The Tier-2 bundle shipped in the SDK is
   the callback build, so **Force Tier-2 + Force JIT works locally over http**. For
   **Tier-1 JIT**, point the Tier-1 origin at a callback-capable widget (the default

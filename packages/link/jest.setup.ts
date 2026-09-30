@@ -7,9 +7,8 @@ global.TextDecoder = TextDecoder
 // cascade uses them to load the bundled widget as a blob: URL. Stub them so tests
 // can assert the blob:-based swap.
 if (typeof URL.createObjectURL !== 'function') {
-  URL.createObjectURL = jest.fn(
-    () => `blob:mock/${Math.random().toString(36).slice(2)}`
-  )
+  let blobSeq = 0
+  URL.createObjectURL = jest.fn(() => `blob:mock/${(blobSeq += 1)}`)
   URL.revokeObjectURL = jest.fn()
 }
 

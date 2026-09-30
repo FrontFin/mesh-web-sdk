@@ -215,7 +215,9 @@ export const App: React.FC = () => {
             onChange={e => setForceTier2(e.target.checked)}
           />{' '}
           Force Tier-2 fallback (point at an unreachable origin → cascade to the
-          bundled offline widget; loads via srcdoc, no https/CSP constraint)
+          bundled offline widget; loaded as a sandboxed, opaque-origin{' '}
+          <code>blob:</code> iframe — the host CSP must allow <code>blob:</code> in{' '}
+          <code>frame-src</code>/<code>child-src</code>)
         </label>
 
         <label style={{ display: 'block', marginBottom: theme.spacing.md }}>

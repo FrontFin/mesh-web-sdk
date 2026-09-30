@@ -23,6 +23,7 @@
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath, pathToFileURL } from 'url'
+import { assertSelfContained, htmlByteLength } from './bundle-guards.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -31,46 +32,11 @@ export const HTML_PATH = path.join(bundleDir, 'widget.offline.html')
 export const SNAPSHOT_PATH = path.join(bundleDir, 'catalog.snapshot.json')
 export const OUT_PATH = path.join(bundleDir, 'generated.ts')
 
-/** Size of the shipped HTML in the UTF-8 bytes that actually go over the wire —
- *  NOT `String.length` (UTF-16 code units), which undercounts non-ASCII. */
-export const htmlByteLength = html => Buffer.byteLength(html, 'utf8')
-
-/**
- * Fail if the "offline" HTML references anything it would fetch over the network,
- * so the bundled Tier-2 asset truly makes no network calls. Covers the
- * resource-loading mechanisms a naive `src=/href=https?:` check misses: `srcset`,
- * `xlink:href`, CSS `url(...)`, `@import`, and protocol-relative (`//`) forms.
- *
- * Deliberately NOT flagged: `xmlns="http://www.w3.org/..."` and other XML/SVG
- * namespace declarations — those are identifiers, not network loads (the attribute
- * name is `xmlns`, which is not in the resource-attribute list below). Everything
- * legitimate in a self-contained build uses `data:` URIs or inline content.
- *
- * Single source of truth: `generate()` calls this, and `check-bundle-size.js`
- * relies on `generate()`, so `bundle:embed` can never emit a network-dependent
- * module and CI can never pass one.
- */
-export function assertSelfContained(html) {
-  const checks = [
-    [
-      /\b(?:src|srcset|href|xlink:href)\s*=\s*["'`]?\s*(?:https?:)?\/\//i,
-      'an external src/srcset/href/xlink:href'
-    ],
-    [
-      /@import\s+(?:url\(\s*)?["'`]?\s*(?:https?:)?\/\//i,
-      'a CSS @import of an external URL'
-    ],
-    [/url\(\s*["'`]?\s*(?:https?:)?\/\//i, 'a CSS url() of an external URL']
-  ]
-  for (const [re, what] of checks) {
-    if (re.test(html)) {
-      throw new Error(
-        `widget.offline.html is not self-contained — found ${what}. ` +
-          'A Tier-2 offline bundle must reference no network resources.'
-      )
-    }
-  }
-}
+// The self-containment + byte-size guards live in a pure (import.meta-free) module
+// so they're unit-testable; `generate()` calls `assertSelfContained`, and
+// `check-bundle-size.js` relies on `generate()` + these, so `bundle:embed` can
+// never emit a network-dependent module and CI can never pass one.
+export { assertSelfContained, htmlByteLength }
 
 /** Build the generated.ts content from the vendored offline widget. */
 export function generate() {
