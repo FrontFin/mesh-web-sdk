@@ -111,7 +111,9 @@ All callbacks are optional.
 #### Withdrawal events
 
 When a user confirms a withdrawal, `onEvent` receives a `withdrawalRequested` event, then Link closes and calls `onExit`.
+With `renderType: 'embedded'`, the SDK does not remove your iframe: hide it in `onExit`.
 Keep the `transferId` and continue the withdrawal once Link has closed, for example with your own 2FA prompt.
+Treat the event, not `onExit`, as confirmation of the withdrawal.
 The payload carries no address or amount: read the transfer details from the webhook or the transfer API.
 
 ```ts
