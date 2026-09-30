@@ -14,6 +14,8 @@ import fs from 'fs'
 import zlib from 'zlib'
 import {
   generate,
+  assertSelfContained,
+  htmlByteLength,
   HTML_PATH,
   SNAPSHOT_PATH,
   OUT_PATH
@@ -48,19 +50,32 @@ if (!fs.existsSync(HTML_PATH)) {
 
 const html = fs.readFileSync(HTML_PATH, 'utf8')
 const widgetGz = gzipBytes(html)
+// Raw size is the UTF-8 bytes actually shipped, not String.length (UTF-16 units).
+const widgetRaw = htmlByteLength(html)
 
 check(
   widgetGz <= LIMITS.widgetGzip,
   `offline widget: ${fmt(widgetGz)} gz (limit ${fmt(LIMITS.widgetGzip)})`
 )
 check(
-  html.length <= LIMITS.widgetRaw,
-  `offline widget: ${fmt(html.length)} raw (limit ${fmt(LIMITS.widgetRaw)})`
+  widgetRaw <= LIMITS.widgetRaw,
+  `offline widget: ${fmt(widgetRaw)} raw (limit ${fmt(LIMITS.widgetRaw)})`
 )
-check(
-  !/(src|href)\s*=\s*["']https?:/i.test(html),
-  'offline widget is self-contained (no external http(s) references)'
-)
+// Reuse the comprehensive self-containment check from generate() (src/srcset/href/
+// xlink:href, CSS url()/@import, protocol-relative), not a narrow src/href regex.
+let selfContained = true
+try {
+  assertSelfContained(html)
+} catch (e) {
+  selfContained = false
+  check(false, e.message)
+}
+if (selfContained) {
+  check(
+    true,
+    'offline widget is self-contained (no network resource references)'
+  )
+}
 
 // Logo cap is read from the co-vendored snapshot (the source the HTML inlines).
 if (fs.existsSync(SNAPSHOT_PATH)) {
@@ -101,7 +116,7 @@ check(
 )
 
 console.log(
-  `\nShipped Tier-2 bundle: ${fmt(widgetGz)} gz / ${fmt(html.length)} raw.`
+  `\nShipped Tier-2 bundle: ${fmt(widgetGz)} gz / ${fmt(widgetRaw)} raw.`
 )
 
 if (failures.length) {

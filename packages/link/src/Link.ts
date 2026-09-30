@@ -52,12 +52,19 @@ let backupTierController: BackupTierController | null = null
 // never post into / clobber a later one (a reused `callId` must never associate a
 // deposit address with the wrong session — money path).
 let backupSessionId = 0
-// The widget iframe's window for the active backup session. JIT requests are only
-// honoured when they come from this exact window (`event.source`), so another
-// same-origin frame cannot drive the client's address-generation callbacks.
+// The widget iframe's window for the active backup session. Backup messages
+// (`loaded`, JIT) are only honoured when they come from this exact window
+// (`event.source`), so another frame cannot drive the client's callbacks.
 let backupIframeWindow: Window | null = null
 // Removes the Tier-1 `error` listener bound to the current backup iframe.
 let removeBackupIframeErrorListener: (() => void) | null = null
+// True once cascaded to Tier 2, which loads the bundled widget in a SANDBOXED,
+// opaque-origin iframe (blob: URL). Its `event.origin` is `'null'`, so messages
+// are authenticated by `event.source` instead, and we post to it with a `'*'`
+// target. (Tier 1 stays origin-pinned.)
+let backupTier2 = false
+// Object URL backing the Tier-2 iframe; revoked on teardown to avoid a leak.
+let backupTier2BlobUrl: string | null = null
 
 /**
  * Tear down any in-flight backup session state. Called when a session ends or
@@ -72,6 +79,11 @@ function resetBackupState() {
   backupIframeWindow = null
   removeBackupIframeErrorListener?.()
   removeBackupIframeErrorListener = null
+  backupTier2 = false
+  if (backupTier2BlobUrl) {
+    URL.revokeObjectURL(backupTier2BlobUrl)
+    backupTier2BlobUrl = null
+  }
   backupSessionId += 1
 }
 
@@ -87,14 +99,17 @@ function sendMessageToIframe<T extends { type: string }>(message: T) {
     )
     return
   }
-  if (!linkTokenOrigin) {
+  // Tier 2 is a sandboxed, opaque-origin iframe (no pinnable origin) — post with a
+  // '*' target; the widget is our own bundled content and authenticates us in turn.
+  const target = backupTier2 ? '*' : linkTokenOrigin
+  if (!target) {
     console.warn(
       `Mesh SDK: Failed to deliver ${message.type} message to the iframe - no link token origin found`
     )
     return
   }
   try {
-    iframe.contentWindow?.postMessage(message, linkTokenOrigin)
+    iframe.contentWindow?.postMessage(message, target)
   } catch (e) {
     console.error(
       `Mesh SDK: Failed to deliver ${message.type} message to the iframe`
@@ -163,12 +178,16 @@ async function handleLinkEvent(
     case 'close':
     case 'done': {
       const payload = event.data?.payload
-      currentOptions?.onExit?.(payload?.errorMessage, payload)
+      // The widget emits BOTH `done` and `close` (and `exit`) on teardown. Remove
+      // the listener FIRST so the second message can't re-invoke onExit, then tear
+      // down fully (also clears the backup session/timer), and only then call
+      // onExit — so a callback can't synchronously reopen a flow we then tear down.
+      const onExit = currentOptions?.onExit
+      window.removeEventListener('message', eventsListener)
       bridgeParent?.destroy()
       removePopup()
-      // A closed backup session must not be re-delivered to a later iframe, and
-      // its pending tier timer must be cleared.
       resetBackupState()
+      onExit?.(payload?.errorMessage, payload)
       break
     }
     case 'loaded': {
@@ -188,7 +207,15 @@ async function handleLinkEvent(
         })
       }
 
-      if (backupSession) {
+      // Only the backup widget's OWN window may complete the ready handshake.
+      // `eventsListener` also admits host-origin messages (Tier 1), so without
+      // this an unrelated same-origin frame posting `{ type: 'loaded' }` would
+      // call `markReady()` and permanently cancel the Tier-1 → Tier-2 fallback.
+      if (
+        backupSession &&
+        event.source &&
+        event.source === backupIframeWindow
+      ) {
         // This `loaded` IS the ready handshake — cancel the pending tier timeout
         // (Tier-1 healthy, or Tier-2 mounted) before delivering the config.
         backupTierController?.markReady()
@@ -213,6 +240,16 @@ async function handleLinkEvent(
 async function eventsListener(
   event: MessageEvent<LinkEventType | { type: EventType }>
 ) {
+  // Tier 2 runs sandboxed with an opaque origin (event.origin === 'null'), so it
+  // can't be origin-pinned — authenticate by the source window instead.
+  if (backupTier2) {
+    if (event.source && event.source === backupIframeWindow) {
+      await handleLinkEvent(event as MessageEvent<{ type: EventType }>)
+    } else {
+      console.warn('Ignored backup Tier-2 message from an unexpected source')
+    }
+    return
+  }
   if (event.origin !== targetOrigin && event.origin !== linkTokenOrigin) {
     console.warn('Received message from untrusted origin:', event.origin)
   } else {
@@ -243,13 +280,14 @@ async function handleBackupJitRequest(
   // is still the same session.
   const sessionId = backupSessionId
   const targetWindow = backupIframeWindow
-  const targetOrigin = linkTokenOrigin
+  // Tier 2 is opaque-origin → reply with a '*' target; Tier 1 is origin-pinned.
+  const replyTarget = backupTier2 ? '*' : linkTokenOrigin
   const respond = (response: MeshBackupJitResponsePayload) => {
-    if (backupSessionId !== sessionId || !targetWindow || !targetOrigin) return
+    if (backupSessionId !== sessionId || !targetWindow || !replyTarget) return
     try {
       targetWindow.postMessage(
         { type: JIT_RESPONSE_MESSAGE_TYPE, payload: response },
-        targetOrigin
+        replyTarget
       )
     } catch (e) {
       console.error('Mesh SDK: Failed to deliver JIT response to the widget')
@@ -330,9 +368,8 @@ async function cascadeBackupToTier2(
     payload: { from: 'tier1', to: 'tier2', reason }
   })
 
-  // Re-pin the message origin to the host page and tear down the Tier-1 surface
-  // synchronously (before the async import) so nothing from it races the swap.
-  linkTokenOrigin = window.location.origin
+  // Tear down the Tier-1 surface synchronously (before the async import) so
+  // nothing from it races the swap.
   backupIframeWindow = null
   const tier1Iframe = iframeElement()
   if (tier1Iframe) {
@@ -364,10 +401,26 @@ async function cascadeBackupToTier2(
     return
   }
 
-  iframe.srcdoc = html
+  // Load the bundled widget in a SANDBOXED, opaque-origin iframe via a blob: URL —
+  // NOT `srcdoc`. An `about:srcdoc` document (a) runs same-origin with the host, so
+  // its scripts could reach the host DOM / storage / same-origin credentials, and
+  // (b) inherits the host page's CSP, so a strict host `script-src` (no
+  // 'unsafe-inline') would block the widget's inline script and it would never send
+  // `loaded` (every fallback then times out despite a valid bundle). A blob:
+  // document has its own opaque origin (isolated from the host) and its own empty
+  // CSP context (the inline script runs), fixing both. Because the origin is opaque
+  // ('null'), bridge messages are authenticated by `event.source` (see
+  // `eventsListener`/`handleLinkEvent`) rather than by origin, and we post to it
+  // with a '*' target.
+  const blobUrl = URL.createObjectURL(new Blob([html], { type: 'text/html' }))
+  backupTier2BlobUrl = blobUrl
+  backupTier2 = true
+  iframe.removeAttribute('srcdoc')
+  // allow-scripts WITHOUT allow-same-origin ⇒ opaque origin. The iframe's `allow`
+  // (Permissions-Policy, incl. clipboard) set at mount is preserved for copy-address.
+  iframe.setAttribute('sandbox', 'allow-scripts')
+  iframe.src = blobUrl
   bridgeParent = new BridgeParent(iframe)
-  // Tier-2 is our own inline document, same-origin with the host — track its
-  // window so JIT requests from it are accepted (event.source check).
   backupIframeWindow = iframe.contentWindow
 }
 
@@ -415,9 +468,11 @@ export const createLink = (options: LinkOptions): Link => {
       ) as HTMLIFrameElement
       if (iframe) {
         iframe.allow = buildIframeAllowPolicy(linkTokenOrigin!)
-        // Clear any leftover Tier-2 `srcdoc` from a prior backup session — it
-        // takes precedence over `src` and would otherwise pin this iframe there.
+        // Clear any leftover Tier-2 state from a prior backup session on this
+        // reused iframe: `srcdoc` (takes precedence over `src`) and the `sandbox`
+        // attribute (would otherwise keep it opaque-origin).
         iframe.removeAttribute('srcdoc')
+        iframe.removeAttribute('sandbox')
         iframe.src = linkUrl
         currentIframeId = customIframeId
       } else {
@@ -514,9 +569,10 @@ export const createLink = (options: LinkOptions): Link => {
         return
       }
       iframe.allow = buildIframeAllowPolicy(linkTokenOrigin!)
-      // A reused embedded iframe may still carry a Tier-2 `srcdoc` from a prior
-      // backup session; `srcdoc` takes precedence over `src`, so clear it first.
+      // A reused embedded iframe may still carry Tier-2 state from a prior backup
+      // session — clear `srcdoc` (precedence over `src`) and `sandbox` (opaque).
       iframe.removeAttribute('srcdoc')
+      iframe.removeAttribute('sandbox')
       iframe.src = widgetUrl
       currentIframeId = customIframeId
     } else {

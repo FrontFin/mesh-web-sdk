@@ -772,7 +772,8 @@ describe('openLinkBackup tests', () => {
     globalThis.dispatchEvent(
       new MessageEvent<{ type: EventType }>('message', {
         data: { type: 'loaded' },
-        origin: 'http://localhost'
+        origin: 'http://localhost',
+        source: iframeElement?.contentWindow
       })
     )
 
@@ -883,7 +884,8 @@ describe('openLinkBackup tests', () => {
     globalThis.dispatchEvent(
       new MessageEvent<{ type: EventType }>('message', {
         data: { type: 'loaded' },
-        origin: 'http://localhost'
+        origin: 'http://localhost',
+        source: iframeElement?.contentWindow
       })
     )
 
@@ -958,11 +960,13 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
     const iframe = document.getElementById(
       'mesh-link-popup__iframe'
     ) as HTMLIFrameElement
-    // Complete the Tier-1 ready handshake (also cancels the cascade timer).
+    // Complete the Tier-1 ready handshake (also cancels the cascade timer). The
+    // `loaded` handshake is only honoured from the widget's own window.
     globalThis.dispatchEvent(
       new MessageEvent('message', {
         data: { type: 'loaded' },
-        origin: 'http://localhost'
+        origin: 'http://localhost',
+        source: iframe.contentWindow
       })
     )
     const postMessageSpy = jest.spyOn(
@@ -1161,14 +1165,16 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
         payload: { from: 'tier1', to: 'tier2', reason: 'readyTimeout' }
       })
 
-      // Flush the dynamic import + srcdoc swap.
+      // Flush the dynamic import + blob/sandbox swap.
       await flushPromises()
 
       const iframe = document.getElementById(
         'mesh-link-popup__iframe'
       ) as HTMLIFrameElement
-      expect(iframe.getAttribute('srcdoc')).toContain('tier2-bundle')
-      expect(iframe.getAttribute('src')).toBeNull()
+      // Tier-2 loads a blob: URL in a sandboxed (opaque-origin) iframe — not srcdoc.
+      expect(iframe.getAttribute('src')?.startsWith('blob:')).toBe(true)
+      expect(iframe.getAttribute('sandbox')).toBe('allow-scripts')
+      expect(iframe.getAttribute('srcdoc')).toBeNull()
     } finally {
       jest.clearAllTimers()
       jest.useRealTimers()
@@ -1186,10 +1192,14 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
       })
       frontConnection.openLinkBackup(BACKUP_SESSION)
 
+      const iframe = document.getElementById(
+        'mesh-link-popup__iframe'
+      ) as HTMLIFrameElement
       globalThis.dispatchEvent(
         new MessageEvent('message', {
           data: { type: 'loaded' },
-          origin: 'http://localhost'
+          origin: 'http://localhost',
+          source: iframe.contentWindow
         })
       )
       jest.advanceTimersByTime(TIER1_READY_TIMEOUT_MS * 2)
@@ -1216,7 +1226,7 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
       frontConnection.openLinkBackup(BACKUP_SESSION)
 
       jest.advanceTimersByTime(TIER1_READY_TIMEOUT_MS) // cascade to tier2
-      await flushPromises() // swap srcdoc
+      await flushPromises() // blob/sandbox swap
 
       // Tier-2 never handshakes → the fail-closed safety net fires.
       jest.advanceTimersByTime(TIER2_READY_TIMEOUT_MS)
@@ -1239,10 +1249,11 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
       frontConnection.openLinkBackup(BACKUP_SESSION)
 
       jest.advanceTimersByTime(TIER1_READY_TIMEOUT_MS) // cascade to tier2
-      await flushPromises() // swap srcdoc; origin re-pinned to host
+      await flushPromises() // blob/sandbox swap
 
-      // A late `loaded` from the abandoned (cross-origin) Tier-1 surface must be
-      // dropped at the origin gate, so it cannot markReady and cancel fail-closed.
+      // A late `loaded` from the abandoned Tier-1 surface (not the Tier-2 window)
+      // must be dropped by the source gate, so it can't markReady and cancel the
+      // fail-closed timer.
       globalThis.dispatchEvent(
         new MessageEvent('message', {
           data: { type: 'loaded' },
