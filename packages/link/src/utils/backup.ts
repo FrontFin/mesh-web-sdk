@@ -12,8 +12,8 @@ import { appendQueryParam } from './url'
  * before this ships to clients. It deliberately uses the reserved `.invalid` TLD
  * (RFC 6761) so it can never resolve to a real — possibly attacker-controlled —
  * host if it reaches a release un-reconciled. Money path: this origin serves the
- * deposit-address UI during an outage. (As of 2026-09-29 the deployed widget is
- * a demo at `https://demo-widget.cascadecode.com` — pass it via `widgetOrigin`.)
+ * deposit-address UI during an outage. Until the production origin is set, pass
+ * your deployed backup-widget origin explicitly via `widgetOrigin`.
  */
 export const DEFAULT_BACKUP_WIDGET_ORIGIN = 'https://backup-widget.invalid'
 

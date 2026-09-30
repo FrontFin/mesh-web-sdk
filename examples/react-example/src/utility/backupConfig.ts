@@ -8,15 +8,14 @@ import type {
 // It needs no link token: `openLinkBackup` loads the standalone backup widget
 // from its origin and takes a client-assembled MeshBackupConfig.
 //
-// Default is the live demo widget (OR-449). NOTE two things about it for local
-// testing: (1) it sends `Content-Security-Policy: frame-ancestors https:`, so it
-// can only be iframed by an https page — serve this example over https, or point
-// at a local widget below; (2) it is currently the pre-callback build, so the JIT
-// path ("Force JIT") needs a callback-capable widget (mesh-backup-widget PR #14)
-// — run that locally and set VITE_BACKUP_WIDGET_ORIGIN to its dev URL.
+// Default is the CI-deployed backup widget (the `link-backup` Cloudflare Worker).
+// Override with VITE_BACKUP_WIDGET_ORIGIN to point at a local widget or another
+// deployment. NOTE: the hosted widget sends `Content-Security-Policy:
+// frame-ancestors https:`, so it can only be iframed by an https page — serve this
+// example over https (`pnpm start:https`) or point at a local widget.
 export const DEMO_BACKUP_WIDGET_ORIGIN =
   (import.meta.env.VITE_BACKUP_WIDGET_ORIGIN as string) ||
-  'https://demo-widget.cascadecode.com'
+  'https://link-backup.front-finance-account.workers.dev'
 
 // A deliberately unreachable origin (reserved `.invalid` TLD, RFC 6761). With
 // "Force Tier-2 fallback" on, the backup flow is pointed here so the Tier-1 load
@@ -29,9 +28,8 @@ export const DEAD_BACKUP_WIDGET_ORIGIN = 'https://backup-widget.invalid'
 export const MOCK_BACKEND_URL =
   (import.meta.env.VITE_MOCK_BACKEND_URL as string) || 'http://localhost:8770'
 
-// networkIds are real Mesh network ids (from the live demo pairs manifest,
-// https://demo-widget.cascadecode.com/backup/pairs/all.json). Static addresses
-// are used so no backend is required in the default (non-JIT) path.
+// networkIds are real Mesh network ids (from the widget's live pairs manifest).
+// Static addresses are used so no backend is required in the default (non-JIT) path.
 //
 // The destinations deliberately span the Tier-2 logo cases: Tier 1 loads the
 // full manifest so every logo renders; Tier 2 ships only the curated top-8

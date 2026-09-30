@@ -30,7 +30,7 @@ the React Native example.
    Pick a token/network and see the QR / deposit address. No link token, no
    primary Mesh API call. The **Tier-1 widget origin** field (or
    `VITE_BACKUP_WIDGET_ORIGIN`) sets where the widget loads from; default is the
-   hosted demo `https://demo-widget.cascadecode.com`.
+   CI-deployed backup widget (the `link-backup` Cloudflare Worker).
 2. **Force Tier-2 fallback** — points the flow at an unreachable origin so the
    Tier-1 load never completes its ready handshake; after ~5s the SDK cascades to
    the **bundled Tier-2 offline widget** (no Mesh-owned network dependency) via an
@@ -42,7 +42,7 @@ the React Native example.
 
 ### Two local gotchas
 
-- **The hosted demo requires https.** It sends `Content-Security-Policy:
+- **The hosted widget requires https.** It sends `Content-Security-Policy:
   frame-ancestors https:`, so a browser will only iframe it from an **https** page.
   Run the example over https to test Tier-1 against it:
 
@@ -67,8 +67,8 @@ the React Native example.
   subject to `frame-ancestors`) and for pointing at a **local widget**.
 - **JIT needs a callback-capable widget.** The Tier-2 bundle shipped in the SDK is
   the callback build, so **Force Tier-2 + Force JIT works locally over http**. For
-  **Tier-1 JIT**, point the Tier-1 origin at a callback-capable widget (run
-  `mesh-backup-widget` locally, or the hosted demo once it's redeployed).
+  **Tier-1 JIT**, point the Tier-1 origin at a callback-capable widget (the default
+  CI-deployed widget, or run `mesh-backup-widget` locally).
 
 ### Local mock backend (for the JIT path)
 

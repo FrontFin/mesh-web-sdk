@@ -677,15 +677,13 @@ describe('openLinkBackup tests', () => {
     })
 
     frontConnection.openLinkBackup(BACKUP_SESSION, {
-      widgetOrigin: 'https://demo-widget.cascadecode.com/'
+      widgetOrigin: 'https://widget.example.com/'
     })
 
     const iframeElement = document.getElementById('mesh-link-popup__iframe')
     const src = iframeElement?.attributes.getNamedItem('src')?.nodeValue
     expect(
-      src?.startsWith(
-        'https://demo-widget.cascadecode.com?platform=web&sdkVersion='
-      )
+      src?.startsWith('https://widget.example.com?platform=web&sdkVersion=')
     ).toBe(true)
     expect(src).toContain('&theme=dark')
   })
