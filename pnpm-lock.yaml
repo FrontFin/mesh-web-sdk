@@ -70,7 +70,7 @@ importers:
         specifier: '*'
         version: 1.0.4(bufferutil@4.1.0)(encoding@0.1.13)(utf-8-validate@6.0.6)
       '@meshconnect/web-link-sdk':
-        specifier: '*'
+        specifier: workspace:*
         version: link:../../packages/link
       '@types/react':
         specifier: ^18.0.9
