@@ -46,25 +46,20 @@ the React Native example.
   frame-ancestors https:`, so a browser will only iframe it from an **https** page.
   Run the example over https to test Tier-1 against it:
 
-  ```
-  pnpm start:https
-  ```
-
-  By default this uses a self-signed cert (`@vitejs/plugin-basic-ssl`), so the
-  browser shows **`ERR_CERT_AUTHORITY_INVALID`** — click **Advanced → Proceed to
-  localhost**, or in Chrome type **`thisisunsafe`** on the warning page. To avoid
-  the warning entirely, generate a locally-trusted cert with
-  [mkcert](https://github.com/FiloSottile/mkcert):
+  HTTPS uses a locally-trusted cert generated with
+  [mkcert](https://github.com/FiloSottile/mkcert) (no extra npm dependency, and no
+  `ERR_CERT_AUTHORITY_INVALID` warning). Generate it once, then start:
 
   ```
   brew install mkcert && mkcert -install
   mkdir -p certs
   mkcert -key-file certs/localhost-key.pem -cert-file certs/localhost.pem localhost
-  pnpm start:https   # now uses the trusted cert automatically (certs/ is gitignored)
+  pnpm start:https   # picks up certs/localhost*.pem automatically (certs/ is gitignored)
   ```
 
-  Plain `pnpm start` (http) still works for **Tier-2** (loaded via `srcdoc`, not
-  subject to `frame-ancestors`) and for pointing at a **local widget**.
+  Without a cert, `pnpm start:https` warns and serves http. Plain `pnpm start`
+  (http) still works for **Tier-2** (loaded via `srcdoc`, not subject to
+  `frame-ancestors`) and for pointing at a **local widget**.
 - **JIT needs a callback-capable widget.** The Tier-2 bundle shipped in the SDK is
   the callback build, so **Force Tier-2 + Force JIT works locally over http**. For
   **Tier-1 JIT**, point the Tier-1 origin at a callback-capable widget (the default

@@ -33,7 +33,6 @@
     ]
   },
   "devDependencies": {
-    "@vitejs/plugin-basic-ssl": "^1.1.0",
     "@vitejs/plugin-react": "^4.2.1",
     "eslint": "^7.23.0",
     "eslint-config-prettier": "^8.1.0",
