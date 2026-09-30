@@ -88,17 +88,17 @@ export interface MeshBackupConfig {
 export type MeshBackupJitStatus = 'pending' | 'ready' | 'failed'
 
 /**
- * What {@link LinkOptions.onStatusPoll} resolves to. On `ready`, `address` is
- * required and must be a valid deposit address for the requested network;
- * `addressTag` is required for memo-chain networks (XRP, XLM, …) and omitted
- * otherwise. For a given `(symbol, networkId)` the resolved address/tag MUST be
- * idempotent — always return the same one.
+ * What {@link LinkOptions.onStatusPoll} resolves to, as a discriminated union so
+ * a `ready` result cannot type-check without an `address`. On `ready`, `address`
+ * must be a valid deposit address for the requested network and `addressTag` is
+ * required for memo-chain networks (XRP, XLM, …), omitted otherwise. For a given
+ * `(symbol, networkId)` the resolved address/tag MUST be idempotent — always
+ * return the same one.
  */
-export interface MeshBackupStatusResult {
-  status: MeshBackupJitStatus
-  address?: string
-  addressTag?: string
-}
+export type MeshBackupStatusResult =
+  | { status: 'pending' }
+  | { status: 'failed' }
+  | { status: 'ready'; address: string; addressTag?: string }
 
 /** The two JIT calls the widget can make over the bridge (client spec §5/§6). */
 export type MeshBackupJitMethod = 'addressInit' | 'statusPoll'

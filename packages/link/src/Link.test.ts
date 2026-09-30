@@ -972,18 +972,28 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
     return { frontConnection, iframe, postMessageSpy }
   }
 
-  const dispatchJitRequest = (payload: {
-    callId: string
-    method: 'addressInit' | 'statusPoll'
-    symbol: string
-    networkId: string
-  }) =>
+  const dispatchJitRequest = (
+    payload: {
+      callId: string
+      method: 'addressInit' | 'statusPoll'
+      symbol: string
+      networkId: string
+    },
+    // Defaults to the widget iframe's window (the real sender); override to
+    // simulate a request from another frame.
+    source?: MessageEventSource | null
+  ) => {
+    const iframe = document.getElementById(
+      'mesh-link-popup__iframe'
+    ) as HTMLIFrameElement | null
     globalThis.dispatchEvent(
       new MessageEvent('message', {
         data: { type: JIT_REQUEST_MESSAGE_TYPE, payload },
-        origin: DEFAULT_BACKUP_WIDGET_ORIGIN
+        origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
+        source: source === undefined ? iframe?.contentWindow : source
       })
     )
+  }
 
   test('relays addressInit to onAddressInit and replies ok', async () => {
     const onAddressInit = jest.fn().mockResolvedValue(undefined)
@@ -1085,6 +1095,51 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
       type: JIT_RESPONSE_MESSAGE_TYPE,
       payload: { callId: 'p3', ok: false }
     })
+  })
+
+  test('ignores a JIT request that does not come from the widget iframe (event.source)', async () => {
+    const onStatusPoll = jest.fn().mockResolvedValue({
+      status: 'ready',
+      address: '0xabc'
+    })
+    openBackupAndSpy({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onAddressInit: jest.fn(),
+      onStatusPoll
+    })
+
+    // A same-origin request from a different/unknown source must not drive the
+    // client's backend callbacks.
+    dispatchJitRequest(
+      {
+        callId: 'x1',
+        method: 'statusPoll',
+        symbol: 'USDC',
+        networkId: 'net-1'
+      },
+      null
+    )
+    await flushPromises()
+
+    expect(onStatusPoll).not.toHaveBeenCalled()
+  })
+
+  test('openLinkBackup rejects a non-http(s) widgetOrigin (javascript:)', () => {
+    const onExit = jest.fn<void, [string | undefined]>()
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onExit
+    })
+
+    frontConnection.openLinkBackup(BACKUP_SESSION, {
+      // eslint-disable-next-line no-script-url
+      widgetOrigin: 'javascript:alert(1)'
+    })
+
+    expect(onExit).toHaveBeenCalledWith('Invalid backup widget origin!')
+    expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
   })
 
   test('cascades to the bundled Tier-2 widget and emits backupTierChanged on the ready timeout', async () => {

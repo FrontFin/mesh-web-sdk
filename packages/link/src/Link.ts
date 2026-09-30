@@ -46,16 +46,33 @@ let bridgeParent: BridgeParent | null = null
 let backupSession: MeshBackupConfig | undefined
 // Tier-1 → Tier-2 cascade state machine, live only during a backup session.
 let backupTierController: BackupTierController | null = null
+// Monotonic id for the current backup session. Every async operation (JIT reply,
+// cascade import, iframe `error`) captures the id it started under and re-checks
+// it before acting, so work from a session that has ended or been replaced can
+// never post into / clobber a later one (a reused `callId` must never associate a
+// deposit address with the wrong session — money path).
+let backupSessionId = 0
+// The widget iframe's window for the active backup session. JIT requests are only
+// honoured when they come from this exact window (`event.source`), so another
+// same-origin frame cannot drive the client's address-generation callbacks.
+let backupIframeWindow: Window | null = null
+// Removes the Tier-1 `error` listener bound to the current backup iframe.
+let removeBackupIframeErrorListener: (() => void) | null = null
 
 /**
  * Tear down any in-flight backup session state. Called when a session ends or
  * when the primary (token) flow starts, so a pending Tier-1 timeout can never
  * fire against a later iframe and a stale config can never be re-delivered.
+ * Bumping `backupSessionId` invalidates any async work still bound to the old id.
  */
 function resetBackupState() {
   backupSession = undefined
   backupTierController?.destroy()
   backupTierController = null
+  backupIframeWindow = null
+  removeBackupIframeErrorListener?.()
+  removeBackupIframeErrorListener = null
+  backupSessionId += 1
 }
 
 const iframeElement = () => {
@@ -97,15 +114,16 @@ async function handleLinkEvent(
 ) {
   // Backup JIT RPC: the widget asks the host to run its `onAddressInit` /
   // `onStatusPoll` callbacks for an address-less destination (OR-452). Only ever
-  // sent by the backup widget, so it is gated on an active backup session.
-  if (
-    (event.data as { type?: string }).type === JIT_REQUEST_MESSAGE_TYPE &&
-    backupSession
-  ) {
-    await handleBackupJitRequest(
-      (event.data as unknown as { payload?: MeshBackupJitRequestPayload })
-        .payload
-    )
+  // sent by the backup widget, so it is gated on an active backup session AND on
+  // the message coming from that widget's own window — otherwise any other
+  // same-origin frame could drive the client's backend address-generation calls.
+  if ((event.data as { type?: string }).type === JIT_REQUEST_MESSAGE_TYPE) {
+    if (backupSession && event.source && event.source === backupIframeWindow) {
+      await handleBackupJitRequest(
+        (event.data as unknown as { payload?: MeshBackupJitRequestPayload })
+          .payload
+      )
+    }
     return
   }
 
@@ -218,8 +236,26 @@ async function handleBackupJitRequest(
   if (!payload || typeof payload.callId !== 'string') return
   const { callId, method, symbol, networkId } = payload
 
-  const respond = (response: MeshBackupJitResponsePayload) =>
-    sendMessageToIframe({ type: JIT_RESPONSE_MESSAGE_TYPE, payload: response })
+  // Bind the reply to the session/widget that made the request. The callback is
+  // async, so by the time it settles the session may have ended or been replaced;
+  // posting the result then (or with a reused callId) could associate a deposit
+  // address with the wrong session. Capture the target now and only reply if this
+  // is still the same session.
+  const sessionId = backupSessionId
+  const targetWindow = backupIframeWindow
+  const targetOrigin = linkTokenOrigin
+  const respond = (response: MeshBackupJitResponsePayload) => {
+    if (backupSessionId !== sessionId || !targetWindow || !targetOrigin) return
+    try {
+      targetWindow.postMessage(
+        { type: JIT_RESPONSE_MESSAGE_TYPE, payload: response },
+        targetOrigin
+      )
+    } catch (e) {
+      console.error('Mesh SDK: Failed to deliver JIT response to the widget')
+      console.error(e)
+    }
+  }
 
   try {
     // The request drives real address generation against the client's backend —
@@ -285,7 +321,10 @@ function failBackupClosed(errorMessage: string) {
  * late message from the abandoned (cross-origin) Tier-1 surface at the origin
  * gate, so it cannot re-`markReady` and defeat the Tier-2 fail-closed timer.
  */
-async function cascadeBackupToTier2(reason: BackupTierFallbackReason) {
+async function cascadeBackupToTier2(
+  reason: BackupTierFallbackReason,
+  sessionId: number
+) {
   currentOptions?.onEvent?.({
     type: 'backupTierChanged',
     payload: { from: 'tier1', to: 'tier2', reason }
@@ -294,6 +333,7 @@ async function cascadeBackupToTier2(reason: BackupTierFallbackReason) {
   // Re-pin the message origin to the host page and tear down the Tier-1 surface
   // synchronously (before the async import) so nothing from it races the swap.
   linkTokenOrigin = window.location.origin
+  backupIframeWindow = null
   const tier1Iframe = iframeElement()
   if (tier1Iframe) {
     bridgeParent?.destroy()
@@ -307,13 +347,16 @@ async function cascadeBackupToTier2(reason: BackupTierFallbackReason) {
     html = bundle.getBundledOfflineWidget().html
   } catch {
     // The bundled chunk could not be loaded (e.g. the host's own asset host is
-    // unreachable). Fail closed — never a blank QR.
-    failBackupClosed('Backup deposit flow is unavailable')
+    // unreachable). Fail closed — never a blank QR. Only if still this session.
+    if (backupSessionId === sessionId) {
+      failBackupClosed('Backup deposit flow is unavailable')
+    }
     return
   }
 
-  // The session may have been torn down while the bundle was importing.
-  if (!backupSession) return
+  // The session may have ended or been replaced while the bundle was importing —
+  // do not touch the current (possibly different) session's iframe.
+  if (backupSessionId !== sessionId) return
 
   const iframe = iframeElement()
   if (!iframe) {
@@ -323,6 +366,9 @@ async function cascadeBackupToTier2(reason: BackupTierFallbackReason) {
 
   iframe.srcdoc = html
   bridgeParent = new BridgeParent(iframe)
+  // Tier-2 is our own inline document, same-origin with the host — track its
+  // window so JIT requests from it are accepted (event.source check).
+  backupIframeWindow = iframe.contentWindow
 }
 
 export const createLink = (options: LinkOptions): Link => {
@@ -369,6 +415,9 @@ export const createLink = (options: LinkOptions): Link => {
       ) as HTMLIFrameElement
       if (iframe) {
         iframe.allow = buildIframeAllowPolicy(linkTokenOrigin!)
+        // Clear any leftover Tier-2 `srcdoc` from a prior backup session — it
+        // takes precedence over `src` and would otherwise pin this iframe there.
+        iframe.removeAttribute('srcdoc')
         iframe.src = linkUrl
         currentIframeId = customIframeId
       } else {
@@ -421,6 +470,17 @@ export const createLink = (options: LinkOptions): Link => {
 
     let widgetUrl: string
     try {
+      // Only http(s) origins may be loaded into the iframe. `new URL().origin`
+      // alone would accept `javascript:`/`data:` schemes, which could execute in
+      // the iframe's initial same-origin context — reject anything else, matching
+      // the primary flow's protocol check.
+      const parsedOrigin = new URL(widgetOrigin)
+      if (
+        parsedOrigin.protocol !== 'http:' &&
+        parsedOrigin.protocol !== 'https:'
+      ) {
+        throw new Error('widgetOrigin must be an http(s) URL')
+      }
       // The widget reads only `theme=dark|light`; `system`/unset is left to its
       // own `prefers-color-scheme` fallback.
       const theme =
@@ -444,13 +504,21 @@ export const createLink = (options: LinkOptions): Link => {
       const iframe = document.getElementById(
         customIframeId
       ) as HTMLIFrameElement
-      if (iframe) {
-        iframe.allow = buildIframeAllowPolicy(linkTokenOrigin!)
-        iframe.src = widgetUrl
-        currentIframeId = customIframeId
-      } else {
-        console.warn(`Mesh SDK: No iframe found with id ${customIframeId}`)
+      if (!iframe) {
+        // No surface to render into — fail closed rather than leave the session
+        // active with no iframe/controller (which would hang with no onExit).
+        const msg = `Mesh SDK: No iframe found with id ${customIframeId}`
+        console.warn(msg)
+        resetBackupState()
+        options?.onExit?.(msg)
+        return
       }
+      iframe.allow = buildIframeAllowPolicy(linkTokenOrigin!)
+      // A reused embedded iframe may still carry a Tier-2 `srcdoc` from a prior
+      // backup session; `srcdoc` takes precedence over `src`, so clear it first.
+      iframe.removeAttribute('srcdoc')
+      iframe.src = widgetUrl
+      currentIframeId = customIframeId
     } else {
       currentIframeId = iframeId
       addPopup(widgetUrl)
@@ -464,25 +532,43 @@ export const createLink = (options: LinkOptions): Link => {
 
     if (iframe) {
       bridgeParent = new BridgeParent(iframe)
+      // Track this session's widget window so JIT requests are only honoured when
+      // they come from it (event.source check in handleLinkEvent).
+      backupIframeWindow = iframe.contentWindow
+
+      // Capture the session id so the cascade/fail-closed/error callbacks below
+      // only act while this session is still the active one.
+      const sessionId = backupSessionId
 
       // Arm the Tier-1 → Tier-2 cascade. If the backup origin never completes its
       // ready handshake (unreachable / served-but-broken), fall back to the
       // bundled offline widget; if even that never becomes ready, fail closed.
       backupTierController = createBackupTierController({
         onFallback: (reason: BackupTierFallbackReason) => {
-          void cascadeBackupToTier2(reason)
+          if (backupSessionId === sessionId) {
+            void cascadeBackupToTier2(reason, sessionId)
+          }
         },
         onTier2Unavailable: () => {
-          failBackupClosed('Backup deposit flow is unavailable')
+          if (backupSessionId === sessionId) {
+            failBackupClosed('Backup deposit flow is unavailable')
+          }
         }
       })
       // Best-effort hard-failure signal: a cross-origin iframe rarely fires
       // `error` for a failed navigation (the ready-handshake timeout is the
       // authoritative Tier-1 signal), but when it does fire we cascade at once
-      // instead of waiting the timeout out.
-      iframe.addEventListener('error', () =>
-        backupTierController?.reportLoadError()
-      )
+      // instead of waiting the timeout out. Session-bound + removed on teardown so
+      // a late error from an old (embedded) iframe can't cascade a later session.
+      const onIframeError = () => {
+        if (backupSessionId === sessionId) {
+          backupTierController?.reportLoadError()
+        }
+      }
+      iframe.addEventListener('error', onIframeError)
+      removeBackupIframeErrorListener = () =>
+        iframe.removeEventListener('error', onIframeError)
+
       backupTierController.start()
     }
   }

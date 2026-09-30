@@ -35,7 +35,7 @@
     "@meshconnect/uwc-bridge-parent": "1.7.0"
   },
   "scripts": {
-    "build": "pnpm run updateVersion && pnpm run bundle:embed && rimraf dist && pnpm run build:esm && pnpm run copy",
+    "build": "pnpm run updateVersion && rimraf dist && pnpm run build:esm && pnpm run copy",
     "build:esm": "tsc --outDir dist",
     "typecheck": "tsc --noEmit --skipLibCheck",
     "lint": "eslint **/*.ts",

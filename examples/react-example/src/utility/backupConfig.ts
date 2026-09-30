@@ -6,7 +6,9 @@ import type {
 // --- Backup / outage demo -------------------------------------------------
 // The deposit-only backup flow runs when the primary Mesh API is unavailable.
 // It needs no link token: `openLinkBackup` loads the standalone backup widget
-// from its origin and takes a client-assembled MeshBackupConfig.
+// from its origin and takes a MeshBackupConfig. This demo builds the config in
+// the browser for convenience; real integrations assemble it SERVER-SIDE so
+// deposit destinations aren't constructed in untrusted client code.
 //
 // Default is the CI-deployed backup widget (the `link-backup` Cloudflare Worker).
 // Override with VITE_BACKUP_WIDGET_ORIGIN to point at a local widget or another

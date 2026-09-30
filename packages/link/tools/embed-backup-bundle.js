@@ -22,7 +22,7 @@
  */
 import fs from 'fs'
 import path from 'path'
-import { fileURLToPath } from 'url'
+import { fileURLToPath, pathToFileURL } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -60,8 +60,9 @@ export const OFFLINE_WIDGET_HTML: string = ${JSON.stringify(html)}
   return { content, html }
 }
 
-// Run directly (not imported): write the file.
-if (import.meta.url === `file://${process.argv[1]}`) {
+// Run directly (not imported): write the file. Compare as file URLs so paths with
+// spaces / on Windows still match (a manual `file://` + path prefix would not).
+if (import.meta.url === pathToFileURL(process.argv[1]).href) {
   let result
   try {
     result = generate()

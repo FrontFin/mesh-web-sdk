@@ -181,10 +181,13 @@ export const App: React.FC = () => {
 
       <Section title="Backup / Outage Flow (openLinkBackup)">
         <p style={{ color: theme.colors.text, marginTop: 0 }}>
-          Deposit-only flow for when the primary Mesh API is down. No link token
-          — it loads the standalone backup widget and takes a client-assembled
-          config. Tier&nbsp;1 loads from the backup origin; on failure the SDK
-          cascades to the SDK-bundled Tier&nbsp;2 offline widget.
+          Deposit-only flow for when the primary Mesh API is down. No link token —
+          it loads the standalone backup widget and takes a{' '}
+          <code>MeshBackupConfig</code>. Tier&nbsp;1 loads from the backup origin;
+          on failure the SDK cascades to the SDK-bundled Tier&nbsp;2 offline
+          widget. (This demo builds the config in the browser for convenience —
+          real integrations assemble it <strong>server-side</strong> so deposit
+          destinations aren&rsquo;t constructed in untrusted client code.)
         </p>
 
         <Input
@@ -227,11 +230,12 @@ export const App: React.FC = () => {
         <p
           style={{ marginTop: 0, fontSize: '0.85em', color: theme.colors.text }}
         >
-          JIT needs a <strong>callback-capable widget</strong>{' '}
-          (mesh-backup-widget PR #14). The hosted demo and the currently-bundled
-          Tier-2 widget are the pre-callback build and will reject an
-          address-less config with &ldquo;requires a jit config&rdquo;. Leave
-          JIT off to test the static-address deposit + cascade.
+          JIT resolves address-less destinations via your{' '}
+          <code>onAddressInit</code> / <code>onStatusPoll</code> callbacks over the
+          bridge. The SDK-bundled Tier-2 widget supports it, so{' '}
+          <strong>Force Tier-2 + Force JIT</strong> works fully locally over http
+          with <code>pnpm mock</code>. Tier-1 JIT needs the callback-capable widget
+          at the origin above.
         </p>
 
         <Button onClick={handleOpenBackup}>Open backup deposit</Button>
