@@ -751,6 +751,68 @@ describe('openLinkBackup tests', () => {
     )
   })
 
+  test('a stale embedded backup iframe cannot close/report on a reopened session', () => {
+    // Regression (Copilot): embedded reopen into iframe B leaves iframe A alive on
+    // the SAME backup origin. A late event from A must not drive B's session — the
+    // SDK gates every backup message on event.source, not just the origin.
+    const onTransferFinished = jest.fn<void, [TransferFinishedPayload]>()
+    const onExit = jest.fn<void, [string | undefined]>()
+    const iframeA = document.createElement('iframe')
+    iframeA.id = 'backup-iframe-a'
+    const iframeB = document.createElement('iframe')
+    iframeB.id = 'backup-iframe-b'
+    document.body.append(iframeA, iframeB)
+
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      renderType: 'embedded',
+      onTransferFinished,
+      onExit
+    })
+
+    // Open into A, then reopen into B — A stays in the DOM, same backup origin.
+    frontConnection.openLinkBackup(BACKUP_SESSION, {
+      customIframeId: 'backup-iframe-a'
+    })
+    frontConnection.openLinkBackup(BACKUP_SESSION, {
+      customIframeId: 'backup-iframe-b'
+    })
+
+    // A late `transferFinished` + `close` from the STALE iframe A.
+    globalThis.dispatchEvent(
+      new MessageEvent('message', {
+        data: {
+          type: 'transferFinished',
+          payload: { status: 'success', txId: 'x' }
+        },
+        origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
+        source: iframeA.contentWindow
+      })
+    )
+    globalThis.dispatchEvent(
+      new MessageEvent('message', {
+        data: { type: 'close', payload: { errorMessage: 'stale' } },
+        origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
+        source: iframeA.contentWindow
+      })
+    )
+
+    // Neither fired — A is not the active widget window (B is).
+    expect(onTransferFinished).not.toHaveBeenCalled()
+    expect(onExit).not.toHaveBeenCalled()
+
+    // The active widget B can still drive its own session.
+    globalThis.dispatchEvent(
+      new MessageEvent('message', {
+        data: { type: 'close', payload: { errorMessage: 'bye' } },
+        origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
+        source: iframeB.contentWindow
+      })
+    )
+    expect(onExit).toHaveBeenCalledWith('bye', { errorMessage: 'bye' })
+  })
+
   test('openLinkBackup delivers the config to the widget on the "loaded" handshake', () => {
     const frontConnection = createLink({
       clientId: 'test',
@@ -796,6 +858,14 @@ describe('openLinkBackup tests', () => {
 
     frontConnection.openLinkBackup(BACKUP_SESSION)
 
+    // Backup-session events must come from the widget's own window (the SDK gates
+    // every backup message on event.source, not just the origin).
+    const widget = (
+      document.getElementById(
+        'mesh-link-popup__iframe'
+      ) as HTMLIFrameElement | null
+    )?.contentWindow
+
     const payload: TransferFinishedPayload = {
       status: 'success',
       txId: 'tid',
@@ -808,7 +878,8 @@ describe('openLinkBackup tests', () => {
     globalThis.dispatchEvent(
       new MessageEvent('message', {
         data: { type: 'transferFinished', payload },
-        origin: 'http://localhost'
+        origin: 'http://localhost',
+        source: widget
       })
     )
     expect(onTransferFinished).toHaveBeenCalledWith(payload)
@@ -816,7 +887,8 @@ describe('openLinkBackup tests', () => {
     globalThis.dispatchEvent(
       new MessageEvent('message', {
         data: { type: 'close', payload: { errorMessage: 'bye' } },
-        origin: 'http://localhost'
+        origin: 'http://localhost',
+        source: widget
       })
     )
     expect(onExit).toHaveBeenCalledWith('bye', { errorMessage: 'bye' })

@@ -278,9 +278,20 @@ async function eventsListener(
   }
   if (event.origin !== targetOrigin && event.origin !== linkTokenOrigin) {
     console.warn('Received message from untrusted origin:', event.origin)
-  } else {
-    await handleLinkEvent(event as MessageEvent<{ type: EventType }>)
+    return
   }
+  // During a backup session, additionally require the message to come from the
+  // active widget window — not just the backup ORIGIN. In embedded mode a reopen
+  // into a different iframe leaves the previous one alive on the SAME backup
+  // origin, so an origin-only check would let a late `close`/`done`/
+  // `transferFinished` from the stale iframe tear down or report a transfer for
+  // the current session. `loaded`/JIT already check this per-case; this covers
+  // every event. (Primary flow has no `backupIframeWindow`, so it is unaffected.)
+  if (backupSession && event.source !== backupIframeWindow) {
+    console.warn('Ignored backup message from an unexpected source')
+    return
+  }
+  await handleLinkEvent(event as MessageEvent<{ type: EventType }>)
 }
 
 /**
