@@ -55,24 +55,41 @@ describe('assertSelfContained', () => {
       '<!doctype html><script>fetch("https:" + "//evil.example/x")</script>'
     expect(() => assertSelfContained(evasion)).not.toThrow()
   })
+
+  test.each([
+    ['protocol-relative src', '<img src="//cdn.example/x.png">'],
+    [
+      'protocol-relative css url()',
+      '<style>.a{background:url(//cdn.example/b)}</style>'
+    ],
+    [
+      'meta refresh to a protocol-relative URL',
+      '<meta http-equiv="refresh" content="0;url=//evil.example/">'
+    ]
+  ])('catches %s', (_name, snippet) => {
+    expect(() => assertSelfContained(`<!doctype html>${snippet}`)).toThrow(
+      /not self-contained/
+    )
+  })
+
+  test('does NOT false-match a data: URI whose base64 contains //', () => {
+    // base64 alphabet includes '/', so a payload can contain '//' — but the value
+    // starts with `data:`, not `//`, so it must not trip the protocol-relative scan.
+    const html = '<!doctype html><img src="data:image/png;base64,AA//BBcc//dd">'
+    expect(() => assertSelfContained(html)).not.toThrow()
+  })
 })
 
 describe('assertRuntimeCsp', () => {
   const metaFor = csp =>
     `<!doctype html><html><head><meta http-equiv="Content-Security-Policy" content="${csp}" /></head><body></body></html>`
+  // A complete, valid no-network policy (what the widget build emits).
   const goodCsp =
-    "default-src 'none'; script-src 'sha256-abc'; style-src 'sha256-def'; connect-src 'none'; base-uri 'none'"
+    "default-src 'none'; script-src 'sha256-abc'; style-src 'sha256-def'; " +
+    "img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'"
 
-  test('accepts a hash-based CSP with default-src and connect-src none', () => {
+  test('accepts the complete hash-based no-network policy', () => {
     expect(() => assertRuntimeCsp(metaFor(goodCsp))).not.toThrow()
-  })
-
-  test("rejects a CSP that uses 'unsafe-inline'", () => {
-    const csp =
-      "default-src 'none'; script-src 'unsafe-inline'; connect-src 'none'"
-    expect(() => assertRuntimeCsp(metaFor(csp))).toThrow(
-      /does not enforce no-network/
-    )
   })
 
   test('rejects a page with no CSP meta', () => {
@@ -80,25 +97,37 @@ describe('assertRuntimeCsp', () => {
     expect(() => assertRuntimeCsp(html)).toThrow(/missing its runtime CSP/)
   })
 
+  const drop = name =>
+    goodCsp
+      .split('; ')
+      .filter(d => !d.startsWith(name + ' '))
+      .join('; ')
+  const swap = (name, value) =>
+    goodCsp
+      .split('; ')
+      .map(d => (d.startsWith(name + ' ') ? `${name} ${value}` : d))
+      .join('; ')
+
   test.each([
-    ['missing default-src', "script-src 'unsafe-inline'; connect-src 'none'"],
-    ['missing connect-src', "default-src 'none'; script-src 'unsafe-inline'"],
-    [
-      "connect-src not 'none'",
-      "default-src 'none'; connect-src https://evil.example"
-    ],
+    ['missing default-src', drop('default-src')],
+    ['missing img-src', drop('img-src')],
+    ["uses 'unsafe-inline'", swap('script-src', "'unsafe-inline'")],
+    ["connect-src not 'none'", swap('connect-src', 'https://evil.example')],
     // CSP ignores 'none' when combined with another source.
     [
       "connect-src 'none' combined with a host",
-      "default-src 'none'; connect-src 'none' https:"
+      swap('connect-src', "'none' https:")
     ],
-    // A browser uses the FIRST of a duplicated directive, so the trailing 'none'
-    // is dead — the effective policy allows https:.
-    [
-      'duplicated connect-src (first allows https)',
-      "default-src 'none'; connect-src https:; connect-src 'none'"
-    ]
-  ])('rejects a CSP %s', (_name, csp) => {
+    // A more-specific fetch directive overrides default-src 'none'.
+    ['img-src allows https', swap('img-src', 'https:')],
+    ['script-src allows a host, not just hashes', swap('script-src', 'https:')],
+    // base-uri/form-action do NOT fall back to default-src.
+    ['form-action allows a host', swap('form-action', 'https:')],
+    // An unlisted, network-capable directive.
+    ['extra font-src host', `${goodCsp}; font-src https:`],
+    // A browser uses the FIRST of a duplicated directive.
+    ['duplicated connect-src', `${goodCsp}; connect-src https:`]
+  ])('rejects a CSP: %s', (_name, csp) => {
     expect(() => assertRuntimeCsp(metaFor(csp))).toThrow(
       /does not enforce no-network/
     )
