@@ -1,4 +1,8 @@
-import { assertSelfContained, htmlByteLength } from './bundle-guards.js'
+import {
+  assertSelfContained,
+  assertRuntimeCsp,
+  htmlByteLength
+} from './bundle-guards.js'
 
 describe('assertSelfContained', () => {
   const ok =
@@ -50,6 +54,35 @@ describe('assertSelfContained', () => {
     const evasion =
       '<!doctype html><script>fetch("https:" + "//evil.example/x")</script>'
     expect(() => assertSelfContained(evasion)).not.toThrow()
+  })
+})
+
+describe('assertRuntimeCsp', () => {
+  const metaFor = csp =>
+    `<!doctype html><html><head><meta http-equiv="Content-Security-Policy" content="${csp}" /></head><body></body></html>`
+  const goodCsp =
+    "default-src 'none'; script-src 'unsafe-inline'; connect-src 'none'; base-uri 'none'"
+
+  test('accepts a page whose CSP has default-src and connect-src none', () => {
+    expect(() => assertRuntimeCsp(metaFor(goodCsp))).not.toThrow()
+  })
+
+  test('rejects a page with no CSP meta', () => {
+    const html = '<!doctype html><html><head></head><body></body></html>'
+    expect(() => assertRuntimeCsp(html)).toThrow(/missing its runtime CSP/)
+  })
+
+  test.each([
+    ['missing default-src', "script-src 'unsafe-inline'; connect-src 'none'"],
+    ['missing connect-src', "default-src 'none'; script-src 'unsafe-inline'"],
+    [
+      "connect-src not 'none'",
+      "default-src 'none'; connect-src https://evil.example"
+    ]
+  ])('rejects a CSP %s', (_name, csp) => {
+    expect(() => assertRuntimeCsp(metaFor(csp))).toThrow(
+      /missing required directive/
+    )
   })
 })
 

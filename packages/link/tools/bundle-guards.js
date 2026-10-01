@@ -40,3 +40,42 @@ export function assertSelfContained(html) {
     )
   }
 }
+
+/**
+ * The AUTHORITATIVE no-network control (what `assertSelfContained` can't give —
+ * see its note): require the vendored offline page to carry a CSP `<meta>` with
+ * `default-src 'none'` AND `connect-src 'none'`. The mesh-backup-widget offline
+ * build (`inlineSingleFile`, OR-452) bakes this in; this guard fails CI if a
+ * re-vendor ever drops it, so the Tier-2 bundle the SDK loads into its sandboxed
+ * blob iframe can never make a network call (fetch/XHR/WebSocket/beacon) at
+ * runtime — even one whose URL is constructed dynamically.
+ */
+export function assertRuntimeCsp(html) {
+  // The attribute delimiter is captured (\1 / \2) and the value runs to the
+  // matching delimiter — the CSP value itself contains single quotes (`'none'`),
+  // so a `[^"']` class would truncate it at the first directive.
+  const meta = html.match(
+    /<meta\s+http-equiv=(["'])Content-Security-Policy\1\s+content=(["'])([\s\S]*?)\2/i
+  )
+  if (!meta) {
+    throw new Error(
+      'widget.offline.html is missing its runtime CSP <meta>. The Tier-2 offline ' +
+        "bundle must declare `default-src 'none'; connect-src 'none'` so it makes " +
+        'no network calls. Re-vendor from a mesh-backup-widget build that injects ' +
+        'it (OR-452).'
+    )
+  }
+  const csp = meta[3]
+  const missing = [
+    [/default-src\s+'none'/i, "default-src 'none'"],
+    [/connect-src\s+'none'/i, "connect-src 'none'"]
+  ]
+    .filter(([re]) => !re.test(csp))
+    .map(([, name]) => name)
+  if (missing.length > 0) {
+    throw new Error(
+      `widget.offline.html CSP <meta> is missing required directive(s): ` +
+        `${missing.join(', ')}. The Tier-2 bundle must make no network calls.`
+    )
+  }
+}

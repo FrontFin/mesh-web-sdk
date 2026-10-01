@@ -15,6 +15,7 @@ import zlib from 'zlib'
 import {
   generate,
   assertSelfContained,
+  assertRuntimeCsp,
   htmlByteLength,
   HTML_PATH,
   SNAPSHOT_PATH,
@@ -74,6 +75,24 @@ if (selfContained) {
   check(
     true,
     'offline widget is self-contained (no network resource references)'
+  )
+}
+
+// The authoritative no-network control: a CSP <meta> with default-src/connect-src
+// 'none' (baked in by the mesh-backup-widget offline build). Catches a re-vendor
+// that drops it — the static self-containment scan above can't see a runtime-built
+// URL, but connect-src 'none' blocks it in the browser.
+let hasRuntimeCsp = true
+try {
+  assertRuntimeCsp(html)
+} catch (e) {
+  hasRuntimeCsp = false
+  check(false, e.message)
+}
+if (hasRuntimeCsp) {
+  check(
+    true,
+    "offline widget declares a no-network runtime CSP (connect-src 'none')"
   )
 }
 

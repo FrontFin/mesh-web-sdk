@@ -23,7 +23,11 @@
 import fs from 'fs'
 import path from 'path'
 import { fileURLToPath, pathToFileURL } from 'url'
-import { assertSelfContained, htmlByteLength } from './bundle-guards.js'
+import {
+  assertSelfContained,
+  assertRuntimeCsp,
+  htmlByteLength
+} from './bundle-guards.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -36,7 +40,7 @@ export const OUT_PATH = path.join(bundleDir, 'generated.ts')
 // so they're unit-testable; `generate()` calls `assertSelfContained`, and
 // `check-bundle-size.js` relies on `generate()` + these, so `bundle:embed` can
 // never emit a network-dependent module and CI can never pass one.
-export { assertSelfContained, htmlByteLength }
+export { assertSelfContained, assertRuntimeCsp, htmlByteLength }
 
 /** Build the generated.ts content from the vendored offline widget. */
 export function generate() {
@@ -47,6 +51,7 @@ export function generate() {
     throw new Error('widget.offline.html does not look like an HTML document')
   }
   assertSelfContained(html)
+  assertRuntimeCsp(html)
 
   // JSON.stringify(html) yields a valid, fully-escaped double-quoted JS string
   // literal (quotes, backslashes, newlines handled).
