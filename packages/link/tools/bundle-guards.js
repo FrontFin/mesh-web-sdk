@@ -29,8 +29,28 @@ export const htmlByteLength = html => Buffer.byteLength(html, 'utf8')
  * early; it is not the security boundary. (Mirrors mesh-backup-widget's own
  * build-time `verify-selfcontained` guard.)
  */
+// Decode the URL-structural HTML entities a browser would resolve in an attribute
+// value (`:` and `/`, named + numeric), so an entity-obfuscated external URL
+// (`https&colon;&sol;&sol;evil`) can't slip past the text scans. Only these two
+// characters matter for spotting a scheme/authority; a full entity decoder is not
+// needed. NOT applied inside <script> (JS string literals are not HTML-decoded).
+function decodeUrlEntities(s) {
+  return s
+    .replace(/&colon;/gi, ':')
+    .replace(/&sol;/gi, '/')
+    .replace(/&#x0*3a;/gi, ':')
+    .replace(/&#0*58;/g, ':')
+    .replace(/&#x0*2f;/gi, '/')
+    .replace(/&#0*47;/g, '/')
+}
+
 export function assertSelfContained(html) {
   // Drop allow-listed W3C namespace URLs, then look for any remaining http(s) URL.
+  // The exemption is context-free on purpose: the Preact runtime carries the
+  // `http://www.w3.org/2000/svg` / `.../1999/xhtml` namespace strings as
+  // createElementNS constants in the minified JS (not loads), so they appear
+  // outside attributes too. Only the w3.org host is exempted — any other host is
+  // still caught — and w3.org is not an exfiltration target.
   const scanned = html.replace(/https?:\/\/www\.w3\.org\/[^\s"'<>)]*/gi, '')
   const match = scanned.match(/https?:\/\/[^\s"'<>)]+/i)
   if (match) {
@@ -40,24 +60,33 @@ export function assertSelfContained(html) {
         'no network resources.'
     )
   }
-  // Protocol-relative `//host` navigation/resource. Scan markup only (scripts
-  // stripped) so minified-JS `//` doesn't false-match. The value must START with
-  // `//` (after the `=`/quote/`url(`) — this is base-64-safe, since a `data:` URI
-  // whose payload happens to contain `//` starts with `data:`, not `//`. Plus a
-  // `<meta http-equiv=refresh>` whose target is protocol-relative or external
-  // (navigation isn't governed by `connect-src`/`default-src`).
-  const markup = html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, ' ')
-  const protoRel =
-    markup.match(
-      /(?:\b(?:src|href|srcset|poster|action|formaction)\s*=\s*["']?|url\(\s*["']?)\/\/[a-z0-9.-]/i
-    ) ||
-    markup.match(
-      /http-equiv\s*=\s*["']refresh["'][^>]*\burl=\s*(?:\/\/|https?:)/i
+  // Navigation/resource vectors live in MARKUP — the browser decodes HTML entities
+  // in attribute values, and a `//host`/`refresh`/entity-obfuscated URL navigates
+  // the sandboxed iframe, which `connect-src`/`default-src` do NOT govern. Strip
+  // <script> (minified `//` and un-decoded JS entities aren't attributes) and
+  // decode the URL-structural entities the browser would.
+  const markup = decodeUrlEntities(
+    html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, ' ')
+  )
+  // A meta refresh never belongs in a self-contained offline page — reject ANY
+  // (even one whose target is entity-obfuscated), so it can't redirect the sandbox.
+  if (/<meta\b[^>]*http-equiv\s*=\s*["']?\s*refresh/i.test(markup)) {
+    throw new Error(
+      'widget.offline.html is not self-contained — contains a <meta http-equiv=' +
+        '"refresh">, which could navigate the sandboxed iframe off-document.'
     )
-  if (protoRel) {
+  }
+  // An absolute (incl. entity-decoded) or protocol-relative URL in a resource/nav
+  // attribute or CSS url(). The value must START with the scheme/`//` (after the
+  // `=`/quote/`url(`) — base-64-safe, since a `data:` URI whose payload contains
+  // `//` starts with `data:`.
+  const navUrl = markup.match(
+    /(?:\b(?:src|href|srcset|poster|action|formaction)\s*=\s*["']?|url\(\s*["']?)(?:https?:)?\/\/[a-z0-9.-]/i
+  )
+  if (navUrl) {
     throw new Error(
       `widget.offline.html is not self-contained — found a protocol-relative or ` +
-        `refresh-navigation URL (…${protoRel[0].slice(
+        `obfuscated external URL (…${navUrl[0].slice(
           -60
         )}). A Tier-2 offline ` +
         'bundle must reference no network resources.'

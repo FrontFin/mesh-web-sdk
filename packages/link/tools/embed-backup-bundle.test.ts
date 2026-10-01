@@ -65,6 +65,18 @@ describe('assertSelfContained', () => {
     [
       'meta refresh to a protocol-relative URL',
       '<meta http-equiv="refresh" content="0;url=//evil.example/">'
+    ],
+    // Any meta refresh is rejected, even without a parseable target.
+    ['bare meta refresh', '<meta http-equiv="refresh" content="5">'],
+    // Entity-obfuscated refresh target (the browser decodes &colon; / &sol;).
+    [
+      'entity-encoded meta refresh',
+      '<meta http-equiv="refresh" content="0;url=https&colon;&sol;&sol;evil.example/">'
+    ],
+    // Entity-obfuscated src (numeric entities for : and /).
+    [
+      'entity-encoded src',
+      '<img src="https&#x3a;&#x2f;&#x2f;evil.example/x.png">'
     ]
   ])('catches %s', (_name, snippet) => {
     expect(() => assertSelfContained(`<!doctype html>${snippet}`)).toThrow(
