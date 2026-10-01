@@ -78,10 +78,21 @@ describe('assertRuntimeCsp', () => {
     [
       "connect-src not 'none'",
       "default-src 'none'; connect-src https://evil.example"
+    ],
+    // CSP ignores 'none' when combined with another source.
+    [
+      "connect-src 'none' combined with a host",
+      "default-src 'none'; connect-src 'none' https:"
+    ],
+    // A browser uses the FIRST of a duplicated directive, so the trailing 'none'
+    // is dead — the effective policy allows https:.
+    [
+      'duplicated connect-src (first allows https)',
+      "default-src 'none'; connect-src https:; connect-src 'none'"
     ]
   ])('rejects a CSP %s', (_name, csp) => {
     expect(() => assertRuntimeCsp(metaFor(csp))).toThrow(
-      /missing required directive/
+      /does not enforce no-network/
     )
   })
 })

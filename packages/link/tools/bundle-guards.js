@@ -65,17 +65,38 @@ export function assertRuntimeCsp(html) {
         'it (OR-452).'
     )
   }
-  const csp = meta[3]
-  const missing = [
-    [/default-src\s+'none'/i, "default-src 'none'"],
-    [/connect-src\s+'none'/i, "connect-src 'none'"]
-  ]
-    .filter(([re]) => !re.test(csp))
-    .map(([, name]) => name)
-  if (missing.length > 0) {
+  // Parse the directives — a substring match is not enough: CSP ignores 'none'
+  // when combined with another source (`connect-src 'none' https:` allows https),
+  // and a browser uses the FIRST of a duplicated directive (`connect-src https:;
+  // connect-src 'none'` allows https). Require EXACTLY ONE of each, whose only
+  // source is 'none'.
+  const directives = new Map()
+  for (const part of meta[3].split(';')) {
+    const tokens = part.trim().split(/\s+/).filter(Boolean)
+    if (tokens.length === 0) continue
+    const name = tokens[0].toLowerCase()
+    if (!directives.has(name)) directives.set(name, [])
+    directives.get(name).push(tokens.slice(1))
+  }
+  const problems = []
+  for (const name of ['default-src', 'connect-src']) {
+    const occurrences = directives.get(name)
+    if (!occurrences) {
+      problems.push(`missing ${name} 'none'`)
+    } else if (occurrences.length > 1) {
+      problems.push(`${name} appears more than once (only the first applies)`)
+    } else if (occurrences[0].length !== 1 || occurrences[0][0] !== "'none'") {
+      problems.push(
+        `${name} must be exactly 'none' (found: ${name} ${
+          occurrences[0].join(' ') || '<empty>'
+        })`
+      )
+    }
+  }
+  if (problems.length > 0) {
     throw new Error(
-      `widget.offline.html CSP <meta> is missing required directive(s): ` +
-        `${missing.join(', ')}. The Tier-2 bundle must make no network calls.`
+      `widget.offline.html CSP <meta> does not enforce no-network: ` +
+        `${problems.join('; ')}. The Tier-2 bundle must make no network calls.`
     )
   }
 }
