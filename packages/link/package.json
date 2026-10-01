@@ -41,6 +41,8 @@
     "lint": "eslint **/*.ts",
     "copy": "node ./tools/copy",
     "updateVersion": "node ./tools/update-version",
+    "bundle:embed": "node ./tools/embed-backup-bundle.js",
+    "bundle:check": "node ./tools/check-bundle-size.js",
     "publish:npm": "pnpm run build && cd dist && npm publish --access public --provenance --registry https://registry.npmjs.org",
     "test": "jest",
     "test:cov": "jest --ci --coverage"

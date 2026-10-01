@@ -7,8 +7,17 @@ import {
   EventType,
   LinkPayload,
   IntegrationAccessToken,
-  TransferFinishedPayload
+  TransferFinishedPayload,
+  MeshBackupConfig
 } from './utils/types'
+import {
+  BACKUP_CONFIG_MESSAGE_TYPE,
+  DEFAULT_BACKUP_WIDGET_ORIGIN,
+  JIT_REQUEST_MESSAGE_TYPE,
+  JIT_RESPONSE_MESSAGE_TYPE,
+  TIER1_READY_TIMEOUT_MS,
+  TIER2_READY_TIMEOUT_MS
+} from './utils/backup'
 
 jest.mock('@meshconnect/uwc-bridge-parent', () => ({
   BridgeParent: jest.fn().mockImplementation(() => ({
@@ -20,6 +29,17 @@ jest.mock('./utils/prewarm', () => ({
   createPrewarmIframe: jest.fn(),
   removePrewarmIframe: jest.fn()
 }))
+
+// Stub the bundled Tier-2 asset so cascade tests don't load the ~135 KB HTML and
+// don't depend on the dynamic-import transform for the real file.
+jest.mock('./backup-bundle', () => ({
+  getBundledOfflineWidget: () => ({
+    html: '<!doctype html><title>tier2-bundle</title>'
+  })
+}))
+
+/** Flush pending microtasks (awaited promises), for async message handlers. */
+const flushPromises = () => Promise.resolve().then().then().then()
 
 type EventPayload = {
   type: EventType
@@ -596,5 +616,900 @@ describe('createLink tests', () => {
     const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeFalsy()
     expect(exitFunction).toHaveBeenCalled()
+  })
+})
+
+describe('openLinkBackup tests', () => {
+  globalThis.open = jest.fn()
+
+  const BACKUP_SESSION: MeshBackupConfig = {
+    clientId: 'client-1',
+    userId: 'user-1',
+    destinations: [{ networkId: 'net-1', symbol: 'USDC', address: '0xabc' }]
+  }
+
+  beforeEach(() => {
+    document.getElementsByTagName('html')[0].innerHTML = ''
+    const removePrewarmIframeMock = removePrewarmIframe as jest.Mock
+    removePrewarmIframeMock.mockReset()
+  })
+
+  test('openLinkBackup with no session calls onExit and does not open popup', () => {
+    const exitFunction = jest.fn<void, [string | undefined]>()
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onExit: exitFunction
+    })
+
+    frontConnection.openLinkBackup(undefined as unknown as MeshBackupConfig)
+
+    expect(exitFunction).toHaveBeenCalledWith('Invalid backup session!')
+    expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
+    expect(removePrewarmIframe).toHaveBeenCalled()
+  })
+
+  test('openLinkBackup opens popup at DEFAULT_BACKUP_WIDGET_ORIGIN with display hints', () => {
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn()
+    })
+
+    frontConnection.openLinkBackup(BACKUP_SESSION)
+
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
+    expect(iframeElement).toBeTruthy()
+    const src = iframeElement?.attributes.getNamedItem('src')?.nodeValue
+    expect(
+      src?.startsWith(
+        `${DEFAULT_BACKUP_WIDGET_ORIGIN}?platform=web&sdkVersion=`
+      )
+    ).toBe(true)
+    // No link token is ever decoded in backup mode, and no theme param unless set.
+    expect(src).not.toContain('theme=')
+  })
+
+  test('openLinkBackup honours widgetOrigin override, normalises trailing slash, and appends theme', () => {
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      theme: 'dark'
+    })
+
+    frontConnection.openLinkBackup(BACKUP_SESSION, {
+      widgetOrigin: 'https://widget.example.com/'
+    })
+
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
+    const src = iframeElement?.attributes.getNamedItem('src')?.nodeValue
+    expect(
+      src?.startsWith('https://widget.example.com?platform=web&sdkVersion=')
+    ).toBe(true)
+    expect(src).toContain('&theme=dark')
+  })
+
+  test('openLinkBackup does not append theme for theme "system"', () => {
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      theme: 'system'
+    })
+
+    frontConnection.openLinkBackup(BACKUP_SESSION)
+
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
+    const src = iframeElement?.attributes.getNamedItem('src')?.nodeValue
+    expect(src).not.toContain('theme=')
+  })
+
+  test('openLinkBackup with renderType "embedded" and no customIframeId logs error, calls onExit, and does not open popup', () => {
+    const exitFunction = jest.fn<void, [string | undefined]>()
+    const consoleErrorSpy = jest.spyOn(console, 'error').mockImplementation()
+
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onExit: exitFunction,
+      renderType: 'embedded'
+    })
+
+    frontConnection.openLinkBackup(BACKUP_SESSION)
+
+    const msg =
+      'Mesh SDK: Failed to open backup link - renderType "embedded" requires a customIframeId'
+    expect(consoleErrorSpy).toHaveBeenCalledWith(msg)
+    expect(exitFunction).toHaveBeenCalledWith(msg)
+    expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
+
+    consoleErrorSpy.mockRestore()
+  })
+
+  test('openLinkBackup with renderType "embedded" and customIframeId sets src and allow on the custom iframe', () => {
+    const customIframeId = 'backup-embedded-iframe'
+    const customIframeElement = document.createElement('iframe')
+    customIframeElement.id = customIframeId
+    document.body.appendChild(customIframeElement)
+
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      renderType: 'embedded'
+    })
+
+    frontConnection.openLinkBackup(BACKUP_SESSION, { customIframeId })
+
+    expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
+    const src = customIframeElement.attributes.getNamedItem('src')?.nodeValue
+    expect(
+      src?.startsWith(`${DEFAULT_BACKUP_WIDGET_ORIGIN}?platform=web`)
+    ).toBe(true)
+    expect(customIframeElement.allow).toContain(
+      `camera ${DEFAULT_BACKUP_WIDGET_ORIGIN}`
+    )
+    expect(customIframeElement.allow).toContain(
+      `microphone ${DEFAULT_BACKUP_WIDGET_ORIGIN}`
+    )
+  })
+
+  test('a stale embedded backup iframe cannot close/report on a reopened session', () => {
+    // Regression (Copilot): embedded reopen into iframe B leaves iframe A alive on
+    // the SAME backup origin. A late event from A must not drive B's session — the
+    // SDK gates every backup message on event.source, not just the origin.
+    const onTransferFinished = jest.fn<void, [TransferFinishedPayload]>()
+    const onExit = jest.fn<void, [string | undefined]>()
+    const iframeA = document.createElement('iframe')
+    iframeA.id = 'backup-iframe-a'
+    const iframeB = document.createElement('iframe')
+    iframeB.id = 'backup-iframe-b'
+    document.body.append(iframeA, iframeB)
+
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      renderType: 'embedded',
+      onTransferFinished,
+      onExit
+    })
+
+    // Open into A, then reopen into B — A stays in the DOM, same backup origin.
+    frontConnection.openLinkBackup(BACKUP_SESSION, {
+      customIframeId: 'backup-iframe-a'
+    })
+    frontConnection.openLinkBackup(BACKUP_SESSION, {
+      customIframeId: 'backup-iframe-b'
+    })
+
+    // A late `transferFinished` + `close` from the STALE iframe A.
+    globalThis.dispatchEvent(
+      new MessageEvent('message', {
+        data: {
+          type: 'transferFinished',
+          payload: { status: 'success', txId: 'x' }
+        },
+        origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
+        source: iframeA.contentWindow
+      })
+    )
+    globalThis.dispatchEvent(
+      new MessageEvent('message', {
+        data: { type: 'close', payload: { errorMessage: 'stale' } },
+        origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
+        source: iframeA.contentWindow
+      })
+    )
+
+    // Neither fired — A is not the active widget window (B is).
+    expect(onTransferFinished).not.toHaveBeenCalled()
+    expect(onExit).not.toHaveBeenCalled()
+
+    // The active widget B can still drive its own session.
+    globalThis.dispatchEvent(
+      new MessageEvent('message', {
+        data: { type: 'close', payload: { errorMessage: 'bye' } },
+        origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
+        source: iframeB.contentWindow
+      })
+    )
+    expect(onExit).toHaveBeenCalledWith('bye', { errorMessage: 'bye' })
+  })
+
+  test('openLinkBackup delivers the config to the widget on the "loaded" handshake', () => {
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn()
+    })
+
+    frontConnection.openLinkBackup(BACKUP_SESSION)
+
+    const iframeElement = document.getElementById(
+      'mesh-link-popup__iframe'
+    ) as HTMLIFrameElement | null
+    expect(iframeElement?.contentWindow).toBeTruthy()
+
+    const postMessageSpy = jest.spyOn(
+      iframeElement?.contentWindow as Window,
+      'postMessage'
+    )
+
+    globalThis.dispatchEvent(
+      new MessageEvent<{ type: EventType }>('message', {
+        data: { type: 'loaded' },
+        origin: 'http://localhost',
+        source: iframeElement?.contentWindow
+      })
+    )
+
+    // Config is posted to the widget's own origin, not the host page origin.
+    expect(postMessageSpy).toHaveBeenCalledWith(
+      { type: BACKUP_CONFIG_MESSAGE_TYPE, payload: BACKUP_SESSION },
+      DEFAULT_BACKUP_WIDGET_ORIGIN
+    )
+  })
+
+  test('backup callbacks reuse the host event contract (transferFinished / onExit)', () => {
+    const onTransferFinished = jest.fn<void, [TransferFinishedPayload]>()
+    const onExit = jest.fn<void, [string | undefined]>()
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onTransferFinished,
+      onExit
+    })
+
+    frontConnection.openLinkBackup(BACKUP_SESSION)
+
+    // Backup-session events must come from the widget's own window (the SDK gates
+    // every backup message on event.source, not just the origin).
+    const widget = (
+      document.getElementById(
+        'mesh-link-popup__iframe'
+      ) as HTMLIFrameElement | null
+    )?.contentWindow
+
+    const payload: TransferFinishedPayload = {
+      status: 'success',
+      txId: 'tid',
+      fromAddress: 'fa',
+      toAddress: 'ta',
+      symbol: 'USDC',
+      amount: 1,
+      networkId: 'net-1'
+    }
+    globalThis.dispatchEvent(
+      new MessageEvent('message', {
+        data: { type: 'transferFinished', payload },
+        origin: 'http://localhost',
+        source: widget
+      })
+    )
+    expect(onTransferFinished).toHaveBeenCalledWith(payload)
+
+    globalThis.dispatchEvent(
+      new MessageEvent('message', {
+        data: { type: 'close', payload: { errorMessage: 'bye' } },
+        origin: 'http://localhost',
+        source: widget
+      })
+    )
+    expect(onExit).toHaveBeenCalledWith('bye', { errorMessage: 'bye' })
+    expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
+  })
+
+  test('openLink after openLinkBackup does not leak the backup config on "loaded"', () => {
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn()
+    })
+
+    // A backup session, then a switch back to the primary (token) path.
+    frontConnection.openLinkBackup(BACKUP_SESSION)
+    frontConnection.openLink(BASE64_ENCODED_URL)
+
+    const iframeElement = document.getElementById(
+      'mesh-link-popup__iframe'
+    ) as HTMLIFrameElement | null
+    const postMessageSpy = jest.spyOn(
+      iframeElement?.contentWindow as Window,
+      'postMessage'
+    )
+
+    globalThis.dispatchEvent(
+      new MessageEvent<{ type: EventType }>('message', {
+        data: { type: 'loaded' },
+        origin: 'http://localhost'
+      })
+    )
+
+    const leaked = postMessageSpy.mock.calls.find(
+      ([message]) =>
+        (message as { type?: string })?.type === BACKUP_CONFIG_MESSAGE_TYPE
+    )
+    expect(leaked).toBeUndefined()
+  })
+
+  test('openLinkBackup does not forward integration access tokens to the backup widget on "loaded"', () => {
+    const tokens: IntegrationAccessToken[] = [
+      {
+        accessToken: 'at',
+        accountId: 'aid',
+        accountName: 'an',
+        brokerType: 'acorns',
+        brokerName: 'A'
+      }
+    ]
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      accessTokens: tokens
+    })
+
+    frontConnection.openLinkBackup(BACKUP_SESSION)
+
+    const iframeElement = document.getElementById(
+      'mesh-link-popup__iframe'
+    ) as HTMLIFrameElement | null
+    const postMessageSpy = jest.spyOn(
+      iframeElement?.contentWindow as Window,
+      'postMessage'
+    )
+
+    globalThis.dispatchEvent(
+      new MessageEvent<{ type: EventType }>('message', {
+        data: { type: 'loaded' },
+        origin: 'http://localhost',
+        source: iframeElement?.contentWindow
+      })
+    )
+
+    // The deposit-only backup widget must never receive integration credentials.
+    const forwardedTokens = postMessageSpy.mock.calls.find(
+      ([message]) =>
+        (message as { type?: string })?.type === 'frontAccessTokens'
+    )
+    expect(forwardedTokens).toBeUndefined()
+    // The backup config is still delivered.
+    expect(postMessageSpy).toHaveBeenCalledWith(
+      { type: BACKUP_CONFIG_MESSAGE_TYPE, payload: BACKUP_SESSION },
+      DEFAULT_BACKUP_WIDGET_ORIGIN
+    )
+  })
+
+  test('a stale backup iframe does not receive access tokens after an aborted re-open', () => {
+    // Regression (Copilot #4147285500): after a backup session, an aborted re-open
+    // clears `backupSession` but leaves the old backup iframe + listener live. A
+    // late `loaded` from that stale iframe must NOT pass the token-forwarding gate
+    // (which is why the gate is `activeFlow === 'primary'`, not `!backupSession`).
+    const tokens: IntegrationAccessToken[] = [
+      {
+        accessToken: 'at',
+        accountId: 'aid',
+        accountName: 'an',
+        brokerType: 'acorns',
+        brokerName: 'A'
+      }
+    ]
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      accessTokens: tokens
+    })
+
+    // 1. Open a backup session (creates the popup iframe at the backup origin).
+    frontConnection.openLinkBackup(BACKUP_SESSION)
+    const staleIframe = document.getElementById(
+      'mesh-link-popup__iframe'
+    ) as HTMLIFrameElement | null
+    const postMessageSpy = jest.spyOn(
+      staleIframe?.contentWindow as Window,
+      'postMessage'
+    )
+
+    // 2. Abort a re-open with a malformed origin — clears backupSession, but the
+    //    stale backup iframe above is not torn down.
+    frontConnection.openLinkBackup(BACKUP_SESSION, {
+      widgetOrigin: 'not-a-url'
+    })
+
+    // 3. The stale backup iframe fires a late `loaded`.
+    globalThis.dispatchEvent(
+      new MessageEvent<{ type: EventType }>('message', {
+        data: { type: 'loaded' },
+        origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
+        source: staleIframe?.contentWindow
+      })
+    )
+
+    const forwardedTokens = postMessageSpy.mock.calls.find(
+      ([message]) =>
+        (message as { type?: string })?.type === 'frontAccessTokens'
+    )
+    expect(forwardedTokens).toBeUndefined()
+  })
+
+  test('a stale backup iframe cannot close or report a transfer after an aborted re-open', () => {
+    // Regression (Copilot #4152220541 / #4152244613): after an aborted re-open the
+    // old iframe + listener stay live while `activeFlow` is null. A late
+    // `close`/`transferFinished` from it must be dropped (the gate is the positive
+    // `activeFlow`, not `backupSession`, which is also null in this dead window).
+    const onExit = jest.fn<void, [string | undefined]>()
+    const onTransferFinished = jest.fn<void, [TransferFinishedPayload]>()
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onExit,
+      onTransferFinished
+    })
+
+    frontConnection.openLinkBackup(BACKUP_SESSION)
+    const staleWindow = (
+      document.getElementById(
+        'mesh-link-popup__iframe'
+      ) as HTMLIFrameElement | null
+    )?.contentWindow
+
+    // Abort a re-open (malformed origin) — clears activeFlow/backupSession; the
+    // stale iframe + listener remain.
+    frontConnection.openLinkBackup(BACKUP_SESSION, {
+      widgetOrigin: 'not-a-url'
+    })
+
+    for (const data of [
+      { type: 'transferFinished', payload: { status: 'success', txId: 'x' } },
+      { type: 'close', payload: { errorMessage: 'stale' } }
+    ]) {
+      globalThis.dispatchEvent(
+        new MessageEvent('message', {
+          data,
+          origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
+          source: staleWindow
+        })
+      )
+    }
+
+    expect(onTransferFinished).not.toHaveBeenCalled()
+    expect(onExit).not.toHaveBeenCalledWith('stale', expect.anything())
+  })
+
+  test('openLinkBackup with a malformed widgetOrigin calls onExit and opens no popup', () => {
+    const exitFunction = jest.fn<void, [string | undefined]>()
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onExit: exitFunction
+    })
+
+    frontConnection.openLinkBackup(BACKUP_SESSION, {
+      widgetOrigin: 'not-a-url'
+    })
+
+    expect(exitFunction).toHaveBeenCalledWith('Invalid backup widget origin!')
+    expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
+  })
+
+  test('openLinkBackup embedded with a missing customIframeId warns and opens no popup', () => {
+    const consoleWarnSpy = jest.spyOn(console, 'warn').mockImplementation()
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      renderType: 'embedded'
+    })
+
+    frontConnection.openLinkBackup(BACKUP_SESSION, {
+      customIframeId: 'does-not-exist'
+    })
+
+    expect(consoleWarnSpy).toHaveBeenCalledWith(
+      'Mesh SDK: No iframe found with id does-not-exist'
+    )
+    expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
+
+    consoleWarnSpy.mockRestore()
+  })
+})
+
+describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
+  globalThis.open = jest.fn()
+
+  const BACKUP_SESSION: MeshBackupConfig = {
+    clientId: 'client-1',
+    userId: 'user-1',
+    // Address-less ⇒ resolved via the JIT callbacks over the bridge.
+    destinations: [{ networkId: 'net-1', symbol: 'USDC' }]
+  }
+
+  beforeEach(() => {
+    document.getElementsByTagName('html')[0].innerHTML = ''
+    ;(removePrewarmIframe as jest.Mock).mockReset()
+  })
+
+  const openBackupAndSpy = (options: Parameters<typeof createLink>[0]) => {
+    const frontConnection = createLink(options)
+    frontConnection.openLinkBackup(BACKUP_SESSION)
+    const iframe = document.getElementById(
+      'mesh-link-popup__iframe'
+    ) as HTMLIFrameElement
+    // Complete the Tier-1 ready handshake (also cancels the cascade timer). The
+    // `loaded` handshake is only honoured from the widget's own window.
+    globalThis.dispatchEvent(
+      new MessageEvent('message', {
+        data: { type: 'loaded' },
+        origin: 'http://localhost',
+        source: iframe.contentWindow
+      })
+    )
+    const postMessageSpy = jest.spyOn(
+      iframe.contentWindow as Window,
+      'postMessage'
+    )
+    return { frontConnection, iframe, postMessageSpy }
+  }
+
+  const dispatchJitRequest = (
+    payload: {
+      callId: string
+      method: 'addressInit' | 'statusPoll'
+      symbol: string
+      networkId: string
+    },
+    // Defaults to the widget iframe's window (the real sender); override to
+    // simulate a request from another frame.
+    source?: MessageEventSource | null
+  ) => {
+    const iframe = document.getElementById(
+      'mesh-link-popup__iframe'
+    ) as HTMLIFrameElement | null
+    globalThis.dispatchEvent(
+      new MessageEvent('message', {
+        data: { type: JIT_REQUEST_MESSAGE_TYPE, payload },
+        origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
+        source: source === undefined ? iframe?.contentWindow : source
+      })
+    )
+  }
+
+  test('relays addressInit to onAddressInit and replies ok', async () => {
+    const onAddressInit = jest.fn().mockResolvedValue(undefined)
+    const { postMessageSpy } = openBackupAndSpy({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onAddressInit,
+      onStatusPoll: jest.fn()
+    })
+
+    dispatchJitRequest({
+      callId: 'a1',
+      method: 'addressInit',
+      symbol: 'USDC',
+      networkId: 'net-1'
+    })
+    await flushPromises()
+
+    expect(onAddressInit).toHaveBeenCalledWith('USDC', 'net-1')
+    expect(postMessageSpy).toHaveBeenCalledWith(
+      { type: JIT_RESPONSE_MESSAGE_TYPE, payload: { callId: 'a1', ok: true } },
+      DEFAULT_BACKUP_WIDGET_ORIGIN
+    )
+  })
+
+  test('relays statusPoll to onStatusPoll and returns its result', async () => {
+    const result = { status: 'ready' as const, address: '0xabc' }
+    const onStatusPoll = jest.fn().mockResolvedValue(result)
+    const { postMessageSpy } = openBackupAndSpy({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onAddressInit: jest.fn(),
+      onStatusPoll
+    })
+
+    dispatchJitRequest({
+      callId: 'p1',
+      method: 'statusPoll',
+      symbol: 'USDC',
+      networkId: 'net-1'
+    })
+    await flushPromises()
+
+    expect(onStatusPoll).toHaveBeenCalledWith('USDC', 'net-1')
+    expect(postMessageSpy).toHaveBeenCalledWith(
+      {
+        type: JIT_RESPONSE_MESSAGE_TYPE,
+        payload: { callId: 'p1', ok: true, result }
+      },
+      DEFAULT_BACKUP_WIDGET_ORIGIN
+    )
+  })
+
+  test('strips extra fields from the statusPoll result before posting to the widget', async () => {
+    // A real backend response may carry extra fields (e.g. credentials); only the
+    // contract fields may cross to the widget's independent origin.
+    const onStatusPoll = jest.fn().mockResolvedValue({
+      status: 'ready',
+      address: '0xabc',
+      addressTag: 'memo1',
+      secretToken: 'do-not-leak',
+      internalUrl: 'https://internal/x'
+    })
+    const { postMessageSpy } = openBackupAndSpy({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onAddressInit: jest.fn(),
+      onStatusPoll
+    })
+
+    dispatchJitRequest({
+      callId: 'p9',
+      method: 'statusPoll',
+      symbol: 'USDC',
+      networkId: 'net-1'
+    })
+    await flushPromises()
+
+    expect(postMessageSpy).toHaveBeenCalledWith(
+      {
+        type: JIT_RESPONSE_MESSAGE_TYPE,
+        payload: {
+          callId: 'p9',
+          ok: true,
+          result: { status: 'ready', address: '0xabc', addressTag: 'memo1' }
+        }
+      },
+      DEFAULT_BACKUP_WIDGET_ORIGIN
+    )
+  })
+
+  test('replies ok:false with a fixed error when a JIT callback throws (no host detail leaked)', async () => {
+    const onStatusPoll = jest
+      .fn()
+      .mockRejectedValue(new Error('secret backend url https://internal/x'))
+    const { postMessageSpy } = openBackupAndSpy({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onAddressInit: jest.fn(),
+      onStatusPoll
+    })
+
+    dispatchJitRequest({
+      callId: 'p2',
+      method: 'statusPoll',
+      symbol: 'USDC',
+      networkId: 'net-1'
+    })
+    await flushPromises()
+
+    // The host exception text must NOT cross to the widget origin — fixed message.
+    expect(postMessageSpy).toHaveBeenCalledWith(
+      {
+        type: JIT_RESPONSE_MESSAGE_TYPE,
+        payload: { callId: 'p2', ok: false, error: 'JIT callback failed' }
+      },
+      DEFAULT_BACKUP_WIDGET_ORIGIN
+    )
+  })
+
+  test('fails closed (ok:false) when the required JIT callback is not provided', async () => {
+    const { postMessageSpy } = openBackupAndSpy({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn()
+      // no onStatusPoll
+    })
+
+    dispatchJitRequest({
+      callId: 'p3',
+      method: 'statusPoll',
+      symbol: 'USDC',
+      networkId: 'net-1'
+    })
+    await flushPromises()
+
+    const call = postMessageSpy.mock.calls.find(
+      ([m]) => (m as { type?: string })?.type === JIT_RESPONSE_MESSAGE_TYPE
+    )
+    expect(call?.[0]).toMatchObject({
+      type: JIT_RESPONSE_MESSAGE_TYPE,
+      payload: { callId: 'p3', ok: false }
+    })
+  })
+
+  test('ignores a JIT request that does not come from the widget iframe (event.source)', async () => {
+    const onStatusPoll = jest.fn().mockResolvedValue({
+      status: 'ready',
+      address: '0xabc'
+    })
+    openBackupAndSpy({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onAddressInit: jest.fn(),
+      onStatusPoll
+    })
+
+    // A same-origin request from a different/unknown source must not drive the
+    // client's backend callbacks.
+    dispatchJitRequest(
+      {
+        callId: 'x1',
+        method: 'statusPoll',
+        symbol: 'USDC',
+        networkId: 'net-1'
+      },
+      null
+    )
+    await flushPromises()
+
+    expect(onStatusPoll).not.toHaveBeenCalled()
+  })
+
+  test('openLinkBackup rejects a non-http(s) widgetOrigin (javascript:)', () => {
+    const onExit = jest.fn<void, [string | undefined]>()
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onExit
+    })
+
+    frontConnection.openLinkBackup(BACKUP_SESSION, {
+      // eslint-disable-next-line no-script-url
+      widgetOrigin: 'javascript:alert(1)'
+    })
+
+    expect(onExit).toHaveBeenCalledWith('Invalid backup widget origin!')
+    expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
+  })
+
+  test('cascades to the bundled Tier-2 widget and emits backupTierChanged on the ready timeout', async () => {
+    jest.useFakeTimers()
+    try {
+      const onEvent = jest.fn<void, [LinkEventType]>()
+      const frontConnection = createLink({
+        clientId: 'test',
+        onIntegrationConnected: jest.fn(),
+        onEvent
+      })
+      frontConnection.openLinkBackup(BACKUP_SESSION)
+
+      // No Tier-1 `loaded` arrives → the ready-handshake timeout fires.
+      jest.advanceTimersByTime(TIER1_READY_TIMEOUT_MS)
+
+      expect(onEvent).toHaveBeenCalledWith({
+        type: 'backupTierChanged',
+        payload: { from: 'tier1', to: 'tier2', reason: 'readyTimeout' }
+      })
+
+      // Flush the dynamic import + blob/sandbox swap.
+      await flushPromises()
+
+      const iframe = document.getElementById(
+        'mesh-link-popup__iframe'
+      ) as HTMLIFrameElement
+      // Tier-2 loads a blob: URL in a sandboxed (opaque-origin) iframe — not srcdoc.
+      expect(iframe.getAttribute('src')?.startsWith('blob:')).toBe(true)
+      expect(iframe.getAttribute('sandbox')).toBe('allow-scripts')
+      expect(iframe.getAttribute('srcdoc')).toBeNull()
+    } finally {
+      jest.clearAllTimers()
+      jest.useRealTimers()
+    }
+  })
+
+  test('a Tier-1 ready handshake prevents the cascade', () => {
+    jest.useFakeTimers()
+    try {
+      const onEvent = jest.fn<void, [LinkEventType]>()
+      const frontConnection = createLink({
+        clientId: 'test',
+        onIntegrationConnected: jest.fn(),
+        onEvent
+      })
+      frontConnection.openLinkBackup(BACKUP_SESSION)
+
+      const iframe = document.getElementById(
+        'mesh-link-popup__iframe'
+      ) as HTMLIFrameElement
+      globalThis.dispatchEvent(
+        new MessageEvent('message', {
+          data: { type: 'loaded' },
+          origin: 'http://localhost',
+          source: iframe.contentWindow
+        })
+      )
+      jest.advanceTimersByTime(TIER1_READY_TIMEOUT_MS * 2)
+
+      const cascaded = onEvent.mock.calls.some(
+        ([e]) => e.type === 'backupTierChanged'
+      )
+      expect(cascaded).toBe(false)
+    } finally {
+      jest.clearAllTimers()
+      jest.useRealTimers()
+    }
+  })
+
+  test('fails closed via onExit if Tier-2 itself never becomes ready', async () => {
+    jest.useFakeTimers()
+    try {
+      const onExit = jest.fn<void, [string | undefined]>()
+      const frontConnection = createLink({
+        clientId: 'test',
+        onIntegrationConnected: jest.fn(),
+        onExit
+      })
+      frontConnection.openLinkBackup(BACKUP_SESSION)
+
+      jest.advanceTimersByTime(TIER1_READY_TIMEOUT_MS) // cascade to tier2
+      await flushPromises() // blob/sandbox swap
+
+      // Tier-2 never handshakes → the fail-closed safety net fires.
+      jest.advanceTimersByTime(TIER2_READY_TIMEOUT_MS)
+      expect(onExit).toHaveBeenCalledWith('Backup deposit flow is unavailable')
+    } finally {
+      jest.clearAllTimers()
+      jest.useRealTimers()
+    }
+  })
+
+  test('a late Tier-1 message after cascade cannot cancel the Tier-2 fail-closed timer', async () => {
+    jest.useFakeTimers()
+    try {
+      const onExit = jest.fn<void, [string | undefined]>()
+      const frontConnection = createLink({
+        clientId: 'test',
+        onIntegrationConnected: jest.fn(),
+        onExit
+      })
+      frontConnection.openLinkBackup(BACKUP_SESSION)
+
+      const iframe = document.getElementById(
+        'mesh-link-popup__iframe'
+      ) as HTMLIFrameElement
+
+      jest.advanceTimersByTime(TIER1_READY_TIMEOUT_MS) // cascade to tier2
+      await flushPromises() // blob/sandbox swap
+
+      // A navigation does NOT replace the iframe's window, so a late Tier-1
+      // `loaded` (queued before the swap) still has source === the Tier-2 window —
+      // but it carries the Tier-1 origin, not the opaque 'null'. The origin gate
+      // must reject it so it can't markReady and cancel the fail-closed timer.
+      globalThis.dispatchEvent(
+        new MessageEvent('message', {
+          data: { type: 'loaded' },
+          origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
+          source: iframe.contentWindow
+        })
+      )
+
+      jest.advanceTimersByTime(TIER2_READY_TIMEOUT_MS)
+      expect(onExit).toHaveBeenCalledWith('Backup deposit flow is unavailable')
+    } finally {
+      jest.clearAllTimers()
+      jest.useRealTimers()
+    }
+  })
+
+  test('a JIT request is ignored when there is no active backup session', async () => {
+    const onStatusPoll = jest.fn()
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onStatusPoll
+    })
+
+    // Primary (token) flow — no backup session active.
+    frontConnection.openLink(BASE64_ENCODED_URL)
+    globalThis.dispatchEvent(
+      new MessageEvent('message', {
+        data: {
+          type: JIT_REQUEST_MESSAGE_TYPE,
+          payload: {
+            callId: 'x',
+            method: 'statusPoll',
+            symbol: 'USDC',
+            networkId: 'net-1'
+          }
+        },
+        origin: 'http://localhost'
+      })
+    )
+    await flushPromises()
+
+    expect(onStatusPoll).not.toHaveBeenCalled()
   })
 })
