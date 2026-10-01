@@ -79,6 +79,13 @@ export function assertRuntimeCsp(html) {
     directives.get(name).push(tokens.slice(1))
   }
   const problems = []
+  // Inline script/style are allowed by sha256 hash, never 'unsafe-inline'
+  // (Web:S7039) — reject it so a re-vendor can't reopen the inline-injection hole.
+  if (/'unsafe-inline'/i.test(meta[3])) {
+    problems.push(
+      "uses 'unsafe-inline' (inline code must be allowed by sha256 hash)"
+    )
+  }
   for (const name of ['default-src', 'connect-src']) {
     const occurrences = directives.get(name)
     if (!occurrences) {

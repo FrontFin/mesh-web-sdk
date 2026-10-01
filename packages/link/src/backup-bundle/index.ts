@@ -5,7 +5,8 @@ export { OFFLINE_WIDGET_HTML }
 /** The bundled Tier-2 asset: the self-contained offline widget HTML. */
 export interface BundledOfflineWidget {
   /**
-   * Self-contained widget HTML to load into an iframe via `srcdoc`. The catalog
+   * Self-contained widget HTML to load into a sandboxed opaque-origin `blob:`
+   * iframe (not `srcdoc`). It carries its own runtime CSP meta. The catalog
    * snapshot + top-N logos are already inlined in it (design §5H), so the SDK
    * loads nothing else for Tier 2 and makes no Mesh-owned network call.
    */

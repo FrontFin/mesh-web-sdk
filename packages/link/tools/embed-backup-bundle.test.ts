@@ -61,10 +61,18 @@ describe('assertRuntimeCsp', () => {
   const metaFor = csp =>
     `<!doctype html><html><head><meta http-equiv="Content-Security-Policy" content="${csp}" /></head><body></body></html>`
   const goodCsp =
-    "default-src 'none'; script-src 'unsafe-inline'; connect-src 'none'; base-uri 'none'"
+    "default-src 'none'; script-src 'sha256-abc'; style-src 'sha256-def'; connect-src 'none'; base-uri 'none'"
 
-  test('accepts a page whose CSP has default-src and connect-src none', () => {
+  test('accepts a hash-based CSP with default-src and connect-src none', () => {
     expect(() => assertRuntimeCsp(metaFor(goodCsp))).not.toThrow()
+  })
+
+  test("rejects a CSP that uses 'unsafe-inline'", () => {
+    const csp =
+      "default-src 'none'; script-src 'unsafe-inline'; connect-src 'none'"
+    expect(() => assertRuntimeCsp(metaFor(csp))).toThrow(
+      /does not enforce no-network/
+    )
   })
 
   test('rejects a page with no CSP meta', () => {
