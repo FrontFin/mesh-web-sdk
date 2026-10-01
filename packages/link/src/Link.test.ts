@@ -902,6 +902,58 @@ describe('openLinkBackup tests', () => {
     )
   })
 
+  test('a stale backup iframe does not receive access tokens after an aborted re-open', () => {
+    // Regression (Copilot #4147285500): after a backup session, an aborted re-open
+    // clears `backupSession` but leaves the old backup iframe + listener live. A
+    // late `loaded` from that stale iframe must NOT pass the token-forwarding gate
+    // (which is why the gate is `activeFlow === 'primary'`, not `!backupSession`).
+    const tokens: IntegrationAccessToken[] = [
+      {
+        accessToken: 'at',
+        accountId: 'aid',
+        accountName: 'an',
+        brokerType: 'acorns',
+        brokerName: 'A'
+      }
+    ]
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      accessTokens: tokens
+    })
+
+    // 1. Open a backup session (creates the popup iframe at the backup origin).
+    frontConnection.openLinkBackup(BACKUP_SESSION)
+    const staleIframe = document.getElementById(
+      'mesh-link-popup__iframe'
+    ) as HTMLIFrameElement | null
+    const postMessageSpy = jest.spyOn(
+      staleIframe?.contentWindow as Window,
+      'postMessage'
+    )
+
+    // 2. Abort a re-open with a malformed origin — clears backupSession, but the
+    //    stale backup iframe above is not torn down.
+    frontConnection.openLinkBackup(BACKUP_SESSION, {
+      widgetOrigin: 'not-a-url'
+    })
+
+    // 3. The stale backup iframe fires a late `loaded`.
+    globalThis.dispatchEvent(
+      new MessageEvent<{ type: EventType }>('message', {
+        data: { type: 'loaded' },
+        origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
+        source: staleIframe?.contentWindow
+      })
+    )
+
+    const forwardedTokens = postMessageSpy.mock.calls.find(
+      ([message]) =>
+        (message as { type?: string })?.type === 'frontAccessTokens'
+    )
+    expect(forwardedTokens).toBeUndefined()
+  })
+
   test('openLinkBackup with a malformed widgetOrigin calls onExit and opens no popup', () => {
     const exitFunction = jest.fn<void, [string | undefined]>()
     const frontConnection = createLink({

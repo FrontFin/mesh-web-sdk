@@ -19,6 +19,14 @@ export const htmlByteLength = html => Buffer.byteLength(html, 'utf8')
  * it is an identifier, not a network load. A self-contained build otherwise uses
  * only `data:` URIs and inline content. (Mirrors mesh-backup-widget's own
  * build-time `verify-selfcontained` guard.)
+ *
+ * DEFENSE IN DEPTH ONLY — this is a static text scan, so it catches literal URLs
+ * but CANNOT catch a URL assembled at runtime (e.g. `fetch('https:' + '//x')`).
+ * The authoritative no-network control is the bundled widget's own runtime
+ * Content-Security-Policy (`default-src 'none'; connect-src 'none'; …`), emitted
+ * by the mesh-backup-widget build, plus the opaque-origin `sandbox` the SDK mounts
+ * it under. This scan exists to catch an accidentally non-self-contained re-vendor
+ * early; it is not the security boundary. See the evasion case in the tests.
  */
 export function assertSelfContained(html) {
   // Drop allow-listed W3C namespace URLs, then look for any remaining http(s) URL.

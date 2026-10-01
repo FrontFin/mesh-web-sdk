@@ -45,6 +45,16 @@ let bridgeParent: BridgeParent | null = null
 // Cleared by `openLink` so a prior backup session can never leak its deposit
 // config into a subsequent primary (token) flow.
 let backupSession: MeshBackupConfig | undefined
+// Which flow is currently live. A POSITIVE discriminator for "safe to forward
+// integration access tokens" (`'primary'` only) — `!backupSession` is NOT safe,
+// because an aborted re-open (`openLink` with a bad token, or `openLinkBackup`
+// with a bad origin) clears `backupSession` while the previous backup iframe +
+// listener are still live; a late `loaded` from that stale backup iframe would
+// then pass a `!backupSession` check and ship `frontAccessTokens` to the
+// independent backup origin. In that aborted/dead window `activeFlow` is `null`,
+// so tokens are withheld. Set only after a flow commits; cleared on every
+// teardown/abort via `resetBackupState`.
+let activeFlow: 'primary' | 'backup' | null = null
 // Tier-1 → Tier-2 cascade state machine, live only during a backup session.
 let backupTierController: BackupTierController | null = null
 // Monotonic id for the current backup session. Every async operation (JIT reply,
@@ -75,6 +85,10 @@ let backupTier2BlobUrl: string | null = null
  */
 function resetBackupState() {
   backupSession = undefined
+  // Entering a fresh/dead state: no flow is live until one re-commits below. This
+  // is what makes a late `loaded` from a stale backup iframe fail the token-
+  // forwarding gate (`activeFlow === 'primary'`) during an aborted re-open.
+  activeFlow = null
   backupTierController?.destroy()
   backupTierController = null
   backupIframeWindow = null
@@ -200,8 +214,11 @@ async function handleLinkEvent(
       // Never forward integration access tokens to the backup widget: it is a
       // deposit-only flow served from an independent origin (no shared failure
       // domain with Mesh) and has no use for them — forwarding would leak the
-      // user's credentials cross-origin.
-      if (currentOptions?.accessTokens && !backupSession) {
+      // user's credentials cross-origin. Gate on the POSITIVE `activeFlow ===
+      // 'primary'` (not `!backupSession`): after an aborted re-open the stale
+      // backup iframe can still fire `loaded` with `backupSession` cleared, and
+      // only this positive check withholds the tokens in that dead window.
+      if (currentOptions?.accessTokens && activeFlow === 'primary') {
         sendMessageToIframe({
           type: 'frontAccessTokens',
           payload: currentOptions.accessTokens
@@ -480,6 +497,10 @@ export const createLink = (options: LinkOptions): Link => {
       return
     }
 
+    // Committed to the primary (token) flow — safe to forward access tokens on the
+    // `loaded` handshake. (`resetBackupState()` above cleared any prior flow.)
+    activeFlow = 'primary'
+
     linkUrl = addLanguage(linkUrl, currentOptions?.language)
     linkUrl = addDisplayFiatCurrency(
       linkUrl,
@@ -580,6 +601,11 @@ export const createLink = (options: LinkOptions): Link => {
       options?.onExit?.('Invalid backup widget origin!')
       return
     }
+
+    // Origin validated — this backup flow is now the live one. (A later no-iframe
+    // abort below calls `resetBackupState()`, which clears this again.) Access
+    // tokens are never forwarded while `activeFlow === 'backup'`.
+    activeFlow = 'backup'
 
     window.removeEventListener('message', eventsListener)
     if (customIframeId) {

