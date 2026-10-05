@@ -90,7 +90,11 @@ export function buildBackupWidgetUrl(
   origin: string,
   params: BackupWidgetUrlParams
 ): string {
-  let url = origin.replace(/\/+$/, '')
+  // Trim trailing slashes with an index walk, not `/\/+$/` — the anchored `+`
+  // backtracks super-linearly (Sonar S8786) on a run of slashes before a non-slash.
+  let sliceEnd = origin.length
+  while (sliceEnd > 0 && origin[sliceEnd - 1] === '/') sliceEnd -= 1
+  let url = origin.slice(0, sliceEnd)
   url = appendQueryParam(url, 'platform', params.platform)
   url = appendQueryParam(url, 'sdkVersion', params.sdkVersion)
   if (params.theme) {

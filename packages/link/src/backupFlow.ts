@@ -220,7 +220,7 @@ export function createBackupFlow(host: BackupFlowHost): BackupFlow {
       // The request drives real address generation against the client's backend —
       // reject a malformed one rather than passing garbage to the callbacks.
       if (typeof symbol !== 'string' || typeof networkId !== 'string') {
-        throw new Error(
+        throw new TypeError(
           'backup JIT request is missing a string symbol/networkId'
         )
       }

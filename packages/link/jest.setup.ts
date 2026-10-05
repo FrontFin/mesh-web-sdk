@@ -8,7 +8,10 @@ global.TextDecoder = TextDecoder
 // can assert the blob:-based swap.
 if (typeof URL.createObjectURL !== 'function') {
   let blobSeq = 0
-  URL.createObjectURL = jest.fn(() => `blob:mock/${(blobSeq += 1)}`)
+  URL.createObjectURL = jest.fn(() => {
+    blobSeq += 1
+    return `blob:mock/${blobSeq}`
+  })
   URL.revokeObjectURL = jest.fn()
 }
 
