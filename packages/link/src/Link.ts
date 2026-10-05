@@ -101,8 +101,13 @@ async function handleLinkEvent(
   event: MessageEvent<MessageLinkEvent> | MessageEvent<LinkEventType>
 ) {
   // Backup JIT RPC: the widget asks the host to run its `onAddressInit` /
-  // `onStatusPoll` callbacks for an address-less destination (OR-452). The backup
-  // flow gates it on the active backup session + widget window.
+  // `onStatusPoll` callbacks for an address-less destination (OR-452). Handled
+  // BEFORE the switch (not as a case) on purpose: its type is not in the `EventType`
+  // union the switch discriminates on, so folding it in would need a cast on the
+  // switch subject, which breaks the union narrowing the `default` case relies on
+  // (`onEvent(event.data)` expects a `LinkEventType`). It is also an RPC, not a Link
+  // event forwarded to `onEvent`. The backup flow gates it on the active session +
+  // widget window.
   if ((event.data as { type?: string }).type === JIT_REQUEST_MESSAGE_TYPE) {
     await backup.handleJitRequest(event)
     return
