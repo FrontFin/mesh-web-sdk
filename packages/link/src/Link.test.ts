@@ -657,6 +657,8 @@ describe('openLinkBackup tests', () => {
 
     frontConnection.openLinkBackup(BACKUP_SESSION)
 
+    // Pinned: the production widget origin, matching the React Native SDK.
+    expect(DEFAULT_BACKUP_WIDGET_ORIGIN).toBe('https://backup.meshconnect.com')
     const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeTruthy()
     const src = iframeElement?.attributes.getNamedItem('src')?.nodeValue

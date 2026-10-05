@@ -1,21 +1,15 @@
 import { appendQueryParam } from './url'
 
 /**
- * Default origin for the standalone backup deposit widget (OR-449), served from
- * Mesh's independent backup infrastructure. It is deliberately **not** a
- * `meshconnect.com` origin: the backup flow must share no failure domain with
- * the primary Mesh API, so if `meshconnect.com` is down the widget still loads.
- * This is the single value swapped at origin-migration time; override per-call
- * via `openLinkBackup`'s `widgetOrigin` option for staging, demo, or self-host.
- *
- * ⚠️ PLACEHOLDER — must be replaced with the production, Mesh-owned backup origin
- * before this ships to clients. It deliberately uses the reserved `.invalid` TLD
- * (RFC 6761) so it can never resolve to a real — possibly attacker-controlled —
- * host if it reaches a release un-reconciled. Money path: this origin serves the
- * deposit-address UI during an outage. Until the production origin is set, pass
- * your deployed backup-widget origin explicitly via `widgetOrigin`.
+ * Default origin for the standalone backup deposit widget (OR-449): the production
+ * Cloudflare Worker. It is under the `meshconnect.com` zone but served by
+ * Cloudflare, not Azure, so it shares no failure domain with the primary Mesh API
+ * (design doc §5C) — if the core API is down the widget still loads. Matches the
+ * React Native SDK's default. Override per-call via `openLinkBackup`'s
+ * `widgetOrigin` option for staging, demo, or self-host. Money path: this origin
+ * serves the deposit-address UI during an outage.
  */
-export const DEFAULT_BACKUP_WIDGET_ORIGIN = 'https://backup-widget.invalid'
+export const DEFAULT_BACKUP_WIDGET_ORIGIN = 'https://backup.meshconnect.com'
 
 /**
  * The `type` the backup widget's message bridge requires on the config it
