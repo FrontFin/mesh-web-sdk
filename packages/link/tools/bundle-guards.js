@@ -137,6 +137,37 @@ export function assertRuntimeCsp(html) {
         'it (OR-452).'
     )
   }
+  // A meta-delivered CSP only governs content that FOLLOWS it in document order,
+  // and only when it sits in <head>. If anything that can execute script or start
+  // a load precedes it, that content runs UN-policed: a re-vendored bundle could
+  // slip a pre-meta <script> (e.g. a runtime-constructed `fetch(...)`) in front of
+  // the policy and still pass every directive check below. So require the meta to
+  // be inside <head>, ahead of any script/style/resource element. (charset/viewport
+  // <meta> and <title> are fine before it — they neither execute nor load.)
+  const before = html.slice(0, meta.index)
+  const headOpened = /<head[\s>]/i.test(before)
+  const headClosedOrBodyStarted =
+    /<\/head>/i.test(before) || /<body[\s>]/i.test(before)
+  if (!headOpened || headClosedOrBodyStarted) {
+    throw new Error(
+      'widget.offline.html CSP <meta> is not inside <head>. A CSP delivered ' +
+        'outside the document head (or after </head>/<body>) does not reliably ' +
+        'govern the page. Re-vendor from a mesh-backup-widget build that injects ' +
+        'it as the first head content (OR-452).'
+    )
+  }
+  const preMetaLoader = before.match(
+    /<(script|style|link|img|iframe|frame|object|embed|source|track|audio|video|base|applet)\b/i
+  )
+  if (preMetaLoader) {
+    throw new Error(
+      `widget.offline.html has <${preMetaLoader[1].toLowerCase()}> before its ` +
+        'runtime CSP <meta>. A meta CSP governs only the content that follows it, ' +
+        'so anything executable or resource-bearing ahead of it runs un-policed ' +
+        'and could make a network call. The CSP <meta> must be the first head ' +
+        'content, before any script/style/resource element.'
+    )
+  }
   const csp = meta[3]
   const directives = new Map()
   const problems = []

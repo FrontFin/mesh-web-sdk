@@ -109,6 +109,40 @@ describe('assertRuntimeCsp', () => {
     expect(() => assertRuntimeCsp(html)).toThrow(/missing its runtime CSP/)
   })
 
+  test('rejects a <script> before the CSP meta (pre-meta code runs un-policed)', () => {
+    // A runtime-constructed fetch here executes before the meta CSP applies, yet
+    // the policy itself is valid — the position guard must catch it.
+    const html =
+      `<!doctype html><html><head><script>fetch('https:'+'//evil')</script>` +
+      `<meta http-equiv="Content-Security-Policy" content="${goodCsp}" /></head><body></body></html>`
+    expect(() => assertRuntimeCsp(html)).toThrow(
+      /<script> before its runtime CSP/
+    )
+  })
+
+  test('rejects a resource element before the CSP meta', () => {
+    const html =
+      `<!doctype html><html><head><link rel="stylesheet" href="x.css" />` +
+      `<meta http-equiv="Content-Security-Policy" content="${goodCsp}" /></head><body></body></html>`
+    expect(() => assertRuntimeCsp(html)).toThrow(
+      /<link> before its runtime CSP/
+    )
+  })
+
+  test('rejects a CSP meta placed outside <head>', () => {
+    const html =
+      `<!doctype html><html><head></head><body>` +
+      `<meta http-equiv="Content-Security-Policy" content="${goodCsp}" /></body></html>`
+    expect(() => assertRuntimeCsp(html)).toThrow(/not inside <head>/)
+  })
+
+  test('accepts charset/title before the CSP meta (neither executes nor loads)', () => {
+    const html =
+      `<!doctype html><html><head><meta charset="utf-8" /><title>x</title>` +
+      `<meta http-equiv="Content-Security-Policy" content="${goodCsp}" /></head><body></body></html>`
+    expect(() => assertRuntimeCsp(html)).not.toThrow()
+  })
+
   const drop = name =>
     goodCsp
       .split('; ')

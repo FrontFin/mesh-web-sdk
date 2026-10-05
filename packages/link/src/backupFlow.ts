@@ -27,6 +27,43 @@ import {
 import { BridgeParent } from '@meshconnect/uwc-bridge-parent'
 import { removePrewarmIframe } from './utils/prewarm'
 
+/**
+ * Validate a host `onStatusPoll` result against the three-variant contract and
+ * return ONLY the contract fields. Throws on anything malformed — a missing,
+ * misspelled, or non-string `status`, or a `'ready'` without a non-empty string
+ * `address` — so the handler's catch fails the poll closed (`ok: false`). The
+ * previous builder silently coerced any unknown status to `'pending'` (which
+ * polls forever) and forwarded `'ready'` without an address (an invalid
+ * success); both are money-path failure modes. Extra fields (e.g. a raw backend
+ * response carrying identifiers/credentials) are dropped, never forwarded across
+ * the bridge to the widget's independent origin.
+ */
+export function sanitizeStatusResult(result: unknown): MeshBackupStatusResult {
+  const status =
+    typeof result === 'object' && result !== null
+      ? (result as { status?: unknown }).status
+      : undefined
+  if (status === 'pending') return { status: 'pending' }
+  if (status === 'failed') return { status: 'failed' }
+  if (status === 'ready') {
+    const address = (result as { address?: unknown }).address
+    if (typeof address !== 'string' || address.length === 0) {
+      throw new Error(
+        "onStatusPoll returned status 'ready' without a valid address"
+      )
+    }
+    const addressTag = (result as { addressTag?: unknown }).addressTag
+    return typeof addressTag === 'string' && addressTag.length > 0
+      ? { status: 'ready', address, addressTag }
+      : { status: 'ready', address }
+  }
+  throw new Error(
+    `onStatusPoll returned an invalid status: ${JSON.stringify(
+      status
+    )} (expected 'pending' | 'ready' | 'failed')`
+  )
+}
+
 /** Which flow is currently live. A POSITIVE discriminator for "safe to forward
  *  integration access tokens" (`'primary'` only). */
 export type ActiveFlow = 'primary' | 'backup' | null
@@ -204,20 +241,13 @@ export function createBackupFlow(host: BackupFlowHost): BackupFlow {
           )
         }
         const result = await onStatusPoll(symbol, networkId)
-        // Post only the contract fields to the widget's (independent) origin. The
-        // callback's return may structurally contain extra fields (e.g. a raw
-        // backend response with identifiers/credentials); never forward those.
-        const safeResult: MeshBackupStatusResult =
-          result?.status === 'ready'
-            ? result.addressTag
-              ? {
-                  status: 'ready',
-                  address: result.address,
-                  addressTag: result.addressTag
-                }
-              : { status: 'ready', address: result.address }
-            : { status: result?.status === 'failed' ? 'failed' : 'pending' }
-        respond({ callId, ok: true, result: safeResult })
+        // Validate against the three-variant contract and post ONLY the contract
+        // fields to the widget's (independent) origin. A malformed result throws
+        // here, so the catch fails the poll closed (`ok: false`) rather than
+        // silently polling forever on a coerced 'pending' or forwarding a 'ready'
+        // with no address. Extra fields (e.g. a raw backend response with
+        // identifiers/credentials) are dropped, never forwarded.
+        respond({ callId, ok: true, result: sanitizeStatusResult(result) })
       } else {
         throw new Error(`Unknown backup JIT method: ${String(method)}`)
       }

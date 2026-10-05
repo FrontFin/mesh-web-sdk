@@ -1286,6 +1286,77 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
     )
   })
 
+  test.each([
+    ['an unknown status', { status: 'done' }],
+    ['a missing status', { address: '0xabc' }],
+    ["status 'ready' without an address", { status: 'ready' }],
+    [
+      "status 'ready' with a non-string address",
+      { status: 'ready', address: 123 }
+    ]
+  ])(
+    'fails the poll closed (ok:false) when onStatusPoll returns %s',
+    async (_name, badResult) => {
+      const onStatusPoll = jest.fn().mockResolvedValue(badResult)
+      const { postMessageSpy } = openBackupAndSpy({
+        clientId: 'test',
+        onIntegrationConnected: jest.fn(),
+        onAddressInit: jest.fn(),
+        onStatusPoll
+      })
+
+      dispatchJitRequest({
+        callId: 'pm',
+        method: 'statusPoll',
+        symbol: 'USDC',
+        networkId: 'net-1'
+      })
+      await flushPromises()
+
+      // Malformed result must NOT be coerced to 'pending' (poll-forever) or
+      // forwarded as an address-less 'ready' (invalid success) — fail closed.
+      expect(postMessageSpy).toHaveBeenCalledWith(
+        {
+          type: JIT_RESPONSE_MESSAGE_TYPE,
+          payload: { callId: 'pm', ok: false, error: 'JIT callback failed' }
+        },
+        DEFAULT_BACKUP_WIDGET_ORIGIN
+      )
+    }
+  )
+
+  test.each([
+    ['pending', { status: 'pending' as const }],
+    ['failed', { status: 'failed' as const }]
+  ])(
+    'forwards a valid %s status unchanged (ok:true)',
+    async (_name, result) => {
+      const onStatusPoll = jest.fn().mockResolvedValue(result)
+      const { postMessageSpy } = openBackupAndSpy({
+        clientId: 'test',
+        onIntegrationConnected: jest.fn(),
+        onAddressInit: jest.fn(),
+        onStatusPoll
+      })
+
+      dispatchJitRequest({
+        callId: 'pv',
+        method: 'statusPoll',
+        symbol: 'USDC',
+        networkId: 'net-1'
+      })
+      await flushPromises()
+
+      expect(postMessageSpy).toHaveBeenCalledWith(
+        {
+          type: JIT_RESPONSE_MESSAGE_TYPE,
+          payload: { callId: 'pv', ok: true, result }
+        },
+        DEFAULT_BACKUP_WIDGET_ORIGIN
+      )
+    }
+  )
+
   test('fails closed (ok:false) when the required JIT callback is not provided', async () => {
     const { postMessageSpy } = openBackupAndSpy({
       clientId: 'test',
