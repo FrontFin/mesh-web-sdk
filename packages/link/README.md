@@ -147,7 +147,7 @@ link.openLinkBackup(backupConfig)
 
 Callbacks (`onAddressInit`, `onStatusPoll`) are passed to `createLink`. `onAddressInit(symbol, networkId)` kicks off generation (its return is ignored; a throw/reject is a failure). `onStatusPoll(symbol, networkId)` returns `Promise<{ status: 'pending' | 'ready' | 'failed'; address?; addressTag? }>` and is polled until `ready`/`failed`; it must be idempotent per `(symbol, networkId)`. Supply both only if any `backupConfig.destinations[]` entry omits `address`.
 
-> **⚠️ Host CSP requirements (web only).** Serve the embedding page over **https**. Your Content-Security-Policy's `frame-src`/`child-src` (or `default-src`) must allow **the backup widget origin** (provided at onboarding) and **`blob:`** — the bundled last-resort fallback renders as a sandboxed `blob:` iframe, so a CSP that pins `frame-src` to the primary Mesh origin will block it and the fallback will fail. (React Native is not affected — it uses a native WebView, not an iframe.)
+> **⚠️ Host CSP requirements (web only).** Serve the embedding page over **https**. Your Content-Security-Policy's `frame-src`/`child-src` (or `default-src`) must allow **the backup widget origin** (`https://backup.meshconnect.com` by default) and **`blob:`** — the bundled last-resort fallback renders as a sandboxed `blob:` iframe, so a CSP that pins `frame-src` to the primary Mesh origin will block it and the fallback will fail. (React Native is not affected — it uses a native WebView, not an iframe.)
 
 ### Using tokens
 

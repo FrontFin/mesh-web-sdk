@@ -10,14 +10,15 @@ import type {
 // the browser for convenience; real integrations assemble it SERVER-SIDE so
 // deposit destinations aren't constructed in untrusted client code.
 //
-// Default is the CI-deployed backup widget (the `link-backup` Cloudflare Worker).
-// Override with VITE_BACKUP_WIDGET_ORIGIN to point at a local widget or another
-// deployment. NOTE: the hosted widget sends `Content-Security-Policy:
-// frame-ancestors https:`, so it can only be iframed by an https page — serve this
-// example over https (`pnpm start:https`) or point at a local widget.
+// Default is the production backup widget origin (also the SDK's
+// DEFAULT_BACKUP_WIDGET_ORIGIN). Override with VITE_BACKUP_WIDGET_ORIGIN to point at
+// a local widget or another deployment. NOTE: the hosted widget sends
+// `Content-Security-Policy: frame-ancestors https:`, so it can only be iframed by an
+// https page — serve this example over https (`pnpm start:https`) or point at a
+// local widget.
 export const DEMO_BACKUP_WIDGET_ORIGIN =
   (import.meta.env.VITE_BACKUP_WIDGET_ORIGIN as string) ||
-  'https://link-backup.front-finance-account.workers.dev'
+  'https://backup.meshconnect.com'
 
 // A deliberately unreachable origin (reserved `.invalid` TLD, RFC 6761). With
 // "Force Tier-2 fallback" on, the backup flow is pointed here so the Tier-1 load

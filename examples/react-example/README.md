@@ -30,7 +30,7 @@ the React Native example.
    Pick a token/network and see the QR / deposit address. No link token, no
    primary Mesh API call. The **Tier-1 widget origin** field (or
    `VITE_BACKUP_WIDGET_ORIGIN`) sets where the widget loads from; default is the
-   CI-deployed backup widget (the `link-backup` Cloudflare Worker).
+   production backup origin `https://backup.meshconnect.com`.
 2. **Force Tier-2 fallback** — points the flow at an unreachable origin so the
    Tier-1 load never completes its ready handshake; after ~5s the SDK cascades to
    the **bundled Tier-2 offline widget** (no Mesh-owned network dependency), loaded
