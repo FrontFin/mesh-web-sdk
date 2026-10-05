@@ -50,8 +50,8 @@ export const JIT_RESPONSE_MESSAGE_TYPE = 'meshBackupJitResponse'
 export const TIER1_READY_TIMEOUT_MS = 5000
 
 /**
- * Fail-closed safety net for Tier 2: the bundled assets are inlined into the
- * iframe (`srcdoc`), so they should complete the ready handshake near-instantly.
+ * Fail-closed safety net for Tier 2: the bundled assets load from a local `blob:`
+ * URL, so they should complete the ready handshake near-instantly.
  * If they somehow do not within this window, the flow exits with an error rather
  * than sitting on a blank screen (design §5A/§5H — never a blank QR). Deliberately
  * generous because a Tier-2 timeout should be effectively unreachable.

@@ -1028,49 +1028,78 @@ describe('openLinkBackup tests', () => {
     expect(forwardedTokens).toBeUndefined()
   })
 
-  test('a stale backup iframe cannot close or report a transfer after an aborted re-open', () => {
-    // Regression (Copilot #4152220541 / #4152244613): after an aborted re-open the
-    // old iframe + listener stay live while `activeFlow` is null. A late
-    // `close`/`transferFinished` from it must be dropped (the gate is the positive
-    // `activeFlow`, not `backupSession`, which is also null in this dead window).
-    const onExit = jest.fn<void, [string | undefined]>()
-    const onTransferFinished = jest.fn<void, [TransferFinishedPayload]>()
-    const frontConnection = createLink({
-      clientId: 'test',
-      onIntegrationConnected: jest.fn(),
-      onExit,
-      onTransferFinished
-    })
-
-    frontConnection.openLinkBackup(BACKUP_SESSION)
-    const staleWindow = (
-      document.getElementById(
-        'mesh-link-popup__iframe'
-      ) as HTMLIFrameElement | null
-    )?.contentWindow
-
-    // Abort a re-open (malformed origin) — clears activeFlow/backupSession; the
-    // stale iframe + listener remain.
-    frontConnection.openLinkBackup(BACKUP_SESSION, {
-      widgetOrigin: 'not-a-url'
-    })
-
-    for (const data of [
-      { type: 'transferFinished', payload: { status: 'success', txId: 'x' } },
-      { type: 'close', payload: { errorMessage: 'stale' } }
-    ]) {
-      globalThis.dispatchEvent(
-        new MessageEvent('message', {
-          data,
-          origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
-          source: staleWindow
+  let frontConnection: ReturnType<typeof createLink>
+  test.each([
+    [
+      'malformed widgetOrigin',
+      () => {
+        frontConnection.openLinkBackup(BACKUP_SESSION, {
+          widgetOrigin: 'not-a-url'
         })
-      )
-    }
+      }
+    ],
+    [
+      'missing session',
+      () => {
+        frontConnection.openLinkBackup(undefined as unknown as MeshBackupConfig)
+      }
+    ],
+    [
+      'embedded without customIframeId',
+      () => {
+        createLink({
+          clientId: 'test',
+          onIntegrationConnected: jest.fn(),
+          renderType: 'embedded'
+        }).openLinkBackup(BACKUP_SESSION)
+      }
+    ]
+  ])(
+    'a stale backup iframe cannot close or report a transfer after an aborted re-open (%s)',
+    (_, abortReopen) => {
+      // Regression (Copilot #4152220541 / #4152244613, and the early-return aborts):
+      // after an aborted re-open the old iframe + listener stay live while
+      // `activeFlow` is null. A late `close`/`transferFinished` from it must be
+      // dropped (the gate is the positive `activeFlow`, not `backupSession`, which is
+      // also null in this dead window). Every abort path must tear down the prior
+      // session, not just the ones that fail after validation starts.
+      const onExit = jest.fn<void, [string | undefined]>()
+      const onTransferFinished = jest.fn<void, [TransferFinishedPayload]>()
+      frontConnection = createLink({
+        clientId: 'test',
+        onIntegrationConnected: jest.fn(),
+        onExit,
+        onTransferFinished
+      })
 
-    expect(onTransferFinished).not.toHaveBeenCalled()
-    expect(onExit).not.toHaveBeenCalledWith('stale', expect.anything())
-  })
+      frontConnection.openLinkBackup(BACKUP_SESSION)
+      const staleWindow = (
+        document.getElementById(
+          'mesh-link-popup__iframe'
+        ) as HTMLIFrameElement | null
+      )?.contentWindow
+
+      // Abort a re-open — clears activeFlow/backupSession; the stale iframe +
+      // listener remain.
+      abortReopen()
+
+      for (const data of [
+        { type: 'transferFinished', payload: { status: 'success', txId: 'x' } },
+        { type: 'close', payload: { errorMessage: 'stale' } }
+      ]) {
+        globalThis.dispatchEvent(
+          new MessageEvent('message', {
+            data,
+            origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
+            source: staleWindow
+          })
+        )
+      }
+
+      expect(onTransferFinished).not.toHaveBeenCalled()
+      expect(onExit).not.toHaveBeenCalledWith('stale', expect.anything())
+    }
+  )
 
   test('openLinkBackup with a malformed widgetOrigin calls onExit and opens no popup', () => {
     const exitFunction = jest.fn<void, [string | undefined]>()

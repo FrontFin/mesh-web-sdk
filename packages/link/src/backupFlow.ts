@@ -364,7 +364,10 @@ export function createBackupFlow(host: BackupFlowHost): BackupFlow {
   ) {
     removePrewarmIframe()
 
+    // Every abort below tears down any prior backup flow first (reset) so a stale
+    // iframe from it can't keep reporting after this failed re-open calls onExit.
     if (!session) {
+      reset()
       options?.onExit?.('Invalid backup session!')
       return
     }
@@ -375,6 +378,7 @@ export function createBackupFlow(host: BackupFlowHost): BackupFlow {
       const msg =
         'Mesh SDK: Failed to open backup link - renderType "embedded" requires a customIframeId'
       console.error(msg)
+      reset()
       options?.onExit?.(msg)
       return
     }
