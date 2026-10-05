@@ -82,9 +82,12 @@ export function assertSelfContained(html) {
   // never entity-decoded, so matching literal `http-equiv` is robust; its VALUE can
   // be obfuscated (`ref&#x72;esh`), so anything that isn't literally
   // content-security-policy is rejected. (CSP presence/validity is `assertRuntimeCsp`'s
-  // job, so a doc with no http-equiv is fine here.)
+  // job, so a doc with no http-equiv is fine here.) Scan the WHOLE `html` (not the
+  // script-stripped markup): a hashed/allowed inline script could embed a refresh
+  // meta as a string and inject it at runtime, so a refresh literal inside executable
+  // code must be caught too. (The bundle's JS contains no `http-equiv` literal.)
   const badHttpEquiv = [
-    ...markup.matchAll(/http-equiv\s*=\s*["']?\s*([^"'\s>]+)/gi)
+    ...html.matchAll(/http-equiv\s*=\s*["']?\s*([^"'\s>]+)/gi)
   ]
     .map(m => m[1].toLowerCase())
     .filter(v => v !== 'content-security-policy')
