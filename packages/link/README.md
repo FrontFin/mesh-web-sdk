@@ -111,8 +111,43 @@ After successfull authentication on the Link session, the popup will be closed a
 | key                  | type                                                        | description                                                                                                |
 | -------------------- | ----------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | `openLink`           | `(linkToken: string, customIframeId?: string) => void`      | Opens the Link UI popup. Optionally targets an existing iframe by ID instead of creating a new popup       |
+| `openLinkBackup`     | `(backupConfig: MeshBackupConfig, options?: MeshBackupOptions) => void` | Opens the deposit-only **backup flow** when the Mesh API is unavailable (see below)             |
 | `closeLink`          | `() => void`                                                | Closes the Link UI popup immediately                                                                       |
 | `closeLinkRequested` | `() => void`                                                | Requests graceful close in `embedded` mode (sends `closeRequested` to iframe); closes immediately otherwise  |
+
+### Backup / outage flow
+
+If a `linktoken` request fails in a way that indicates a Mesh outage (network/DNS error, timeout, HTTP 5xx or 429), you can open a **deposit-only backup flow** instead of the normal flow. It runs select-token → select-network → QR / copy-address from Mesh infrastructure on a separate domain, and resolves deposit addresses either from static config or through callbacks you provide.
+
+```ts
+const link = createLink({
+  onIntegrationConnected, onTransferFinished, onEvent, onExit,
+
+  // JIT callbacks — required only if any destination omits `address`. They run in
+  // YOUR app with YOUR session; only (symbol, networkId) and the resolved address
+  // cross the bridge. `fetch` resolves on 4xx/5xx, so throw on a non-OK response to
+  // fail closed.
+  onAddressInit: async (symbol, networkId) => {
+    const res = await api.post('/wallets/addresses/assign', { currency: symbol, network_id: networkId })
+    if (!res.ok) throw new Error('address init failed')
+  },
+  onStatusPoll: async (symbol, networkId) => {
+    const res = await api.get('/wallets/deposit_addresses', { currency: symbol })
+    if (!res.ok) throw new Error('status poll failed')
+    const m = (await res.json()).deposit_addresses.find(a => a.network_id === networkId && a.address)
+    return m ? { status: 'ready', address: m.address, addressTag: m.address_tag } : { status: 'pending' }
+  }
+})
+
+// Normal path:
+link.openLink(linkToken)
+// Outage path — same handlers, no link token:
+link.openLinkBackup(backupConfig)
+```
+
+Callbacks (`onAddressInit`, `onStatusPoll`) are passed to `createLink`. `onAddressInit(symbol, networkId)` kicks off generation (its return is ignored; a throw/reject is a failure). `onStatusPoll(symbol, networkId)` returns `Promise<{ status: 'pending' | 'ready' | 'failed'; address?; addressTag? }>` and is polled until `ready`/`failed`; it must be idempotent per `(symbol, networkId)`. Supply both only if any `backupConfig.destinations[]` entry omits `address`.
+
+> **⚠️ Host CSP requirements (web only).** Serve the embedding page over **https**. Your Content-Security-Policy's `frame-src`/`child-src` (or `default-src`) must allow **the backup widget origin** (provided at onboarding) and **`blob:`** — the bundled last-resort fallback renders as a sandboxed `blob:` iframe, so a CSP that pins `frame-src` to the primary Mesh origin will block it and the fallback will fail. (React Native is not affected — it uses a native WebView, not an iframe.)
 
 ### Using tokens
 
@@ -134,6 +169,9 @@ TypeScript definitions for `@meshconnect/web-link-sdk` are built into the npm pa
 | `BrokerType`              | Union of supported broker/integration type strings (re-exported from `@meshconnect/node-api`) |
 | `LinkOptions`             | Full options object passed to `createLink`                                                    |
 | `Link`                    | Return type of `createLink`                                                                   |
+| `MeshBackupConfig`        | Config passed to `openLinkBackup` (clientId, userId, destinations, preselectedSymbol)         |
+| `MeshBackupOptions`       | Options for `openLinkBackup` (e.g. `customIframeId`, `widgetOrigin`)                           |
+| `MeshBackupStatusResult`  | Return type of the `onStatusPoll` callback                                                     |
 | `AccountToken`            | Account token within `AccessTokenPayload`                                                     |
 | `Account`                 | Account details within `AccountToken`                                                         |
 | `BrandInfo`               | Integration brand/logo info                                                                   |

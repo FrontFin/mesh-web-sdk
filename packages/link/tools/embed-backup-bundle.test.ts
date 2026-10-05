@@ -77,6 +77,12 @@ describe('assertSelfContained', () => {
     [
       'entity-encoded src',
       '<img src="https&#x3a;&#x2f;&#x2f;evil.example/x.png">'
+    ],
+    // The attribute NAME can't be entity-encoded, so an obfuscated http-equiv VALUE
+    // (which the browser decodes to "refresh") is still rejected as non-CSP.
+    [
+      'entity-obfuscated http-equiv value',
+      '<meta http-equiv="ref&#x72;esh" content="0;url=//evil.example/">'
     ]
   ])('catches %s', (_name, snippet) => {
     expect(() => assertSelfContained(`<!doctype html>${snippet}`)).toThrow(

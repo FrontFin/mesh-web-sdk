@@ -98,11 +98,16 @@ export async function demoOnAddressInit(
   symbol: string,
   networkId: string
 ): Promise<void> {
-  await fetch(`${MOCK_BACKEND_URL}/wallets/addresses/assign`, {
+  const res = await fetch(`${MOCK_BACKEND_URL}/wallets/addresses/assign`, {
     method: 'POST',
     headers: { 'content-type': 'application/json' },
     body: JSON.stringify({ currency: symbol, network_id: networkId })
   })
+  // `fetch` resolves for 4xx/5xx — throw so a rejected init takes the widget's
+  // fail-closed path instead of polling an operation that was never created.
+  if (!res.ok) {
+    throw new Error(`address init failed: ${res.status} ${res.statusText}`)
+  }
 }
 
 /** Poll for the resolved address. `pending` ⇒ the widget polls again. */
@@ -115,6 +120,11 @@ export async function demoOnStatusPoll(
     `?currency=${encodeURIComponent(symbol)}` +
     `&network_id=${encodeURIComponent(networkId)}`
   const res = await fetch(url, { headers: { accept: 'application/json' } })
+  // `fetch` resolves for 4xx/5xx — throw so the widget fails closed rather than
+  // treating a backend error as "still pending".
+  if (!res.ok) {
+    throw new Error(`status poll failed: ${res.status} ${res.statusText}`)
+  }
   const json = (await res.json()) as {
     deposit_addresses?: {
       network_id: string

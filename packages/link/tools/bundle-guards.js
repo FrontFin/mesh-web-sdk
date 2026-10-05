@@ -22,12 +22,21 @@ export const htmlByteLength = html => Buffer.byteLength(html, 'utf8')
  * caught either way.
  *
  * DEFENSE IN DEPTH ONLY — a static text scan cannot catch a URL assembled at
- * runtime (e.g. `fetch('https:' + '//x')`). The authoritative no-network control
- * is the bundled widget's runtime CSP (`default-src 'none'; connect-src 'none';
- * …`, asserted by `assertRuntimeCsp`) plus the opaque-origin `sandbox` the SDK
- * mounts it under. This scan catches an accidentally non-self-contained re-vendor
- * early; it is not the security boundary. (Mirrors mesh-backup-widget's own
- * build-time `verify-selfcontained` guard.)
+ * runtime (e.g. `fetch('https:' + '//x')`), and it is not the security boundary.
+ * The runtime CSP (`default-src 'none'; connect-src 'none'; …`, asserted by
+ * `assertRuntimeCsp`) blocks fetch/XHR/WebSocket/beacon, and the opaque-origin
+ * `sandbox` isolates the frame — but neither stops script-driven document
+ * NAVIGATION (`location.href = …`): CSP fetch directives don't govern navigation,
+ * and `sandbox="allow-scripts"` lets a frame navigate ITSELF (only TOP navigation,
+ * which we do not grant, is blocked). A navigated frame keeps the same WindowProxy
+ * and `null` origin, so it would still pass the Tier-2 `event.source`/origin gate.
+ * The actual boundary against that is that the bundle is BUILT FROM TRUSTED SOURCE
+ * (this + `verify-selfcontained` prove it ships no external/obfuscated URL), so it
+ * contains no such navigation; an attacker who could inject `location.href = evil`
+ * into the vendored bundle has already compromised the widget build. A stronger
+ * platform-level control (a MessagePort handshake that does not survive navigation,
+ * or load-event re-navigation detection) is possible future hardening but needs
+ * real-browser validation. (Mirrors mesh-backup-widget's `verify-selfcontained`.)
  */
 // Decode the URL-structural HTML entities a browser would resolve in an attribute
 // value (`:` and `/`, named + numeric), so an entity-obfuscated external URL
@@ -68,12 +77,22 @@ export function assertSelfContained(html) {
   const markup = decodeUrlEntities(
     html.replace(/<script\b[^>]*>[\s\S]*?<\/script>/gi, ' ')
   )
-  // A meta refresh never belongs in a self-contained offline page — reject ANY
-  // (even one whose target is entity-obfuscated), so it can't redirect the sandbox.
-  if (/<meta\b[^>]*http-equiv\s*=\s*["']?\s*refresh/i.test(markup)) {
+  // The CSP is the only legitimate http-equiv. Reject any other — e.g. a refresh
+  // meta that could navigate the sandboxed iframe off-document. An attribute NAME is
+  // never entity-decoded, so matching literal `http-equiv` is robust; its VALUE can
+  // be obfuscated (`ref&#x72;esh`), so anything that isn't literally
+  // content-security-policy is rejected. (CSP presence/validity is `assertRuntimeCsp`'s
+  // job, so a doc with no http-equiv is fine here.)
+  const badHttpEquiv = [
+    ...markup.matchAll(/http-equiv\s*=\s*["']?\s*([^"'\s>]+)/gi)
+  ]
+    .map(m => m[1].toLowerCase())
+    .filter(v => v !== 'content-security-policy')
+  if (badHttpEquiv.length > 0) {
     throw new Error(
-      'widget.offline.html is not self-contained — contains a <meta http-equiv=' +
-        '"refresh">, which could navigate the sandboxed iframe off-document.'
+      `widget.offline.html is not self-contained — unexpected <meta http-equiv> ` +
+        `(${badHttpEquiv.join(', ')}); a refresh redirect could navigate the ` +
+        'sandboxed iframe off-document.'
     )
   }
   // An absolute (incl. entity-decoded) or protocol-relative URL in a resource/nav
