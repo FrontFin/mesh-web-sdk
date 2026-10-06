@@ -1,3 +1,4 @@
+import { createHash } from 'crypto'
 import {
   assertSelfContained,
   assertRuntimeCsp,
@@ -182,6 +183,31 @@ describe('assertRuntimeCsp', () => {
   ])('rejects a CSP: %s', (_name, csp) => {
     expect(() => assertRuntimeCsp(metaFor(csp))).toThrow(
       /does not enforce no-network/
+    )
+  })
+})
+
+describe('assertRuntimeCsp — inline hashes must match the code', () => {
+  const sha = (body: string) =>
+    `'sha256-${createHash('sha256').update(body, 'utf8').digest('base64')}'`
+  const SCRIPT = 'console.log(1)'
+  const STYLE = 'body{color:red}'
+  const page = (scriptHash: string, styleHash: string) =>
+    `<!doctype html><html><head><meta http-equiv="Content-Security-Policy" content="` +
+    `default-src 'none'; script-src ${scriptHash}; style-src ${styleHash}; ` +
+    `img-src data:; connect-src 'none'; base-uri 'none'; form-action 'none'" />` +
+    `<style>${STYLE}</style></head><body><script type="module">${SCRIPT}</script></body></html>`
+
+  test('accepts hashes that match the inline script and style', () => {
+    expect(() => assertRuntimeCsp(page(sha(SCRIPT), sha(STYLE)))).not.toThrow()
+  })
+
+  test.each([
+    ['script', () => page(sha('console.log(2)'), sha(STYLE))],
+    ['style', () => page(sha(SCRIPT), sha('body{color:blue}'))]
+  ])('rejects a stale %s hash (browser would block the code)', (tag, html) => {
+    expect(() => assertRuntimeCsp(html())).toThrow(
+      new RegExp(`inline <${tag}> hash .* is not in ${tag}-src`)
     )
   })
 })

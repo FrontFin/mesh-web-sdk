@@ -333,10 +333,20 @@ export function createBackupFlow(host: BackupFlowHost): BackupFlow {
     reason: BackupTierFallbackReason,
     sessionId: number
   ) {
-    host.getOptions()?.onEvent?.({
-      type: 'backupTierChanged',
-      payload: { from: 'tier1', to: 'tier2', reason }
-    })
+    // Consumer code (often telemetry): a throw here must not abort the cascade —
+    // that would leave Tier 1 dead with no Tier 2, and the fail-closed timer would
+    // then report the whole backup flow unavailable.
+    try {
+      host.getOptions()?.onEvent?.({
+        type: 'backupTierChanged',
+        payload: { from: 'tier1', to: 'tier2', reason }
+      })
+    } catch (e) {
+      console.error(
+        'Mesh SDK: onEvent threw while handling backupTierChanged',
+        e
+      )
+    }
 
     // `onEvent` ran consumer code synchronously; if it opened a new flow, `reset`
     // advanced the session id — bail before touching any iframe.
@@ -448,6 +458,12 @@ export function createBackupFlow(host: BackupFlowHost): BackupFlow {
         parsedOrigin.protocol !== 'https:'
       ) {
         throw new Error('widgetOrigin must be an http(s) URL')
+      }
+      // The widget reads its params (incl. the required session nonce) from the
+      // query; with a fragment in the base they'd be appended after `#`, the widget
+      // couldn't echo `sid`, and every open would fall to Tier 2.
+      if (parsedOrigin.hash || widgetOrigin.includes('#')) {
+        throw new Error('widgetOrigin must not contain a fragment')
       }
       // The widget reads only `theme=dark|light`; `system`/unset is left to its
       // own `prefers-color-scheme` fallback.

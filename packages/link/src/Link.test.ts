@@ -1624,6 +1624,22 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
     expect(onStatusPoll).not.toHaveBeenCalled()
   })
 
+  test('openLinkBackup rejects a widgetOrigin with a fragment (params would land after #)', () => {
+    const onExit = jest.fn<void, [string | undefined]>()
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onExit
+    })
+
+    frontConnection.openLinkBackup(BACKUP_SESSION, {
+      widgetOrigin: 'https://widget.example/#route'
+    })
+
+    expect(onExit).toHaveBeenCalledWith('Invalid backup widget origin!')
+    expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
+  })
+
   test('openLinkBackup rejects a non-http(s) widgetOrigin (javascript:)', () => {
     const onExit = jest.fn<void, [string | undefined]>()
     const frontConnection = createLink({
@@ -1848,6 +1864,62 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
       }
     }
   )
+
+  test('a throwing onEvent does not abort the Tier-1 → Tier-2 cascade', async () => {
+    jest.useFakeTimers()
+    const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
+    try {
+      const onEvent = jest.fn(() => {
+        throw new Error('telemetry exploded')
+      })
+      const frontConnection = createLink({
+        clientId: 'test',
+        onIntegrationConnected: jest.fn(),
+        onEvent
+      })
+      frontConnection.openLinkBackup(BACKUP_SESSION)
+
+      jest.advanceTimersByTime(TIER1_READY_TIMEOUT_MS)
+      await flushPromises()
+
+      expect(onEvent).toHaveBeenCalledWith(
+        expect.objectContaining({ type: 'backupTierChanged' })
+      )
+      const iframe = document.getElementById(
+        'mesh-link-popup__iframe'
+      ) as HTMLIFrameElement
+      expect(iframe.getAttribute('src')?.startsWith('blob:')).toBe(true)
+    } finally {
+      errorSpy.mockRestore()
+      jest.clearAllTimers()
+      jest.useRealTimers()
+    }
+  })
+
+  test('a widget cannot forge the SDK-generated backupTierChanged event', async () => {
+    const onEvent = jest.fn<void, [LinkEventType]>()
+    const { iframe } = openBackupAndSpy({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onEvent
+    })
+    onEvent.mockClear()
+
+    // From the authenticated widget window with the right nonce — still dropped.
+    globalThis.dispatchEvent(
+      new MessageEvent('message', {
+        data: {
+          type: 'backupTierChanged',
+          payload: { from: 'tier1', to: 'tier2', reason: 'loadError' },
+          sid: widgetSid(iframe)
+        },
+        origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
+        source: iframe.contentWindow
+      })
+    )
+
+    expect(onEvent).not.toHaveBeenCalled()
+  })
 
   test('a JIT request is ignored when there is no active backup session', async () => {
     const onStatusPoll = jest.fn()

@@ -5,6 +5,8 @@
 
 /** Size of the shipped HTML in the UTF-8 bytes that actually go over the wire —
  *  NOT `String.length` (UTF-16 code units), which undercounts non-ASCII. */
+import { createHash } from 'node:crypto'
+
 export const htmlByteLength = html => Buffer.byteLength(html, 'utf8')
 
 /**
@@ -223,6 +225,27 @@ export function assertRuntimeCsp(html) {
       problems.push(
         `unexpected directive '${name}' — not in the no-network allowlist`
       )
+  }
+  // The hash sources must also MATCH the inline code: a re-vendor whose bytes
+  // changed after its CSP was computed passes every check above, yet the browser
+  // blocks the stale-hashed script/style and Tier 2 times out on every open.
+  for (const [tag, directive, pattern] of [
+    ['script', 'script-src', /<script\b([^>]*)>([\s\S]*?)<\/script>/gi],
+    ['style', 'style-src', /<style\b([^>]*)>([\s\S]*?)<\/style>/gi]
+  ]) {
+    const declared = new Set(directives.get(directive) ?? [])
+    for (const m of html.matchAll(pattern)) {
+      if (/\bsrc\s*=/i.test(m[1])) continue // external — not hash-governed
+      const hash = `'sha256-${createHash('sha256')
+        .update(m[2], 'utf8')
+        .digest('base64')}'`
+      if (!declared.has(hash)) {
+        problems.push(
+          `inline <${tag}> hash ${hash} is not in ${directive} (stale CSP — the ` +
+            'browser would block it)'
+        )
+      }
+    }
   }
   if (problems.length > 0) {
     throw new Error(
