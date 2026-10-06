@@ -1145,7 +1145,11 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
     clientId: 'client-1',
     userId: 'user-1',
     // Address-less ⇒ resolved via the JIT callbacks over the bridge.
-    destinations: [{ networkId: 'net-1', symbol: 'USDC' }]
+    destinations: [
+      { networkId: 'net-1', symbol: 'USDC' },
+      // Static address ⇒ never resolved via JIT (not on the RPC allowlist).
+      { networkId: 'net-2', symbol: 'USDT', address: '0xstatic' }
+    ]
   }
 
   beforeEach(() => {
@@ -1324,6 +1328,14 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
     [
       "status 'ready' with a non-string address",
       { status: 'ready', address: 123 }
+    ],
+    [
+      "status 'ready' with a non-string addressTag",
+      { status: 'ready', address: 'rXYZ', addressTag: 12345 }
+    ],
+    [
+      "status 'ready' with an object addressTag",
+      { status: 'ready', address: 'rXYZ', addressTag: { memo: '1' } }
     ]
   ])(
     'fails the poll closed (ok:false) when onStatusPoll returns %s',
@@ -1350,6 +1362,43 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
         {
           type: JIT_RESPONSE_MESSAGE_TYPE,
           payload: { callId: 'pm', ok: false, error: 'JIT callback failed' }
+        },
+        DEFAULT_BACKUP_WIDGET_ORIGIN
+      )
+    }
+  )
+
+  test.each([
+    ['addressInit', 'a pair not in the session', 'BTC', 'net-1'],
+    ['statusPoll', 'a pair not in the session', 'USDC', 'net-9'],
+    ['addressInit', 'a destination with a static address', 'USDT', 'net-2'],
+    ['statusPoll', 'a destination with a static address', 'USDT', 'net-2']
+  ] as const)(
+    'rejects a %s request for %s without calling the host callbacks',
+    async (method, _name, symbol, networkId) => {
+      const onAddressInit = jest.fn().mockResolvedValue(undefined)
+      const onStatusPoll = jest
+        .fn()
+        .mockResolvedValue({ status: 'ready', address: '0xabc' })
+      const { postMessageSpy } = openBackupAndSpy({
+        clientId: 'test',
+        onIntegrationConnected: jest.fn(),
+        onAddressInit,
+        onStatusPoll
+      })
+
+      dispatchJitRequest({ callId: 'x1', method, symbol, networkId })
+      await flushPromises()
+
+      // The session's address-less destinations are the allowlist — even the
+      // authenticated widget window cannot drive the client's backend for any
+      // other pair.
+      expect(onAddressInit).not.toHaveBeenCalled()
+      expect(onStatusPoll).not.toHaveBeenCalled()
+      expect(postMessageSpy).toHaveBeenCalledWith(
+        {
+          type: JIT_RESPONSE_MESSAGE_TYPE,
+          payload: { callId: 'x1', ok: false, error: 'JIT callback failed' }
         },
         DEFAULT_BACKUP_WIDGET_ORIGIN
       )

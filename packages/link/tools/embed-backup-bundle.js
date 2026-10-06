@@ -6,8 +6,10 @@
  *   - widget.offline.html   — self-contained offline build (Phase 6b). The Phase 6a
  *                             catalog snapshot + top-N logos are ALREADY inlined
  *                             into this file at the widget's build time, so it is
- *                             the ONLY asset the SDK loads at runtime (into an
- *                             iframe via `srcdoc`).
+ *                             the ONLY asset the SDK loads at runtime (into a
+ *                             sandboxed, opaque-origin iframe via a `blob:` URL —
+ *                             not `srcdoc`, which would run same-origin with the
+ *                             host and inherit its CSP).
  *   - catalog.snapshot.json — kept alongside for drift diffing + the size guard
  *                             (`check-bundle-size.js`); NOT loaded at runtime (its
  *                             contents already live inside widget.offline.html).

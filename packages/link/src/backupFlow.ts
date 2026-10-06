@@ -53,6 +53,18 @@ export function sanitizeStatusResult(result: unknown): MeshBackupStatusResult {
       )
     }
     const addressTag = (result as { addressTag?: unknown }).addressTag
+    // A memo/tag chain deposit without its tag can strand funds, so a tag that is
+    // present but not a string is malformed — fail closed rather than drop it and
+    // report a tag-less 'ready'. `null`/`undefined`/`''` mean "no tag".
+    if (
+      addressTag !== undefined &&
+      addressTag !== null &&
+      typeof addressTag !== 'string'
+    ) {
+      throw new Error(
+        "onStatusPoll returned status 'ready' with a non-string addressTag"
+      )
+    }
     return typeof addressTag === 'string' && addressTag.length > 0
       ? { status: 'ready', address, addressTag }
       : { status: 'ready', address }
@@ -222,6 +234,19 @@ export function createBackupFlow(host: BackupFlowHost): BackupFlow {
       if (typeof symbol !== 'string' || typeof networkId !== 'string') {
         throw new TypeError(
           'backup JIT request is missing a string symbol/networkId'
+        )
+      }
+      // The session's ADDRESS-LESS destinations are the RPC allowlist: never run
+      // the client's backend callbacks for a pair it did not declare for JIT (or one
+      // that already carries a static address), even if the request comes from the
+      // authenticated widget window — a faulty or compromised widget must not be
+      // able to generate addresses for arbitrary assets. Mirrors the RN SDK.
+      const isJitDestination = backupSession?.destinations.some(
+        d => d.symbol === symbol && d.networkId === networkId && !d.address
+      )
+      if (!isJitDestination) {
+        throw new Error(
+          'backup JIT request is not for an address-less destination in the session'
         )
       }
       if (method === 'addressInit') {
