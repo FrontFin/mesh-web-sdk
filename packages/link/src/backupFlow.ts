@@ -17,7 +17,9 @@ import {
   BACKUP_CONFIG_MESSAGE_TYPE,
   DEFAULT_BACKUP_WIDGET_ORIGIN,
   JIT_RESPONSE_MESSAGE_TYPE,
-  buildBackupWidgetUrl
+  SESSION_NONCE_PARAM,
+  buildBackupWidgetUrl,
+  createSessionNonce
 } from './utils/backup'
 import {
   BackupTierController,
@@ -116,8 +118,13 @@ export interface BackupFlow {
   getActiveFlow(): ActiveFlow
   /** True once cascaded to the sandboxed, opaque-origin Tier-2 blob iframe. */
   isTier2(): boolean
-  /** The active backup widget's window (message `event.source` must match it). */
-  getIframeWindow(): Window | null
+  /**
+   * True only for a message from the ACTIVE open: an active backup session, sent
+   * by its widget window (`event.source`), echoing this open's session nonce
+   * (`event.data.sid`). The nonce is what isolates a reopen into the SAME embedded
+   * iframe, where `event.source` and the origin are unchanged.
+   */
+  isFromActiveWidget(event: MessageEvent): boolean
   /** Open the deposit-only backup flow (replaces `openLink` for an outage).
    *  `options` is the owning `createLink`'s options (kept as the live options so
    *  the async JIT/cascade/exit callbacks resolve against this session). */
@@ -164,6 +171,13 @@ export function createBackupFlow(host: BackupFlowHost): BackupFlow {
   let backupTier2 = false
   // Object URL backing the Tier-2 iframe; revoked on teardown to avoid a leak.
   let backupTier2BlobUrl: string | null = null
+  // This open's session nonce, put on the widget URL (`?sid=` / Tier-2 `#sid=`) and
+  // echoed by the widget on every message. Navigating a reused embedded iframe
+  // keeps its WindowProxy and Tier-1 sessions share an origin, so this is the only
+  // thing that tells a stale message from the previous document apart from the
+  // current open's — e.g. a queued `close` (spurious onExit) or `loaded` (would
+  // cancel the Tier-1 → Tier-2 fallback).
+  let sessionNonce: string | null = null
 
   /**
    * Tear down any in-flight backup session state. Called when a session ends or
@@ -183,6 +197,7 @@ export function createBackupFlow(host: BackupFlowHost): BackupFlow {
     removeBackupIframeErrorListener?.()
     removeBackupIframeErrorListener = null
     backupTier2 = false
+    sessionNonce = null
     if (backupTier2BlobUrl) {
       URL.revokeObjectURL(backupTier2BlobUrl)
       backupTier2BlobUrl = null
@@ -377,7 +392,8 @@ export function createBackupFlow(host: BackupFlowHost): BackupFlow {
     // allow-scripts WITHOUT allow-same-origin ⇒ opaque origin. The iframe's `allow`
     // (Permissions-Policy, incl. clipboard) set at mount is preserved for copy-address.
     iframe.setAttribute('sandbox', 'allow-scripts')
-    iframe.src = blobUrl
+    // A blob: URL can't take a query, so the session nonce rides in the fragment.
+    iframe.src = `${blobUrl}#${SESSION_NONCE_PARAM}=${sessionNonce ?? ''}`
     host.setBridgeParent(new BridgeParent(iframe))
     backupIframeWindow = iframe.contentWindow
   }
@@ -414,6 +430,7 @@ export function createBackupFlow(host: BackupFlowHost): BackupFlow {
     reset()
     if (options) host.setOptions(options)
     backupSession = session
+    sessionNonce = createSessionNonce()
 
     const widgetOrigin =
       backupOptions?.widgetOrigin || DEFAULT_BACKUP_WIDGET_ORIGIN
@@ -441,7 +458,8 @@ export function createBackupFlow(host: BackupFlowHost): BackupFlow {
       widgetUrl = buildBackupWidgetUrl(widgetOrigin, {
         platform: sdkSpecs.platform,
         sdkVersion: sdkSpecs.version,
-        theme
+        theme,
+        sessionNonce
       })
       widgetOriginParsed = new URL(widgetUrl).origin
       host.setLinkTokenOrigin(widgetOriginParsed)
@@ -531,11 +549,24 @@ export function createBackupFlow(host: BackupFlowHost): BackupFlow {
     }
   }
 
+  function isFromActiveWidget(event: MessageEvent): boolean {
+    return (
+      !!backupSession &&
+      !!sessionNonce &&
+      !!event.source &&
+      event.source === backupIframeWindow &&
+      (event.data as { [SESSION_NONCE_PARAM]?: unknown } | null)?.[
+        SESSION_NONCE_PARAM
+      ] === sessionNonce
+    )
+  }
+
   async function handleJitRequest(event: MessageEvent) {
     // Only ever sent by the backup widget, so it is gated on an active backup
-    // session AND on the message coming from that widget's own window — otherwise
-    // any other same-origin frame could drive the client's backend calls.
-    if (backupSession && event.source && event.source === backupIframeWindow) {
+    // session, the message coming from that widget's own window, AND this open's
+    // session nonce — otherwise another same-origin frame, or a stale document in
+    // a reused embedded iframe, could drive the client's backend calls.
+    if (isFromActiveWidget(event)) {
       await runJitRequest(
         (event.data as { payload?: MeshBackupJitRequestPayload }).payload
       )
@@ -546,8 +577,10 @@ export function createBackupFlow(host: BackupFlowHost): BackupFlow {
     // Only the backup widget's OWN window may complete the ready handshake. The
     // host's message handler also admits host-origin messages (Tier 1), so without
     // this an unrelated same-origin frame posting `{ type: 'loaded' }` would call
-    // `markReady()` and permanently cancel the Tier-1 → Tier-2 fallback.
-    if (backupSession && event.source && event.source === backupIframeWindow) {
+    // `markReady()` and permanently cancel the Tier-1 → Tier-2 fallback. The nonce
+    // check stops a stale `loaded` from a previous open in a reused embedded iframe
+    // (same window, same origin) doing the same.
+    if (isFromActiveWidget(event)) {
       // This `loaded` IS the ready handshake — cancel the pending tier timeout
       // (Tier-1 healthy, or Tier-2 mounted) before delivering the config.
       backupTierController?.markReady()
@@ -565,7 +598,7 @@ export function createBackupFlow(host: BackupFlowHost): BackupFlow {
     },
     getActiveFlow: () => activeFlow,
     isTier2: () => backupTier2,
-    getIframeWindow: () => backupIframeWindow,
+    isFromActiveWidget,
     open,
     handleJitRequest,
     completeReadyHandshake

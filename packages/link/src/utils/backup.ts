@@ -69,6 +69,30 @@ export interface BackupWidgetUrlParams {
    * back to `prefers-color-scheme`.
    */
   theme?: 'dark' | 'light'
+  /**
+   * Per-open session nonce, appended as `?sid=`. The widget echoes it on every
+   * message it posts to the host, so a reused embedded iframe's stale messages
+   * from a previous open can be told apart (see `createSessionNonce`).
+   */
+  sessionNonce?: string
+}
+
+/** URL parameter carrying the per-open session nonce (query for Tier 1, fragment
+ *  for the Tier-2 `blob:` URL). KEEP IN SYNC with `mesh-backup-widget`'s
+ *  `src/bridge/sessionNonce.ts`. */
+export const SESSION_NONCE_PARAM = 'sid'
+
+/**
+ * A fresh, unguessable nonce for one backup open (128 bits, hex). Navigating an
+ * embedded iframe keeps its `WindowProxy` and Tier-1 sessions share an origin, so
+ * `event.source` + origin alone can't tell the current open's messages from ones
+ * the previous document queued before a reopen; the widget echoes this value as
+ * `sid` on every message and the SDK drops any that don't match.
+ */
+export function createSessionNonce(): string {
+  const bytes = new Uint8Array(16)
+  crypto.getRandomValues(bytes)
+  return Array.from(bytes, b => b.toString(16).padStart(2, '0')).join('')
 }
 
 /**
@@ -93,6 +117,9 @@ export function buildBackupWidgetUrl(
   url = appendQueryParam(url, 'sdkVersion', params.sdkVersion)
   if (params.theme) {
     url = appendQueryParam(url, 'theme', params.theme)
+  }
+  if (params.sessionNonce) {
+    url = appendQueryParam(url, SESSION_NONCE_PARAM, params.sessionNonce)
   }
   return url
 }

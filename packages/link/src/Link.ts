@@ -18,7 +18,7 @@ import {
 import { LinkEventType, isLinkEventTypeKey } from './utils/event-types'
 import { sdkSpecs } from './utils/sdk-specs'
 import { appendQueryParam } from './utils/url'
-import { JIT_REQUEST_MESSAGE_TYPE } from './utils/backup'
+import { JIT_REQUEST_MESSAGE_TYPE, SESSION_NONCE_PARAM } from './utils/backup'
 import { BackupFlowHost, createBackupFlow } from './backupFlow'
 import { BridgeParent } from '@meshconnect/uwc-bridge-parent'
 import { createPrewarmIframe, removePrewarmIframe } from './utils/prewarm'
@@ -62,7 +62,7 @@ function sendMessageToIframe<T extends { type: string }>(message: T) {
 
 // The SDK-backup (deposit-only fallback) flow lives in its own module. It reads and
 // writes the shared Link state through this host bridge; the message handlers below
-// query it for backup state (`isTier2`/`getActiveFlow`/`getIframeWindow`) and
+// query it for backup state (`isTier2`/`getActiveFlow`/`isFromActiveWidget`) and
 // delegate the backup branches to it (`handleJitRequest`/`completeReadyHandshake`).
 const backupHost: BackupFlowHost = {
   getOptions: () => currentOptions,
@@ -193,7 +193,13 @@ async function handleLinkEvent(
     }
     default: {
       if (isLinkEventTypeKey(event.data.type)) {
-        currentOptions?.onEvent?.(event.data)
+        // Backup widget messages carry the internal session nonce (`sid`) — it is
+        // transport-only, not part of the public event contract, so strip it.
+        const linkEvent = { ...event.data } as LinkEventType & {
+          [SESSION_NONCE_PARAM]?: string
+        }
+        delete linkEvent[SESSION_NONCE_PARAM]
+        currentOptions?.onEvent?.(linkEvent)
       }
       break
     }
@@ -210,11 +216,7 @@ async function eventsListener(
   // backupIframeWindow` — but it carries the Tier-1 (non-'null') origin, so the
   // origin check rejects it and it can't spuriously complete the Tier-2 handshake.
   if (backup.isTier2()) {
-    if (
-      event.source &&
-      event.source === backup.getIframeWindow() &&
-      event.origin === 'null'
-    ) {
+    if (backup.isFromActiveWidget(event) && event.origin === 'null') {
       await handleLinkEvent(event as MessageEvent<{ type: EventType }>)
     } else {
       console.warn('Ignored backup Tier-2 message from an unexpected source')
@@ -239,11 +241,13 @@ async function eventsListener(
   // widget window — not just the backup ORIGIN. In embedded mode a reopen into a
   // different iframe leaves the previous one alive on the SAME backup origin, so an
   // origin-only check would let a late `close`/`done`/`transferFinished` from the
-  // stale iframe tear down or report a transfer for the current session. (Primary
-  // flow has no backup widget window, so it is gated by origin only, as before.)
+  // stale iframe tear down or report a transfer for the current session. A reopen
+  // into the SAME embedded iframe keeps its window AND origin, so the message must
+  // also echo this open's session nonce (`isFromActiveWidget`). (Primary flow has
+  // no backup widget window, so it is gated by origin only, as before.)
   if (
     backup.getActiveFlow() === 'backup' &&
-    event.source !== backup.getIframeWindow()
+    !backup.isFromActiveWidget(event)
   ) {
     console.warn('Ignored backup message from an unexpected source')
     return

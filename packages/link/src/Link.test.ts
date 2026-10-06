@@ -41,6 +41,21 @@ jest.mock('./backup-bundle', () => ({
 /** Flush pending microtasks (awaited promises), for async message handlers. */
 const flushPromises = () => Promise.resolve().then().then().then()
 
+/** The session nonce the SDK put on a backup widget iframe's URL (`?sid=` for Tier
+ *  1, `#sid=` for the Tier-2 blob: URL) — what the real widget echoes on every
+ *  message as a top-level `sid`. */
+const widgetSid = (
+  iframeOrWindow: HTMLIFrameElement | Window | null | undefined
+): string | undefined => {
+  const iframe =
+    iframeOrWindow instanceof HTMLIFrameElement
+      ? iframeOrWindow
+      : Array.from(document.getElementsByTagName('iframe')).find(
+          f => f.contentWindow === iframeOrWindow
+        )
+  return /[?&#]sid=([0-9a-f]+)/.exec(iframe?.getAttribute('src') ?? '')?.[1]
+}
+
 type EventPayload = {
   type: EventType
   payload?: AccessTokenPayload | DelayedAuthPayload | TransferFinishedPayload
@@ -786,7 +801,8 @@ describe('openLinkBackup tests', () => {
       new MessageEvent('message', {
         data: {
           type: 'transferFinished',
-          payload: { status: 'success', txId: 'x' }
+          payload: { status: 'success', txId: 'x' },
+          sid: widgetSid(iframeA)
         },
         origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
         source: iframeA.contentWindow
@@ -794,7 +810,11 @@ describe('openLinkBackup tests', () => {
     )
     globalThis.dispatchEvent(
       new MessageEvent('message', {
-        data: { type: 'close', payload: { errorMessage: 'stale' } },
+        data: {
+          type: 'close',
+          payload: { errorMessage: 'stale' },
+          sid: widgetSid(iframeA)
+        },
         origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
         source: iframeA.contentWindow
       })
@@ -807,12 +827,86 @@ describe('openLinkBackup tests', () => {
     // The active widget B can still drive its own session.
     globalThis.dispatchEvent(
       new MessageEvent('message', {
-        data: { type: 'close', payload: { errorMessage: 'bye' } },
+        data: {
+          type: 'close',
+          payload: { errorMessage: 'bye' },
+          sid: widgetSid(iframeB)
+        },
         origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
         source: iframeB.contentWindow
       })
     )
     expect(onExit).toHaveBeenCalledWith('bye', { errorMessage: 'bye' })
+  })
+
+  test('a stale message from the previous open in the SAME reused embedded iframe is ignored', () => {
+    // Regression (Copilot / PR review): reopening into the SAME customIframeId
+    // navigates one iframe, which keeps its WindowProxy — and both opens share the
+    // backup origin — so event.source + origin can't tell the previous document's
+    // queued messages from the current open's. The per-open session nonce does.
+    jest.useFakeTimers()
+    try {
+      const onExit = jest.fn<void, [string | undefined]>()
+      const onEvent = jest.fn<void, [LinkEventType]>()
+      const iframe = document.createElement('iframe')
+      iframe.id = 'backup-iframe-reused'
+      document.body.append(iframe)
+      const frontConnection = createLink({
+        clientId: 'test',
+        onIntegrationConnected: jest.fn(),
+        renderType: 'embedded',
+        onExit,
+        onEvent
+      })
+
+      frontConnection.openLinkBackup(BACKUP_SESSION, {
+        customIframeId: 'backup-iframe-reused'
+      })
+      const staleSid = widgetSid(iframe)
+      frontConnection.openLinkBackup(BACKUP_SESSION, {
+        customIframeId: 'backup-iframe-reused'
+      })
+      const currentSid = widgetSid(iframe)
+      expect(staleSid).toMatch(/^[0-9a-f]{32}$/)
+      expect(currentSid).toMatch(/^[0-9a-f]{32}$/)
+      expect(currentSid).not.toBe(staleSid)
+
+      const postMessageSpy = jest.spyOn(
+        iframe.contentWindow as Window,
+        'postMessage'
+      )
+      // Same window, same origin — only the nonce differs.
+      for (const data of [
+        { type: 'close', payload: { errorMessage: 'stale' }, sid: staleSid },
+        { type: 'loaded', sid: staleSid },
+        // A message with no nonce at all is not the current open's either.
+        { type: 'close', payload: { errorMessage: 'no-sid' } }
+      ]) {
+        globalThis.dispatchEvent(
+          new MessageEvent('message', {
+            data,
+            origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
+            source: iframe.contentWindow
+          })
+        )
+      }
+
+      expect(onExit).not.toHaveBeenCalled()
+      // The stale `loaded` neither delivered the config nor cancelled the
+      // Tier-1 → Tier-2 fallback for the current open.
+      expect(postMessageSpy).not.toHaveBeenCalledWith(
+        expect.objectContaining({ type: BACKUP_CONFIG_MESSAGE_TYPE }),
+        expect.anything()
+      )
+      jest.advanceTimersByTime(TIER1_READY_TIMEOUT_MS)
+      expect(onEvent).toHaveBeenCalledWith({
+        type: 'backupTierChanged',
+        payload: { from: 'tier1', to: 'tier2', reason: 'readyTimeout' }
+      })
+    } finally {
+      jest.clearAllTimers()
+      jest.useRealTimers()
+    }
   })
 
   test('openLinkBackup delivers the config to the widget on the "loaded" handshake', () => {
@@ -835,7 +929,7 @@ describe('openLinkBackup tests', () => {
 
     globalThis.dispatchEvent(
       new MessageEvent<{ type: EventType }>('message', {
-        data: { type: 'loaded' },
+        data: { type: 'loaded', sid: widgetSid(iframeElement) },
         origin: 'http://localhost',
         source: iframeElement?.contentWindow
       })
@@ -879,7 +973,7 @@ describe('openLinkBackup tests', () => {
     }
     globalThis.dispatchEvent(
       new MessageEvent('message', {
-        data: { type: 'transferFinished', payload },
+        data: { type: 'transferFinished', payload, sid: widgetSid(widget) },
         origin: 'http://localhost',
         source: widget
       })
@@ -888,7 +982,11 @@ describe('openLinkBackup tests', () => {
 
     globalThis.dispatchEvent(
       new MessageEvent('message', {
-        data: { type: 'close', payload: { errorMessage: 'bye' } },
+        data: {
+          type: 'close',
+          payload: { errorMessage: 'bye' },
+          sid: widgetSid(widget)
+        },
         origin: 'http://localhost',
         source: widget
       })
@@ -917,7 +1015,7 @@ describe('openLinkBackup tests', () => {
 
     globalThis.dispatchEvent(
       new MessageEvent<{ type: EventType }>('message', {
-        data: { type: 'loaded' },
+        data: { type: 'loaded', sid: widgetSid(iframeElement) },
         origin: 'http://localhost'
       })
     )
@@ -957,7 +1055,7 @@ describe('openLinkBackup tests', () => {
 
     globalThis.dispatchEvent(
       new MessageEvent<{ type: EventType }>('message', {
-        data: { type: 'loaded' },
+        data: { type: 'loaded', sid: widgetSid(iframeElement) },
         origin: 'http://localhost',
         source: iframeElement?.contentWindow
       })
@@ -1015,7 +1113,7 @@ describe('openLinkBackup tests', () => {
     // 3. The stale backup iframe fires a late `loaded`.
     globalThis.dispatchEvent(
       new MessageEvent<{ type: EventType }>('message', {
-        data: { type: 'loaded' },
+        data: { type: 'loaded', sid: widgetSid(staleIframe) },
         origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
         source: staleIframe?.contentWindow
       })
@@ -1089,7 +1187,7 @@ describe('openLinkBackup tests', () => {
       ]) {
         globalThis.dispatchEvent(
           new MessageEvent('message', {
-            data,
+            data: { ...data, sid: widgetSid(staleWindow) },
             origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
             source: staleWindow
           })
@@ -1167,7 +1265,7 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
     // `loaded` handshake is only honoured from the widget's own window.
     globalThis.dispatchEvent(
       new MessageEvent('message', {
-        data: { type: 'loaded' },
+        data: { type: 'loaded', sid: widgetSid(iframe) },
         origin: 'http://localhost',
         source: iframe.contentWindow
       })
@@ -1195,12 +1293,49 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
     ) as HTMLIFrameElement | null
     globalThis.dispatchEvent(
       new MessageEvent('message', {
-        data: { type: JIT_REQUEST_MESSAGE_TYPE, payload },
+        data: {
+          type: JIT_REQUEST_MESSAGE_TYPE,
+          payload,
+          sid: widgetSid(iframe)
+        },
         origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
         source: source === undefined ? iframe?.contentWindow : source
       })
     )
   }
+
+  test("ignores a JIT request without the current open's session nonce", async () => {
+    const onStatusPoll = jest.fn()
+    const { iframe, postMessageSpy } = openBackupAndSpy({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onAddressInit: jest.fn(),
+      onStatusPoll
+    })
+
+    for (const sid of [undefined, 'f'.repeat(32)]) {
+      globalThis.dispatchEvent(
+        new MessageEvent('message', {
+          data: {
+            type: JIT_REQUEST_MESSAGE_TYPE,
+            payload: {
+              callId: 'n1',
+              method: 'statusPoll',
+              symbol: 'USDC',
+              networkId: 'net-1'
+            },
+            sid
+          },
+          origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
+          source: iframe.contentWindow
+        })
+      )
+    }
+    await flushPromises()
+
+    expect(onStatusPoll).not.toHaveBeenCalled()
+    expect(postMessageSpy).not.toHaveBeenCalled()
+  })
 
   test('relays addressInit to onAddressInit and replies ok', async () => {
     const onAddressInit = jest.fn().mockResolvedValue(undefined)
@@ -1516,6 +1651,9 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
         onEvent
       })
       frontConnection.openLinkBackup(BACKUP_SESSION)
+      const tier1Sid = widgetSid(
+        document.getElementById('mesh-link-popup__iframe') as HTMLIFrameElement
+      )
 
       // No Tier-1 `loaded` arrives → the ready-handshake timeout fires.
       jest.advanceTimersByTime(TIER1_READY_TIMEOUT_MS)
@@ -1533,6 +1671,11 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
       ) as HTMLIFrameElement
       // Tier-2 loads a blob: URL in a sandboxed (opaque-origin) iframe — not srcdoc.
       expect(iframe.getAttribute('src')?.startsWith('blob:')).toBe(true)
+      // A blob: URL can't take a query — the SAME open's nonce rides in the fragment.
+      expect(tier1Sid).toMatch(/^[0-9a-f]{32}$/)
+      expect(iframe.getAttribute('src')).toMatch(
+        new RegExp(`#sid=${tier1Sid}$`)
+      )
       expect(iframe.getAttribute('sandbox')).toBe('allow-scripts')
       expect(iframe.getAttribute('srcdoc')).toBeNull()
     } finally {
@@ -1557,7 +1700,7 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
       ) as HTMLIFrameElement
       globalThis.dispatchEvent(
         new MessageEvent('message', {
-          data: { type: 'loaded' },
+          data: { type: 'loaded', sid: widgetSid(iframe) },
           origin: 'http://localhost',
           source: iframe.contentWindow
         })
@@ -1621,7 +1764,7 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
       // must reject it so it can't markReady and cancel the fail-closed timer.
       globalThis.dispatchEvent(
         new MessageEvent('message', {
-          data: { type: 'loaded' },
+          data: { type: 'loaded', sid: widgetSid(iframe) },
           origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
           source: iframe.contentWindow
         })
@@ -1634,6 +1777,77 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
       jest.useRealTimers()
     }
   })
+
+  test.each([
+    ['with the matching session nonce', true],
+    ['without the session nonce', false]
+  ])(
+    'Tier-2 handshake %s from the opaque-origin widget',
+    async (_name, withSid) => {
+      jest.useFakeTimers()
+      try {
+        const onExit = jest.fn<void, [string | undefined]>()
+        const onEvent = jest.fn<void, [LinkEventType]>()
+        const frontConnection = createLink({
+          clientId: 'test',
+          onIntegrationConnected: jest.fn(),
+          onExit,
+          onEvent
+        })
+        frontConnection.openLinkBackup(BACKUP_SESSION)
+        const iframe = document.getElementById(
+          'mesh-link-popup__iframe'
+        ) as HTMLIFrameElement
+
+        jest.advanceTimersByTime(TIER1_READY_TIMEOUT_MS) // cascade to tier2
+        await flushPromises() // blob/sandbox swap
+        const sid = withSid ? widgetSid(iframe) : undefined
+        const postMessageSpy = jest.spyOn(
+          iframe.contentWindow as Window,
+          'postMessage'
+        )
+
+        // The real Tier-2 widget reads the nonce from its blob: URL fragment and
+        // echoes it; its messages carry the opaque 'null' origin.
+        const fromTier2 = (data: object) =>
+          globalThis.dispatchEvent(
+            new MessageEvent('message', {
+              data: { ...data, sid },
+              origin: 'null',
+              source: iframe.contentWindow
+            })
+          )
+        fromTier2({ type: 'loaded' })
+        const qr = {
+          type: 'linkTransferQRGenerated',
+          payload: { symbol: 'USDC', networkId: 'net-1', network: 'Ethereum' }
+        }
+        fromTier2(qr)
+        jest.advanceTimersByTime(TIER2_READY_TIMEOUT_MS)
+
+        if (withSid) {
+          // Handshake accepted: config delivered (opaque origin ⇒ '*' target), the
+          // fail-closed timer cancelled, and the event forwarded WITHOUT the
+          // transport-only `sid`.
+          expect(postMessageSpy).toHaveBeenCalledWith(
+            { type: BACKUP_CONFIG_MESSAGE_TYPE, payload: BACKUP_SESSION },
+            '*'
+          )
+          expect(onExit).not.toHaveBeenCalled()
+          expect(onEvent).toHaveBeenCalledWith(qr)
+        } else {
+          expect(postMessageSpy).not.toHaveBeenCalled()
+          expect(onEvent).not.toHaveBeenCalledWith(qr)
+          expect(onExit).toHaveBeenCalledWith(
+            'Backup deposit flow is unavailable'
+          )
+        }
+      } finally {
+        jest.clearAllTimers()
+        jest.useRealTimers()
+      }
+    }
+  )
 
   test('a JIT request is ignored when there is no active backup session', async () => {
     const onStatusPoll = jest.fn()

@@ -134,6 +134,9 @@ export interface MeshBackupOptions {
   /**
    * Origin serving the standalone backup widget. Defaults to
    * `DEFAULT_BACKUP_WIDGET_ORIGIN`. Override for staging, demo, or self-hosting.
+   * The widget served there must echo the per-open session nonce (`sid`) on its
+   * messages (mesh-backup-widget with the session-nonce bridge); an older build's
+   * messages are ignored and the flow falls back to the bundled Tier-2 widget.
    */
   widgetOrigin?: string
   /**
