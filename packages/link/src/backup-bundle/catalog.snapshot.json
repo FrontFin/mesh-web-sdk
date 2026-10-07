@@ -1,12 +1,24 @@
 {
   "schemaVersion": 1,
-  "generatedAtUtc": "2026-09-27T04:32:51.810Z",
-  "sourceManifestGeneratedAtUtc": "2026-09-27T04:02:25.090226+00:00",
+  "generatedAtUtc": "2026-10-06T22:26:41.450Z",
+  "sourceManifestGeneratedAtUtc": "2026-10-06T22:00:00.1036327+00:00",
   "pairs": [
+    {
+      "symbol": "1INCH",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
     {
       "symbol": "1INCH",
       "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
       "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "2Z",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
       "isTracked": true
     },
     {
@@ -16,9 +28,39 @@
       "isTracked": false
     },
     {
+      "symbol": "A2Z",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "AAVE",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
       "symbol": "AAVE",
       "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
       "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "ACH",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "ACS",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "ACS",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
       "isTracked": true
     },
     {
@@ -28,10 +70,82 @@
       "isTracked": true
     },
     {
+      "symbol": "ADA",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "ADA",
+      "networkId": "3555aaaa-58b4-4de0-9811-643e69d5761f",
+      "networkName": "CryptoOrg",
+      "isTracked": false
+    },
+    {
+      "symbol": "ADI",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "AERO",
+      "networkId": "aa883b03-120d-477c-a588-37c2afd3ca71",
+      "networkName": "Base",
+      "isTracked": true
+    },
+    {
+      "symbol": "AEVO",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "AGENTFUN",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "AGLD",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "AGLD",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "AIGENSYN",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "AIOZ",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "AIXBT",
+      "networkId": "aa883b03-120d-477c-a588-37c2afd3ca71",
+      "networkName": "Base",
+      "isTracked": true
+    },
+    {
       "symbol": "AKT",
       "networkId": "1e34d5a3-a555-446c-8737-163136649a02",
       "networkName": "Akash",
       "isTracked": false
+    },
+    {
+      "symbol": "AKT",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
     },
     {
       "symbol": "ALGO",
@@ -40,7 +154,85 @@
       "isTracked": false
     },
     {
+      "symbol": "ALGO",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "ALI",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "ALI",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "ALICE",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "ALICE",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "ALT",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "AMP",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "ANIME",
+      "networkId": "a34f2431-0ddd-4de4-bc22-4a8143287aeb",
+      "networkName": "Arbitrum",
+      "isTracked": true
+    },
+    {
+      "symbol": "ANKR",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "ANKR",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
       "symbol": "APE",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "APE",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "API3",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "API3",
       "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
       "networkName": "Ethereum",
       "isTracked": true
@@ -56,6 +248,12 @@
       "networkId": "dfd7702f-c8c9-43f3-861b-32ee09b02bcf",
       "networkName": "Arweave",
       "isTracked": false
+    },
+    {
+      "symbol": "AR",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
     },
     {
       "symbol": "ARB",
@@ -76,6 +274,12 @@
       "isTracked": false
     },
     {
+      "symbol": "ARKM",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
       "symbol": "ASTR",
       "networkId": "5daf618e-9d69-4bad-a20b-025f3b4eb54b",
       "networkName": "Astar",
@@ -88,15 +292,63 @@
       "isTracked": false
     },
     {
+      "symbol": "ATH",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
       "symbol": "ATOM",
       "networkId": "1d38255c-fb28-4c9c-9e5d-3c16560c54ea",
       "networkName": "Cosmos",
       "isTracked": false
     },
     {
+      "symbol": "ATOM",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "AUDIO",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "AURORA",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "AURORA",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
       "symbol": "AVAX",
       "networkId": "bad16371-c22a-4bf4-a311-274d046cd760",
       "networkName": "AvalancheC",
+      "isTracked": true
+    },
+    {
+      "symbol": "AVAX",
+      "networkId": "915f07a3-8a02-40f0-8f9d-b773b81c60a6",
+      "networkName": "AvalancheX",
+      "isTracked": false
+    },
+    {
+      "symbol": "AVAX",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "AVNT",
+      "networkId": "aa883b03-120d-477c-a588-37c2afd3ca71",
+      "networkName": "Base",
       "isTracked": true
     },
     {
@@ -106,10 +358,76 @@
       "isTracked": false
     },
     {
+      "symbol": "AXL",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "AXL",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "AXS",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "AXS",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "AXS",
+      "networkId": "3bef7bbd-0517-4903-836a-cbcfafeeef9c",
+      "networkName": "Ronin",
+      "isTracked": false
+    },
+    {
+      "symbol": "BANANA",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
       "symbol": "BAND",
       "networkId": "5c2116d9-50eb-4ab5-8c9c-02d11c1c43ee",
       "networkName": "Band",
       "isTracked": false
+    },
+    {
+      "symbol": "BARA",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "BASECAT",
+      "networkId": "aa883b03-120d-477c-a588-37c2afd3ca71",
+      "networkName": "Base",
+      "isTracked": true
+    },
+    {
+      "symbol": "BASED",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "BAT",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "BAT",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
     },
     {
       "symbol": "BCH",
@@ -118,7 +436,19 @@
       "isTracked": false
     },
     {
+      "symbol": "BCH",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
       "symbol": "BCUT",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "BEAMX",
       "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
       "networkName": "Ethereum",
       "isTracked": true
@@ -128,6 +458,30 @@
       "networkId": "55004f75-fc8d-4701-8df7-6f9ac2593cae",
       "networkName": "Berachain",
       "isTracked": false
+    },
+    {
+      "symbol": "BICO",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "BIGTIME",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "BINK",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "BIRB",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
     },
     {
       "symbol": "BLAST",
@@ -142,9 +496,75 @@
       "isTracked": true
     },
     {
+      "symbol": "BMT",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
       "symbol": "BNB",
       "networkId": "ed0ebeec-b166-4c8b-8574-cb078f7af8cf",
       "networkName": "BSC",
+      "isTracked": true
+    },
+    {
+      "symbol": "BNT",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "BOME",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "BOME",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "BONE",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "BONE",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "BONK",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "BONK",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "BOSON",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "BOSON",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "BREV",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
       "isTracked": true
     },
     {
@@ -160,7 +580,19 @@
       "isTracked": false
     },
     {
+      "symbol": "BTC",
+      "networkId": "5db308c5-a4d7-4e03-b468-27c62e60bc73",
+      "networkName": "CronosCdcBtc",
+      "isTracked": false
+    },
+    {
       "symbol": "BUSD",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "C98",
       "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
       "networkName": "Ethereum",
       "isTracked": true
@@ -178,9 +610,39 @@
       "isTracked": true
     },
     {
+      "symbol": "CANTO",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "CAP",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "CARDS",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
       "symbol": "CASH",
       "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
       "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "CATI",
+      "networkId": "3d71a957-740b-4195-a437-389d171f21bb",
+      "networkName": "TON",
+      "isTracked": true
+    },
+    {
+      "symbol": "CAW",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
       "isTracked": true
     },
     {
@@ -190,10 +652,148 @@
       "isTracked": false
     },
     {
+      "symbol": "CDCETH",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "CDCETH",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "CDCSOL",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "CDCSOL",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "CELR",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "CELR",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "CFG",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "CHILLGUY",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "CHILLGUY",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "CHR",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "CHR",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "CHZ",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "CHZ",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "CKB",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
       "symbol": "CKB",
       "networkId": "681d29e5-a482-49c8-929d-6e4a779170a3",
       "networkName": "Nervos",
       "isTracked": false
+    },
+    {
+      "symbol": "CLANKER",
+      "networkId": "aa883b03-120d-477c-a588-37c2afd3ca71",
+      "networkName": "Base",
+      "isTracked": true
+    },
+    {
+      "symbol": "CLOUD",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "COMP",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "COMP",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "COQ",
+      "networkId": "bad16371-c22a-4bf4-a311-274d046cd760",
+      "networkName": "AvalancheC",
+      "isTracked": true
+    },
+    {
+      "symbol": "CORGIAI",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "CORGIAI",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "CORGIAI",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "COTI",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
     },
     {
       "symbol": "CRO",
@@ -215,6 +815,12 @@
     },
     {
       "symbol": "CRO",
+      "networkId": "1a2839fa-6761-4969-8b1c-565ce65f9621",
+      "networkName": "CronosZkEVM",
+      "isTracked": false
+    },
+    {
+      "symbol": "CRO",
       "networkId": "3555aaaa-58b4-4de0-9811-643e69d5761f",
       "networkName": "CryptoOrg",
       "isTracked": false
@@ -226,10 +832,64 @@
       "isTracked": true
     },
     {
+      "symbol": "CROID",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "CROUSDCE",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "CRV",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "CRV",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
       "symbol": "CSPR",
       "networkId": "7f681f33-0831-437a-895e-7b22286ae0f4",
       "networkName": "Casper",
       "isTracked": false
+    },
+    {
+      "symbol": "CSPR",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "CTC",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "CTSI",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "CVX",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "CXT",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
     },
     {
       "symbol": "DAI",
@@ -268,6 +928,24 @@
       "isTracked": false
     },
     {
+      "symbol": "DBR",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "DEGEN",
+      "networkId": "aa883b03-120d-477c-a588-37c2afd3ca71",
+      "networkName": "Base",
+      "isTracked": true
+    },
+    {
+      "symbol": "DEVNETSOL",
+      "networkId": "b7387cd9-2f47-4e4d-bc7b-d44e61d58210",
+      "networkName": "SolanaDevnet",
+      "isTracked": false
+    },
+    {
       "symbol": "DEXE",
       "networkId": "ed0ebeec-b166-4c8b-8574-cb078f7af8cf",
       "networkName": "BSC",
@@ -286,9 +964,27 @@
       "isTracked": false
     },
     {
+      "symbol": "DIA",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "DOGE",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
       "symbol": "DOGE",
       "networkId": "34b66a94-f9f9-49ef-81e8-6ebd5a866f9d",
       "networkName": "Dogecoin",
+      "isTracked": true
+    },
+    {
+      "symbol": "DOGS",
+      "networkId": "3d71a957-740b-4195-a437-389d171f21bb",
+      "networkName": "TON",
       "isTracked": true
     },
     {
@@ -298,10 +994,34 @@
       "isTracked": false
     },
     {
+      "symbol": "DOOD",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
       "symbol": "DOT",
       "networkId": "56e491b9-fcc4-4c64-b0de-2e537201315e",
       "networkName": "AssetHub",
       "isTracked": false
+    },
+    {
+      "symbol": "DOT",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "DOT",
+      "networkId": "3555aaaa-58b4-4de0-9811-643e69d5761f",
+      "networkName": "CryptoOrg",
+      "isTracked": false
+    },
+    {
+      "symbol": "DYDX",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
     },
     {
       "symbol": "DYDX",
@@ -317,9 +1037,51 @@
     },
     {
       "symbol": "EGLD",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "EGLD",
       "networkId": "e9814dd7-d517-4093-af31-eac430973025",
       "networkName": "Multiversx",
       "isTracked": false
+    },
+    {
+      "symbol": "EIGEN",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "ELA",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "ELIZAOS",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "ELON",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "ELON",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "ENA",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
     },
     {
       "symbol": "ENA",
@@ -329,9 +1091,57 @@
     },
     {
       "symbol": "ENJ",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "ENJ",
       "networkId": "2a57ecf8-c49b-4017-bc53-461d153fe75f",
       "networkName": "Enjin",
       "isTracked": false
+    },
+    {
+      "symbol": "ENS",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "ENS",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "EPIC",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "ERA",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "ES",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "ESP",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "ETC",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
     },
     {
       "symbol": "ETC",
@@ -347,6 +1157,12 @@
     },
     {
       "symbol": "ETH",
+      "networkId": "bad16371-c22a-4bf4-a311-274d046cd760",
+      "networkName": "AvalancheC",
+      "isTracked": true
+    },
+    {
+      "symbol": "ETH",
       "networkId": "aa883b03-120d-477c-a588-37c2afd3ca71",
       "networkName": "Base",
       "isTracked": true
@@ -356,6 +1172,18 @@
       "networkId": "0c17e03f-77fa-4644-b84c-eb247af8c4c1",
       "networkName": "Blast",
       "isTracked": true
+    },
+    {
+      "symbol": "ETH",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "ETH",
+      "networkId": "1a2839fa-6761-4969-8b1c-565ce65f9621",
+      "networkName": "CronosZkEVM",
+      "isTracked": false
     },
     {
       "symbol": "ETH",
@@ -373,6 +1201,12 @@
       "symbol": "ETH",
       "networkId": "931e461d-5f75-44d3-acf0-0507079a80ab",
       "networkName": "HPP",
+      "isTracked": false
+    },
+    {
+      "symbol": "ETH",
+      "networkId": "48832432-6908-45e5-a4e2-d46446c8047e",
+      "networkName": "Ink",
       "isTracked": false
     },
     {
@@ -407,6 +1241,12 @@
     },
     {
       "symbol": "ETH",
+      "networkId": "7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12",
+      "networkName": "Polygon",
+      "isTracked": true
+    },
+    {
+      "symbol": "ETH",
       "networkId": "7225f44b-bd96-43b2-a97b-a49d9a3df0c8",
       "networkName": "RobinhoodChain",
       "isTracked": false
@@ -415,6 +1255,24 @@
       "symbol": "ETH",
       "networkId": "897fe45a-fb5e-4333-9db9-2cb33a7dbfc2",
       "networkName": "Scroll",
+      "isTracked": false
+    },
+    {
+      "symbol": "ETH",
+      "networkId": "6680daf7-8321-4b6d-b775-88dd2e5f37b5",
+      "networkName": "Starknet",
+      "isTracked": false
+    },
+    {
+      "symbol": "ETH",
+      "networkId": "e7f8a9b0-1c2d-4e3f-9a0b-2c3d4e5f6a7b",
+      "networkName": "Tempo",
+      "isTracked": false
+    },
+    {
+      "symbol": "ETH",
+      "networkId": "d6cb0153-751e-43a1-9322-53a5229de75c",
+      "networkName": "WorldChain",
       "isTracked": false
     },
     {
@@ -430,10 +1288,22 @@
       "isTracked": false
     },
     {
+      "symbol": "ETHFI",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
       "symbol": "ETHW",
       "networkId": "351531c6-0872-414f-bbe0-ef1530d0826d",
       "networkName": "EthereumPoW",
       "isTracked": false
+    },
+    {
+      "symbol": "EUL",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
     },
     {
       "symbol": "EURC",
@@ -481,6 +1351,24 @@
       "symbol": "EURC",
       "networkId": "06855704-43d2-4ad2-a73c-372f0c3534e1",
       "networkName": "Stellar",
+      "isTracked": true
+    },
+    {
+      "symbol": "EURR",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "EURR",
+      "networkId": "7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12",
+      "networkName": "Polygon",
+      "isTracked": true
+    },
+    {
+      "symbol": "FARM",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
       "isTracked": true
     },
     {
@@ -514,6 +1402,24 @@
       "isTracked": true
     },
     {
+      "symbol": "FER",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "FER",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "FET",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
       "symbol": "FET",
       "networkId": "c6e811ad-f9c7-4281-810b-089dad97f5e6",
       "networkName": "Fetch",
@@ -521,9 +1427,39 @@
     },
     {
       "symbol": "FIL",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "FIL",
       "networkId": "f45136f5-6199-4504-888f-ab1464e25c2b",
       "networkName": "Filecoin",
       "isTracked": false
+    },
+    {
+      "symbol": "FLIP",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "FLOKI",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "FLOKI",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "FLOW",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
     },
     {
       "symbol": "FLOW",
@@ -536,6 +1472,18 @@
       "networkId": "78512f3a-b8cd-4404-8c2b-0ea8bf814fbc",
       "networkName": "Flare",
       "isTracked": false
+    },
+    {
+      "symbol": "FLUX",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "FM",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
     },
     {
       "symbol": "FOGO",
@@ -562,9 +1510,153 @@
       "isTracked": true
     },
     {
+      "symbol": "FUL",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "FUL",
+      "networkId": "9ff9af84-c858-4ebe-a602-ad3ede1330ce",
+      "networkName": "ZkSyncEra",
+      "isTracked": false
+    },
+    {
+      "symbol": "FWOG",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "G",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "GALA",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "GALA",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "GAS",
+      "networkId": "92a3f7cc-d1fd-44e4-8d22-2e273f282ae0",
+      "networkName": "Neo",
+      "isTracked": false
+    },
+    {
+      "symbol": "GEKKO",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "GEOD",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "GHST",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "GLM",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "GLMR",
+      "networkId": "aa883b03-120d-477c-a588-37c2afd3ca71",
+      "networkName": "Base",
+      "isTracked": true
+    },
+    {
+      "symbol": "GLMR",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "GMT",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "GNO",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "GNS",
+      "networkId": "7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12",
+      "networkName": "Polygon",
+      "isTracked": true
+    },
+    {
+      "symbol": "GOAT",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "GOAT",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "GODS",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "GODS",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
       "symbol": "GRAM",
       "networkId": "3d71a957-740b-4195-a437-389d171f21bb",
       "networkName": "TON",
+      "isTracked": true
+    },
+    {
+      "symbol": "GRASS",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "GROVE",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "GRT",
+      "networkId": "a34f2431-0ddd-4de4-bc22-4a8143287aeb",
+      "networkName": "Arbitrum",
+      "isTracked": true
+    },
+    {
+      "symbol": "GRT",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
       "isTracked": true
     },
     {
@@ -574,10 +1666,40 @@
       "isTracked": true
     },
     {
+      "symbol": "GRVT",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "GTC",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "GUN",
+      "networkId": "bad16371-c22a-4bf4-a311-274d046cd760",
+      "networkName": "AvalancheC",
+      "isTracked": true
+    },
+    {
       "symbol": "GUN",
       "networkId": "1763b9e8-fc02-4fff-a157-c8ad737970d2",
       "networkName": "GUNZ",
       "isTracked": false
+    },
+    {
+      "symbol": "GWEI",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "HBAR",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
     },
     {
       "symbol": "HBAR",
@@ -586,16 +1708,82 @@
       "isTracked": false
     },
     {
+      "symbol": "HEI",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "HEMI",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
       "symbol": "HFT",
       "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
       "networkName": "Ethereum",
       "isTracked": true
     },
     {
+      "symbol": "HMSTR",
+      "networkId": "3d71a957-740b-4195-a437-389d171f21bb",
+      "networkName": "TON",
+      "isTracked": true
+    },
+    {
+      "symbol": "HNT",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "HNT",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "HOME",
+      "networkId": "aa883b03-120d-477c-a588-37c2afd3ca71",
+      "networkName": "Base",
+      "isTracked": true
+    },
+    {
+      "symbol": "HOT",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "HOT",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "HPP",
+      "networkId": "931e461d-5f75-44d3-acf0-0507079a80ab",
+      "networkName": "HPP",
+      "isTracked": false
+    },
+    {
       "symbol": "HYPE",
       "networkId": "59836f7c-c9a7-4d47-aa17-70cb910445fa",
       "networkName": "HyperEVM",
       "isTracked": false
+    },
+    {
+      "symbol": "HYPER",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "ICP",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
     },
     {
       "symbol": "ICP",
@@ -605,9 +1793,39 @@
     },
     {
       "symbol": "ICX",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "ICX",
       "networkId": "1c28eb15-0fb9-4a82-8b3a-bdfe4d1c02e8",
       "networkName": "Icon",
       "isTracked": false
+    },
+    {
+      "symbol": "IKA",
+      "networkId": "0072c6e2-0e76-4265-9ac4-46bad109f599",
+      "networkName": "Sui",
+      "isTracked": true
+    },
+    {
+      "symbol": "ILV",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "IMU",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "IMX",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
     },
     {
       "symbol": "IMX",
@@ -623,6 +1841,12 @@
     },
     {
       "symbol": "INJ",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "INJ",
       "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
       "networkName": "Ethereum",
       "isTracked": true
@@ -631,6 +1855,18 @@
       "symbol": "INJ",
       "networkId": "66f6e5ed-5635-44eb-bc92-f4fcdbf66f1a",
       "networkName": "Injective",
+      "isTracked": true
+    },
+    {
+      "symbol": "IO",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "IOST",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
       "isTracked": true
     },
     {
@@ -646,15 +1882,81 @@
       "isTracked": false
     },
     {
+      "symbol": "IQ",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "JASMY",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "JASMY",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "JOE",
+      "networkId": "bad16371-c22a-4bf4-a311-274d046cd760",
+      "networkName": "AvalancheC",
+      "isTracked": true
+    },
+    {
+      "symbol": "JOE",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "JTO",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "JUNO",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
       "symbol": "JUNO",
       "networkId": "1b173be1-7e3b-4eea-976c-3d1c753d8012",
       "networkName": "Juno",
       "isTracked": false
     },
     {
+      "symbol": "JUP",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
       "symbol": "KAIA",
       "networkId": "2a5c89da-ed53-471a-a690-8ecff2ccb7c5",
       "networkName": "Kaia",
+      "isTracked": false
+    },
+    {
+      "symbol": "KAITO",
+      "networkId": "aa883b03-120d-477c-a588-37c2afd3ca71",
+      "networkName": "Base",
+      "isTracked": true
+    },
+    {
+      "symbol": "KARRAT",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "KAT",
+      "networkId": "cb08574c-768b-4b91-9209-53d2b01a3699",
+      "networkName": "Katana",
       "isTracked": false
     },
     {
@@ -664,9 +1966,39 @@
       "isTracked": false
     },
     {
+      "symbol": "KERNEL",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
       "symbol": "KITE",
       "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
       "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "KMNO",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "KNC",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "KNC",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "KSM",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
       "isTracked": true
     },
     {
@@ -682,6 +2014,42 @@
       "isTracked": false
     },
     {
+      "symbol": "L3",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "LADYS",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "LADYS",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "LAYER",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "LCRO",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "LDO",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
       "symbol": "LDO",
       "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
       "networkName": "Ethereum",
@@ -694,10 +2062,22 @@
       "isTracked": true
     },
     {
+      "symbol": "LINEA",
+      "networkId": "46e4920f-bbb6-4970-95d0-5be58c526a82",
+      "networkName": "Linea",
+      "isTracked": true
+    },
+    {
       "symbol": "LINK",
       "networkId": "f2780a87-d1ab-4567-85b3-d9ae728cf54d",
       "networkName": "Base Sepolia",
       "isTracked": false
+    },
+    {
+      "symbol": "LINK",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
     },
     {
       "symbol": "LINK",
@@ -706,9 +2086,63 @@
       "isTracked": true
     },
     {
+      "symbol": "LION",
+      "networkId": "a34f2431-0ddd-4de4-bc22-4a8143287aeb",
+      "networkName": "Arbitrum",
+      "isTracked": true
+    },
+    {
+      "symbol": "LION",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "LION",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "LMWR",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "LMWR",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "LPT",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "LQTY",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "LSK",
+      "networkId": "1e7cd5e6-6e01-401a-a628-6102b9bd281b",
+      "networkName": "Lisk",
+      "isTracked": false
+    },
+    {
       "symbol": "LTC",
       "networkId": "ed0ebeec-b166-4c8b-8574-cb078f7af8cf",
       "networkName": "BSC",
+      "isTracked": true
+    },
+    {
+      "symbol": "LTC",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
       "isTracked": true
     },
     {
@@ -736,13 +2170,43 @@
       "isTracked": false
     },
     {
+      "symbol": "LVVA",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
       "symbol": "LYX",
       "networkId": "e4df0a7a-eca9-4501-bfd5-c0de4779719e",
       "networkName": "Lukso",
       "isTracked": false
     },
     {
+      "symbol": "MAGIC",
+      "networkId": "a34f2431-0ddd-4de4-bc22-4a8143287aeb",
+      "networkName": "Arbitrum",
+      "isTracked": true
+    },
+    {
       "symbol": "MANA",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "MANA",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "MANEKI",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "MASK",
       "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
       "networkName": "Ethereum",
       "isTracked": true
@@ -757,6 +2221,54 @@
       "symbol": "MATICUSDCE",
       "networkId": "7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12",
       "networkName": "Polygon",
+      "isTracked": true
+    },
+    {
+      "symbol": "MAVIA",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "MBL",
+      "networkId": "6c83fde4-650a-48b0-9221-1affbbd7a88c",
+      "networkName": "Ontology",
+      "isTracked": false
+    },
+    {
+      "symbol": "MCO",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "ME",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "MEGA",
+      "networkId": "bbfd5e33-a345-4f63-9274-32280ed1d4ec",
+      "networkName": "MegaETH",
+      "isTracked": false
+    },
+    {
+      "symbol": "MELANIA",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "MERY",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "MET",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
       "isTracked": true
     },
     {
@@ -778,7 +2290,25 @@
       "isTracked": true
     },
     {
+      "symbol": "MLK",
+      "networkId": "a34f2431-0ddd-4de4-bc22-4a8143287aeb",
+      "networkName": "Arbitrum",
+      "isTracked": true
+    },
+    {
+      "symbol": "MNDE",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
       "symbol": "MNT",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "MOG",
       "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
       "networkName": "Ethereum",
       "isTracked": true
@@ -790,7 +2320,49 @@
       "isTracked": false
     },
     {
+      "symbol": "MOODENG",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "MOODENG",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "MORPHO",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
       "symbol": "MOVE",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "MOVE",
+      "networkId": "4e8df7c2-454e-4cbd-8292-447b206fc85c",
+      "networkName": "Movement",
+      "isTracked": false
+    },
+    {
+      "symbol": "MOVR",
+      "networkId": "aa883b03-120d-477c-a588-37c2afd3ca71",
+      "networkName": "Base",
+      "isTracked": true
+    },
+    {
+      "symbol": "MTD",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "MTD",
       "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
       "networkName": "Ethereum",
       "isTracked": true
@@ -814,6 +2386,18 @@
       "isTracked": false
     },
     {
+      "symbol": "MYRO",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "NEAR",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
       "symbol": "NEAR",
       "networkId": "0740d877-e3d3-4660-8674-b911b29e9ca0",
       "networkName": "Near",
@@ -824,6 +2408,42 @@
       "networkId": "92a3f7cc-d1fd-44e4-8d22-2e273f282ae0",
       "networkName": "Neo",
       "isTracked": false
+    },
+    {
+      "symbol": "NEON",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "NEWT",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "NMR",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "NOM",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "NOS",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "NOT",
+      "networkId": "3d71a957-740b-4195-a437-389d171f21bb",
+      "networkName": "TON",
+      "isTracked": true
     },
     {
       "symbol": "NUM",
@@ -838,9 +2458,39 @@
       "isTracked": false
     },
     {
+      "symbol": "OGN",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "OGN",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "ONDO",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "ONE",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
       "symbol": "ONE",
       "networkId": "2d1b04c1-87d2-4ed5-bf6d-f4766ef174d9",
       "networkName": "Harmony",
+      "isTracked": false
+    },
+    {
+      "symbol": "ONG",
+      "networkId": "6c83fde4-650a-48b0-9221-1affbbd7a88c",
+      "networkName": "Ontology",
       "isTracked": false
     },
     {
@@ -848,6 +2498,12 @@
       "networkId": "6c83fde4-650a-48b0-9221-1affbbd7a88c",
       "networkName": "Ontology",
       "isTracked": false
+    },
+    {
+      "symbol": "OP",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
     },
     {
       "symbol": "OP",
@@ -859,6 +2515,18 @@
       "symbol": "ORAI",
       "networkId": "6e019c23-99db-418c-9404-71fc60dc7c6f",
       "networkName": "Oraichain",
+      "isTracked": false
+    },
+    {
+      "symbol": "ORCA",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "ORDI",
+      "networkId": "371a358c-dfab-4256-ab2c-fb5572ee8c2e",
+      "networkName": "Brc20",
       "isTracked": false
     },
     {
@@ -874,6 +2542,18 @@
       "isTracked": false
     },
     {
+      "symbol": "PAX",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "PAXG",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
       "symbol": "PAXG",
       "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
       "networkName": "Ethereum",
@@ -886,9 +2566,57 @@
       "isTracked": false
     },
     {
+      "symbol": "PENDLE",
+      "networkId": "a34f2431-0ddd-4de4-bc22-4a8143287aeb",
+      "networkName": "Arbitrum",
+      "isTracked": true
+    },
+    {
+      "symbol": "PENDLE",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "PENDLE",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "PENGU",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
       "symbol": "PENGU",
       "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
       "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "PEPE",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "PEPE",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "PIXEL",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "PLUME",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
       "isTracked": true
     },
     {
@@ -896,6 +2624,12 @@
       "networkId": "db38185d-a886-4c8c-bc3d-050ec1e9bab3",
       "networkName": "Plume",
       "isTracked": false
+    },
+    {
+      "symbol": "POL",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
     },
     {
       "symbol": "POL",
@@ -908,6 +2642,78 @@
       "networkId": "04c80b24-fbb0-451b-8e18-c12f9359ecd1",
       "networkName": "Polymesh",
       "isTracked": false
+    },
+    {
+      "symbol": "PONKE",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "POPCAT",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "POPCAT",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "POWR",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "PRCL",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "PRIME",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "PRL",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "PROVE",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "PUMP",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "PUMP",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "PYR",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "PYTH",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
     },
     {
       "symbol": "PYUSD",
@@ -940,9 +2746,27 @@
       "isTracked": false
     },
     {
+      "symbol": "QI",
+      "networkId": "bad16371-c22a-4bf4-a311-274d046cd760",
+      "networkName": "AvalancheC",
+      "isTracked": true
+    },
+    {
+      "symbol": "QNT",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
       "symbol": "QNT",
       "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
       "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "QTUM",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
       "isTracked": true
     },
     {
@@ -952,9 +2776,87 @@
       "isTracked": false
     },
     {
+      "symbol": "QUICK",
+      "networkId": "7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12",
+      "networkName": "Polygon",
+      "isTracked": true
+    },
+    {
+      "symbol": "RAD",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "RARE",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "RARE",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "RARI",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "RAY",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "RE",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "REACT",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "RED",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "RENDER",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "REQ",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "RLC",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
       "symbol": "RLUSD",
       "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
       "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "RNBW",
+      "networkId": "aa883b03-120d-477c-a588-37c2afd3ca71",
+      "networkName": "Base",
       "isTracked": true
     },
     {
@@ -970,10 +2872,28 @@
       "isTracked": false
     },
     {
+      "symbol": "RPL",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "RSR",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "RUNE",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
       "symbol": "RUNE",
       "networkId": "6305bfa0-3530-4aff-a1c9-49239abec2bd",
       "networkName": "Thorchain",
-      "isTracked": false
+      "isTracked": true
     },
     {
       "symbol": "RVN",
@@ -988,6 +2908,18 @@
       "isTracked": false
     },
     {
+      "symbol": "SAFE",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "SAND",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
       "symbol": "SAND",
       "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
       "networkName": "Ethereum",
@@ -1000,9 +2932,39 @@
       "isTracked": false
     },
     {
+      "symbol": "SCROLL",
+      "networkId": "897fe45a-fb5e-4333-9db9-2cb33a7dbfc2",
+      "networkName": "Scroll",
+      "isTracked": false
+    },
+    {
+      "symbol": "SCTTST",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "SD",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
       "symbol": "SEI",
       "networkId": "525a7a5a-2ac9-4772-af5a-b8f006516497",
       "networkName": "Sei",
+      "isTracked": false
+    },
+    {
+      "symbol": "SEPOLIAETH",
+      "networkId": "f2780a87-d1ab-4567-85b3-d9ae728cf54d",
+      "networkName": "Base Sepolia",
+      "isTracked": false
+    },
+    {
+      "symbol": "SEPOLIAETH",
+      "networkId": "03b2d786-7092-4a6a-9737-d6013e21819b",
+      "networkName": "Sepolia",
       "isTracked": false
     },
     {
@@ -1012,9 +2974,69 @@
       "isTracked": false
     },
     {
+      "symbol": "SHDW",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "SHIB",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
       "symbol": "SHIB",
       "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
       "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "SKL",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "SKR",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "SKY",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "SLP",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "SLP",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "SLP",
+      "networkId": "3bef7bbd-0517-4903-836a-cbcfafeeef9c",
+      "networkName": "Ronin",
+      "isTracked": false
+    },
+    {
+      "symbol": "SNEK",
+      "networkId": "9cc3f8db-809a-4d06-a183-34a63a84aca8",
+      "networkName": "Cardano",
+      "isTracked": true
+    },
+    {
+      "symbol": "SNX",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
       "isTracked": true
     },
     {
@@ -1031,6 +3053,12 @@
     },
     {
       "symbol": "SOL",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "SOL",
       "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
       "networkName": "Solana",
       "isTracked": true
@@ -1042,10 +3070,88 @@
       "isTracked": false
     },
     {
+      "symbol": "SPA",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "SPEC",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "SPELL",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "SPELL",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "SPK",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "SPS",
+      "networkId": "ed0ebeec-b166-4c8b-8574-cb078f7af8cf",
+      "networkName": "BSC",
+      "isTracked": true
+    },
+    {
+      "symbol": "SPS",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "SPX",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "SQT",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "STG",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "STONK",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "STORJ",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
       "symbol": "STRAX",
       "networkId": "85479117-71ce-4d75-98e3-e3f3bd4ee178",
       "networkName": "Xertra",
       "isTracked": false
+    },
+    {
+      "symbol": "STRK",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
     },
     {
       "symbol": "STRK",
@@ -1055,14 +3161,62 @@
     },
     {
       "symbol": "STX",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "STX",
       "networkId": "beae9742-cbcb-4f80-bd14-bb6e590619c6",
       "networkName": "Stacks",
       "isTracked": false
     },
     {
       "symbol": "SUI",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "SUI",
       "networkId": "0072c6e2-0e76-4265-9ac4-46bad109f599",
       "networkName": "Sui",
+      "isTracked": true
+    },
+    {
+      "symbol": "SUPER",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "SUSHI",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "SUSHI",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "SXT",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "SYN",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "T",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
       "isTracked": true
     },
     {
@@ -1072,10 +3226,22 @@
       "isTracked": false
     },
     {
+      "symbol": "TEVA",
+      "networkId": "aa883b03-120d-477c-a588-37c2afd3ca71",
+      "networkName": "Base",
+      "isTracked": true
+    },
+    {
       "symbol": "TFUEL",
       "networkId": "592c2938-3ff7-47bc-a7aa-6c9d964e09fe",
       "networkName": "Theta",
       "isTracked": false
+    },
+    {
+      "symbol": "THETA",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
     },
     {
       "symbol": "THETA",
@@ -1090,9 +3256,75 @@
       "isTracked": false
     },
     {
+      "symbol": "TIA",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "TNSR",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "TONIC",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "TOSHI",
+      "networkId": "aa883b03-120d-477c-a588-37c2afd3ca71",
+      "networkName": "Base",
+      "isTracked": true
+    },
+    {
+      "symbol": "TRAC",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "TRB",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "TROLL",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "TRUMP",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
       "symbol": "TRUMP",
       "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
       "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "TRUST",
+      "networkId": "aa883b03-120d-477c-a588-37c2afd3ca71",
+      "networkName": "Base",
+      "isTracked": true
+    },
+    {
+      "symbol": "TRX",
+      "networkId": "c5dc5d2e-68c1-4261-9a30-90b598738bf5",
+      "networkName": "Tron",
+      "isTracked": true
+    },
+    {
+      "symbol": "TURBO",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
       "isTracked": true
     },
     {
@@ -1102,7 +3334,31 @@
       "isTracked": true
     },
     {
+      "symbol": "UMA",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "UMA",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
       "symbol": "UNI",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "UNI",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "USAT",
       "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
       "networkName": "Ethereum",
       "isTracked": true
@@ -1127,6 +3383,12 @@
     },
     {
       "symbol": "USDC",
+      "networkId": "94eb7ffd-9b49-436a-8627-6e7d2dcc76d5",
+      "networkName": "Algorand",
+      "isTracked": false
+    },
+    {
+      "symbol": "USDC",
       "networkId": "c6427cfd-8ddf-44f1-b400-bc4a5ee190a3",
       "networkName": "Aptos",
       "isTracked": true
@@ -1136,6 +3398,12 @@
       "networkId": "a34f2431-0ddd-4de4-bc22-4a8143287aeb",
       "networkName": "Arbitrum",
       "isTracked": true
+    },
+    {
+      "symbol": "USDC",
+      "networkId": "56e491b9-fcc4-4c64-b0de-2e537201315e",
+      "networkName": "AssetHub",
+      "isTracked": false
     },
     {
       "symbol": "USDC",
@@ -1169,9 +3437,27 @@
     },
     {
       "symbol": "USDC",
+      "networkId": "0d1b5d72-f370-4b1f-9ae0-eca017590365",
+      "networkName": "CronosUsdcNative",
+      "isTracked": false
+    },
+    {
+      "symbol": "USDC",
+      "networkId": "1a2839fa-6761-4969-8b1c-565ce65f9621",
+      "networkName": "CronosZkEVM",
+      "isTracked": false
+    },
+    {
+      "symbol": "USDC",
       "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
       "networkName": "Ethereum",
       "isTracked": true
+    },
+    {
+      "symbol": "USDC",
+      "networkId": "2f770a21-3b5c-4c3e-b5bb-8df17590e549",
+      "networkName": "Hedera",
+      "isTracked": false
     },
     {
       "symbol": "USDC",
@@ -1195,6 +3481,12 @@
       "symbol": "USDC",
       "networkId": "6b5ced13-aaa4-4fda-b95a-27c7c68c2601",
       "networkName": "Monad",
+      "isTracked": false
+    },
+    {
+      "symbol": "USDC",
+      "networkId": "0740d877-e3d3-4660-8674-b911b29e9ca0",
+      "networkName": "Near",
       "isTracked": false
     },
     {
@@ -1229,6 +3521,12 @@
     },
     {
       "symbol": "USDC",
+      "networkId": "385f0b3a-8471-4b8f-884f-c4f4496f1603",
+      "networkName": "Sonic",
+      "isTracked": false
+    },
+    {
+      "symbol": "USDC",
       "networkId": "06855704-43d2-4ad2-a73c-372f0c3534e1",
       "networkName": "Stellar",
       "isTracked": true
@@ -1258,6 +3556,12 @@
       "isTracked": false
     },
     {
+      "symbol": "USDC",
+      "networkId": "9ff9af84-c858-4ebe-a602-ad3ede1330ce",
+      "networkName": "ZkSyncEra",
+      "isTracked": false
+    },
+    {
       "symbol": "USDD",
       "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
       "networkName": "Ethereum",
@@ -1274,6 +3578,12 @@
       "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
       "networkName": "Ethereum",
       "isTracked": true
+    },
+    {
+      "symbol": "USDG",
+      "networkId": "7225f44b-bd96-43b2-a97b-a49d9a3df0c8",
+      "networkName": "RobinhoodChain",
+      "isTracked": false
     },
     {
       "symbol": "USDG",
@@ -1318,6 +3628,30 @@
       "isTracked": true
     },
     {
+      "symbol": "USDQ",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "USDQ",
+      "networkId": "7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12",
+      "networkName": "Polygon",
+      "isTracked": true
+    },
+    {
+      "symbol": "USDQ",
+      "networkId": "06855704-43d2-4ad2-a73c-372f0c3534e1",
+      "networkName": "Stellar",
+      "isTracked": true
+    },
+    {
+      "symbol": "USDR",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
       "symbol": "USDS",
       "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
       "networkName": "Ethereum",
@@ -1337,8 +3671,20 @@
     },
     {
       "symbol": "USDT",
+      "networkId": "56e491b9-fcc4-4c64-b0de-2e537201315e",
+      "networkName": "AssetHub",
+      "isTracked": false
+    },
+    {
+      "symbol": "USDT",
       "networkId": "bad16371-c22a-4bf4-a311-274d046cd760",
       "networkName": "AvalancheC",
+      "isTracked": true
+    },
+    {
+      "symbol": "USDT",
+      "networkId": "aa883b03-120d-477c-a588-37c2afd3ca71",
+      "networkName": "Base",
       "isTracked": true
     },
     {
@@ -1385,6 +3731,12 @@
     },
     {
       "symbol": "USDT",
+      "networkId": "7ea6eb6d-cdae-476f-a06f-142381082726",
+      "networkName": "Plasma",
+      "isTracked": false
+    },
+    {
+      "symbol": "USDT",
       "networkId": "7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12",
       "networkName": "Polygon",
       "isTracked": true
@@ -1414,10 +3766,46 @@
       "isTracked": true
     },
     {
+      "symbol": "USDTB",
+      "networkId": "a34f2431-0ddd-4de4-bc22-4a8143287aeb",
+      "networkName": "Arbitrum",
+      "isTracked": true
+    },
+    {
+      "symbol": "USDTB",
+      "networkId": "aa883b03-120d-477c-a588-37c2afd3ca71",
+      "networkName": "Base",
+      "isTracked": true
+    },
+    {
+      "symbol": "USDTB",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "USDTB",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "USDU",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
       "symbol": "USD₮0",
       "networkId": "59836f7c-c9a7-4d47-aa17-70cb910445fa",
       "networkName": "HyperEVM",
       "isTracked": false
+    },
+    {
+      "symbol": "USD₮0",
+      "networkId": "18fa36b0-88a8-43ca-83db-9a874e0a2288",
+      "networkName": "Optimism",
+      "isTracked": true
     },
     {
       "symbol": "USD₮0",
@@ -1432,10 +3820,22 @@
       "isTracked": false
     },
     {
+      "symbol": "USELESS",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
       "symbol": "VANA",
       "networkId": "fd2b5a00-8e53-4452-ace4-246eeba4a451",
       "networkName": "Vana",
       "isTracked": false
+    },
+    {
+      "symbol": "VANRY",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
     },
     {
       "symbol": "VARA",
@@ -1444,10 +3844,34 @@
       "isTracked": false
     },
     {
+      "symbol": "VELO",
+      "networkId": "06855704-43d2-4ad2-a73c-372f0c3534e1",
+      "networkName": "Stellar",
+      "isTracked": true
+    },
+    {
+      "symbol": "VELODROME",
+      "networkId": "18fa36b0-88a8-43ca-83db-9a874e0a2288",
+      "networkName": "Optimism",
+      "isTracked": true
+    },
+    {
+      "symbol": "VET",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
       "symbol": "VET",
       "networkId": "69eee1ab-6cf7-438f-95e8-e85dab880ef1",
       "networkName": "VeChain",
       "isTracked": false
+    },
+    {
+      "symbol": "VINE",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
     },
     {
       "symbol": "VIRTUAL",
@@ -1457,8 +3881,74 @@
     },
     {
       "symbol": "VIRTUAL",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "VIRTUAL",
       "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
       "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "VNO",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "VNO",
+      "networkId": "9ff9af84-c858-4ebe-a602-ad3ede1330ce",
+      "networkName": "ZkSyncEra",
+      "isTracked": false
+    },
+    {
+      "symbol": "VOXEL",
+      "networkId": "7436e9d0-ba42-4d2b-b4c0-8e4e606b2c12",
+      "networkName": "Polygon",
+      "isTracked": true
+    },
+    {
+      "symbol": "VRA",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "VTHO",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "VTHO",
+      "networkId": "69eee1ab-6cf7-438f-95e8-e85dab880ef1",
+      "networkName": "VeChain",
+      "isTracked": false
+    },
+    {
+      "symbol": "VVS",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "VVS",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "W",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
+      "symbol": "WAL",
+      "networkId": "0072c6e2-0e76-4265-9ac4-46bad109f599",
+      "networkName": "Sui",
       "isTracked": true
     },
     {
@@ -1481,8 +3971,26 @@
     },
     {
       "symbol": "WBTC",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "WBTC",
       "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
       "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "WCT",
+      "networkId": "18fa36b0-88a8-43ca-83db-9a874e0a2288",
+      "networkName": "Optimism",
+      "isTracked": true
+    },
+    {
+      "symbol": "WEN",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
       "isTracked": true
     },
     {
@@ -1520,6 +4028,12 @@
       "networkId": "59836f7c-c9a7-4d47-aa17-70cb910445fa",
       "networkName": "HyperEVM",
       "isTracked": false
+    },
+    {
+      "symbol": "WIF",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
     },
     {
       "symbol": "WIF",
@@ -1570,6 +4084,30 @@
       "isTracked": false
     },
     {
+      "symbol": "WOO",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "WOO",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "XAI",
+      "networkId": "a34f2431-0ddd-4de4-bc22-4a8143287aeb",
+      "networkName": "Arbitrum",
+      "isTracked": true
+    },
+    {
+      "symbol": "XAUt",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
       "symbol": "XCH",
       "networkId": "7c651811-5377-4ce4-b66e-e511dc642ef8",
       "networkName": "Chia",
@@ -1577,8 +4115,26 @@
     },
     {
       "symbol": "XLM",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "XLM",
+      "networkId": "3555aaaa-58b4-4de0-9811-643e69d5761f",
+      "networkName": "CryptoOrg",
+      "isTracked": false
+    },
+    {
+      "symbol": "XLM",
       "networkId": "06855704-43d2-4ad2-a73c-372f0c3534e1",
       "networkName": "Stellar",
+      "isTracked": true
+    },
+    {
+      "symbol": "XNO",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
       "isTracked": true
     },
     {
@@ -1601,8 +4157,26 @@
     },
     {
       "symbol": "XRP",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "XRP",
       "networkId": "0ea47ee7-9d36-460e-a2d5-64cfa8a1dddd",
       "networkName": "XRPL",
+      "isTracked": true
+    },
+    {
+      "symbol": "XSGD",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "XTZ",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
       "isTracked": true
     },
     {
@@ -1612,16 +4186,106 @@
       "isTracked": false
     },
     {
+      "symbol": "XVS",
+      "networkId": "ed0ebeec-b166-4c8b-8574-cb078f7af8cf",
+      "networkName": "BSC",
+      "isTracked": true
+    },
+    {
+      "symbol": "XYO",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "XYO",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "YFI",
+      "networkId": "042e7535-bb07-4cda-a732-a243ea9f8250",
+      "networkName": "Cronos",
+      "isTracked": true
+    },
+    {
+      "symbol": "YFI",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "ZBCN",
+      "networkId": "0291810a-5947-424d-9a59-e88bb33e999d",
+      "networkName": "Solana",
+      "isTracked": true
+    },
+    {
       "symbol": "ZETA",
       "networkId": "4e79ba2c-aff9-4c1e-b2a7-c6beefd8f368",
       "networkName": "ZetaChain",
       "isTracked": false
     },
     {
+      "symbol": "ZK",
+      "networkId": "9ff9af84-c858-4ebe-a602-ad3ede1330ce",
+      "networkName": "ZkSyncEra",
+      "isTracked": false
+    },
+    {
+      "symbol": "ZKC",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
       "symbol": "ZKCRO",
       "networkId": "1a2839fa-6761-4969-8b1c-565ce65f9621",
       "networkName": "CronosZkEVM",
       "isTracked": false
+    },
+    {
+      "symbol": "ZKJ",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "ZORA",
+      "networkId": "aa883b03-120d-477c-a588-37c2afd3ca71",
+      "networkName": "Base",
+      "isTracked": true
+    },
+    {
+      "symbol": "ZRC",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "ZRC",
+      "networkId": "2038ac81-68f7-4396-828f-abc9fa113b4f",
+      "networkName": "Zircuit",
+      "isTracked": false
+    },
+    {
+      "symbol": "ZRO",
+      "networkId": "a34f2431-0ddd-4de4-bc22-4a8143287aeb",
+      "networkName": "Arbitrum",
+      "isTracked": true
+    },
+    {
+      "symbol": "ZRO",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
+    },
+    {
+      "symbol": "ZRX",
+      "networkId": "e3c7fdd8-b1fc-4e51-85ae-bb276e075611",
+      "networkName": "Ethereum",
+      "isTracked": true
     }
   ],
   "logos": {
