@@ -33,10 +33,25 @@ jest.mock('./utils/prewarm', () => ({
 // Stub the bundled Tier-2 asset so cascade tests don't load the ~135 KB HTML and
 // don't depend on the dynamic-import transform for the real file.
 jest.mock('./backup-bundle', () => ({
+  // The real (pure) theme helper, without loading the bundled HTML module.
+  ...jest.requireActual('./backup-bundle/theme'),
   getBundledOfflineWidget: () => ({
-    html: '<!doctype html><title>tier2-bundle</title>'
+    html: '<!doctype html><html lang="en"><title>tier2-bundle</title></html>'
   })
 }))
+
+/** The HTML of the most recent Tier-2 blob the SDK created. */
+const lastTier2Html = (): Promise<string> => {
+  const calls = (URL.createObjectURL as jest.Mock).mock.calls
+  const blob = calls[calls.length - 1][0] as Blob
+  // jsdom's Blob has no .text(); FileReader is supported.
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(reader.result as string)
+    reader.onerror = () => reject(reader.error)
+    reader.readAsText(blob)
+  })
+}
 
 /** Flush pending microtasks (awaited promises), for async message handlers. */
 const flushPromises = () => Promise.resolve().then().then().then()
@@ -1699,6 +1714,37 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
       jest.useRealTimers()
     }
   })
+
+  test.each([
+    ['dark', '<html data-theme="dark" lang="en">'],
+    ['light', '<html data-theme="light" lang="en">'],
+    ['system', '<html lang="en">'], // left to the OS prefers-color-scheme
+    [undefined, '<html lang="en">']
+  ] as const)(
+    'Tier 2 applies theme %s to the bundled widget (a blob: URL cannot carry ?theme=)',
+    async (theme, rootTag) => {
+      jest.useFakeTimers()
+      try {
+        const frontConnection = createLink({
+          clientId: 'test',
+          onIntegrationConnected: jest.fn(),
+          ...(theme ? { theme } : {})
+        })
+        frontConnection.openLinkBackup(BACKUP_SESSION)
+        jest.advanceTimersByTime(TIER1_READY_TIMEOUT_MS) // cascade to tier2
+        await flushPromises()
+
+        const html = await lastTier2Html()
+        expect(html).toContain(rootTag)
+        expect(html.match(/data-theme=/g)?.length ?? 0).toBe(
+          theme === 'dark' || theme === 'light' ? 1 : 0
+        )
+      } finally {
+        jest.clearAllTimers()
+        jest.useRealTimers()
+      }
+    }
+  )
 
   test('a Tier-1 ready handshake prevents the cascade', () => {
     jest.useFakeTimers()
