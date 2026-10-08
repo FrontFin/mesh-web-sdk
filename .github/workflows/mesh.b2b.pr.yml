@@ -45,5 +45,10 @@ jobs:
         run: pnpm lint
       - name: Test
         run: pnpm test:cov
+      # Enforce the Tier-2 bundle size caps AND that the committed generated.ts
+      # matches the vendored widget.offline.html (build no longer auto-embeds, so
+      # a stale projection or oversized bundle fails here instead of silently).
+      - name: Check backup bundle budget + freshness
+        run: pnpm --filter @meshconnect/web-link-sdk run bundle:check
       - name: Build
         run: pnpm build
