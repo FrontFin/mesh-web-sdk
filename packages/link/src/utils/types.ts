@@ -299,6 +299,17 @@ export interface LinkOptions {
   renderType?: 'overlay' | 'embedded'
 
   /**
+   * (Optional, development/testing only) Extra Link origins to trust, on top of
+   * the built-in Mesh-hosted Link origins. `openLink` rejects any link token that
+   * decodes to an origin outside that set, so set this only to load Link from an
+   * origin you host yourself or from a local build (e.g. `'http://localhost:3001'`).
+   * Exact origins only (scheme + host + port, no path): https, or plain http on
+   * `localhost` / `127.0.0.1` / `[::1]`. Never derive these from user input or
+   * the link token. Leave unset in production.
+   */
+  trustedLinkOrigins?: string[]
+
+  /**
    * (Backup flow only) Called once when the user confirms a token/network for a
    * destination that omits `address`, to kick off just-in-time address
    * generation against your own backend (with your own session). The return

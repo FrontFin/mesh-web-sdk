@@ -22,6 +22,7 @@ import { JIT_REQUEST_MESSAGE_TYPE, SESSION_NONCE_PARAM } from './utils/backup'
 import { BackupFlowHost, createBackupFlow } from './backupFlow'
 import { BridgeParent } from '@meshconnect/uwc-bridge-parent'
 import { createPrewarmIframe, removePrewarmIframe } from './utils/prewarm'
+import { resolveLinkTokenUrl } from './utils/linkOrigins'
 
 let currentOptions: LinkOptions | undefined
 let targetOrigin: string | undefined
@@ -280,14 +281,17 @@ export const createLink = (options: LinkOptions): Link => {
       return
     }
 
-    currentOptions = options
-    let linkUrl = window.atob(linkToken)
-    const isProtocolValid =
-      linkUrl.startsWith('http://') || linkUrl.startsWith('https://')
-    if (!isProtocolValid) {
+    // The decoded URL becomes the trust anchor (iframe src, postMessage target for
+    // access tokens, trusted event origin, camera/mic delegate), so it must be an
+    // allowed https Link origin. Rejected BEFORE any of that state is touched.
+    const resolved = resolveLinkTokenUrl(linkToken, options?.trustedLinkOrigins)
+    if (!resolved) {
       options?.onExit?.('Invalid link token!')
       return
     }
+
+    currentOptions = options
+    let linkUrl = resolved.href
 
     // Committed to the primary (token) flow — safe to forward access tokens on the
     // `loaded` handshake. (`backup.reset()` above cleared any prior flow.)
@@ -300,7 +304,7 @@ export const createLink = (options: LinkOptions): Link => {
     )
     linkUrl = addTheme(linkUrl, currentOptions?.theme)
     linkUrl = addRenderType(linkUrl, currentOptions?.renderType)
-    linkTokenOrigin = new URL(linkUrl).origin
+    linkTokenOrigin = resolved.origin
     window.removeEventListener('message', eventsListener)
     if (customIframeId) {
       const iframe = document.getElementById(

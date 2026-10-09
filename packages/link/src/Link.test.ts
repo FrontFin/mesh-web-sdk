@@ -78,7 +78,9 @@ type EventPayload = {
   link?: string
 }
 
-const BASE64_ENCODED_URL = Buffer.from('http://localhost/1').toString('base64')
+const BASE64_ENCODED_URL = Buffer.from(
+  'https://web.meshconnect.com/1'
+).toString('base64')
 
 describe('createLink tests', () => {
   globalThis.open = jest.fn()
@@ -120,6 +122,119 @@ describe('createLink tests', () => {
     expect(iframeElement).toBeFalsy()
   })
 
+  describe('link token origin allowlist', () => {
+    const tokenFor = (url: string) => Buffer.from(url).toString('base64')
+    const tokens: IntegrationAccessToken[] = [
+      {
+        accessToken: 'at',
+        accountId: 'aid',
+        accountName: 'an',
+        brokerType: 'acorns',
+        brokerName: 'A'
+      }
+    ]
+
+    test.each([
+      ['plain http on an allowed host', 'http://web.meshconnect.com/1'],
+      ['an https origin off the allowlist', 'https://evil.example/1'],
+      ['a lookalike host', 'https://web.meshconnect.com.evil.io/1'],
+      ['an unlisted meshconnect subdomain', 'https://evil.meshconnect.com/1'],
+      [
+        'an out-of-range preview slot',
+        'https://preview11.web.meshconnect.com/1'
+      ],
+      ['a local build that was not opted in', 'http://localhost:3001/1']
+    ])('rejects a token decoding to %s', (_, url) => {
+      // A fresh module, so `linkTokenOrigin` / `currentOptions` start unset and
+      // nothing from earlier tests can make the forged origin look trusted.
+      jest.isolateModules(() => {
+        // eslint-disable-next-line @typescript-eslint/no-var-requires
+        const { createLink: freshCreateLink } = require('./Link')
+        const customIframe = document.createElement('iframe')
+        customIframe.id = 'custom-iframe-id'
+        document.body.appendChild(customIframe)
+        const postMessageSpy = jest.spyOn(
+          customIframe.contentWindow as Window,
+          'postMessage'
+        )
+        const exitFunction = jest.fn()
+        const frontConnection = freshCreateLink({
+          onIntegrationConnected: jest.fn(),
+          onExit: exitFunction,
+          accessTokens: tokens,
+          renderType: 'embedded'
+        })
+
+        frontConnection.openLink(tokenFor(url), 'custom-iframe-id')
+        globalThis.dispatchEvent(
+          new MessageEvent('message', {
+            data: { type: 'loaded' },
+            origin: new URL(url).origin
+          })
+        )
+        frontConnection.closeLinkRequested()
+
+        expect(exitFunction).toHaveBeenCalledWith('Invalid link token!')
+        expect(customIframe.getAttribute('src')).toBeNull()
+        expect(customIframe.allow).toBeFalsy()
+        expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
+        expect(postMessageSpy).not.toHaveBeenCalled()
+      })
+    })
+
+    test('rejects a token that is not valid base64', () => {
+      const exitFunction = jest.fn()
+      const frontConnection = createLink({
+        onIntegrationConnected: jest.fn(),
+        onExit: exitFunction
+      })
+
+      frontConnection.openLink('%%% not base64 %%%')
+
+      expect(exitFunction).toHaveBeenCalledWith('Invalid link token!')
+      expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
+    })
+
+    test.each([
+      'https://link.meshconnect.com/',
+      'https://link.meshpay.com/',
+      'https://sandbox-link.meshconnect.com/',
+      'https://staging-web.meshconnect.com/b2b-iframe/x/broker-connect',
+      'https://preview10.dev-sandbox-web.meshconnect.com/'
+    ])('opens a token decoding to the Mesh origin %s', url => {
+      const frontConnection = createLink({
+        onIntegrationConnected: jest.fn()
+      })
+
+      frontConnection.openLink(tokenFor(url))
+
+      const iframeElement = document.getElementById('mesh-link-popup__iframe')
+      expect(iframeElement?.getAttribute('src')).toBe(`${url}?lng=en`)
+    })
+
+    test('opens a local build only when its origin is pinned via trustedLinkOrigins', () => {
+      const localToken = tokenFor('http://localhost:3001/b2b-iframe/x')
+      const exitFunction = jest.fn()
+
+      createLink({
+        onIntegrationConnected: jest.fn(),
+        onExit: exitFunction
+      }).openLink(localToken)
+      expect(exitFunction).toHaveBeenCalledWith('Invalid link token!')
+      expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
+
+      createLink({
+        onIntegrationConnected: jest.fn(),
+        onExit: exitFunction,
+        trustedLinkOrigins: ['http://localhost:3001']
+      }).openLink(localToken)
+      expect(
+        document.getElementById('mesh-link-popup__iframe')?.getAttribute('src')
+      ).toBe('http://localhost:3001/b2b-iframe/x?lng=en')
+      expect(exitFunction).toHaveBeenCalledTimes(1)
+    })
+  })
+
   test('createLink when valid link provided should open popup', () => {
     const frontConnection = createLink({
       clientId: 'test',
@@ -132,7 +247,7 @@ describe('createLink tests', () => {
     const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeTruthy()
     expect(iframeElement?.attributes.getNamedItem('src')?.nodeValue).toBe(
-      'http://localhost/1?lng=en&th=light'
+      'https://web.meshconnect.com/1?lng=en&th=light'
     )
   })
 
@@ -149,7 +264,7 @@ describe('createLink tests', () => {
     const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeTruthy()
     expect(iframeElement?.attributes.getNamedItem('src')?.nodeValue).toBe(
-      'http://localhost/1?lng=es-US'
+      'https://web.meshconnect.com/1?lng=es-US'
     )
   })
 
@@ -170,10 +285,14 @@ describe('createLink tests', () => {
     expect(iframeElement).toBeFalsy()
 
     expect(customIframeElement.attributes.getNamedItem('src')?.nodeValue).toBe(
-      'http://localhost/1?lng=en'
+      'https://web.meshconnect.com/1?lng=en'
     )
-    expect(customIframeElement.allow).toContain('camera http://localhost')
-    expect(customIframeElement.allow).toContain('microphone http://localhost')
+    expect(customIframeElement.allow).toContain(
+      'camera https://web.meshconnect.com'
+    )
+    expect(customIframeElement.allow).toContain(
+      'microphone https://web.meshconnect.com'
+    )
   })
 
   test('createLink closePopup should close popup', () => {
@@ -454,12 +573,12 @@ describe('createLink tests', () => {
           origin: 'http://localhost'
         }
       },
-      'http://localhost'
+      'https://web.meshconnect.com'
     )
 
     expect(postMessageSpy).toHaveBeenCalledWith(
       { type: 'frontAccessTokens', payload: tokens },
-      'http://localhost'
+      'https://web.meshconnect.com'
     )
   })
 
@@ -516,7 +635,7 @@ describe('createLink tests', () => {
     })
 
     frontConnection.openLink(
-      Buffer.from('http://localhost/1').toString('base64')
+      Buffer.from('https://web.meshconnect.com/1').toString('base64')
     )
     frontConnection.closeLink()
 
@@ -570,7 +689,7 @@ describe('createLink tests', () => {
 
     expect(exitFunction).not.toHaveBeenCalled()
     expect(customIframeElement.attributes.getNamedItem('src')?.nodeValue).toBe(
-      'http://localhost/1?lng=en&rt=embedded'
+      'https://web.meshconnect.com/1?lng=en&rt=embedded'
     )
   })
 
@@ -586,7 +705,7 @@ describe('createLink tests', () => {
 
     const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement?.attributes.getNamedItem('src')?.nodeValue).toBe(
-      'http://localhost/1?lng=en'
+      'https://web.meshconnect.com/1?lng=en'
     )
   })
 
@@ -601,7 +720,7 @@ describe('createLink tests', () => {
 
     const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement?.attributes.getNamedItem('src')?.nodeValue).toBe(
-      'http://localhost/1?lng=en'
+      'https://web.meshconnect.com/1?lng=en'
     )
   })
 
@@ -628,7 +747,7 @@ describe('createLink tests', () => {
 
     expect(postMessageSpy).toHaveBeenCalledWith(
       { type: 'closeRequested' },
-      'http://localhost'
+      'https://web.meshconnect.com'
     )
   })
 

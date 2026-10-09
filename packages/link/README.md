@@ -105,6 +105,9 @@ After successfull authentication on the Link session, the popup will be closed a
 | `displayFiatCurrency`    | `'USD' \| undefined`                                   | A fiat currency to display fiat equivalent of a crypto amount                        |
 | `theme`                  | `'dark' \| 'light' \| 'system' \| undefined`           | Color theme of Link UI interface                                                     |
 | `renderType`             | `'overlay' \| 'embedded' \| undefined`                 | `'overlay'` (default) renders a full-screen popup; `'embedded'` renders inside a client-supplied iframe (requires `customIframeId` in `openLink`) |
+| `trustedLinkOrigins`     | `string[] \| undefined`                                | Development/testing only. Extra Link origins to trust beyond the built-in Mesh-hosted ones, e.g. `['http://localhost:3001']` for a local build. Exact origins; https, or http on localhost only. Leave unset in production |
+
+`openLink` only opens a link token whose URL is on a Mesh-hosted Link origin (or one pinned via `trustedLinkOrigins`) over https. Any other token, including a plain `http://` one, is rejected: `onExit('Invalid link token!')` is called and nothing is loaded.
 
 #### `createLink` return value
 
