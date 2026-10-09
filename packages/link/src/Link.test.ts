@@ -1,5 +1,10 @@
 import { createLink } from './Link'
-import { DoneEvent, LinkEventType, TransferExecuted } from './utils/event-types'
+import {
+  DoneEvent,
+  LinkEventType,
+  TransferExecuted,
+  WithdrawalRequested
+} from './utils/event-types'
 import { createPrewarmIframe, removePrewarmIframe } from './utils/prewarm'
 import {
   AccessTokenPayload,
@@ -403,6 +408,105 @@ describe('createLink tests', () => {
       expect(onEventHandler).toHaveBeenCalledWith(event)
     }
   )
+
+  test.each(['pending', 'success'] as const)(
+    'createLink "withdrawalRequested" event with status "%s" forwards via onEvent without onIntegrationConnected',
+    status => {
+      const onEventHandler = jest.fn<void, [LinkEventType]>()
+      const frontConnection = createLink({ onEvent: onEventHandler })
+
+      frontConnection.openLink(BASE64_ENCODED_URL)
+
+      const event: WithdrawalRequested = {
+        type: 'withdrawalRequested',
+        payload: { transferId: 'transfer-1', status }
+      }
+      globalThis.dispatchEvent(
+        new MessageEvent<LinkEventType>('message', {
+          data: event,
+          origin: 'http://localhost'
+        })
+      )
+
+      expect(onEventHandler).toHaveBeenCalledTimes(1)
+      expect(onEventHandler).toHaveBeenCalledWith(event)
+    }
+  )
+
+  test('createLink "withdrawalRequested" event passes an unknown status through unchanged', () => {
+    const onEventHandler = jest.fn<void, [LinkEventType]>()
+    const frontConnection = createLink({ onEvent: onEventHandler })
+
+    frontConnection.openLink(BASE64_ENCODED_URL)
+
+    const data = {
+      type: 'withdrawalRequested',
+      payload: { transferId: 'transfer-1', status: 'failed' }
+    }
+    globalThis.dispatchEvent(
+      new MessageEvent('message', { data, origin: 'http://localhost' })
+    )
+
+    expect(onEventHandler).toHaveBeenCalledWith(data)
+  })
+
+  test('createLink "withdrawalRequested" then "close" calls onEvent before onExit', () => {
+    const onEventHandler = jest.fn<void, [LinkEventType]>()
+    const onExitHandler = jest.fn()
+    const frontConnection = createLink({
+      onEvent: onEventHandler,
+      onExit: onExitHandler
+    })
+
+    frontConnection.openLink(BASE64_ENCODED_URL)
+
+    globalThis.dispatchEvent(
+      new MessageEvent('message', {
+        data: {
+          type: 'withdrawalRequested',
+          payload: { transferId: 'transfer-1', status: 'pending' }
+        },
+        origin: 'http://localhost'
+      })
+    )
+    globalThis.dispatchEvent(
+      new MessageEvent('message', {
+        data: { type: 'close' },
+        origin: 'http://localhost'
+      })
+    )
+
+    expect(onEventHandler).toHaveBeenCalledTimes(1)
+    expect(onExitHandler).toHaveBeenCalledTimes(1)
+    expect(onEventHandler.mock.invocationCallOrder[0]).toBeLessThan(
+      onExitHandler.mock.invocationCallOrder[0]
+    )
+  })
+
+  test('createLink "withdrawalRequested" from an untrusted origin is ignored', () => {
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => {})
+    const onEventHandler = jest.fn<void, [LinkEventType]>()
+    const frontConnection = createLink({ onEvent: onEventHandler })
+
+    frontConnection.openLink(BASE64_ENCODED_URL)
+
+    globalThis.dispatchEvent(
+      new MessageEvent('message', {
+        data: {
+          type: 'withdrawalRequested',
+          payload: { transferId: 'transfer-1', status: 'pending' }
+        },
+        origin: 'https://evil.example'
+      })
+    )
+
+    expect(onEventHandler).not.toHaveBeenCalled()
+    expect(warn).toHaveBeenCalledWith(
+      'Received message from untrusted origin:',
+      'https://evil.example'
+    )
+    warn.mockRestore()
+  })
 
   test('createLink "loaded" event should trigger the passing for tokens', () => {
     const tokens: IntegrationAccessToken[] = [

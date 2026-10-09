@@ -247,10 +247,10 @@ export interface LinkOptions {
   clientId?: string
 
   /**
-   * A callback function that is called when an integration is successfully connected.
+   * (Optional) A callback function that is called when an integration is successfully connected.
    * It receives a payload of type `LinkPayload`.
    */
-  onIntegrationConnected: (payload: LinkPayload) => void
+  onIntegrationConnected?: (payload: LinkPayload) => void
 
   /**
    * (Optional) A callback function that is called when the Front iframe is closed.
