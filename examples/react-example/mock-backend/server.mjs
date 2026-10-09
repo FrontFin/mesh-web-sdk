@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /*
  * Zero-dependency mock CLIENT backend for the backup-flow JIT callbacks
- * (OR-452 / client spec §5–§6). This stands in for CDC's own backend: the SDK's
+ * (OR-452 / client spec §5–§6). This stands in for the client's own backend: the SDK's
  * `onAddressInit` / `onStatusPoll` callbacks (see src/utility/backupConfig.ts)
  * call these endpoints from the host app — the backup widget never touches them.
  *
