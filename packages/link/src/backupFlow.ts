@@ -178,6 +178,10 @@ export function createBackupFlow(host: BackupFlowHost): BackupFlow {
   // current open's — e.g. a queued `close` (spurious onExit) or `loaded` (would
   // cancel the Tier-1 → Tier-2 fallback).
   let sessionNonce: string | null = null
+  // This open's explicit theme (`dark`/`light`; undefined for `system`/unset). Tier 1
+  // sends it as `?theme=`; Tier 2's blob: URL can't, so it is stamped onto the
+  // bundled HTML instead (`withWidgetTheme`).
+  let backupTheme: 'dark' | 'light' | undefined
 
   /**
    * Tear down any in-flight backup session state. Called when a session ends or
@@ -198,6 +202,7 @@ export function createBackupFlow(host: BackupFlowHost): BackupFlow {
     removeBackupIframeErrorListener = null
     backupTier2 = false
     sessionNonce = null
+    backupTheme = undefined
     if (backupTier2BlobUrl) {
       URL.revokeObjectURL(backupTier2BlobUrl)
       backupTier2BlobUrl = null
@@ -365,7 +370,10 @@ export function createBackupFlow(host: BackupFlowHost): BackupFlow {
     let html: string
     try {
       const bundle = await import('./backup-bundle')
-      html = bundle.getBundledOfflineWidget().html
+      html = bundle.withWidgetTheme(
+        bundle.getBundledOfflineWidget().html,
+        backupTheme
+      )
     } catch {
       // The bundled chunk could not be loaded (e.g. the host's own asset host is
       // unreachable). Fail closed — never a blank QR. Only if still this session.
@@ -471,6 +479,7 @@ export function createBackupFlow(host: BackupFlowHost): BackupFlow {
         options?.theme === 'dark' || options?.theme === 'light'
           ? options.theme
           : undefined
+      backupTheme = theme
       widgetUrl = buildBackupWidgetUrl(widgetOrigin, {
         platform: sdkSpecs.platform,
         sdkVersion: sdkSpecs.version,
