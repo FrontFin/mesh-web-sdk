@@ -94,17 +94,17 @@ After successfull authentication on the Link session, the popup will be closed a
 
 #### `createLink` arguments
 
-| key                      | type                                                   | description                                                                          |
-| ------------------------ | ------------------------------------------------------ | ------------------------------------------------------------------------------------ |
-| `onIntegrationConnected` | `((payload: LinkPayload) => void) \| undefined`        | Callback called when users connects their accounts                                   |
-| `onExit`                 | `((error?: string \| undefined) => void) \| undefined` | Called if connection not happened                                                    |
-| `onTransferFinished`     | `(payload: TransferFinishedPayload) => void`           | Callback called when a crypto transfer is executed                                   |
-| `onEvent`                | `(payload: LinkEventType) => void`                     | A callback function that is called when various events occur within the Front iframe |
-| `accessTokens`           | `IntegrationAccessToken[]`                             | An array of integration access tokens                                                |
-| `language`               | `'en' \| undefined`                                    | Link UI language                                                                     |
-| `displayFiatCurrency`    | `'USD' \| undefined`                                   | A fiat currency to display fiat equivalent of a crypto amount                        |
-| `theme`                  | `'dark' \| 'light' \| 'system' \| undefined`           | Color theme of Link UI interface                                                     |
-| `renderType`             | `'overlay' \| 'embedded' \| undefined`                 | `'overlay'` (default) renders a full-screen popup; `'embedded'` renders inside a client-supplied iframe (requires `customIframeId` in `openLink`) |
+| key                      | type                                                        | description                                                                                                                                       |
+| ------------------------ | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `onIntegrationConnected` | `((payload: LinkPayload) => void) \| undefined`             | Callback called when users connects their accounts                                                                                                |
+| `onExit`                 | `((error?: string \| undefined) => void) \| undefined`      | Called if connection not happened                                                                                                                 |
+| `onTransferFinished`     | `((payload: TransferFinishedPayload) => void) \| undefined` | Callback called when a crypto transfer is executed                                                                                                |
+| `onEvent`                | `((payload: LinkEventType) => void) \| undefined`           | A callback function that is called when various events occur within the Front iframe                                                              |
+| `accessTokens`           | `IntegrationAccessToken[]`                                  | An array of integration access tokens                                                                                                             |
+| `language`               | `'en' \| undefined`                                         | Link UI language                                                                                                                                  |
+| `displayFiatCurrency`    | `'USD' \| undefined`                                        | A fiat currency to display fiat equivalent of a crypto amount                                                                                     |
+| `theme`                  | `'dark' \| 'light' \| 'system' \| undefined`                | Color theme of Link UI interface                                                                                                                  |
+| `renderType`             | `'overlay' \| 'embedded' \| undefined`                      | `'overlay'` (default) renders a full-screen popup; `'embedded'` renders inside a client-supplied iframe (requires `customIframeId` in `openLink`) |
 
 All callbacks are optional.
 
