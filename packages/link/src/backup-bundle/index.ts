@@ -1,6 +1,7 @@
 import { OFFLINE_WIDGET_HTML } from './generated'
 
 export { OFFLINE_WIDGET_HTML }
+export { withWidgetTheme } from './theme'
 
 /** The bundled Tier-2 asset: the self-contained offline widget HTML. */
 export interface BundledOfflineWidget {
