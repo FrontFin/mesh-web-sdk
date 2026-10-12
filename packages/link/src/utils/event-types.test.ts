@@ -44,7 +44,8 @@ describe('Event types tests', () => {
     'linkTransferQRGenerated',
     'methodSelected',
     'defiWalletError',
-    'homePageLoaded'
+    'homePageLoaded',
+    'withdrawalRequested'
   ])(
     'isLinkEventTypeKey should return true if parameter is "%s"',
     eventType => {
