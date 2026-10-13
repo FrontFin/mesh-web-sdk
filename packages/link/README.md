@@ -94,17 +94,35 @@ After successfull authentication on the Link session, the popup will be closed a
 
 #### `createLink` arguments
 
-| key                      | type                                                   | description                                                                          |
-| ------------------------ | ------------------------------------------------------ | ------------------------------------------------------------------------------------ |
-| `onIntegrationConnected` | `(payload: LinkPayload) => void`                       | Callback called when users connects their accounts                                   |
-| `onExit`                 | `((error?: string \| undefined) => void) \| undefined` | Called if connection not happened                                                    |
-| `onTransferFinished`     | `(payload: TransferFinishedPayload) => void`           | Callback called when a crypto transfer is executed                                   |
-| `onEvent`                | `(payload: LinkEventType) => void`                     | A callback function that is called when various events occur within the Front iframe |
-| `accessTokens`           | `IntegrationAccessToken[]`                             | An array of integration access tokens                                                |
-| `language`               | `'en' \| undefined`                                    | Link UI language                                                                     |
-| `displayFiatCurrency`    | `'USD' \| undefined`                                   | A fiat currency to display fiat equivalent of a crypto amount                        |
-| `theme`                  | `'dark' \| 'light' \| 'system' \| undefined`           | Color theme of Link UI interface                                                     |
-| `renderType`             | `'overlay' \| 'embedded' \| undefined`                 | `'overlay'` (default) renders a full-screen popup; `'embedded'` renders inside a client-supplied iframe (requires `customIframeId` in `openLink`) |
+| key                      | type                                                        | description                                                                                                                                       |
+| ------------------------ | ----------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `onIntegrationConnected` | `((payload: LinkPayload) => void) \| undefined`             | Callback called when users connects their accounts                                                                                                |
+| `onExit`                 | `((error?: string \| undefined) => void) \| undefined`      | Called if connection not happened                                                                                                                 |
+| `onTransferFinished`     | `((payload: TransferFinishedPayload) => void) \| undefined` | Callback called when a crypto transfer is executed                                                                                                |
+| `onEvent`                | `((payload: LinkEventType) => void) \| undefined`           | A callback function that is called when various events occur within the Front iframe                                                              |
+| `accessTokens`           | `IntegrationAccessToken[]`                                  | An array of integration access tokens                                                                                                             |
+| `language`               | `'en' \| undefined`                                         | Link UI language                                                                                                                                  |
+| `displayFiatCurrency`    | `'USD' \| undefined`                                        | A fiat currency to display fiat equivalent of a crypto amount                                                                                     |
+| `theme`                  | `'dark' \| 'light' \| 'system' \| undefined`                | Color theme of Link UI interface                                                                                                                  |
+| `renderType`             | `'overlay' \| 'embedded' \| undefined`                      | `'overlay'` (default) renders a full-screen popup; `'embedded'` renders inside a client-supplied iframe (requires `customIframeId` in `openLink`) |
+
+All callbacks are optional.
+
+#### Withdrawal events
+
+When a user confirms a withdrawal, `onEvent` receives a `withdrawalRequested` event, then Link closes and calls `onExit`.
+With `renderType: 'embedded'`, the SDK does not remove your iframe: hide it in `onExit`.
+Keep the `transferId` and continue the withdrawal once Link has closed, for example with your own 2FA prompt.
+Treat the event, not `onExit`, as confirmation of the withdrawal.
+The payload carries no address or amount: read the transfer details from the webhook or the transfer API.
+
+```ts
+onEvent: event => {
+  if (event.type === 'withdrawalRequested') {
+    const { transferId, status } = event.payload // 'pending' or 'success'; treat any other value as pending
+  }
+}
+```
 
 #### `createLink` return value
 
