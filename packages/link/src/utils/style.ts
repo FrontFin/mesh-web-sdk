@@ -4,7 +4,10 @@ export function getLinkStyle(url: string): LinkStyle | undefined {
   try {
     const params = new URLSearchParams(new URL(url).search)
     const style = params.get('link_style')
-    return style && JSON.parse(window.atob(style))
+    if (!style) return undefined
+
+    if (typeof atob === 'undefined') return undefined
+    return JSON.parse(atob(style))
   } catch (e) {
     return undefined
   }
