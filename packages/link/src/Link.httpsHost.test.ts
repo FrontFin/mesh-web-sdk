@@ -24,8 +24,10 @@ describe('openLink on an https host page', () => {
 
   test.each([
     'https:web.meshconnect.com/b/1',
-    'https:/web.meshconnect.com/b/1'
-  ])('loads %s from the Mesh origin, not the host page', decodedUrl => {
+    'https:/web.meshconnect.com/b/1',
+    'https:web.meshconnect.com/b/1 ',
+    ' https://web.meshconnect.com/b/1\n'
+  ])('loads %j from the Mesh origin, not the host page', decodedUrl => {
     const exitFunction = jest.fn()
     const customIframeElement = document.createElement('iframe')
     customIframeElement.id = 'custom-iframe-id'
@@ -48,4 +50,24 @@ describe('openLink on an https host page', () => {
     expect(customIframeElement.getAttribute('src')).toBe(expectedSrc)
     expect(customIframeElement.src).toBe(expectedSrc)
   })
+})
+
+test('openLink does not throw when params are appended to a bare-host token', () => {
+  document.getElementsByTagName('html')[0].innerHTML = ''
+  const exitFunction = jest.fn()
+  const frontConnection = createLink({
+    onIntegrationConnected: jest.fn(),
+    onExit: exitFunction
+  })
+
+  expect(() =>
+    frontConnection.openLink(
+      Buffer.from('https:web.meshconnect.com ').toString('base64')
+    )
+  ).not.toThrow()
+
+  expect(exitFunction).not.toHaveBeenCalled()
+  expect(
+    document.getElementById('mesh-link-popup__iframe')?.getAttribute('src')
+  ).toBe('https://web.meshconnect.com/?lng=en')
 })

@@ -295,12 +295,20 @@ export const createLink = (options: LinkOptions): Link => {
       linkUrl,
       options?.allowedLinkOrigins
     )
-    if (!trustedOrigin) {
+    const rejectToken = () => {
       linkTokenOrigin = undefined
       options?.onExit?.('Invalid link token!')
+    }
+    if (!trustedOrigin) {
+      rejectToken()
       return
     }
 
+    // Work on the serialized absolute URL: a non-canonical form like
+    // `https:web.meshconnect.com/b` (or one with surrounding whitespace) parses to
+    // the trusted origin on its own, but as a raw iframe `src` it resolves
+    // relative to the host page, and appending params to it can break parsing.
+    linkUrl = new URL(linkUrl).href
     linkUrl = addLanguage(linkUrl, currentOptions?.language)
     linkUrl = addDisplayFiatCurrency(
       linkUrl,
@@ -309,15 +317,17 @@ export const createLink = (options: LinkOptions): Link => {
     linkUrl = addTheme(linkUrl, currentOptions?.theme)
     linkUrl = addRenderType(linkUrl, currentOptions?.renderType)
     // Appending query params must never move the iframe to another origin.
-    const parsedLinkUrl = new URL(linkUrl)
-    if (parsedLinkUrl.origin !== trustedOrigin) {
-      linkTokenOrigin = undefined
-      options?.onExit?.('Invalid link token!')
+    let parsedLinkUrl: URL
+    try {
+      parsedLinkUrl = new URL(linkUrl)
+    } catch {
+      rejectToken()
       return
     }
-    // Use the serialized absolute URL: a slashless form like
-    // `https:web.meshconnect.com/b` parses to the trusted origin on its own, but
-    // as an iframe `src` it resolves relative to the host page.
+    if (parsedLinkUrl.origin !== trustedOrigin) {
+      rejectToken()
+      return
+    }
     linkUrl = parsedLinkUrl.href
 
     // Committed to the primary (token) flow — safe to forward access tokens on the
