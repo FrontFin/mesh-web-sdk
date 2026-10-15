@@ -19,7 +19,9 @@ describe('getTrustedLinkOrigin', () => {
     ['http://localhost:3000/1', 'http://localhost:3000'],
     ['https://localhost:3000/1', 'https://localhost:3000'],
     ['http://127.0.0.1:8080/1', 'http://127.0.0.1:8080'],
-    ['http://localhost:3000/b/1?x=1#y', 'http://localhost:3000']
+    ['http://localhost:3000/b/1?x=1#y', 'http://localhost:3000'],
+    ['http://[::1]:3000/b/1', 'http://[::1]:3000'],
+    ['https://[::1]/b/1', 'https://[::1]']
   ])('accepts %s', (url, origin) => {
     expect(getTrustedLinkOrigin(url)).toBe(origin)
   })
@@ -61,7 +63,13 @@ describe('getTrustedLinkOrigin', () => {
     'https://evil.com/web.meshconnect.com',
     'https://evil.com?@web.meshconnect.com',
     'http://web.meshconnect.com/b/1?secure=https',
-    'https://evil.com/b?x=1#https://localhost'
+    'https://evil.com/b?x=1#https://localhost',
+    // Non-http(s) schemes on a loopback host: only the scheme gate rejects these
+    // (`mesh-evil:` would otherwise yield the opaque origin 'null').
+    'ftp://localhost/b',
+    'ws://localhost:3000/b',
+    'ftp://127.0.0.1/b',
+    'mesh-evil://localhost/b'
   ])('rejects %s', url => {
     expect(getTrustedLinkOrigin(url)).toBeUndefined()
   })

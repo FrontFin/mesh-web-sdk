@@ -4,8 +4,14 @@
  */
 const TRUSTED_LINK_DOMAINS = ['meshconnect.com', 'meshpay.com']
 
-/** Local development hosts, trusted over `http:` or `https:` on any port. */
-const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1'])
+/**
+ * Loopback hosts, trusted over `http:` or `https:` on any port so local Mesh
+ * development works without extra config. Deliberate trade-off: this ships in the
+ * production bundle, so any process listening on the user's loopback could be
+ * handed `frontAccessTokens` by a token pointing at it — but serving there already
+ * implies code running on that machine, and no remote origin is admitted.
+ */
+const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1', '[::1]'])
 
 const isTrustedDomain = (hostname: string) =>
   TRUSTED_LINK_DOMAINS.some(

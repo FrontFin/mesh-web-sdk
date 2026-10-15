@@ -1476,6 +1476,55 @@ describe('openLinkBackup tests', () => {
     expect(forwardedTokens).toBeUndefined()
   })
 
+  test('a stale Mesh iframe does not receive access tokens after a rejected link token', () => {
+    // Twin of the backup case above, for an aborted `openLink`: a rejected token
+    // leaves the previous iframe + listener live. Two independent guards keep its
+    // late `loaded` from getting tokens — `linkTokenOrigin` is cleared on reject,
+    // and `setPrimaryFlow()` runs only after validation. This fails only if both go.
+    const tokens: IntegrationAccessToken[] = [
+      {
+        accessToken: 'at',
+        accountId: 'aid',
+        accountName: 'an',
+        brokerType: 'acorns',
+        brokerName: 'A'
+      }
+    ]
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      accessTokens: tokens
+    })
+
+    // 1. Open a valid Mesh-hosted Link (creates the popup iframe).
+    frontConnection.openLink(window.btoa('https://web.meshconnect.com/a'))
+    const staleIframe = document.getElementById(
+      'mesh-link-popup__iframe'
+    ) as HTMLIFrameElement | null
+    const postMessageSpy = jest.spyOn(
+      staleIframe?.contentWindow as Window,
+      'postMessage'
+    )
+
+    // 2. Re-open with a forged token — rejected, but the iframe above stays.
+    frontConnection.openLink(window.btoa('https://evil.example.com/link'))
+
+    // 3. A late `loaded` on the host origin (still passes the `targetOrigin` gate).
+    globalThis.dispatchEvent(
+      new MessageEvent<{ type: EventType }>('message', {
+        data: { type: 'loaded' },
+        origin: window.location.origin,
+        source: staleIframe?.contentWindow
+      })
+    )
+
+    const forwardedTokens = postMessageSpy.mock.calls.find(
+      ([message]) =>
+        (message as { type?: string })?.type === 'frontAccessTokens'
+    )
+    expect(forwardedTokens).toBeUndefined()
+  })
+
   let frontConnection: ReturnType<typeof createLink>
   test.each([
     [

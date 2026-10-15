@@ -316,7 +316,10 @@ export const createLink = (options: LinkOptions): Link => {
     )
     linkUrl = addTheme(linkUrl, currentOptions?.theme)
     linkUrl = addRenderType(linkUrl, currentOptions?.renderType)
-    // Appending query params must never move the iframe to another origin.
+    // Tripwire, not dead code: the helpers above only append to a canonical
+    // absolute URL, so this cannot fire today. It guards against a future helper
+    // that rewrites (and does not encode) instead of appending — the iframe must
+    // never load an origin other than the validated one.
     let parsedLinkUrl: URL
     try {
       parsedLinkUrl = new URL(linkUrl)
