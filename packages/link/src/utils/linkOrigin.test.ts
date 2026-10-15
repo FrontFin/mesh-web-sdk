@@ -18,9 +18,26 @@ describe('getTrustedLinkOrigin', () => {
     ['http://localhost/1', 'http://localhost'],
     ['http://localhost:3000/1', 'http://localhost:3000'],
     ['https://localhost:3000/1', 'https://localhost:3000'],
-    ['http://127.0.0.1:8080/1', 'http://127.0.0.1:8080']
+    ['http://127.0.0.1:8080/1', 'http://127.0.0.1:8080'],
+    ['http://localhost:3000/b/1?x=1#y', 'http://localhost:3000']
   ])('accepts %s', (url, origin) => {
     expect(getTrustedLinkOrigin(url)).toBe(origin)
+  })
+
+  // Query params and hashes never change the trusted origin.
+  test.each(
+    [
+      '/b/1?auth_code=abc',
+      '/b/1?a=1&b=2',
+      '/b/1#frag',
+      '/b/1?auth_code=abc#frag',
+      '?x=1',
+      '#x',
+      '/b/1?',
+      '/b/1#'
+    ].map(suffix => `https://web.meshconnect.com${suffix}`)
+  )('accepts %s with the Mesh origin', url => {
+    expect(getTrustedLinkOrigin(url)).toBe('https://web.meshconnect.com')
   })
 
   test.each([
@@ -35,32 +52,8 @@ describe('getTrustedLinkOrigin', () => {
     'data:text/html,hi',
     'ftp://web.meshconnect.com/b',
     'not a url',
-    ''
-  ])('rejects %s', url => {
-    expect(getTrustedLinkOrigin(url)).toBeUndefined()
-  })
-
-  test.each([
-    [
-      'https://web.meshconnect.com/b/1?auth_code=abc',
-      'https://web.meshconnect.com'
-    ],
-    ['https://web.meshconnect.com/b/1?a=1&b=2', 'https://web.meshconnect.com'],
-    ['https://web.meshconnect.com/b/1#frag', 'https://web.meshconnect.com'],
-    [
-      'https://web.meshconnect.com/b/1?auth_code=abc#frag',
-      'https://web.meshconnect.com'
-    ],
-    ['https://web.meshconnect.com?x=1', 'https://web.meshconnect.com'],
-    ['https://web.meshconnect.com#x', 'https://web.meshconnect.com'],
-    ['https://web.meshconnect.com/b/1?', 'https://web.meshconnect.com'],
-    ['https://web.meshconnect.com/b/1#', 'https://web.meshconnect.com'],
-    ['http://localhost:3000/b/1?x=1#y', 'http://localhost:3000']
-  ])('accepts %s with query/hash and returns its origin', (url, origin) => {
-    expect(getTrustedLinkOrigin(url)).toBe(origin)
-  })
-
-  test.each([
+    '',
+    // A Mesh host only in the path, query or hash is not the origin.
     'https://evil.com/?next=https://web.meshconnect.com',
     'https://evil.com/#https://web.meshconnect.com',
     'https://evil.com?web.meshconnect.com',
@@ -69,7 +62,7 @@ describe('getTrustedLinkOrigin', () => {
     'https://evil.com?@web.meshconnect.com',
     'http://web.meshconnect.com/b/1?secure=https',
     'https://evil.com/b?x=1#https://localhost'
-  ])('rejects %s (Mesh host only in path/query/hash)', url => {
+  ])('rejects %s', url => {
     expect(getTrustedLinkOrigin(url)).toBeUndefined()
   })
 
