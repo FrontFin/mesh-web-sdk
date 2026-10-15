@@ -22,6 +22,7 @@ import { JIT_REQUEST_MESSAGE_TYPE, SESSION_NONCE_PARAM } from './utils/backup'
 import { BackupFlowHost, createBackupFlow } from './backupFlow'
 import { BridgeParent } from '@meshconnect/uwc-bridge-parent'
 import { createPrewarmIframe, removePrewarmIframe } from './utils/prewarm'
+import { getTrustedLinkOrigin } from './utils/linkOrigin'
 
 let currentOptions: LinkOptions | undefined
 let targetOrigin: string | undefined
@@ -281,17 +282,24 @@ export const createLink = (options: LinkOptions): Link => {
     }
 
     currentOptions = options
-    let linkUrl = window.atob(linkToken)
-    const isProtocolValid =
-      linkUrl.startsWith('http://') || linkUrl.startsWith('https://')
-    if (!isProtocolValid) {
+    let linkUrl: string
+    try {
+      linkUrl = window.atob(linkToken)
+    } catch {
+      linkUrl = ''
+    }
+    // The decoded origin becomes the trust anchor for messages, the access-token
+    // postMessage target and the camera/microphone delegation — accept only
+    // Mesh-hosted Link origins (or ones the integrator pinned) over https.
+    const trustedOrigin = getTrustedLinkOrigin(
+      linkUrl,
+      options?.allowedLinkOrigins
+    )
+    if (!trustedOrigin) {
+      linkTokenOrigin = undefined
       options?.onExit?.('Invalid link token!')
       return
     }
-
-    // Committed to the primary (token) flow — safe to forward access tokens on the
-    // `loaded` handshake. (`backup.reset()` above cleared any prior flow.)
-    backup.setPrimaryFlow()
 
     linkUrl = addLanguage(linkUrl, currentOptions?.language)
     linkUrl = addDisplayFiatCurrency(
@@ -300,14 +308,25 @@ export const createLink = (options: LinkOptions): Link => {
     )
     linkUrl = addTheme(linkUrl, currentOptions?.theme)
     linkUrl = addRenderType(linkUrl, currentOptions?.renderType)
-    linkTokenOrigin = new URL(linkUrl).origin
+    // Appending query params must never move the iframe to another origin.
+    if (new URL(linkUrl).origin !== trustedOrigin) {
+      linkTokenOrigin = undefined
+      options?.onExit?.('Invalid link token!')
+      return
+    }
+
+    // Committed to the primary (token) flow — safe to forward access tokens on the
+    // `loaded` handshake. (`backup.reset()` above cleared any prior flow.)
+    backup.setPrimaryFlow()
+
+    linkTokenOrigin = trustedOrigin
     window.removeEventListener('message', eventsListener)
     if (customIframeId) {
       const iframe = document.getElementById(
         customIframeId
       ) as HTMLIFrameElement
       if (iframe) {
-        iframe.allow = buildIframeAllowPolicy(linkTokenOrigin!)
+        iframe.allow = buildIframeAllowPolicy(trustedOrigin)
         // Clear any leftover Tier-2 state from a prior backup session on this
         // reused iframe: `srcdoc` (takes precedence over `src`) and the `sandbox`
         // attribute (would otherwise keep it opaque-origin).

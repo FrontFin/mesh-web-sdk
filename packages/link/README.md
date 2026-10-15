@@ -105,6 +105,7 @@ After successfull authentication on the Link session, the popup will be closed a
 | `displayFiatCurrency`    | `'USD' \| undefined`                                        | A fiat currency to display fiat equivalent of a crypto amount                                                                                     |
 | `theme`                  | `'dark' \| 'light' \| 'system' \| undefined`                | Color theme of Link UI interface                                                                                                                  |
 | `renderType`             | `'overlay' \| 'embedded' \| undefined`                      | `'overlay'` (default) renders a full-screen popup; `'embedded'` renders inside a client-supplied iframe (requires `customIframeId` in `openLink`) |
+| `allowedLinkOrigins`     | `string[] \| undefined`                                     | Extra `https` origins to trust for a self-hosted Link UI. By default the link token must decode to an `https` `meshconnect.com` / `meshpay.com` URL (or `localhost`), otherwise `onExit` is called |
 
 All callbacks are optional.
 

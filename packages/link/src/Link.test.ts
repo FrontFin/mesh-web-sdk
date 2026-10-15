@@ -125,6 +125,123 @@ describe('createLink tests', () => {
     expect(iframeElement).toBeFalsy()
   })
 
+  test('createLink when link token is not valid base64 should not open popup', () => {
+    const exitFunction = jest.fn<void, [string | undefined]>()
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onExit: exitFunction
+    })
+
+    expect(() => frontConnection.openLink('%%%not-base64%%%')).not.toThrow()
+
+    expect(exitFunction).toHaveBeenCalledWith('Invalid link token!')
+    expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
+  })
+
+  test.each([
+    ['plain http on a Mesh host', 'http://web.meshconnect.com/b/1'],
+    ['an https host outside the allowlist', 'https://evil.example.com/b/1'],
+    ['a look-alike host', 'https://web.meshconnect.com.evil.example.com/b/1'],
+    [
+      'userinfo pointing at another host',
+      'https://web.meshconnect.com@evil.example.com/b/1'
+    ]
+  ])('createLink rejects a link token that decodes to %s', (_, decodedUrl) => {
+    const origin = new URL(decodedUrl).origin
+    const exitFunction = jest.fn<void, [string | undefined]>()
+    const onIntegrationConnected = jest.fn()
+    const customIframeElement = document.createElement('iframe')
+    customIframeElement.id = 'custom-iframe-id'
+    document.body.appendChild(customIframeElement)
+    const postMessageSpy = jest.spyOn(
+      customIframeElement.contentWindow as Window,
+      'postMessage'
+    )
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => {})
+
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected,
+      onExit: exitFunction,
+      accessTokens: [
+        {
+          accountId: 'id',
+          accountName: 'name',
+          accessToken: 'token',
+          brokerType: 'robinhood',
+          brokerName: 'Robinhood'
+        }
+      ]
+    })
+
+    frontConnection.openLink(
+      Buffer.from(decodedUrl).toString('base64'),
+      'custom-iframe-id'
+    )
+
+    expect(exitFunction).toHaveBeenCalledWith('Invalid link token!')
+    expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
+    expect(customIframeElement.getAttribute('src')).toBeNull()
+    expect(customIframeElement.allow).toBeFalsy()
+
+    globalThis.dispatchEvent(
+      new MessageEvent<EventPayload>('message', {
+        data: { type: 'loaded' },
+        origin
+      })
+    )
+    globalThis.dispatchEvent(
+      new MessageEvent<EventPayload>('message', {
+        data: {
+          type: 'brokerageAccountAccessToken',
+          payload: {} as AccessTokenPayload
+        },
+        origin
+      })
+    )
+
+    expect(postMessageSpy).not.toHaveBeenCalled()
+    expect(onIntegrationConnected).not.toHaveBeenCalled()
+    warn.mockRestore()
+  })
+
+  test('createLink accepts a self-hosted origin pinned via allowedLinkOrigins', () => {
+    const exitFunction = jest.fn<void, [string | undefined]>()
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onExit: exitFunction,
+      allowedLinkOrigins: ['https://link.example.com']
+    })
+
+    frontConnection.openLink(
+      Buffer.from('https://link.example.com/b/1').toString('base64')
+    )
+
+    expect(exitFunction).not.toHaveBeenCalled()
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
+    expect(iframeElement?.getAttribute('src')).toBe(
+      'https://link.example.com/b/1?lng=en'
+    )
+  })
+
+  test('createLink accepts an https Mesh-hosted link token', () => {
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn()
+    })
+
+    frontConnection.openLink(
+      Buffer.from('https://web.meshconnect.com/b/1').toString('base64')
+    )
+
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
+    expect(iframeElement?.getAttribute('src')).toBe(
+      'https://web.meshconnect.com/b/1?lng=en'
+    )
+  })
+
   test('createLink when valid link provided should open popup', () => {
     const frontConnection = createLink({
       clientId: 'test',
