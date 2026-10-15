@@ -299,15 +299,6 @@ export interface LinkOptions {
   renderType?: 'overlay' | 'embedded'
 
   /**
-   * (Optional) Extra `https` origins `openLink` trusts, for a self-hosted Link UI.
-   * By default a link token must decode to an `https` URL on `meshconnect.com`,
-   * `meshpay.com` (or a subdomain), or to `localhost`; any other token is rejected
-   * and `onExit` is called. Entries are matched by exact origin
-   * (e.g. `'https://link.example.com'`). Not needed for Mesh-hosted Link.
-   */
-  allowedLinkOrigins?: string[]
-
-  /**
    * (Backup flow only) Called once when the user confirms a token/network for a
    * destination that omits `address`, to kick off just-in-time address
    * generation against your own backend (with your own session). The return

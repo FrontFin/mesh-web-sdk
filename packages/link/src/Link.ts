@@ -22,7 +22,7 @@ import { JIT_REQUEST_MESSAGE_TYPE, SESSION_NONCE_PARAM } from './utils/backup'
 import { BackupFlowHost, createBackupFlow } from './backupFlow'
 import { BridgeParent } from '@meshconnect/uwc-bridge-parent'
 import { createPrewarmIframe, removePrewarmIframe } from './utils/prewarm'
-import { getTrustedLinkOrigin } from './utils/linkOrigin'
+import { getTrustedLinkOrigin, InternalLinkOptions } from './utils/linkOrigin'
 
 let currentOptions: LinkOptions | undefined
 let targetOrigin: string | undefined
@@ -293,7 +293,7 @@ export const createLink = (options: LinkOptions): Link => {
     // Mesh-hosted Link origins (or ones the integrator pinned) over https.
     const trustedOrigin = getTrustedLinkOrigin(
       linkUrl,
-      options?.allowedLinkOrigins
+      (options as InternalLinkOptions | undefined)?.allowedLinkOrigins
     )
     const rejectToken = () => {
       linkTokenOrigin = undefined

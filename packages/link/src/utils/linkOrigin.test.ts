@@ -40,6 +40,52 @@ describe('getTrustedLinkOrigin', () => {
     expect(getTrustedLinkOrigin(url)).toBeUndefined()
   })
 
+  test.each([
+    [
+      'https://web.meshconnect.com/b/1?auth_code=abc',
+      'https://web.meshconnect.com'
+    ],
+    ['https://web.meshconnect.com/b/1?a=1&b=2', 'https://web.meshconnect.com'],
+    ['https://web.meshconnect.com/b/1#frag', 'https://web.meshconnect.com'],
+    [
+      'https://web.meshconnect.com/b/1?auth_code=abc#frag',
+      'https://web.meshconnect.com'
+    ],
+    ['https://web.meshconnect.com?x=1', 'https://web.meshconnect.com'],
+    ['https://web.meshconnect.com#x', 'https://web.meshconnect.com'],
+    ['https://web.meshconnect.com/b/1?', 'https://web.meshconnect.com'],
+    ['https://web.meshconnect.com/b/1#', 'https://web.meshconnect.com'],
+    ['http://localhost:3000/b/1?x=1#y', 'http://localhost:3000']
+  ])('accepts %s with query/hash and returns its origin', (url, origin) => {
+    expect(getTrustedLinkOrigin(url)).toBe(origin)
+  })
+
+  test.each([
+    'https://evil.com/?next=https://web.meshconnect.com',
+    'https://evil.com/#https://web.meshconnect.com',
+    'https://evil.com?web.meshconnect.com',
+    'https://evil.com#.meshconnect.com',
+    'https://evil.com/web.meshconnect.com',
+    'https://evil.com?@web.meshconnect.com',
+    'http://web.meshconnect.com/b/1?secure=https',
+    'https://evil.com/b?x=1#https://localhost'
+  ])('rejects %s (Mesh host only in path/query/hash)', url => {
+    expect(getTrustedLinkOrigin(url)).toBeUndefined()
+  })
+
+  test('allowedLinkOrigins matches a pinned origin regardless of query/hash', () => {
+    const allowed = ['https://link.example.com']
+    expect(
+      getTrustedLinkOrigin('https://link.example.com/b?x=1#y', allowed)
+    ).toBe('https://link.example.com')
+    expect(
+      getTrustedLinkOrigin(
+        'https://evil.com/?https://link.example.com',
+        allowed
+      )
+    ).toBeUndefined()
+  })
+
   test('accepts an origin pinned via allowedLinkOrigins', () => {
     expect(
       getTrustedLinkOrigin('https://link.example.com/b/abc', [

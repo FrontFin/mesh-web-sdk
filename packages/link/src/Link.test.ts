@@ -13,8 +13,10 @@ import {
   LinkPayload,
   IntegrationAccessToken,
   TransferFinishedPayload,
-  MeshBackupConfig
+  MeshBackupConfig,
+  LinkOptions
 } from './utils/types'
+import { InternalLinkOptions } from './utils/linkOrigin'
 import {
   BACKUP_CONFIG_MESSAGE_TYPE,
   DEFAULT_BACKUP_WIDGET_ORIGIN,
@@ -206,14 +208,15 @@ describe('createLink tests', () => {
     warn.mockRestore()
   })
 
-  test('createLink accepts a self-hosted origin pinned via allowedLinkOrigins', () => {
+  test('createLink accepts a self-hosted origin pinned via the internal allowedLinkOrigins', () => {
     const exitFunction = jest.fn<void, [string | undefined]>()
-    const frontConnection = createLink({
+    const options: LinkOptions & InternalLinkOptions = {
       clientId: 'test',
       onIntegrationConnected: jest.fn(),
       onExit: exitFunction,
       allowedLinkOrigins: ['https://link.example.com']
-    })
+    }
+    const frontConnection = createLink(options)
 
     frontConnection.openLink(
       Buffer.from('https://link.example.com/b/1').toString('base64')
@@ -241,6 +244,117 @@ describe('createLink tests', () => {
       'https://web.meshconnect.com/b/1?lng=en'
     )
   })
+
+  test.each([
+    [
+      'https://web.meshconnect.com/b/1?auth_code=abc',
+      'https://web.meshconnect.com/b/1?auth_code=abc&lng=en&th=dark'
+    ],
+    [
+      'https://web.meshconnect.com/b/1?a=1&b=2',
+      'https://web.meshconnect.com/b/1?a=1&b=2&lng=en&th=dark'
+    ],
+    [
+      'https://web.meshconnect.com?x=1',
+      'https://web.meshconnect.com/?x=1&lng=en&th=dark'
+    ]
+  ])(
+    'createLink keeps the token query params on %s and appends its own',
+    (decodedUrl, expectedSrc) => {
+      const exitFunction = jest.fn()
+      const frontConnection = createLink({
+        onIntegrationConnected: jest.fn(),
+        onExit: exitFunction,
+        theme: 'dark'
+      })
+
+      frontConnection.openLink(Buffer.from(decodedUrl).toString('base64'))
+
+      expect(exitFunction).not.toHaveBeenCalled()
+      expect(
+        document.getElementById('mesh-link-popup__iframe')?.getAttribute('src')
+      ).toBe(expectedSrc)
+    }
+  )
+
+  test.each([
+    'https://web.meshconnect.com/b/1#frag',
+    'https://web.meshconnect.com/b/1?auth_code=abc#frag',
+    'https://web.meshconnect.com/b/1#'
+  ])(
+    'createLink trusts only the token origin when %s has a hash',
+    decodedUrl => {
+      const exitFunction = jest.fn()
+      const customIframeElement = document.createElement('iframe')
+      customIframeElement.id = 'custom-iframe-id'
+      document.body.appendChild(customIframeElement)
+      const tokens: IntegrationAccessToken[] = [
+        {
+          accessToken: 'at',
+          accountId: 'aid',
+          accountName: 'an',
+          brokerType: 'acorns',
+          brokerName: 'A'
+        }
+      ]
+      const frontConnection = createLink({
+        onIntegrationConnected: jest.fn(),
+        onExit: exitFunction,
+        accessTokens: tokens
+      })
+
+      frontConnection.openLink(
+        Buffer.from(decodedUrl).toString('base64'),
+        'custom-iframe-id'
+      )
+
+      // Spy after `openLink`: setting `src` gives jsdom's iframe a new window.
+      const postMessageSpy = jest.spyOn(
+        customIframeElement.contentWindow as Window,
+        'postMessage'
+      )
+
+      expect(exitFunction).not.toHaveBeenCalled()
+      const src = customIframeElement.getAttribute('src') ?? ''
+      expect(new URL(src).origin).toBe('https://web.meshconnect.com')
+      expect(src.startsWith(decodedUrl.split('#')[0])).toBe(true)
+      expect(customIframeElement.allow).toContain(
+        'camera https://web.meshconnect.com'
+      )
+
+      globalThis.dispatchEvent(
+        new MessageEvent<EventPayload>('message', {
+          data: { type: 'loaded' },
+          origin: 'https://web.meshconnect.com'
+        })
+      )
+      expect(postMessageSpy).toHaveBeenCalledWith(
+        { type: 'frontAccessTokens', payload: tokens },
+        'https://web.meshconnect.com'
+      )
+    }
+  )
+
+  test.each([
+    'https://evil.example.com/?next=https://web.meshconnect.com',
+    'https://evil.example.com/#https://web.meshconnect.com',
+    'https://evil.example.com?@web.meshconnect.com',
+    'https://evil.example.com/web.meshconnect.com'
+  ])(
+    'createLink rejects %s (Mesh host only outside the origin)',
+    decodedUrl => {
+      const exitFunction = jest.fn()
+      const frontConnection = createLink({
+        onIntegrationConnected: jest.fn(),
+        onExit: exitFunction
+      })
+
+      frontConnection.openLink(Buffer.from(decodedUrl).toString('base64'))
+
+      expect(exitFunction).toHaveBeenCalledWith('Invalid link token!')
+      expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
+    }
+  )
 
   test('createLink when valid link provided should open popup', () => {
     const frontConnection = createLink({

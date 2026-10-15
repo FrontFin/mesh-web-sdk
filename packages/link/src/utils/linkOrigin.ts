@@ -31,6 +31,15 @@ const normalizeExtraOrigins = (allowedLinkOrigins?: string[]): string[] => {
 }
 
 /**
+ * Internal, undocumented `createLink` option — deliberately not part of the
+ * public `LinkOptions` type. Extra `https` origins (matched exactly) that
+ * `openLink` trusts, for a self-hosted Link UI.
+ */
+export type InternalLinkOptions = {
+  allowedLinkOrigins?: string[]
+}
+
+/**
  * Returns the origin of the URL decoded from a link token if it is trusted, or
  * `undefined` if it must be rejected. This origin becomes the SDK's cross-window
  * trust anchor (iframe src, postMessage target, camera/microphone delegation), so
