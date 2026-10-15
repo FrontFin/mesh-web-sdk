@@ -56,9 +56,9 @@ describe('getTrustedLinkOrigin', () => {
     expect(
       getTrustedLinkOrigin('https://link.example.com:8443/b', allowed)
     ).toBeUndefined()
-    expect(getTrustedLinkOrigin('http://link.example.com/b', allowed)).toBe(
-      undefined
-    )
+    expect(
+      getTrustedLinkOrigin('http://link.example.com/b', allowed)
+    ).toBeUndefined()
   })
 
   test('ignores non-https allowedLinkOrigins entries', () => {

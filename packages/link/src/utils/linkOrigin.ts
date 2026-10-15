@@ -5,7 +5,7 @@
 const TRUSTED_LINK_DOMAINS = ['meshconnect.com', 'meshpay.com']
 
 /** Local development hosts, trusted over `http:` or `https:` on any port. */
-const LOCAL_HOSTS = ['localhost', '127.0.0.1']
+const LOCAL_HOSTS = new Set(['localhost', '127.0.0.1'])
 
 const isTrustedDomain = (hostname: string) =>
   TRUSTED_LINK_DOMAINS.some(
@@ -54,7 +54,7 @@ export function getTrustedLinkOrigin(
     return undefined
   }
 
-  if (LOCAL_HOSTS.includes(hostname)) {
+  if (LOCAL_HOSTS.has(hostname)) {
     return origin
   }
 
