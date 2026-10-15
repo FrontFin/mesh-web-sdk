@@ -309,11 +309,16 @@ export const createLink = (options: LinkOptions): Link => {
     linkUrl = addTheme(linkUrl, currentOptions?.theme)
     linkUrl = addRenderType(linkUrl, currentOptions?.renderType)
     // Appending query params must never move the iframe to another origin.
-    if (new URL(linkUrl).origin !== trustedOrigin) {
+    const parsedLinkUrl = new URL(linkUrl)
+    if (parsedLinkUrl.origin !== trustedOrigin) {
       linkTokenOrigin = undefined
       options?.onExit?.('Invalid link token!')
       return
     }
+    // Use the serialized absolute URL: a slashless form like
+    // `https:web.meshconnect.com/b` parses to the trusted origin on its own, but
+    // as an iframe `src` it resolves relative to the host page.
+    linkUrl = parsedLinkUrl.href
 
     // Committed to the primary (token) flow — safe to forward access tokens on the
     // `loaded` handshake. (`backup.reset()` above cleared any prior flow.)
