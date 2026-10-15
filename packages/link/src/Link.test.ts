@@ -13,8 +13,10 @@ import {
   LinkPayload,
   IntegrationAccessToken,
   TransferFinishedPayload,
-  MeshBackupConfig
+  MeshBackupConfig,
+  LinkOptions
 } from './utils/types'
+import { InternalLinkOptions } from './utils/linkOrigin'
 import {
   BACKUP_CONFIG_MESSAGE_TYPE,
   DEFAULT_BACKUP_WIDGET_ORIGIN,
@@ -124,6 +126,235 @@ describe('createLink tests', () => {
     const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeFalsy()
   })
+
+  test('createLink when link token is not valid base64 should not open popup', () => {
+    const exitFunction = jest.fn<void, [string | undefined]>()
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onExit: exitFunction
+    })
+
+    expect(() => frontConnection.openLink('%%%not-base64%%%')).not.toThrow()
+
+    expect(exitFunction).toHaveBeenCalledWith('Invalid link token!')
+    expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
+  })
+
+  test.each([
+    ['plain http on a Mesh host', 'http://web.meshconnect.com/b/1'],
+    ['an https host outside the allowlist', 'https://evil.example.com/b/1'],
+    ['a look-alike host', 'https://web.meshconnect.com.evil.example.com/b/1'],
+    [
+      'userinfo pointing at another host',
+      'https://web.meshconnect.com@evil.example.com/b/1'
+    ]
+  ])('createLink rejects a link token that decodes to %s', (_, decodedUrl) => {
+    const origin = new URL(decodedUrl).origin
+    const exitFunction = jest.fn<void, [string | undefined]>()
+    const onIntegrationConnected = jest.fn()
+    const customIframeElement = document.createElement('iframe')
+    customIframeElement.id = 'custom-iframe-id'
+    document.body.appendChild(customIframeElement)
+    const postMessageSpy = jest.spyOn(
+      customIframeElement.contentWindow as Window,
+      'postMessage'
+    )
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => {})
+
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected,
+      onExit: exitFunction,
+      accessTokens: [
+        {
+          accountId: 'id',
+          accountName: 'name',
+          accessToken: 'token',
+          brokerType: 'robinhood',
+          brokerName: 'Robinhood'
+        }
+      ]
+    })
+
+    frontConnection.openLink(
+      Buffer.from(decodedUrl).toString('base64'),
+      'custom-iframe-id'
+    )
+
+    expect(exitFunction).toHaveBeenCalledWith('Invalid link token!')
+    expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
+    expect(customIframeElement.getAttribute('src')).toBeNull()
+    expect(customIframeElement.allow).toBeFalsy()
+
+    globalThis.dispatchEvent(
+      new MessageEvent<EventPayload>('message', {
+        data: { type: 'loaded' },
+        origin
+      })
+    )
+    globalThis.dispatchEvent(
+      new MessageEvent<EventPayload>('message', {
+        data: {
+          type: 'brokerageAccountAccessToken',
+          payload: {} as AccessTokenPayload
+        },
+        origin
+      })
+    )
+
+    expect(postMessageSpy).not.toHaveBeenCalled()
+    expect(onIntegrationConnected).not.toHaveBeenCalled()
+    warn.mockRestore()
+  })
+
+  test('createLink accepts a self-hosted origin pinned via the internal allowedLinkOrigins', () => {
+    const exitFunction = jest.fn<void, [string | undefined]>()
+    const options: LinkOptions & InternalLinkOptions = {
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      onExit: exitFunction,
+      allowedLinkOrigins: ['https://link.example.com']
+    }
+    const frontConnection = createLink(options)
+
+    frontConnection.openLink(
+      Buffer.from('https://link.example.com/b/1').toString('base64')
+    )
+
+    expect(exitFunction).not.toHaveBeenCalled()
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
+    expect(iframeElement?.getAttribute('src')).toBe(
+      'https://link.example.com/b/1?lng=en'
+    )
+  })
+
+  test('createLink accepts an https Mesh-hosted link token', () => {
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn()
+    })
+
+    frontConnection.openLink(
+      Buffer.from('https://web.meshconnect.com/b/1').toString('base64')
+    )
+
+    const iframeElement = document.getElementById('mesh-link-popup__iframe')
+    expect(iframeElement?.getAttribute('src')).toBe(
+      'https://web.meshconnect.com/b/1?lng=en'
+    )
+  })
+
+  test.each([
+    [
+      'https://web.meshconnect.com/b/1?auth_code=abc',
+      'https://web.meshconnect.com/b/1?auth_code=abc&lng=en&th=dark'
+    ],
+    [
+      'https://web.meshconnect.com/b/1?a=1&b=2',
+      'https://web.meshconnect.com/b/1?a=1&b=2&lng=en&th=dark'
+    ],
+    [
+      'https://web.meshconnect.com?x=1',
+      'https://web.meshconnect.com/?x=1&lng=en&th=dark'
+    ]
+  ])(
+    'createLink keeps the token query params on %s and appends its own',
+    (decodedUrl, expectedSrc) => {
+      const exitFunction = jest.fn()
+      const frontConnection = createLink({
+        onIntegrationConnected: jest.fn(),
+        onExit: exitFunction,
+        theme: 'dark'
+      })
+
+      frontConnection.openLink(Buffer.from(decodedUrl).toString('base64'))
+
+      expect(exitFunction).not.toHaveBeenCalled()
+      expect(
+        document.getElementById('mesh-link-popup__iframe')?.getAttribute('src')
+      ).toBe(expectedSrc)
+    }
+  )
+
+  test.each([
+    'https://web.meshconnect.com/b/1#frag',
+    'https://web.meshconnect.com/b/1?auth_code=abc#frag',
+    'https://web.meshconnect.com/b/1#'
+  ])(
+    'createLink trusts only the token origin when %s has a hash',
+    decodedUrl => {
+      const exitFunction = jest.fn()
+      const customIframeElement = document.createElement('iframe')
+      customIframeElement.id = 'custom-iframe-id'
+      document.body.appendChild(customIframeElement)
+      const tokens: IntegrationAccessToken[] = [
+        {
+          accessToken: 'at',
+          accountId: 'aid',
+          accountName: 'an',
+          brokerType: 'acorns',
+          brokerName: 'A'
+        }
+      ]
+      const frontConnection = createLink({
+        onIntegrationConnected: jest.fn(),
+        onExit: exitFunction,
+        accessTokens: tokens
+      })
+
+      frontConnection.openLink(
+        Buffer.from(decodedUrl).toString('base64'),
+        'custom-iframe-id'
+      )
+
+      // Spy after `openLink`: setting `src` gives jsdom's iframe a new window.
+      const postMessageSpy = jest.spyOn(
+        customIframeElement.contentWindow as Window,
+        'postMessage'
+      )
+
+      expect(exitFunction).not.toHaveBeenCalled()
+      const src = customIframeElement.getAttribute('src') ?? ''
+      expect(new URL(src).origin).toBe('https://web.meshconnect.com')
+      expect(src.startsWith(decodedUrl.split('#')[0])).toBe(true)
+      expect(customIframeElement.allow).toContain(
+        'camera https://web.meshconnect.com'
+      )
+
+      globalThis.dispatchEvent(
+        new MessageEvent<EventPayload>('message', {
+          data: { type: 'loaded' },
+          origin: 'https://web.meshconnect.com'
+        })
+      )
+      expect(postMessageSpy).toHaveBeenCalledWith(
+        { type: 'frontAccessTokens', payload: tokens },
+        'https://web.meshconnect.com'
+      )
+    }
+  )
+
+  test.each([
+    'https://evil.example.com/?next=https://web.meshconnect.com',
+    'https://evil.example.com/#https://web.meshconnect.com',
+    'https://evil.example.com?@web.meshconnect.com',
+    'https://evil.example.com/web.meshconnect.com'
+  ])(
+    'createLink rejects %s (Mesh host only outside the origin)',
+    decodedUrl => {
+      const exitFunction = jest.fn()
+      const frontConnection = createLink({
+        onIntegrationConnected: jest.fn(),
+        onExit: exitFunction
+      })
+
+      frontConnection.openLink(Buffer.from(decodedUrl).toString('base64'))
+
+      expect(exitFunction).toHaveBeenCalledWith('Invalid link token!')
+      expect(document.getElementById('mesh-link-popup__iframe')).toBeFalsy()
+    }
+  )
 
   test('createLink when valid link provided should open popup', () => {
     const frontConnection = createLink({
@@ -1234,6 +1465,55 @@ describe('openLinkBackup tests', () => {
       new MessageEvent<{ type: EventType }>('message', {
         data: { type: 'loaded', sid: widgetSid(staleIframe) },
         origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
+        source: staleIframe?.contentWindow
+      })
+    )
+
+    const forwardedTokens = postMessageSpy.mock.calls.find(
+      ([message]) =>
+        (message as { type?: string })?.type === 'frontAccessTokens'
+    )
+    expect(forwardedTokens).toBeUndefined()
+  })
+
+  test('a stale Mesh iframe does not receive access tokens after a rejected link token', () => {
+    // Twin of the backup case above, for an aborted `openLink`: a rejected token
+    // leaves the previous iframe + listener live. Two independent guards keep its
+    // late `loaded` from getting tokens — `linkTokenOrigin` is cleared on reject,
+    // and `setPrimaryFlow()` runs only after validation. This fails only if both go.
+    const tokens: IntegrationAccessToken[] = [
+      {
+        accessToken: 'at',
+        accountId: 'aid',
+        accountName: 'an',
+        brokerType: 'acorns',
+        brokerName: 'A'
+      }
+    ]
+    const frontConnection = createLink({
+      clientId: 'test',
+      onIntegrationConnected: jest.fn(),
+      accessTokens: tokens
+    })
+
+    // 1. Open a valid Mesh-hosted Link (creates the popup iframe).
+    frontConnection.openLink(window.btoa('https://web.meshconnect.com/a'))
+    const staleIframe = document.getElementById(
+      'mesh-link-popup__iframe'
+    ) as HTMLIFrameElement | null
+    const postMessageSpy = jest.spyOn(
+      staleIframe?.contentWindow as Window,
+      'postMessage'
+    )
+
+    // 2. Re-open with a forged token — rejected, but the iframe above stays.
+    frontConnection.openLink(window.btoa('https://evil.example.com/link'))
+
+    // 3. A late `loaded` on the host origin (still passes the `targetOrigin` gate).
+    globalThis.dispatchEvent(
+      new MessageEvent<{ type: EventType }>('message', {
+        data: { type: 'loaded' },
+        origin: window.location.origin,
         source: staleIframe?.contentWindow
       })
     )

@@ -22,6 +22,7 @@ import { JIT_REQUEST_MESSAGE_TYPE, SESSION_NONCE_PARAM } from './utils/backup'
 import { BackupFlowHost, createBackupFlow } from './backupFlow'
 import { BridgeParent } from '@meshconnect/uwc-bridge-parent'
 import { createPrewarmIframe, removePrewarmIframe } from './utils/prewarm'
+import { getTrustedLinkOrigin, InternalLinkOptions } from './utils/linkOrigin'
 
 let currentOptions: LinkOptions | undefined
 let targetOrigin: string | undefined
@@ -281,18 +282,33 @@ export const createLink = (options: LinkOptions): Link => {
     }
 
     currentOptions = options
-    let linkUrl = window.atob(linkToken)
-    const isProtocolValid =
-      linkUrl.startsWith('http://') || linkUrl.startsWith('https://')
-    if (!isProtocolValid) {
+    let linkUrl: string
+    try {
+      linkUrl = window.atob(linkToken)
+    } catch {
+      linkUrl = ''
+    }
+    // The decoded origin becomes the trust anchor for messages, the access-token
+    // postMessage target and the camera/microphone delegation — accept only
+    // Mesh-hosted Link origins (or ones the integrator pinned) over https.
+    const trustedOrigin = getTrustedLinkOrigin(
+      linkUrl,
+      (options as InternalLinkOptions | undefined)?.allowedLinkOrigins
+    )
+    const rejectToken = () => {
+      linkTokenOrigin = undefined
       options?.onExit?.('Invalid link token!')
+    }
+    if (!trustedOrigin) {
+      rejectToken()
       return
     }
 
-    // Committed to the primary (token) flow — safe to forward access tokens on the
-    // `loaded` handshake. (`backup.reset()` above cleared any prior flow.)
-    backup.setPrimaryFlow()
-
+    // Work on the serialized absolute URL: a non-canonical form like
+    // `https:web.meshconnect.com/b` (or one with surrounding whitespace) parses to
+    // the trusted origin on its own, but as a raw iframe `src` it resolves
+    // relative to the host page, and appending params to it can break parsing.
+    linkUrl = new URL(linkUrl).href
     linkUrl = addLanguage(linkUrl, currentOptions?.language)
     linkUrl = addDisplayFiatCurrency(
       linkUrl,
@@ -300,14 +316,35 @@ export const createLink = (options: LinkOptions): Link => {
     )
     linkUrl = addTheme(linkUrl, currentOptions?.theme)
     linkUrl = addRenderType(linkUrl, currentOptions?.renderType)
-    linkTokenOrigin = new URL(linkUrl).origin
+    // Tripwire, not dead code: the helpers above only append to a canonical
+    // absolute URL, so this cannot fire today. It guards against a future helper
+    // that rewrites (and does not encode) instead of appending — the iframe must
+    // never load an origin other than the validated one.
+    let parsedLinkUrl: URL
+    try {
+      parsedLinkUrl = new URL(linkUrl)
+    } catch {
+      rejectToken()
+      return
+    }
+    if (parsedLinkUrl.origin !== trustedOrigin) {
+      rejectToken()
+      return
+    }
+    linkUrl = parsedLinkUrl.href
+
+    // Committed to the primary (token) flow — safe to forward access tokens on the
+    // `loaded` handshake. (`backup.reset()` above cleared any prior flow.)
+    backup.setPrimaryFlow()
+
+    linkTokenOrigin = trustedOrigin
     window.removeEventListener('message', eventsListener)
     if (customIframeId) {
       const iframe = document.getElementById(
         customIframeId
       ) as HTMLIFrameElement
       if (iframe) {
-        iframe.allow = buildIframeAllowPolicy(linkTokenOrigin!)
+        iframe.allow = buildIframeAllowPolicy(trustedOrigin)
         // Clear any leftover Tier-2 state from a prior backup session on this
         // reused iframe: `srcdoc` (takes precedence over `src`) and the `sandbox`
         // attribute (would otherwise keep it opaque-origin).
