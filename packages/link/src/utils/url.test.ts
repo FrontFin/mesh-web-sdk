@@ -22,4 +22,22 @@ describe('appendQueryParam', () => {
     url = appendQueryParam(url, 'rt', 'embedded')
     expect(url).toBe(`${BASE_URL_WITH_AUTH}&lng=en&fiatCur=USD&th=dark&rt=embedded`)
   })
+
+  test('inserts params before a hash fragment', () => {
+    expect(appendQueryParam(`${BASE_URL}#frag`, 'lng', 'en')).toBe(
+      `${BASE_URL}?lng=en#frag`
+    )
+    expect(appendQueryParam(`${BASE_URL_WITH_AUTH}#frag`, 'lng', 'en')).toBe(
+      `${BASE_URL_WITH_AUTH}&lng=en#frag`
+    )
+    expect(appendQueryParam(`${BASE_URL}#`, 'lng', 'en')).toBe(
+      `${BASE_URL}?lng=en#`
+    )
+  })
+
+  test('ignores a ? that only appears inside the hash', () => {
+    expect(appendQueryParam(`${BASE_URL}#a?b=1`, 'lng', 'en')).toBe(
+      `${BASE_URL}?lng=en#a?b=1`
+    )
+  })
 })

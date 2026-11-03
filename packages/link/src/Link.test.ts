@@ -318,6 +318,9 @@ describe('createLink tests', () => {
       const src = customIframeElement.getAttribute('src') ?? ''
       expect(new URL(src).origin).toBe('https://web.meshconnect.com')
       expect(src.startsWith(decodedUrl.split('#')[0])).toBe(true)
+      // The SDK's params go in the query string, not into the token's hash.
+      expect(new URL(src).searchParams.get('lng')).toBe('en')
+      expect(new URL(src).hash).toBe(new URL(decodedUrl).hash)
       expect(customIframeElement.allow).toContain(
         'camera https://web.meshconnect.com'
       )
