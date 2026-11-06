@@ -92,7 +92,6 @@ export function createBackupTierController(
     clearTimer()
     tier = 'tier2'
     ready = false
-    callbacks.onFallback(reason)
 
     // Fail-closed safety net: the bundled assets are local, so Tier 2 should
     // become ready almost instantly; if it does not, surface an error.
@@ -100,6 +99,10 @@ export function createBackupTierController(
       timer = null
       if (!ready) failClosed()
     }, TIER2_READY_TIMEOUT_MS)
+
+    // The callback can synchronously tear down the flow or mark it ready, so
+    // arm the timer first to let destroy/markReady cancel it.
+    callbacks.onFallback(reason)
   }
 
   return {
