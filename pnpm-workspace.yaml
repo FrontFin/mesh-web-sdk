@@ -50,14 +50,15 @@ overrides:
   # via unbounded intermediate arrays. The 5.x line has its own advisory
   # (>=4.0.0 <5.0.9) and arrives via the lerna -> nx -> glob 11 chain, which the
   # old `@typescript-eslint/**/…` selector never covered.
-  'brace-expansion@2': '2.1.4'
-  'brace-expansion@5': '5.0.9'
+  'brace-expansion@1': '1.1.21'
+  'brace-expansion@2': '2.1.7'
+  'brace-expansion@5': '5.0.12'
   'flatted': '3.4.2'
-  'handlebars': '4.7.9'
-  'axios': '1.18.0'
+  'handlebars': '4.7.10'
+  'axios': '1.20.0'
   'bn.js': '5.2.3'
   'esbuild': '0.25.12'
-  'vite': '6.4.3'
+  'vite': '6.4.4'
   'rollup': '4.62.0'
   # Refreshed while migrating: the previous pins (8.5.15 / 3.3.12) had since become
   # vulnerable themselves. Both stay within vite's `postcss: ^8.5.3` requirement.
@@ -65,17 +66,18 @@ overrides:
   'nanoid': '3.3.18'
   # New pin: lerna/cosmiconfig and swagger-typescript-api pull js-yaml 4.1.x, which
   # has several DoS/prototype-pollution advisories fixed in 4.3.1.
-  'js-yaml@4': '4.3.1'
+  'js-yaml@3': '3.15.2'
+  'js-yaml@4': '4.3.2'
   # jayson (via @meshconnect/solana-web3.js) declares ^8.3.2; <11.1.1 is a
   # moderate advisory. jayson consumes it as `require('uuid').v4`, a named export
   # v11 still provides in CJS, so the cross-major override is safe here.
   'uuid': '11.1.1'
   'lodash': '4.18.1'
   # <3.1.5 is host confusion (backslash authority / IDN canonicalisation).
-  'fast-uri': '3.1.5'
-  'follow-redirects': '1.16.0'
+  'fast-uri': '3.1.9'
+  'follow-redirects': '1.16.2'
   # <=10.3.0 decodes leading-zero octets as decimal (SSRF/ACL bypass surface).
-  'ip-address': '10.5.0'
+  'ip-address': '10.7.6'
   '@babel/plugin-transform-modules-systemjs': '7.29.7'
   '@tootallnate/once': '2.0.1'
   'form-data': '4.0.6'
@@ -83,3 +85,12 @@ overrides:
   # <=7.5.18 is a critical decompression/parse DoS; <=7.5.20 adds uncontrolled
   # recursion. 7.5.16 was carried over from yarn and predates both.
   'tar': '7.5.22'
+  # PRG-894: Dependabot alerts on transitive deps. dompurify arrives via
+  # swagger-typescript-api -> yummies (node-api codegen, not shipped); undici 6
+  # via node-gyp; the rest via lerna/nx and the vite/postcss chain.
+  'dompurify': '3.4.17'
+  'undici@6': '6.29.1'
+  'nx': '22.7.12'
+  'smol-toml': '1.9.0'
+  'source-map-js': '1.2.2'
+  'postcss-selector-parser': '7.1.7'
