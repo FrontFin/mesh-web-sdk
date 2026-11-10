@@ -2295,6 +2295,60 @@ describe('openLinkBackup JIT callbacks + Tier-2 cascade', () => {
     }
   )
 
+  test.each(['close', 'reopen'] as const)(
+    'a synchronous %s in backupTierChanged does not leave the old tier2 timer',
+    async action => {
+      jest.useFakeTimers()
+      try {
+        const onExit = jest.fn()
+        const onEvent = jest.fn((event: LinkEventType) => {
+          if (event.type === 'backupTierChanged') {
+            if (action === 'close') {
+              frontConnection.closeLink()
+            } else {
+              frontConnection.openLinkBackup(BACKUP_SESSION)
+            }
+          }
+        })
+        const frontConnection = createLink({
+          clientId: 'test',
+          onIntegrationConnected: jest.fn(),
+          onEvent,
+          onExit
+        })
+        frontConnection.openLinkBackup(BACKUP_SESSION)
+
+        jest.advanceTimersByTime(TIER1_READY_TIMEOUT_MS)
+        await flushPromises()
+
+        expect(onEvent).toHaveBeenCalledTimes(1)
+        const iframe = document.getElementById('mesh-link-popup__iframe')
+        if (action === 'close') {
+          expect(iframe).toBeNull()
+          expect(onExit).toHaveBeenCalledTimes(1)
+        } else {
+          expect(iframe).not.toBeNull()
+          expect(onExit).not.toHaveBeenCalled()
+          expect(jest.getTimerCount()).toBe(1) // only the new Tier-1 timer
+          globalThis.dispatchEvent(
+            new MessageEvent('message', {
+              data: {
+                type: 'loaded',
+                sid: widgetSid(iframe as HTMLIFrameElement)
+              },
+              origin: DEFAULT_BACKUP_WIDGET_ORIGIN,
+              source: (iframe as HTMLIFrameElement).contentWindow
+            })
+          )
+        }
+        expect(jest.getTimerCount()).toBe(0)
+      } finally {
+        jest.clearAllTimers()
+        jest.useRealTimers()
+      }
+    }
+  )
+
   test('a throwing onEvent does not abort the Tier-1 → Tier-2 cascade', async () => {
     jest.useFakeTimers()
     const errorSpy = jest.spyOn(console, 'error').mockImplementation(() => {})
