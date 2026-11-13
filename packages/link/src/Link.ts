@@ -17,7 +17,7 @@ import {
 } from './utils/popup'
 import { LinkEventType, isLinkEventTypeKey } from './utils/event-types'
 import { sdkSpecs } from './utils/sdk-specs'
-import { appendQueryParam } from './utils/url'
+import { appendQueryParam, setQueryParam } from './utils/url'
 import { JIT_REQUEST_MESSAGE_TYPE, SESSION_NONCE_PARAM } from './utils/backup'
 import { BackupFlowHost, createBackupFlow } from './backupFlow'
 import { BridgeParent } from '@meshconnect/uwc-bridge-parent'
@@ -425,7 +425,9 @@ function addDisplayFiatCurrency(
 
 function addTheme(linkUrl: string, theme: LinkOptions['theme']) {
   if (theme) {
-    return appendQueryParam(linkUrl, 'th', theme)
+    // Replace, don't append: tokens minted by the legacy shim already carry
+    // `th`, and Link reads the first value, so an appended host theme is ignored.
+    return setQueryParam(linkUrl, 'th', theme)
   }
   return linkUrl
 }

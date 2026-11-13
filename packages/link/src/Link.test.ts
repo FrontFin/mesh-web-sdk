@@ -277,6 +277,43 @@ describe('createLink tests', () => {
     }
   )
 
+  describe('token that already carries th (legacy shim)', () => {
+    // Shape of a legacy_api LinkTokenBuilder URL: `th` sits mid-query, before
+    // integrationId, with percent-encoded token/flow values.
+    const SHIM_PREFIX =
+      'https://link.meshpay.com/?token=ab%2Bc%2F%3D&clientId=c1&sessionId=s1' +
+      '&flow=%7B%22flow%22%3A%22enter-amount%22%7D'
+    const SHIM_URL = `${SHIM_PREFIX}&th=dark&integrationId=i1`
+
+    const openShimToken = (theme?: 'dark' | 'light' | 'system') => {
+      const exitFunction = jest.fn()
+      createLink({
+        onIntegrationConnected: jest.fn(),
+        onExit: exitFunction,
+        ...(theme ? { theme } : {})
+      }).openLink(Buffer.from(SHIM_URL).toString('base64'))
+      expect(exitFunction).not.toHaveBeenCalled()
+      return (
+        document
+          .getElementById('mesh-link-popup__iframe')
+          ?.getAttribute('src') ?? ''
+      )
+    }
+
+    test.each(['light', 'dark', 'system'] as const)(
+      'host theme %s replaces the token th; other params unchanged',
+      theme => {
+        const src = openShimToken(theme)
+        expect(src).toBe(`${SHIM_PREFIX}&integrationId=i1&lng=en&th=${theme}`)
+        expect(new URL(src).searchParams.getAll('th')).toEqual([theme])
+      }
+    )
+
+    test('no host theme keeps the token th', () => {
+      expect(openShimToken()).toBe(`${SHIM_URL}&lng=en`)
+    })
+  })
+
   test.each([
     'https://web.meshconnect.com/b/1#frag',
     'https://web.meshconnect.com/b/1?auth_code=abc#frag',
