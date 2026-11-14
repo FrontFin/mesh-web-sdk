@@ -130,8 +130,8 @@ importers:
         specifier: ^2.0.27
         version: link:../node-api
       '@meshconnect/uwc-bridge-parent':
-        specifier: 1.7.2
-        version: 1.7.2(bs58@6.0.0)(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@6.0.6)
+        specifier: 1.7.4
+        version: 1.7.4(bs58@6.0.0)(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@6.0.6)
     devDependencies:
       '@babel/preset-env':
         specifier: ^7.20.0
@@ -1310,8 +1310,8 @@ packages:
   '@meshconnect/solana-web3.js@1.0.4':
     resolution: {integrity: sha512-9NC7rHrkVO3XEshZ1k5n4368BHbfHz6Nak8chiZlrNNHceNyecKrvlHiUG87gaJhC39zNsZYfaKrIYolp5D7Qg==}
 
-  '@meshconnect/uwc-bridge-parent@1.7.2':
-    resolution: {integrity: sha512-jclKyJhPfu0Ku4V/8e1FbLw2Ef4Ngu+GPFUYm7od+9fuFIAR1VHeMwETVTAqBpX5haFnr0xc0XMzHOYPkOed7Q==}
+  '@meshconnect/uwc-bridge-parent@1.7.4':
+    resolution: {integrity: sha512-OhIy2k3xiFcepDSeo7vHJ0MGyp3xBBSYQYdZwewrXUZMDZrl8xTpOTy74munJGvBkDeD7+baifuJFvo25lhl5g==}
 
   '@napi-rs/wasm-runtime@0.2.4':
     resolution: {integrity: sha512-9zESzOO5aDByvhIAsOy9TbpZ0Ur2AJbUI7UT73kcUTS2mxAMHOBaa1st/jAymNoCtvrit99kkzT1FZuXVcgfIQ==}
@@ -1820,12 +1820,6 @@ packages:
       typescript:
         optional: true
 
-  '@solana/wallet-adapter-base@0.9.27':
-    resolution: {integrity: sha512-kXjeNfNFVs/NE9GPmysBRKQ/nf+foSaq3kfVSeMcO/iVgigyRmB551OjU3WyAolLG/1jeEfKLqF9fKwMCRkUqg==}
-    engines: {node: '>=20'}
-    peerDependencies:
-      '@solana/web3.js': ^1.98.0
-
   '@solana/wallet-adapter-base@0.9.28':
     resolution: {integrity: sha512-RCowsJPUs/UgLL/AbyeB6hozVov2UzHf7TrVZkZyJ8HLbuLswJguOnFUhRg6V1YhCp6FO7+1/qXrgeWC0qm1Jg==}
     engines: {node: '>=20'}
@@ -1834,10 +1828,6 @@ packages:
 
   '@solana/wallet-standard-chains@1.1.2':
     resolution: {integrity: sha512-EZobEGclDBAFplpJC5F3d/s8Xnlqc5isNKuPrd5o9ZPZ7tWN84O0e68yIZ8MAOj9V7ieRadNiHtql7uIXCTyXg==}
-    engines: {node: '>=22'}
-
-  '@solana/wallet-standard-features@1.4.0':
-    resolution: {integrity: sha512-f0tAdqwM2aL6CiFbIgt9h5zKFp+mgY/iNGwoxPMTj9VSTeQj7d1GGSmWhZw0XWoZ4N/1tnKTKmYFq+Dyq08jRw==}
     engines: {node: '>=22'}
 
   '@solana/wallet-standard-features@1.5.0':
@@ -7017,7 +7007,7 @@ snapshots:
       - encoding
       - utf-8-validate
 
-  '@meshconnect/uwc-bridge-parent@1.7.2(bs58@6.0.0)(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@6.0.6)':
+  '@meshconnect/uwc-bridge-parent@1.7.4(bs58@6.0.0)(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@6.0.6)':
     dependencies:
       '@solana/wallet-adapter-base': 0.9.28(@solana/web3.js@1.99.0(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@6.0.6))
       '@solana/wallet-standard-wallet-adapter-base': 1.1.7(@solana/web3.js@1.99.0(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@6.0.6))(bs58@6.0.0)(typescript@5.9.3)
@@ -7511,17 +7501,9 @@ snapshots:
     optionalDependencies:
       typescript: 5.9.3
 
-  '@solana/wallet-adapter-base@0.9.27(@solana/web3.js@1.99.0(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@6.0.6))':
-    dependencies:
-      '@solana/wallet-standard-features': 1.4.0
-      '@solana/web3.js': 1.99.0(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@6.0.6)
-      '@wallet-standard/base': 1.1.1
-      '@wallet-standard/features': 1.1.1
-      eventemitter3: 5.0.4
-
   '@solana/wallet-adapter-base@0.9.28(@solana/web3.js@1.99.0(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@6.0.6))':
     dependencies:
-      '@solana/wallet-standard-features': 1.4.0
+      '@solana/wallet-standard-features': 1.5.0
       '@solana/web3.js': 1.99.0(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@6.0.6)
       '@wallet-standard/base': 1.1.1
       '@wallet-standard/features': 1.1.1
@@ -7530,11 +7512,6 @@ snapshots:
   '@solana/wallet-standard-chains@1.1.2':
     dependencies:
       '@wallet-standard/base': 1.1.1
-
-  '@solana/wallet-standard-features@1.4.0':
-    dependencies:
-      '@wallet-standard/base': 1.1.1
-      '@wallet-standard/features': 1.1.1
 
   '@solana/wallet-standard-features@1.5.0':
     dependencies:
@@ -7553,7 +7530,7 @@ snapshots:
 
   '@solana/wallet-standard-wallet-adapter-base@1.1.7(@solana/web3.js@1.99.0(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@6.0.6))(bs58@6.0.0)(typescript@5.9.3)':
     dependencies:
-      '@solana/wallet-adapter-base': 0.9.27(@solana/web3.js@1.99.0(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@6.0.6))
+      '@solana/wallet-adapter-base': 0.9.28(@solana/web3.js@1.99.0(bufferutil@4.1.0)(encoding@0.1.13)(typescript@5.9.3)(utf-8-validate@6.0.6))
       '@solana/wallet-standard-chains': 1.1.2
       '@solana/wallet-standard-features': 1.5.0
       '@solana/wallet-standard-util': 1.2.0(typescript@5.9.3)
