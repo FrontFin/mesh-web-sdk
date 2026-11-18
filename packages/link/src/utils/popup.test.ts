@@ -11,6 +11,7 @@ describe('Popup tests', () => {
 
     const popupElement = document.getElementById('mesh-link-popup')
     expect(popupElement).toBeTruthy()
+    expect(popupElement?.getAttribute('data-react-aria-top-layer')).toBe('true')
 
     const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeTruthy()
