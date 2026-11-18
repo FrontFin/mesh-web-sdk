@@ -1029,10 +1029,24 @@ describe('openLink load timeout (linkLoadFailed)', () => {
     payload: { reason: 'loadTimeout', timeoutMs: LINK_LOAD_TIMEOUT_MS }
   }
 
-  const postFromLink = (data: Record<string, unknown>) =>
+  const linkWindow = () =>
+    (document.getElementById('mesh-link-popup__iframe') as HTMLIFrameElement)
+      ?.contentWindow ?? null
+
+  const postFromLink = (
+    data: Record<string, unknown>,
+    source: Window | null = linkWindow()
+  ) =>
     globalThis.dispatchEvent(
-      new MessageEvent('message', { data, origin: LINK_ORIGIN })
+      new MessageEvent('message', { data, origin: LINK_ORIGIN, source })
     )
+
+  const embeddedIframe = (id: string) => {
+    const iframe = document.createElement('iframe')
+    iframe.id = id
+    document.body.appendChild(iframe)
+    return iframe
+  }
 
   const loadFailedCalls = (onEvent: jest.Mock) =>
     onEvent.mock.calls.filter(([e]) => e.type === 'linkLoadFailed')
@@ -1155,9 +1169,8 @@ describe('openLink load timeout (linkLoadFailed)', () => {
       jest.advanceTimersByTime(LINK_LOAD_TIMEOUT_MS * 3)
       expect(loadFailedCalls(onEvent)).toHaveLength(0)
 
-      // Back in view: the page gets a full window again to load.
+      // Back in view: only the visible time left (1ms) remains.
       setVisibility('visible')
-      jest.advanceTimersByTime(LINK_LOAD_TIMEOUT_MS - 1)
       expect(loadFailedCalls(onEvent)).toHaveLength(0)
       jest.advanceTimersByTime(1)
       expect(loadFailedCalls(onEvent)).toHaveLength(1)
@@ -1170,6 +1183,74 @@ describe('openLink load timeout (linkLoadFailed)', () => {
     } finally {
       visibility.mockRestore()
     }
+  })
+
+  test('repeated hide/show cannot postpone the report past the visible budget', () => {
+    const visibility = jest.spyOn(document, 'visibilityState', 'get')
+    const setVisibility = (state: 'hidden' | 'visible') => {
+      visibility.mockReturnValue(state)
+      document.dispatchEvent(new Event('visibilitychange'))
+    }
+    try {
+      const { onEvent } = open()
+
+      for (let i = 0; i < 3; i++) {
+        jest.advanceTimersByTime(LINK_LOAD_TIMEOUT_MS / 4)
+        setVisibility('hidden')
+        jest.advanceTimersByTime(LINK_LOAD_TIMEOUT_MS)
+        setVisibility('visible')
+      }
+      expect(loadFailedCalls(onEvent)).toHaveLength(0)
+
+      jest.advanceTimersByTime(LINK_LOAD_TIMEOUT_MS / 4)
+      expect(loadFailedCalls(onEvent)).toHaveLength(1)
+    } finally {
+      visibility.mockRestore()
+    }
+  })
+
+  test.each([
+    ['another window', () => window],
+    ['no source', () => null]
+  ])('a loaded from %s does not cancel the timeout', (_, source) => {
+    const { onEvent } = open()
+
+    postFromLink({ type: 'loaded' }, source())
+    jest.advanceTimersByTime(LINK_LOAD_TIMEOUT_MS)
+
+    expect(loadFailedCalls(onEvent)).toHaveLength(1)
+  })
+
+  test('a late loaded from the previous embedded iframe does not cancel the new one', () => {
+    const iframeA = embeddedIframe('iframe-a')
+    const iframeB = embeddedIframe('iframe-b')
+    const onEvent = jest.fn<void, [LinkEventType]>()
+    const link = createLink({ onEvent, renderType: 'embedded' })
+
+    link.openLink(BASE64_ENCODED_URL, 'iframe-a')
+    link.openLink(BASE64_ENCODED_URL, 'iframe-b')
+    postFromLink({ type: 'loaded' }, iframeA.contentWindow)
+    jest.advanceTimersByTime(LINK_LOAD_TIMEOUT_MS)
+    expect(loadFailedCalls(onEvent)).toHaveLength(1)
+
+    link.openLink(BASE64_ENCODED_URL, 'iframe-b')
+    postFromLink({ type: 'loaded' }, iframeB.contentWindow)
+    jest.advanceTimersByTime(LINK_LOAD_TIMEOUT_MS)
+    expect(loadFailedCalls(onEvent)).toHaveLength(1)
+  })
+
+  test('a missing embedded iframe id does not arm against the previous iframe', () => {
+    embeddedIframe('iframe-a')
+    const onEvent = jest.fn<void, [LinkEventType]>()
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => {})
+    const link = createLink({ onEvent, renderType: 'embedded' })
+
+    link.openLink(BASE64_ENCODED_URL, 'iframe-a')
+    link.openLink(BASE64_ENCODED_URL, 'missing-iframe')
+    jest.advanceTimersByTime(LINK_LOAD_TIMEOUT_MS * 3)
+
+    expect(loadFailedCalls(onEvent)).toHaveLength(0)
+    warn.mockRestore()
   })
 
   test('does not arm when the embedded iframe id does not exist', () => {

@@ -33,6 +33,9 @@ let bridgeParent: BridgeParent | null = null
 // Pending `linkLoadFailed` timer for the current `openLink` (cleared on `loaded`
 // and whenever the flow ends or is replaced).
 let loadTimer: ReturnType<typeof setTimeout> | null = null
+// Visible time still allowed for `loaded`, and when the running timer started.
+let loadBudgetMs = 0
+let loadTimerStartedAt = 0
 
 function clearLoadTimer() {
   if (loadTimer) {
@@ -43,6 +46,7 @@ function clearLoadTimer() {
 }
 
 function armLoadTimer() {
+  loadTimerStartedAt = Date.now()
   loadTimer = setTimeout(() => {
     clearLoadTimer()
     if (backup.getActiveFlow() !== 'primary') return
@@ -50,19 +54,26 @@ function armLoadTimer() {
       type: 'linkLoadFailed',
       payload: { reason: 'loadTimeout', timeoutMs: LINK_LOAD_TIMEOUT_MS }
     })
-  }, LINK_LOAD_TIMEOUT_MS)
+  }, loadBudgetMs)
 }
 
 // Only count time the page is visible. Mobile browsers freeze hidden pages
 // (the Link iframe's loading included) and run overdue timers on resume, so a
 // user who switches apps mid-load would otherwise get a false `linkLoadFailed`.
-// Hidden pauses the wait; visible restarts it in full.
+// Hidden pauses the wait; visible resumes it with the visible time left.
 function onLoadVisibilityChange() {
-  if (loadTimer) {
-    clearTimeout(loadTimer)
-    loadTimer = null
+  if (document.visibilityState === 'hidden') {
+    if (loadTimer) {
+      clearTimeout(loadTimer)
+      loadTimer = null
+      loadBudgetMs = Math.max(
+        0,
+        loadBudgetMs - (Date.now() - loadTimerStartedAt)
+      )
+    }
+  } else if (!loadTimer) {
+    armLoadTimer()
   }
-  if (document.visibilityState !== 'hidden') armLoadTimer()
 }
 
 /**
@@ -73,6 +84,7 @@ function onLoadVisibilityChange() {
  */
 function startLoadTimer() {
   clearLoadTimer()
+  loadBudgetMs = LINK_LOAD_TIMEOUT_MS
   document.addEventListener('visibilitychange', onLoadVisibilityChange)
   if (document.visibilityState !== 'hidden') armLoadTimer()
 }
@@ -211,7 +223,11 @@ async function handleLinkEvent(
       break
     }
     case 'loaded': {
-      clearLoadTimer()
+      // Only the current Link iframe's handshake counts: a late `loaded` from a
+      // previous embedded iframe must not cancel this open's timeout.
+      if (event.source && event.source === iframeElement()?.contentWindow) {
+        clearLoadTimer()
+      }
       sendMessageToIframe({
         type: 'meshSDKSpecs',
         payload: { ...sdkSpecs }
@@ -404,10 +420,12 @@ export const createLink = (options: LinkOptions): Link => {
         iframe.removeAttribute('srcdoc')
         iframe.removeAttribute('sandbox')
         iframe.src = linkUrl
-        currentIframeId = customIframeId
       } else {
         console.warn(`Mesh SDK: No iframe found with id ${customIframeId}`)
       }
+      // Point at the requested id even when it's missing, so the bridge and the
+      // load timer below never attach to an iframe from a previous open.
+      currentIframeId = customIframeId
     } else {
       currentIframeId = iframeId
       addPopup(linkUrl)
