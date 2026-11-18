@@ -25,6 +25,7 @@ import {
   TIER1_READY_TIMEOUT_MS,
   TIER2_READY_TIMEOUT_MS
 } from './utils/backup'
+import { LINK_LOAD_TIMEOUT_MS } from './utils/linkLoad'
 
 jest.mock('@meshconnect/uwc-bridge-parent', () => ({
   BridgeParent: jest.fn().mockImplementation(() => ({
@@ -1018,6 +1019,191 @@ describe('createLink tests', () => {
     const iframeElement = document.getElementById('mesh-link-popup__iframe')
     expect(iframeElement).toBeFalsy()
     expect(exitFunction).toHaveBeenCalled()
+  })
+})
+
+describe('openLink load timeout (linkLoadFailed)', () => {
+  const LINK_ORIGIN = 'http://localhost'
+  const LOAD_FAILED = {
+    type: 'linkLoadFailed',
+    payload: { reason: 'loadTimeout', timeoutMs: LINK_LOAD_TIMEOUT_MS }
+  }
+
+  const postFromLink = (data: Record<string, unknown>) =>
+    globalThis.dispatchEvent(
+      new MessageEvent('message', { data, origin: LINK_ORIGIN })
+    )
+
+  const loadFailedCalls = (onEvent: jest.Mock) =>
+    onEvent.mock.calls.filter(([e]) => e.type === 'linkLoadFailed')
+
+  const open = () => {
+    const onEvent = jest.fn<void, [LinkEventType]>()
+    const onExit = jest.fn()
+    const link = createLink({ onEvent, onExit })
+    link.openLink(BASE64_ENCODED_URL)
+    return { link, onEvent, onExit }
+  }
+
+  beforeEach(() => {
+    document.getElementsByTagName('html')[0].innerHTML = ''
+    jest.useFakeTimers()
+  })
+
+  afterEach(() => {
+    jest.clearAllTimers()
+    jest.useRealTimers()
+  })
+
+  test('emits linkLoadFailed once when Link never sends loaded, and leaves Link open', () => {
+    const { onEvent, onExit } = open()
+
+    jest.advanceTimersByTime(LINK_LOAD_TIMEOUT_MS - 1)
+    expect(loadFailedCalls(onEvent)).toHaveLength(0)
+
+    jest.advanceTimersByTime(1)
+    expect(onEvent).toHaveBeenCalledWith(LOAD_FAILED)
+
+    jest.advanceTimersByTime(LINK_LOAD_TIMEOUT_MS * 3)
+    expect(loadFailedCalls(onEvent)).toHaveLength(1)
+    expect(onExit).not.toHaveBeenCalled()
+    expect(document.getElementById('mesh-link-popup__iframe')).toBeTruthy()
+  })
+
+  test.each([
+    ['immediately', 0],
+    ['on a slow network, just before the timeout', LINK_LOAD_TIMEOUT_MS - 1]
+  ])('does not emit linkLoadFailed when loaded arrives %s', (_, delayMs) => {
+    const { onEvent } = open()
+
+    jest.advanceTimersByTime(delayMs)
+    postFromLink({ type: 'loaded' })
+    jest.advanceTimersByTime(LINK_LOAD_TIMEOUT_MS * 3)
+
+    expect(onEvent).toHaveBeenCalledWith({ type: 'pageLoaded' })
+    expect(loadFailedCalls(onEvent)).toHaveLength(0)
+  })
+
+  test('a late loaded after the timeout still completes the session', () => {
+    const { onEvent } = open()
+
+    jest.advanceTimersByTime(LINK_LOAD_TIMEOUT_MS)
+    postFromLink({ type: 'loaded' })
+
+    expect(onEvent).toHaveBeenCalledWith({ type: 'pageLoaded' })
+    expect(loadFailedCalls(onEvent)).toHaveLength(1)
+  })
+
+  test.each([
+    ['closeLink', (link: ReturnType<typeof createLink>) => link.closeLink()],
+    [
+      'a close message from Link',
+      () => postFromLink({ type: 'close', payload: {} })
+    ],
+    [
+      'a done message from Link',
+      () => postFromLink({ type: 'done', payload: {} })
+    ],
+    [
+      'openLinkBackup',
+      (link: ReturnType<typeof createLink>) =>
+        link.openLinkBackup({
+          clientId: 'c',
+          userId: 'u',
+          destinations: [{ networkId: 'n', symbol: 'USDC', address: '0xabc' }]
+        })
+    ]
+  ])('%s before the timeout cancels it', (_, endFlow) => {
+    const { link, onEvent } = open()
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => {})
+
+    endFlow(link)
+    jest.advanceTimersByTime(LINK_LOAD_TIMEOUT_MS * 3)
+
+    expect(loadFailedCalls(onEvent)).toHaveLength(0)
+    warn.mockRestore()
+  })
+
+  test.each([
+    ['closeLink', (link: ReturnType<typeof createLink>) => link.closeLink()],
+    ['a close message', () => postFromLink({ type: 'close', payload: {} })],
+    ['a done message', () => postFromLink({ type: 'done', payload: {} })],
+    [
+      'an aborted re-open',
+      (link: ReturnType<typeof createLink>) => link.openLink('')
+    ]
+  ])('%s clears the pending load timer', (_, endFlow) => {
+    const { link } = open()
+    expect(jest.getTimerCount()).toBe(1)
+
+    endFlow(link)
+
+    expect(jest.getTimerCount()).toBe(0)
+  })
+
+  test('does not count time while the page is hidden', () => {
+    const visibility = jest.spyOn(document, 'visibilityState', 'get')
+    const setVisibility = (state: 'hidden' | 'visible') => {
+      visibility.mockReturnValue(state)
+      document.dispatchEvent(new Event('visibilitychange'))
+    }
+    try {
+      const { onEvent } = open()
+
+      jest.advanceTimersByTime(LINK_LOAD_TIMEOUT_MS - 1)
+      setVisibility('hidden')
+      jest.advanceTimersByTime(LINK_LOAD_TIMEOUT_MS * 3)
+      expect(loadFailedCalls(onEvent)).toHaveLength(0)
+
+      // Back in view: the page gets a full window again to load.
+      setVisibility('visible')
+      jest.advanceTimersByTime(LINK_LOAD_TIMEOUT_MS - 1)
+      expect(loadFailedCalls(onEvent)).toHaveLength(0)
+      jest.advanceTimersByTime(1)
+      expect(loadFailedCalls(onEvent)).toHaveLength(1)
+
+      // Once reported, later visibility changes do not report again.
+      setVisibility('hidden')
+      setVisibility('visible')
+      jest.advanceTimersByTime(LINK_LOAD_TIMEOUT_MS * 3)
+      expect(loadFailedCalls(onEvent)).toHaveLength(1)
+    } finally {
+      visibility.mockRestore()
+    }
+  })
+
+  test('does not arm when the embedded iframe id does not exist', () => {
+    const onEvent = jest.fn<void, [LinkEventType]>()
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => {})
+    const link = createLink({ onEvent, renderType: 'embedded' })
+
+    link.openLink(BASE64_ENCODED_URL, 'missing-iframe')
+    jest.advanceTimersByTime(LINK_LOAD_TIMEOUT_MS * 3)
+
+    expect(loadFailedCalls(onEvent)).toHaveLength(0)
+    warn.mockRestore()
+  })
+
+  test('re-opening restarts the timeout for the new open only', () => {
+    const { link, onEvent } = open()
+
+    jest.advanceTimersByTime(LINK_LOAD_TIMEOUT_MS / 2)
+    link.openLink(BASE64_ENCODED_URL)
+
+    jest.advanceTimersByTime(LINK_LOAD_TIMEOUT_MS / 2)
+    expect(loadFailedCalls(onEvent)).toHaveLength(0)
+
+    jest.advanceTimersByTime(LINK_LOAD_TIMEOUT_MS / 2)
+    expect(loadFailedCalls(onEvent)).toHaveLength(1)
+  })
+
+  test('ignores a linkLoadFailed sent by the iframe (SDK-generated only)', () => {
+    const { onEvent } = open()
+
+    postFromLink({ type: 'loaded' })
+    postFromLink(LOAD_FAILED)
+
+    expect(loadFailedCalls(onEvent)).toHaveLength(0)
   })
 })
 
