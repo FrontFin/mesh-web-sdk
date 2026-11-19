@@ -1689,10 +1689,17 @@ describe('openLinkBackup tests', () => {
     globalThis.dispatchEvent(
       new MessageEvent<{ type: EventType }>('message', {
         data: { type: 'loaded', sid: widgetSid(iframeElement) },
-        origin: 'http://localhost'
+        origin: 'http://localhost',
+        source: iframeElement?.contentWindow
       })
     )
 
+    // The handshake ran (so the no-leak check below is meaningful)...
+    expect(postMessageSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ type: 'meshSDKSpecs' }),
+      'http://localhost'
+    )
+    // ...and did not send the backup config.
     const leaked = postMessageSpy.mock.calls.find(
       ([message]) =>
         (message as { type?: string })?.type === BACKUP_CONFIG_MESSAGE_TYPE
