@@ -115,7 +115,7 @@ export function addPopup(iframeLink: string): void {
   popupRootElement.id = popupId
   // A react-aria modal on the host page would otherwise pull focus back out of
   // the Link iframe. react-aria leaves elements with this attribute alone.
-  popupRootElement.setAttribute('data-react-aria-top-layer', 'true')
+  popupRootElement.dataset.reactAriaTopLayer = 'true'
   const popupBackdropElement = document.createElement('div')
   popupBackdropElement.id = backdropId
   popupRootElement.appendChild(popupBackdropElement)
