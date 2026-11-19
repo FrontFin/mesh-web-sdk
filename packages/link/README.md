@@ -124,6 +124,22 @@ onEvent: event => {
 }
 ```
 
+#### Link load failure
+
+If the Link UI never finishes starting (for example during an outage of the Link app), `openLink` would otherwise leave the user on a blank screen. If Link has not loaded within 20 seconds of `openLink` (counting only time the page is visible), `onEvent` receives a `linkLoadFailed` event, at most once per `openLink` call.
+The SDK does not close Link. If Link finishes loading later, the session continues as usual and `pageLoaded` follows.
+You decide what to do. For example, call `closeLink()` and show your own error, or, if you use the [backup flow](#backup--outage-flow), build the backup config on your server and call `openLinkBackup` as you would after a failed `linktoken` request.
+
+```ts
+onEvent: async event => {
+  if (event.type === 'linkLoadFailed') {
+    const { reason, timeoutMs } = event.payload // reason: 'loadTimeout'
+    link.closeLink() // note: also calls your onExit
+    link.openLinkBackup(await fetchBackupConfigFromYourServer())
+  }
+}
+```
+
 #### `createLink` return value
 
 | key                  | type                                                        | description                                                                                                |
@@ -135,7 +151,7 @@ onEvent: event => {
 
 ### Backup / outage flow
 
-If a `linktoken` request fails in a way that indicates a Mesh outage (network/DNS error, timeout, HTTP 5xx or 429), you can open a **deposit-only backup flow** instead of the normal flow. It runs select-token → select-network → QR / copy-address from Mesh infrastructure on a separate domain, and resolves deposit addresses either from static config or through callbacks you provide.
+If a `linktoken` request fails in a way that indicates a Mesh outage (network/DNS error, timeout, HTTP 5xx or 429), or `openLink` emits [`linkLoadFailed`](#link-load-failure), you can open a **deposit-only backup flow** instead of the normal flow. It runs select-token → select-network → QR / copy-address from Mesh infrastructure on a separate domain, and resolves deposit addresses either from static config or through callbacks you provide.
 
 ```ts
 const link = createLink({
