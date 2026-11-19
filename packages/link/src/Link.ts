@@ -33,7 +33,8 @@ let bridgeParent: BridgeParent | null = null
 // Pending `linkLoadFailed` timer for the current `openLink` (cleared on `loaded`
 // and whenever the flow ends or is replaced).
 let loadTimer: ReturnType<typeof setTimeout> | null = null
-// Visible time still allowed for `loaded`, and when the running timer started.
+// Visible time still allowed for `loaded`, and when the running timer started
+// (monotonic `performance.now()`, so a system clock change can't skew it).
 let loadBudgetMs = 0
 let loadTimerStartedAt = 0
 
@@ -46,7 +47,7 @@ function clearLoadTimer() {
 }
 
 function armLoadTimer() {
-  loadTimerStartedAt = Date.now()
+  loadTimerStartedAt = performance.now()
   loadTimer = setTimeout(() => {
     clearLoadTimer()
     if (backup.getActiveFlow() !== 'primary') return
@@ -68,7 +69,7 @@ function onLoadVisibilityChange() {
       loadTimer = null
       loadBudgetMs = Math.max(
         0,
-        loadBudgetMs - (Date.now() - loadTimerStartedAt)
+        loadBudgetMs - (performance.now() - loadTimerStartedAt)
       )
     }
   } else if (!loadTimer) {
@@ -223,11 +224,18 @@ async function handleLinkEvent(
       break
     }
     case 'loaded': {
-      // Only the current Link iframe's handshake counts: a late `loaded` from a
-      // previous embedded iframe must not cancel this open's timeout.
-      if (event.source && event.source === iframeElement()?.contentWindow) {
-        clearLoadTimer()
+      // In the primary flow only the current Link iframe's handshake counts. A
+      // late `loaded` from a previous embedded iframe must not cancel this
+      // open's timeout, report `pageLoaded`, or get the handshake replies (the
+      // backup flow authenticates its widget window in `eventsListener`).
+      if (
+        backup.getActiveFlow() === 'primary' &&
+        (!event.source || event.source !== iframeElement()?.contentWindow)
+      ) {
+        console.warn('Ignored loaded message from a previous Link iframe')
+        break
       }
+      clearLoadTimer()
       sendMessageToIframe({
         type: 'meshSDKSpecs',
         payload: { ...sdkSpecs }

@@ -363,7 +363,8 @@ describe('createLink tests', () => {
       globalThis.dispatchEvent(
         new MessageEvent<EventPayload>('message', {
           data: { type: 'loaded' },
-          origin: 'https://web.meshconnect.com'
+          origin: 'https://web.meshconnect.com',
+          source: customIframeElement.contentWindow
         })
       )
       expect(postMessageSpy).toHaveBeenCalledWith(
@@ -810,7 +811,8 @@ describe('createLink tests', () => {
         data: {
           type: 'loaded'
         },
-        origin: 'http://localhost'
+        origin: 'http://localhost',
+        source: iframeElement?.contentWindow
       })
     )
 
@@ -1237,6 +1239,23 @@ describe('openLink load timeout (linkLoadFailed)', () => {
     postFromLink({ type: 'loaded' }, iframeB.contentWindow)
     jest.advanceTimersByTime(LINK_LOAD_TIMEOUT_MS)
     expect(loadFailedCalls(onEvent)).toHaveLength(1)
+  })
+
+  test('a loaded from a previous embedded iframe is ignored entirely', () => {
+    const iframeA = embeddedIframe('iframe-a')
+    const iframeB = embeddedIframe('iframe-b')
+    const onEvent = jest.fn<void, [LinkEventType]>()
+    const warn = jest.spyOn(console, 'warn').mockImplementation(() => {})
+    const link = createLink({ onEvent, renderType: 'embedded' })
+
+    link.openLink(BASE64_ENCODED_URL, 'iframe-a')
+    link.openLink(BASE64_ENCODED_URL, 'iframe-b')
+    const postToB = jest.spyOn(iframeB.contentWindow as Window, 'postMessage')
+    postFromLink({ type: 'loaded' }, iframeA.contentWindow)
+
+    expect(onEvent).not.toHaveBeenCalledWith({ type: 'pageLoaded' })
+    expect(postToB).not.toHaveBeenCalled()
+    warn.mockRestore()
   })
 
   test('a missing embedded iframe id does not arm against the previous iframe', () => {
