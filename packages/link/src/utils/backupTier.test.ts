@@ -123,4 +123,28 @@ describe('createBackupTierController', () => {
     jest.advanceTimersByTime(TIER1_READY_TIMEOUT_MS * 2)
     expect(onFallback).not.toHaveBeenCalled()
   })
+
+  test.each(['loadError', 'readyTimeout'] as const)(
+    'destroy during %s fallback does not leave a tier2 timer',
+    reason => {
+      const onTier2Unavailable = jest.fn()
+      const onFallback = jest.fn(() => controller.destroy())
+      const controller = createBackupTierController({
+        onFallback,
+        onTier2Unavailable
+      })
+      controller.start()
+
+      if (reason === 'loadError') {
+        controller.reportLoadError()
+      } else {
+        jest.advanceTimersByTime(TIER1_READY_TIMEOUT_MS)
+      }
+
+      expect(onFallback).toHaveBeenCalledWith(reason)
+      expect(jest.getTimerCount()).toBe(0)
+      jest.advanceTimersByTime(TIER2_READY_TIMEOUT_MS)
+      expect(onTier2Unavailable).not.toHaveBeenCalled()
+    }
+  )
 })
