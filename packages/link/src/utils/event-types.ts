@@ -46,6 +46,7 @@ export type LinkEventType =
   | HomePageLoaded
   | BackupTierChanged
   | WithdrawalRequested
+  | LinkLoadFailed
 
 const LINK_EVENT_TYPE_KEYS = [
   'integrationConnected',
@@ -92,7 +93,8 @@ const LINK_EVENT_TYPE_KEYS = [
   'defiWalletError',
   'homePageLoaded',
   'backupTierChanged',
-  'withdrawalRequested'
+  'withdrawalRequested',
+  'linkLoadFailed'
 ] as const
 
 export type LinkEventTypeKeys = (typeof LINK_EVENT_TYPE_KEYS)[number]
@@ -484,5 +486,24 @@ export interface WithdrawalRequested extends LinkEventBase {
     transferId: string
     // 'pending' or 'success' today; treat any other value as pending.
     status: string
+  }
+}
+
+/**
+ * Emitted by the SDK (never by Link itself) when {@link Link.openLink} loaded the
+ * Link iframe but Link did not complete its `loaded` handshake within
+ * `timeoutMs` — e.g. the Link app failed to start, so the user would otherwise
+ * see a blank or stuck screen with no error.
+ *
+ * Emitted at most once per `openLink` call. The SDK does not close Link: if the
+ * handshake arrives late, the session continues normally (`pageLoaded` follows).
+ * Decide here whether to close it (`closeLink`) and, for deposit flows that use
+ * the backup flow, open it with `openLinkBackup`.
+ */
+export interface LinkLoadFailed extends LinkEventBase {
+  type: 'linkLoadFailed'
+  payload: {
+    reason: 'loadTimeout'
+    timeoutMs: number
   }
 }
